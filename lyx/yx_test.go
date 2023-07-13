@@ -486,128 +486,128 @@ func TestSelectAlias(t *testing.T) {
 	}
 }
 
-// func TestCreate(t *testing.T) {
-// 	assert := assert.New(t)
+func TestCreate(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "create table xx ( i int )",
-// 			exp: &CreateTable{
-// 				TableName: "xx",
-// 				TableElts: []TableElt{
-// 					{
-// 						ColName: "i",
-// 						ColType: "int",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 		/* same test, no spaces between tokens */
-// 		{
-// 			query: "create table xx(i int)",
-// 			exp: &CreateTable{
-// 				TableName: "xx",
-// 				TableElts: []TableElt{
-// 					{
-// 						ColName: "i",
-// 						ColType: "int",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+	for _, tt := range []tcase{
+		{
+			query: "create table xx ( i int )",
+			exp: &lyx.CreateTable{
+				TableName: "xx",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+		/* same test, no spaces between tokens */
+		{
+			query: "create table xx(i int)",
+			exp: &lyx.CreateTable{
+				TableName: "xx",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
 
-// 		/* same test, no spaces between tokens */
-// 		{
-// 			query: "create table tt(i int);",
-// 			exp: &CreateTable{
-// 				TableName: "tt",
-// 				TableElts: []TableElt{
-// 					{
-// 						ColName: "i",
-// 						ColType: "int",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		/* same test, no spaces between tokens */
+		{
+			query: "create table tt(i int);",
+			exp: &lyx.CreateTable{
+				TableName: "tt",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "CREATE TABLE sshjt1(i int, j int);",
-// 			exp: &CreateTable{
-// 				TableName: "sshjt1",
-// 				TableElts: []TableElt{
-// 					{
-// 						ColName: "i",
-// 						ColType: "int",
-// 					},
-// 					{
-// 						ColName: "j",
-// 						ColType: "int",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "CREATE TABLE sshjt1(i int, j int);",
+			exp: &lyx.CreateTable{
+				TableName: "sshjt1",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "i",
+						ColType: "int",
+					},
+					{
+						ColName: "j",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "CREATE TABLE orders(id INT PRIMARY KEY);",
-// 			exp: &CreateTable{
-// 				TableName: "orders",
-// 				TableElts: []TableElt{
-// 					{
-// 						ColName: "id",
-// 						ColType: "INT",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "CREATE TABLE orders(id INT PRIMARY KEY);",
+			exp: &lyx.CreateTable{
+				TableName: "orders",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "id",
+						ColType: "INT",
+					},
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "CREATE TABLE delivery(id INT PRIMARY KEY, order_id INT, FOREIGN KEY(order_id) REFERENCES orders(id));",
-// 			exp: &CreateTable{
-// 				TableName: "delivery",
-// 				TableElts: []TableElt{
-// 					{
-// 						ColName: "id",
-// 						ColType: "INT",
-// 					},
-// 					{
-// 						ColName: "order_id",
-// 						ColType: "INT",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "CREATE TABLE delivery(id INT PRIMARY KEY, order_id INT, FOREIGN KEY(order_id) REFERENCES orders(id));",
+			exp: &lyx.CreateTable{
+				TableName: "delivery",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "id",
+						ColType: "INT",
+					},
+					{
+						ColName: "order_id",
+						ColType: "INT",
+					},
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "create database reg",
-// 			exp:   &CreateDatabase{},
-// 			err:   nil,
-// 		},
+		{
+			query: "create database reg",
+			exp:   &lyx.CreateDatabase{},
+			err:   nil,
+		},
 
-// 		{
-// 			query: "create role reg",
-// 			exp:   &CreateRole{},
-// 			err:   nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+		{
+			query: "create role reg",
+			exp:   &lyx.CreateRole{},
+			err:   nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 // func TestInsert(t *testing.T) {
 // 	assert := assert.New(t)

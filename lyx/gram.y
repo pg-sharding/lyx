@@ -1110,7 +1110,7 @@ opt_ref:
     REFERENCES any_id TOPENBR any_id TCLOSEBR {}
 
 create_stmt_coldefs:
-    any_id any_val opt_pk {
+    IDENT IDENT opt_pk {
         $$ = []TableElt {{
                 ColName: $1,
                 ColType: $2,
