@@ -72,6 +72,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
         identifier	=	ident_start ident_cont*;
 
+        qidentifier	=	'"' ident_start ident_cont* '"' ;
+
 
 #        space		=	[ \t\n\r\f];
         horiz_space	= [ \t\f];
@@ -143,9 +145,9 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /cluster/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CLUSTER; fbreak;};
             /analyze/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYZE; fbreak;};
 
-
-            identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak;};
-            sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = int(SCONST); fbreak;};
+            qidentifier      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; fbreak;};
+            identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
+            sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = SCONST; fbreak;};
 
 
 #           self		=	(',' | '(' | ')' | '[' | ']' | '.' | ';'| ':' | '+' | '-' | '*' | '\\' | '%' | '^' | '<' | '>' | '=');
@@ -174,10 +176,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             '!=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; fbreak;};
 
 
-            operator => { 
-
-
-
+            operator => {
                 lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
                 fbreak;
             };

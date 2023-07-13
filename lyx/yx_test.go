@@ -7,224 +7,249 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// import (
-// 	"lyx/lyx"
-// 	"testing"
+func TestSelectComplex(t *testing.T) {
+	assert := assert.New(t)
 
-// 	"github.com/stretchr/testify/assert"
-// )
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// /*
+	for _, tt := range []tcase{
+		{
+			query: `
+			SELECT * FROM "exschema"."extable" WHERE id='83912839012903' AND utype='2' AND btype='sample' AND state = 0 AND is_something = true AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}') AND c_id = 'trunk' ORDER BY entity_id asc;
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "extable",
+					SchemaName:   "exschema",
+				},
+				},
 
-//  */
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+						Left: &lyx.AExprOp{
+							Left: &lyx.AExprOp{
+								Left: &lyx.AExprOp{
+									Left: &lyx.AExprOp{
+										Left: &lyx.AExprOp{
+											Left: &lyx.ColumnRef{
+												ColName: "id",
+											},
+											Right: &lyx.AExprConst{
+												Value: "83912839012903",
+											},
+											Op: "=",
+										},
+										Right: &lyx.AExprOp{
+											Left: &lyx.ColumnRef{
+												ColName: "utype",
+											},
+											Right: &lyx.AExprConst{
+												Value: "2",
+											},
+											Op: "=",
+										},
+										Op: "AND",
+									},
+									Right: &lyx.AExprOp{
+										Left: &lyx.ColumnRef{
+											ColName: "btype",
+										},
+										Right: &lyx.AExprConst{
+											Value: "sample",
+										},
+										Op: "=",
+									},
+									Op: "AND",
+								},
+								Right: &lyx.AExprOp{
+									Left: &lyx.ColumnRef{
+										ColName: "state",
+									},
+									Right: &lyx.AExprConst{
+										Value: "0",
+									},
+									Op: "=",
+								},
+								Op: "AND",
+							},
+							Right: &lyx.AExprOp{
+								Left: &lyx.ColumnRef{
+									ColName: "is_something",
+								},
+								Right: &lyx.ColumnRef{
+									ColName: "true",
+								},
+								Op: "=",
+							},
+							Op: "AND",
+						},
+						Right: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "keys",
+							},
+							Right: &lyx.AExprOp{
+								Left: &lyx.AExprConst{
+									Value: "{reshke,denchick}",
+								},
+								Right: &lyx.AExprOp{
+									Left: &lyx.ColumnRef{
+										ColName: "keys",
+									},
+									Right: &lyx.AExprConst{
+										Value: "{munakoiso,werelaxe,x4mmm}",
+									},
+									Op: "@>",
+								},
+								Op: "OR",
+							},
+							Op: "@>",
+						},
+						Op: "AND",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "c_id",
+						},
+						Right: &lyx.AExprConst{
+							Value: "trunk",
+						},
+						Op: "=",
+					},
+					Op: "AND",
+				},
+			},
 
-// func TestSelectComplex(t *testing.T) {
-// 	assert := assert.New(t)
+			err: nil,
+		},
 
-// 	type tcase struct {
-// 		query string
-// 		exp   lyx.Statement
-// 		err   error
-// 	}
+		{
+			query: `
+	SELECT *
+	FROM "exschema"."extable"
+	WHERE
+		id='83912839012903'
+		AND utype='2'
+		AND btype='sample'
+		AND state = 0
+		AND is_something = true
+		AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}')
+		AND c_id = 'trunk'
+	ORDER BY entity_id asc;
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "extable",
+					SchemaName:   "exschema",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+						Left: &lyx.AExprOp{
+							Left: &lyx.AExprOp{
+								Left: &lyx.AExprOp{
+									Left: &lyx.AExprOp{
+										Left: &lyx.AExprOp{
+											Left: &lyx.ColumnRef{
+												ColName: "id",
+											},
+											Right: &lyx.AExprConst{
+												Value: "83912839012903",
+											},
+											Op: "=",
+										},
+										Right: &lyx.AExprOp{
+											Left: &lyx.ColumnRef{
+												ColName: "utype",
+											},
+											Right: &lyx.AExprConst{
+												Value: "2",
+											},
+											Op: "=",
+										},
+										Op: "AND",
+									},
+									Right: &lyx.AExprOp{
+										Left: &lyx.ColumnRef{
+											ColName: "btype",
+										},
+										Right: &lyx.AExprConst{
+											Value: "sample",
+										},
+										Op: "=",
+									},
+									Op: "AND",
+								},
+								Right: &lyx.AExprOp{
+									Left: &lyx.ColumnRef{
+										ColName: "state",
+									},
+									Right: &lyx.AExprConst{
+										Value: "0",
+									},
+									Op: "=",
+								},
+								Op: "AND",
+							},
+							Right: &lyx.AExprOp{
+								Left: &lyx.ColumnRef{
+									ColName: "is_something",
+								},
+								Right: &lyx.ColumnRef{
+									ColName: "true",
+								},
+								Op: "=",
+							},
+							Op: "AND",
+						},
+						Right: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "keys",
+							},
+							Right: &lyx.AExprOp{
+								Left: &lyx.AExprConst{
+									Value: "{reshke,denchick}",
+								},
+								Right: &lyx.AExprOp{
+									Left: &lyx.ColumnRef{
+										ColName: "keys",
+									},
+									Right: &lyx.AExprConst{
+										Value: "{munakoiso,werelaxe,x4mmm}",
+									},
+									Op: "@>",
+								},
+								Op: "OR",
+							},
+							Op: "@>",
+						},
+						Op: "AND",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "c_id",
+						},
+						Right: &lyx.AExprConst{
+							Value: "trunk",
+						},
+						Op: "=",
+					},
+					Op: "AND",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: `
-// 			SELECT * FROM "exschema"."extable" WHERE id='83912839012903' AND utype='2' AND btype='sample' AND state = 0 AND is_something = true AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}') AND c_id = 'trunk' ORDER BY entity_id asc;
-// 			`,
-// 			exp: &lyx.Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "extable",
-// 					SchemaName:   "exschema",
-// 				},
-// 				},
-// 				Where: &AExprOp{
-// 					Op: "AND",
-// 					Left: &AExprOp{
-// 						ColRef: ColumnRef{
-// 							TableAlias: "",
-// 							ColName:    "id",
-// 						},
-// 						Value: "83912839012903",
-// 					},
-// 					Right: &WhereClauseOp{
-// 						Op: "AND",
-// 						Left: &WhereClauseLeaf{
-// 							ColRef: ColumnRef{
-// 								TableAlias: "",
-// 								ColName:    "utype",
-// 							},
-// 							Value: "2",
-// 						},
-// 						Right: &WhereClauseOp{
-// 							Op: "AND",
-// 							Left: &WhereClauseLeaf{
-// 								ColRef: ColumnRef{
-// 									TableAlias: "",
-// 									ColName:    "btype",
-// 								},
-// 								Value: "sample",
-// 							},
-// 							Right: &WhereClauseOp{
-// 								Op: "AND",
-// 								Left: &WhereClauseLeaf{
-// 									ColRef: ColumnRef{
-// 										TableAlias: "",
-// 										ColName:    "state",
-// 									},
-// 									Value: "0",
-// 								},
-// 								Right: &WhereClauseOp{
-// 									Op: "AND",
-// 									Left: &WhereClauseLeaf{
-// 										ColRef: ColumnRef{
-// 											TableAlias: "",
-// 											ColName:    "is_something",
-// 										},
-// 										Value: "true",
-// 									},
-// 									Right: &WhereClauseOp{
-// 										Op: "AND",
-// 										Left: &WhereClauseOp{
-// 											Left: &WhereClauseLeaf{
-// 												ColRef: ColumnRef{
-// 													ColName: "keys",
-// 												},
-// 												Value: "{reshke,denchick}",
-// 											},
-// 											Right: &WhereClauseLeaf{
-// 												ColRef: ColumnRef{
-// 													ColName: "keys",
-// 												},
-// 												Value: "{munakoiso,werelaxe,x4mmm}",
-// 											},
-// 											Op: "OR",
-// 										},
-// 										Right: &WhereClauseLeaf{
-// 											ColRef: ColumnRef{
-// 												TableAlias: "",
-// 												ColName:    "c_id",
-// 											},
-// 											Value: "trunk",
-// 										},
-// 									},
-// 								},
-// 							},
-// 						},
-// 					},
-// 				},
-// 			},
+		assert.NoError(err, "query %s", tt.query)
 
-// 			err: nil,
-// 		},
-
-// 		{
-// 			query: `
-// 	SELECT *
-// 	FROM "exschema"."extable"
-// 	WHERE
-// 		id='83912839012903'
-// 		AND utype='2'
-// 		AND btype='sample'
-// 		AND state = 0
-// 		AND is_something = true
-// 		AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}')
-// 		AND c_id = 'trunk'
-// 	ORDER BY entity_id asc;
-// 			`,
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "extable",
-// 					SchemaName:   "exschema",
-// 				},
-// 				},
-// 				Where: &WhereClauseOp{
-// 					Op: "AND",
-// 					Left: &WhereClauseLeaf{
-// 						ColRef: ColumnRef{
-// 							TableAlias: "",
-// 							ColName:    "id",
-// 						},
-// 						Value: "83912839012903",
-// 					},
-// 					Right: &WhereClauseOp{
-// 						Op: "AND",
-// 						Left: &WhereClauseLeaf{
-// 							ColRef: ColumnRef{
-// 								TableAlias: "",
-// 								ColName:    "utype",
-// 							},
-// 							Value: "2",
-// 						},
-// 						Right: &WhereClauseOp{
-// 							Op: "AND",
-// 							Left: &WhereClauseLeaf{
-// 								ColRef: ColumnRef{
-// 									TableAlias: "",
-// 									ColName:    "btype",
-// 								},
-// 								Value: "sample",
-// 							},
-// 							Right: &WhereClauseOp{
-// 								Op: "AND",
-// 								Left: &WhereClauseLeaf{
-// 									ColRef: ColumnRef{
-// 										TableAlias: "",
-// 										ColName:    "state",
-// 									},
-// 									Value: "0",
-// 								},
-// 								Right: &WhereClauseOp{
-// 									Op: "AND",
-// 									Left: &WhereClauseLeaf{
-// 										ColRef: ColumnRef{
-// 											TableAlias: "",
-// 											ColName:    "is_something",
-// 										},
-// 										Value: "true",
-// 									},
-// 									Right: &WhereClauseOp{
-// 										Op: "AND",
-// 										Left: &WhereClauseOp{
-// 											Left: &WhereClauseLeaf{
-// 												ColRef: ColumnRef{
-// 													ColName: "keys",
-// 												},
-// 												Value: "{reshke,denchick}",
-// 											},
-// 											Right: &WhereClauseLeaf{
-// 												ColRef: ColumnRef{
-// 													ColName: "keys",
-// 												},
-// 												Value: "{munakoiso,werelaxe,x4mmm}",
-// 											},
-// 											Op: "OR",
-// 										},
-// 										Right: &WhereClauseLeaf{
-// 											ColRef: ColumnRef{
-// 												TableAlias: "",
-// 												ColName:    "c_id",
-// 											},
-// 											Value: "trunk",
-// 										},
-// 									},
-// 								},
-// 							},
-// 						},
-// 					},
-// 				},
-// 			},
-
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
-
-// 		assert.NoError(err, "query %s", tt.query)
-
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 func TestSelect(t *testing.T) {
 	assert := assert.New(t)
@@ -811,83 +836,83 @@ func TestInsert(t *testing.T) {
 	}
 }
 
-// func TestInsertComplex(t *testing.T) {
-// 	assert := assert.New(t)
+func TestInsertComplex(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: `
+	for _, tt := range []tcase{
+		{
+			query: `
 
-// INSERT
-// 	INTO "exschema"."extable"
-// ("cat","fox","dog","fly","bee","lol","kek","type","id","version","isok","isnotok","keys","tags","key_id",
-// 	"key_value","value_type","state")
-// VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
-// 	'2','some','thing','*()*()Q*D()beiwe','0','trunk',true,'{280,fb8,909,e6,ffc}',
-// 	'{9223372036854775806}','31337','bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././','0',0)
+INSERT
+	INTO "exschema"."extable"
+("cat","fox","dog","fly","bee","lol","kek","type","id","version","isok","isnotok","keys","tags","key_id",
+	"key_value","value_type","state")
+VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
+	'2','some','thing','*()*()Q*D()beiwe','0','trunk',true,'{280,fb8,909,e6,ffc}',
+	'{9223372036854775806}','31337','bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././','0',0)
 
-// 			`,
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "extable",
-// 					SchemaName:   "exschema",
-// 					Alias:        "",
-// 				},
-// 				Values: []string{
-// 					"0",
-// 					"0",
-// 					"bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././",
-// 					"31337",
-// 					"{9223372036854775806}",
-// 					"{280,fb8,909,e6,ffc}",
-// 					"true",
-// 					"trunk",
-// 					"0",
-// 					"*()*()Q*D()beiwe",
-// 					"thing",
-// 					"some",
-// 					"2",
-// 					"9223372036854775807",
-// 					"NULL",
-// 					"NULL",
-// 					"111111",
-// 					"1970-01-01 12:00:00.5",
-// 				},
-// 				Columns: []string{
-// 					"state",
-// 					"value_type",
-// 					"key_value",
-// 					"key_id",
-// 					"tags",
-// 					"keys",
-// 					"isnotok",
-// 					"isok",
-// 					"version",
-// 					"id",
-// 					"type",
-// 					"kek",
-// 					"lol",
-// 					"bee",
-// 					"fly",
-// 					"dog",
-// 					"fox", "cat",
-// 				}, SubSelect: nil},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+			`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "extable",
+					SchemaName:   "exschema",
+					Alias:        "",
+				},
+				Values: []lyx.Statement{
+					&lyx.AExprConst{Value: "0"},
+					&lyx.AExprConst{Value: "0"},
+					&lyx.AExprConst{Value: "bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././"},
+					&lyx.AExprConst{Value: "31337"},
+					&lyx.AExprConst{Value: "{9223372036854775806}"},
+					&lyx.AExprConst{Value: "{280,fb8,909,e6,ffc}"},
+					&lyx.ColumnRef{ColName: "true"},
+					&lyx.AExprConst{Value: "trunk"},
+					&lyx.AExprConst{Value: "0"},
+					&lyx.AExprConst{Value: "*()*()Q*D()beiwe"},
+					&lyx.AExprConst{Value: "thing"},
+					&lyx.AExprConst{Value: "some"},
+					&lyx.AExprConst{Value: "2"},
+					&lyx.AExprConst{Value: "9223372036854775807"},
+					&lyx.ColumnRef{ColName: "NULL"},
+					&lyx.ColumnRef{ColName: "NULL"},
+					&lyx.AExprConst{Value: "111111"},
+					&lyx.AExprConst{Value: "1970-01-01 12:00:00.5"},
+				},
+				Columns: []string{
+					"state",
+					"value_type",
+					"key_value",
+					"key_id",
+					"tags",
+					"keys",
+					"isnotok",
+					"isok",
+					"version",
+					"id",
+					"type",
+					"kek",
+					"lol",
+					"bee",
+					"fly",
+					"dog",
+					"fox", "cat",
+				}, SubSelect: nil},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 func TestUpdate(t *testing.T) {
 	assert := assert.New(t)
@@ -1119,41 +1144,44 @@ func TestCopy(t *testing.T) {
 	}
 }
 
-// func TestSelectTargetLists(t *testing.T) {
-// 	assert := assert.New(t)
+func TestSelectTargetLists(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "SELECT pg_is_in_recovery(), id FROM tsa_test WHERE id = 22;",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{
-// 					&RangeVar{
-// 						RelationName: "tsa_test",
-// 					},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName: "id",
-// 					},
-// 					Value: "22",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+	for _, tt := range []tcase{
+		{
+			query: "SELECT pg_is_in_recovery(), id FROM tsa_test WHERE id = 22;",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "tsa_test",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "id",
+					},
+					Right: &lyx.AExprConst{
+						Value: "22",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 func TestJoins(t *testing.T) {
 	assert := assert.New(t)
