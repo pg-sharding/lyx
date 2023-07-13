@@ -1,4 +1,4 @@
-package lx
+package lyx
 
 import (
 	"bufio"
@@ -12,11 +12,6 @@ import (
     variable p lex.p;
     variable pe lex.pe;
 }%%
-
-
-type yySymType struct {
-    token string
-}
 
 type Lexer struct {
 	data         []byte
@@ -97,9 +92,9 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         
         main := |*
             whitespace => { /* do nothing */ };
-            integer =>  { lval.token = string(lex.data[lex.ts:lex.te]); tok = int(7); fbreak;};
-            identifier      => { lval.token = string(lex.data[lex.ts:lex.te]); tok = int(8); fbreak;};
-            operator => { lval.token = string(lex.data[lex.ts:lex.te]); tok = int(9); fbreak; };
+            integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
+            identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
+            operator => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak; };
         *|;
 
         write exec;

@@ -1,9 +1,9 @@
-package routerparser_test
+package lyx_test
 
 import (
+	"lyx/lyx"
 	"testing"
 
-	routerparser "github.com/pg-sharding/spqr/yacc/router"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +16,7 @@ func TestSelectComplex(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   lyx.Statement
 		err   error
 	}
 
@@ -25,76 +25,76 @@ func TestSelectComplex(t *testing.T) {
 			query: `
 			SELECT * FROM "exschema"."extable" WHERE id='83912839012903' AND utype='2' AND btype='sample' AND state = 0 AND is_something = true AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}') AND c_id = 'trunk' ORDER BY entity_id asc;
 			`,
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &lyx.Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "extable",
 					SchemaName:   "exschema",
 				},
 				},
-				Where: &routerparser.AExprOp{
+				Where: &AExprOp{
 					Op: "AND",
-					Left: &routerparser.AExprOp{
-						ColRef: routerparser.ColumnRef{
+					Left: &AExprOp{
+						ColRef: ColumnRef{
 							TableAlias: "",
 							ColName:    "id",
 						},
 						Value: "83912839012903",
 					},
-					Right: &routerparser.WhereClauseOp{
+					Right: &WhereClauseOp{
 						Op: "AND",
-						Left: &routerparser.WhereClauseLeaf{
-							ColRef: routerparser.ColumnRef{
+						Left: &WhereClauseLeaf{
+							ColRef: ColumnRef{
 								TableAlias: "",
 								ColName:    "utype",
 							},
 							Value: "2",
 						},
-						Right: &routerparser.WhereClauseOp{
+						Right: &WhereClauseOp{
 							Op: "AND",
-							Left: &routerparser.WhereClauseLeaf{
-								ColRef: routerparser.ColumnRef{
+							Left: &WhereClauseLeaf{
+								ColRef: ColumnRef{
 									TableAlias: "",
 									ColName:    "btype",
 								},
 								Value: "sample",
 							},
-							Right: &routerparser.WhereClauseOp{
+							Right: &WhereClauseOp{
 								Op: "AND",
-								Left: &routerparser.WhereClauseLeaf{
-									ColRef: routerparser.ColumnRef{
+								Left: &WhereClauseLeaf{
+									ColRef: ColumnRef{
 										TableAlias: "",
 										ColName:    "state",
 									},
 									Value: "0",
 								},
-								Right: &routerparser.WhereClauseOp{
+								Right: &WhereClauseOp{
 									Op: "AND",
-									Left: &routerparser.WhereClauseLeaf{
-										ColRef: routerparser.ColumnRef{
+									Left: &WhereClauseLeaf{
+										ColRef: ColumnRef{
 											TableAlias: "",
 											ColName:    "is_something",
 										},
 										Value: "true",
 									},
-									Right: &routerparser.WhereClauseOp{
+									Right: &WhereClauseOp{
 										Op: "AND",
-										Left: &routerparser.WhereClauseOp{
-											Left: &routerparser.WhereClauseLeaf{
-												ColRef: routerparser.ColumnRef{
+										Left: &WhereClauseOp{
+											Left: &WhereClauseLeaf{
+												ColRef: ColumnRef{
 													ColName: "keys",
 												},
 												Value: "{reshke,denchick}",
 											},
-											Right: &routerparser.WhereClauseLeaf{
-												ColRef: routerparser.ColumnRef{
+											Right: &WhereClauseLeaf{
+												ColRef: ColumnRef{
 													ColName: "keys",
 												},
 												Value: "{munakoiso,werelaxe,x4mmm}",
 											},
 											Op: "OR",
 										},
-										Right: &routerparser.WhereClauseLeaf{
-											ColRef: routerparser.ColumnRef{
+										Right: &WhereClauseLeaf{
+											ColRef: ColumnRef{
 												TableAlias: "",
 												ColName:    "c_id",
 											},
@@ -125,76 +125,76 @@ func TestSelectComplex(t *testing.T) {
 		AND c_id = 'trunk' 
 	ORDER BY entity_id asc;
 			`,
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "extable",
 					SchemaName:   "exschema",
 				},
 				},
-				Where: &routerparser.WhereClauseOp{
+				Where: &WhereClauseOp{
 					Op: "AND",
-					Left: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Left: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							TableAlias: "",
 							ColName:    "id",
 						},
 						Value: "83912839012903",
 					},
-					Right: &routerparser.WhereClauseOp{
+					Right: &WhereClauseOp{
 						Op: "AND",
-						Left: &routerparser.WhereClauseLeaf{
-							ColRef: routerparser.ColumnRef{
+						Left: &WhereClauseLeaf{
+							ColRef: ColumnRef{
 								TableAlias: "",
 								ColName:    "utype",
 							},
 							Value: "2",
 						},
-						Right: &routerparser.WhereClauseOp{
+						Right: &WhereClauseOp{
 							Op: "AND",
-							Left: &routerparser.WhereClauseLeaf{
-								ColRef: routerparser.ColumnRef{
+							Left: &WhereClauseLeaf{
+								ColRef: ColumnRef{
 									TableAlias: "",
 									ColName:    "btype",
 								},
 								Value: "sample",
 							},
-							Right: &routerparser.WhereClauseOp{
+							Right: &WhereClauseOp{
 								Op: "AND",
-								Left: &routerparser.WhereClauseLeaf{
-									ColRef: routerparser.ColumnRef{
+								Left: &WhereClauseLeaf{
+									ColRef: ColumnRef{
 										TableAlias: "",
 										ColName:    "state",
 									},
 									Value: "0",
 								},
-								Right: &routerparser.WhereClauseOp{
+								Right: &WhereClauseOp{
 									Op: "AND",
-									Left: &routerparser.WhereClauseLeaf{
-										ColRef: routerparser.ColumnRef{
+									Left: &WhereClauseLeaf{
+										ColRef: ColumnRef{
 											TableAlias: "",
 											ColName:    "is_something",
 										},
 										Value: "true",
 									},
-									Right: &routerparser.WhereClauseOp{
+									Right: &WhereClauseOp{
 										Op: "AND",
-										Left: &routerparser.WhereClauseOp{
-											Left: &routerparser.WhereClauseLeaf{
-												ColRef: routerparser.ColumnRef{
+										Left: &WhereClauseOp{
+											Left: &WhereClauseLeaf{
+												ColRef: ColumnRef{
 													ColName: "keys",
 												},
 												Value: "{reshke,denchick}",
 											},
-											Right: &routerparser.WhereClauseLeaf{
-												ColRef: routerparser.ColumnRef{
+											Right: &WhereClauseLeaf{
+												ColRef: ColumnRef{
 													ColName: "keys",
 												},
 												Value: "{munakoiso,werelaxe,x4mmm}",
 											},
 											Op: "OR",
 										},
-										Right: &routerparser.WhereClauseLeaf{
-											ColRef: routerparser.ColumnRef{
+										Right: &WhereClauseLeaf{
+											ColRef: ColumnRef{
 												TableAlias: "",
 												ColName:    "c_id",
 											},
@@ -211,7 +211,7 @@ func TestSelectComplex(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -224,27 +224,27 @@ func TestSelect(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "select 42",
-			exp: &routerparser.Select{
-				Where: &routerparser.WhereClauseEmpty{},
+			exp: &Select{
+				Where: &WhereClauseEmpty{},
 			},
 			err: nil,
 		},
 		{
 			query: "select * from xx where i = 1 ",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName:    "i",
 						TableAlias: "",
 					},
@@ -256,13 +256,13 @@ func TestSelect(t *testing.T) {
 
 		{
 			query: "select * from xx where i = 1 order by i ",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName:    "i",
 						TableAlias: "",
 					},
@@ -274,13 +274,13 @@ func TestSelect(t *testing.T) {
 
 		{
 			query: "select * from xx where i = 1 limit 7 ",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName:    "i",
 						TableAlias: "",
 					},
@@ -292,13 +292,13 @@ func TestSelect(t *testing.T) {
 
 		{
 			query: "select * from xx where i = 1 group by i ",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName:    "i",
 						TableAlias: "",
 					},
@@ -310,13 +310,13 @@ func TestSelect(t *testing.T) {
 
 		{
 			query: "select * from xx where i = 1 group by i having sum(i)",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName:    "i",
 						TableAlias: "",
 					},
@@ -328,13 +328,13 @@ func TestSelect(t *testing.T) {
 
 		{
 			query: "select * from xx where i = 1 order by i limit 7 ",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName:    "i",
 						TableAlias: "",
 					},
@@ -345,22 +345,22 @@ func TestSelect(t *testing.T) {
 		},
 		{
 			query: "select * from xx where i = 1 AND j = 2 ",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
 				},
-				Where: &routerparser.WhereClauseOp{
+				Where: &WhereClauseOp{
 					Op: "AND",
-					Left: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Left: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							ColName:    "i",
 							TableAlias: "",
 						},
 						Value: "1",
 					},
-					Right: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Right: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							ColName:    "j",
 							TableAlias: "",
 						},
@@ -371,7 +371,7 @@ func TestSelect(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err)
 
@@ -384,39 +384,39 @@ func TestSelectMultipleRelations(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "select * from xx, xx2 ",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
-					&routerparser.RangeVar{
+					&RangeVar{
 						RelationName: "xx2",
 					},
 				},
-				Where: &routerparser.WhereClauseEmpty{},
+				Where: &WhereClauseEmpty{},
 			},
 			err: nil,
 		},
 
 		{
 			query: "select * from xx, xx2 b where b.i = 1",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "xx",
 				},
-					&routerparser.RangeVar{
+					&RangeVar{
 						RelationName: "xx2",
 						Alias:        "b",
 					},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName:    "i",
 						TableAlias: "b",
 					},
@@ -426,7 +426,7 @@ func TestSelectMultipleRelations(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err)
 
@@ -439,7 +439,7 @@ func TestSelectAlias(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
@@ -447,30 +447,30 @@ func TestSelectAlias(t *testing.T) {
 
 		{
 			query: "SELECT kind, sum(len) AS total FROM films GROUP BY kind;",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "films",
 				},
 				},
-				Where: &routerparser.WhereClauseEmpty{},
+				Where: &WhereClauseEmpty{},
 			},
 			err: nil,
 		},
 
 		{
 			query: "SELECT kind, sum(len) AS total FROM films AS f GROUP BY kind;",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{&RangeVar{
 					RelationName: "films",
 					Alias:        "f",
 				},
 				},
-				Where: &routerparser.WhereClauseEmpty{},
+				Where: &WhereClauseEmpty{},
 			},
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -483,16 +483,16 @@ func TestCreate(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "create table xx ( i int )",
-			exp: &routerparser.CreateTable{
+			exp: &CreateTable{
 				TableName: "xx",
-				TableElts: []routerparser.TableElt{
+				TableElts: []TableElt{
 					{
 						ColName: "i",
 						ColType: "int",
@@ -504,9 +504,9 @@ func TestCreate(t *testing.T) {
 		/* same test, no spaces between tokens */
 		{
 			query: "create table xx(i int)",
-			exp: &routerparser.CreateTable{
+			exp: &CreateTable{
 				TableName: "xx",
-				TableElts: []routerparser.TableElt{
+				TableElts: []TableElt{
 					{
 						ColName: "i",
 						ColType: "int",
@@ -519,9 +519,9 @@ func TestCreate(t *testing.T) {
 		/* same test, no spaces between tokens */
 		{
 			query: "create table tt(i int);",
-			exp: &routerparser.CreateTable{
+			exp: &CreateTable{
 				TableName: "tt",
-				TableElts: []routerparser.TableElt{
+				TableElts: []TableElt{
 					{
 						ColName: "i",
 						ColType: "int",
@@ -533,9 +533,9 @@ func TestCreate(t *testing.T) {
 
 		{
 			query: "CREATE TABLE sshjt1(i int, j int);",
-			exp: &routerparser.CreateTable{
+			exp: &CreateTable{
 				TableName: "sshjt1",
-				TableElts: []routerparser.TableElt{
+				TableElts: []TableElt{
 					{
 						ColName: "i",
 						ColType: "int",
@@ -551,9 +551,9 @@ func TestCreate(t *testing.T) {
 
 		{
 			query: "CREATE TABLE orders(id INT PRIMARY KEY);",
-			exp: &routerparser.CreateTable{
+			exp: &CreateTable{
 				TableName: "orders",
-				TableElts: []routerparser.TableElt{
+				TableElts: []TableElt{
 					{
 						ColName: "id",
 						ColType: "INT",
@@ -565,9 +565,9 @@ func TestCreate(t *testing.T) {
 
 		{
 			query: "CREATE TABLE delivery(id INT PRIMARY KEY, order_id INT, FOREIGN KEY(order_id) REFERENCES orders(id));",
-			exp: &routerparser.CreateTable{
+			exp: &CreateTable{
 				TableName: "delivery",
-				TableElts: []routerparser.TableElt{
+				TableElts: []TableElt{
 					{
 						ColName: "id",
 						ColType: "INT",
@@ -583,17 +583,17 @@ func TestCreate(t *testing.T) {
 
 		{
 			query: "create database reg",
-			exp:   &routerparser.CreateDatabase{},
+			exp:   &CreateDatabase{},
 			err:   nil,
 		},
 
 		{
 			query: "create role reg",
-			exp:   &routerparser.CreateRole{},
+			exp:   &CreateRole{},
 			err:   nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -606,15 +606,15 @@ func TestInsert(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "insert into xx (id) values(1)",
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "xx",
 					SchemaName:   "",
 					Alias:        "",
@@ -627,22 +627,22 @@ func TestInsert(t *testing.T) {
 
 		{
 			query: "Insert into xx (i) select * from yy where i = 8",
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "xx",
 					SchemaName:   "",
 					Alias:        "",
 				},
 				Columns: nil,
 				Values:  nil,
-				SubSelect: &routerparser.Select{
-					FromClause: []routerparser.FromClauseNode{
-						&routerparser.RangeVar{
+				SubSelect: &Select{
+					FromClause: []FromClauseNode{
+						&RangeVar{
 							RelationName: "yy",
 						},
 					},
-					Where: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Where: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							ColName: "i",
 						},
 						Value: "8",
@@ -655,8 +655,8 @@ func TestInsert(t *testing.T) {
 		{
 			query: `INSERT INTO films (code, title, did, date_prod, kind)
 			VALUES ('T_601', 'Yojimbo', 106, '1961-06-16', 'Drama');`,
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "films",
 					SchemaName:   "",
 					Alias:        "",
@@ -671,19 +671,19 @@ func TestInsert(t *testing.T) {
 
 		{
 			query: `INSERT INTO films SELECT * FROM tmp_films WHERE date_prod < '2004-05-07';`,
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "films",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				SubSelect: &routerparser.Select{
-					FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+				SubSelect: &Select{
+					FromClause: []FromClauseNode{&RangeVar{
 						RelationName: "tmp_films",
 					},
 					},
-					Where: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Where: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							ColName:    "date_prod",
 							TableAlias: "",
 						},
@@ -696,8 +696,8 @@ func TestInsert(t *testing.T) {
 
 		{
 			query: "insert into xx (id,id2) values(1,2)",
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "xx",
 					SchemaName:   "",
 					Alias:        "",
@@ -709,8 +709,8 @@ func TestInsert(t *testing.T) {
 		},
 		{
 			query: "INSERT INTO xxtt1 (j, i, w_id) VALUES(2121221, -211212, 21);",
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "xxtt1",
 					SchemaName:   "",
 					Alias:        "",
@@ -724,8 +724,8 @@ func TestInsert(t *testing.T) {
 		/* only first tuple from values clause parsed  */
 		{
 			query: "insert into xx (id,id2) values(1,2), (2,3), ( 4, 5)",
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "xx",
 					SchemaName:   "",
 					Alias:        "",
@@ -739,19 +739,19 @@ func TestInsert(t *testing.T) {
 		/* insert from select */
 		{
 			query: "insert into xx select * from xx2 where id2 = 7",
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "xx",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				SubSelect: &routerparser.Select{
-					FromClause: []routerparser.FromClauseNode{&routerparser.RangeVar{
+				SubSelect: &Select{
+					FromClause: []FromClauseNode{&RangeVar{
 						RelationName: "xx2",
 					},
 					},
-					Where: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Where: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							TableAlias: "",
 							ColName:    "id2",
 						},
@@ -762,7 +762,7 @@ func TestInsert(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -775,7 +775,7 @@ func TestInsertComplex(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
@@ -792,8 +792,8 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 	'{9223372036854775806}','31337','bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././','0',0)
 
 			`,
-			exp: &routerparser.Insert{
-				TableRef: &routerparser.RangeVar{
+			exp: &Insert{
+				TableRef: &RangeVar{
 					RelationName: "extable",
 					SchemaName:   "exschema",
 					Alias:        "",
@@ -840,7 +840,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -853,7 +853,7 @@ func TestUpdate(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
@@ -861,14 +861,14 @@ func TestUpdate(t *testing.T) {
 		/* simple update */
 		{
 			query: "UPDATE films SET kind = 'Dramatic' WHERE kind = 'Drama';",
-			exp: &routerparser.Update{
-				TableRef: &routerparser.RangeVar{
+			exp: &Update{
+				TableRef: &RangeVar{
 					RelationName: "films",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						TableAlias: "",
 						ColName:    "kind",
 					},
@@ -882,23 +882,23 @@ func TestUpdate(t *testing.T) {
 		{
 			query: `UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
 			WHERE city = 'San Francisco' AND date = '2003-07-03';`,
-			exp: &routerparser.Update{
-				TableRef: &routerparser.RangeVar{
+			exp: &Update{
+				TableRef: &RangeVar{
 					RelationName: "weather",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				Where: &routerparser.WhereClauseOp{
+				Where: &WhereClauseOp{
 					Op: "AND",
-					Left: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Left: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							TableAlias: "",
 							ColName:    "city",
 						},
 						Value: "San Francisco",
 					},
-					Right: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Right: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							TableAlias: "",
 							ColName:    "date",
 						},
@@ -914,23 +914,23 @@ func TestUpdate(t *testing.T) {
 			query: `UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
 			WHERE city = 'San Francisco' AND date = '2003-07-03'
 			RETURNING temp_lo, temp_hi, prcp;`,
-			exp: &routerparser.Update{
-				TableRef: &routerparser.RangeVar{
+			exp: &Update{
+				TableRef: &RangeVar{
 					RelationName: "weather",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				Where: &routerparser.WhereClauseOp{
+				Where: &WhereClauseOp{
 					Op: "AND",
-					Left: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Left: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							TableAlias: "",
 							ColName:    "city",
 						},
 						Value: "San Francisco",
 					},
-					Right: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+					Right: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							TableAlias: "",
 							ColName:    "date",
 						},
@@ -941,7 +941,7 @@ func TestUpdate(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -954,7 +954,7 @@ func TestDelete(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
@@ -962,13 +962,13 @@ func TestDelete(t *testing.T) {
 		/* delete without where */
 		{
 			query: "DELETE FROM films;",
-			exp: &routerparser.Delete{
-				TableRef: &routerparser.RangeVar{
+			exp: &Delete{
+				TableRef: &RangeVar{
 					RelationName: "films",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				Where: &routerparser.WhereClauseEmpty{},
+				Where: &WhereClauseEmpty{},
 			},
 			err: nil,
 		},
@@ -976,14 +976,14 @@ func TestDelete(t *testing.T) {
 		/* simple delete */
 		{
 			query: "DELETE FROM films WHERE kind <> 'Musical';",
-			exp: &routerparser.Delete{
-				TableRef: &routerparser.RangeVar{
+			exp: &Delete{
+				TableRef: &RangeVar{
 					RelationName: "films",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						TableAlias: "",
 						ColName:    "kind",
 					},
@@ -996,14 +996,14 @@ func TestDelete(t *testing.T) {
 		/* simple delete with returning */
 		{
 			query: "DELETE FROM tasks WHERE status = 'DONE' RETURNING *;",
-			exp: &routerparser.Delete{
-				TableRef: &routerparser.RangeVar{
+			exp: &Delete{
+				TableRef: &RangeVar{
 					RelationName: "tasks",
 					SchemaName:   "",
 					Alias:        "",
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						TableAlias: "",
 						ColName:    "status",
 					},
@@ -1013,7 +1013,7 @@ func TestDelete(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1026,7 +1026,7 @@ func TestCopy(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
@@ -1034,12 +1034,12 @@ func TestCopy(t *testing.T) {
 		/* copy with where */
 		{
 			query: "COPY xx TO STDOUT WHERE id = 1",
-			exp: &routerparser.Copy{
-				TableRef: &routerparser.RangeVar{
+			exp: &Copy{
+				TableRef: &RangeVar{
 					RelationName: "xx",
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName: "id",
 					},
 					Value: "1",
@@ -1048,7 +1048,7 @@ func TestCopy(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1061,21 +1061,21 @@ func TestSelectTargetLists(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "SELECT pg_is_in_recovery(), id FROM tsa_test WHERE id = 22;",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{
-					&routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{
+					&RangeVar{
 						RelationName: "tsa_test",
 					},
 				},
-				Where: &routerparser.WhereClauseLeaf{
-					ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseLeaf{
+					ColRef: ColumnRef{
 						ColName: "id",
 					},
 					Value: "22",
@@ -1084,7 +1084,7 @@ func TestSelectTargetLists(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1097,60 +1097,60 @@ func TestJoins(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "SELECT * FROM delivery JOIN orders ON order_id = id;",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{
-					&routerparser.JoinExpr{
-						Larg: &routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{
+					&JoinExpr{
+						Larg: &RangeVar{
 							RelationName: "delivery",
 						},
-						Rarg: &routerparser.RangeVar{
+						Rarg: &RangeVar{
 							RelationName: "orders",
 						},
 					},
 				},
-				Where: &routerparser.WhereClauseEmpty{},
+				Where: &WhereClauseEmpty{},
 			},
 			err: nil,
 		},
 
 		{
 			query: "SELECT * FROM sshjt1 a join sshjt1 b ON TRUE WHERE a.i = 12 AND b.j = a.j;",
-			exp: &routerparser.Select{
-				FromClause: []routerparser.FromClauseNode{
-					&routerparser.JoinExpr{
-						Larg: &routerparser.RangeVar{
+			exp: &Select{
+				FromClause: []FromClauseNode{
+					&JoinExpr{
+						Larg: &RangeVar{
 							RelationName: "sshjt1",
 							Alias:        "a",
 						},
-						Rarg: &routerparser.RangeVar{
+						Rarg: &RangeVar{
 							RelationName: "sshjt1",
 							Alias:        "b",
 						},
 					},
 				},
-				Where: &routerparser.WhereClauseOp{
-					Left: &routerparser.WhereClauseLeaf{
-						ColRef: routerparser.ColumnRef{
+				Where: &WhereClauseOp{
+					Left: &WhereClauseLeaf{
+						ColRef: ColumnRef{
 							ColName:    "i",
 							TableAlias: "a",
 						},
 						Value: "12",
 					},
-					Right: &routerparser.WhereClauseEmpty{},
+					Right: &WhereClauseEmpty{},
 					Op:    "AND",
 				},
 			},
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1163,24 +1163,24 @@ func TestMisc(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "vacuum xx;",
-			exp:   &routerparser.Vacuum{},
+			exp:   &Vacuum{},
 			err:   nil,
 		},
 		{
 			query: "analyze xx;",
-			exp:   &routerparser.Analyze{},
+			exp:   &Analyze{},
 			err:   nil,
 		},
 		{
 			query: "cluster xx;",
-			exp:   &routerparser.Cluster{},
+			exp:   &Cluster{},
 			err:   nil,
 		},
 		{
@@ -1189,7 +1189,7 @@ func TestMisc(t *testing.T) {
 			err:   nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1202,34 +1202,34 @@ func TestOperators(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   routerparser.Statement
+		exp   Statement
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
 			query: "SELECT 1 ~~~~~~~~ 'dewoijoi'",
-			exp: &routerparser.Select{
-				Where: &routerparser.AExprEmpty{},
+			exp: &Select{
+				Where: &AExprEmpty{},
 			},
 			err: nil,
 		},
 		{
 			query: "SELECT 1 ~~~^%^%^^~~~~~ 'dewoijoi'",
-			exp: &routerparser.Select{
-				Where: &routerparser.AExprEmpty{},
+			exp: &Select{
+				Where: &AExprEmpty{},
 			},
 			err: nil,
 		},
 		{
 			query: "SELECT * FROM xxtt1 a WHERE a.w_id = 21 and j + i != 0;'",
-			exp: &routerparser.Select{
-				Where: &routerparser.WhereClauseEmpty{},
+			exp: &Select{
+				Where: &WhereClauseEmpty{},
 			},
 			err: nil,
 		},
 	} {
-		tmp, err := routerparser.Parse(tt.query)
+		tmp, err := Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 

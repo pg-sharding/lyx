@@ -1,6 +1,6 @@
 
 %{
-package routerparser
+package lyx
 
 import (
 	"crypto/rand"
@@ -53,7 +53,7 @@ func randomHex(n int) (string, error) {
 %type <statement> routable_statement
 
 // same for terminals
-%token <str> STRING
+%token <str> SCONST IDENT
 
 %type<str> any_id any_val table_name
 
@@ -307,7 +307,7 @@ reserved_keyword:
     | OP {$$=$1}
 
 any_tok:
-    reserved_keyword {$$=$1} | STRING {$$=$1}
+    reserved_keyword {$$=$1} | SCONST {$$=$1} |  IDENT {$$=$1} 
 
 
 anything:
@@ -351,7 +351,7 @@ command:
     }
 
 any_id:
-	STRING
+	IDENT
 	{
 		$$ = string($1)
 	}
@@ -360,19 +360,19 @@ any_val:
     reserved_keyword {
         $$ = $1
     }
-    | STRING
+    | SCONST
 	{
 		$$ = string($1)
 	}
 
 table_name:
-	STRING
+	IDENT
 	{
 		$$ = string($1)
 	}
 
 operator:
-    STRING {
+    IDENT {
         $$ = $1
     } | AND {
         $$ = "AND"

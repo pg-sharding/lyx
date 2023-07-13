@@ -1,4 +1,4 @@
-package routerparser
+package lyx
 
 // Statement represents a statement.
 type Statement interface {

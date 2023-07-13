@@ -1,4 +1,4 @@
-package routerparser
+package lyx
 
 var reservedWords = map[string]int{
 	"select":     SELECT,

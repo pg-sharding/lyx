@@ -1,6 +1,6 @@
 
-//line lx/lexer.rl:1
-package lx
+//line lyx/lexer.rl:1
+package lyx
 
 import (
 	"bufio"
@@ -8,7 +8,7 @@ import (
 )
 
 
-//line lx/lexer.go:12
+//line lyx/lexer.go:12
 const lexer_start int = 1
 const lexer_first_final int = 1
 const lexer_error int = 0
@@ -16,13 +16,8 @@ const lexer_error int = 0
 const lexer_en_main int = 1
 
 
-//line lx/lexer.rl:14
+//line lyx/lexer.rl:14
 
-
-
-type yySymType struct {
-    token string
-}
 
 type Lexer struct {
 	data         []byte
@@ -38,7 +33,7 @@ func NewLexer(data []byte) *Lexer {
         pe: len(data),
     }
     
-//line lx/lexer.go:42
+//line lyx/lexer.go:37
 	{
 	 lex.cs = lexer_start
 	 lex.ts = 0
@@ -46,7 +41,7 @@ func NewLexer(data []byte) *Lexer {
 	 lex.act = 0
 	}
 
-//line lx/lexer.rl:35
+//line lyx/lexer.rl:30
     return lex
 }
 
@@ -79,7 +74,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
     var tok int
 
     
-//line lx/lexer.go:83
+//line lyx/lexer.go:78
 	{
 	if ( lex.p) == ( lex.pe) {
 		goto _test_eof
@@ -102,28 +97,28 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 	}
 	goto st_out
 tr6:
-//line lx/lexer.rl:99
+//line lyx/lexer.rl:94
  lex.te = ( lex.p)
 ( lex.p)--
 { /* do nothing */ }
 	goto st1
 tr7:
-//line lx/lexer.rl:102
+//line lyx/lexer.rl:97
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.token = string(lex.data[lex.ts:lex.te]); tok = int(9); {( lex.p)++;  lex.cs = 1; goto _out } }
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); {( lex.p)++;  lex.cs = 1; goto _out } }
 	goto st1
 tr8:
-//line lx/lexer.rl:100
+//line lyx/lexer.rl:95
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.token = string(lex.data[lex.ts:lex.te]); tok = int(7); {( lex.p)++;  lex.cs = 1; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); {( lex.p)++;  lex.cs = 1; goto _out }}
 	goto st1
 tr9:
-//line lx/lexer.rl:101
+//line lyx/lexer.rl:96
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.token = string(lex.data[lex.ts:lex.te]); tok = int(8); {( lex.p)++;  lex.cs = 1; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); {( lex.p)++;  lex.cs = 1; goto _out }}
 	goto st1
 	st1:
 //line NONE:1
@@ -136,7 +131,7 @@ tr9:
 //line NONE:1
  lex.ts = ( lex.p)
 
-//line lx/lexer.go:140
+//line lyx/lexer.go:135
 		switch  lex.data[( lex.p)] {
 		case 32:
 			goto st2
@@ -334,7 +329,7 @@ st_case_0:
 	_out: {}
 	}
 
-//line lx/lexer.rl:106
+//line lyx/lexer.rl:101
 
 
     return int(tok);
