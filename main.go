@@ -2,8 +2,9 @@ package main
 
 import (
 	"bufio"
-	"lyx/lyx"
 	"os"
+
+	"github.com/pg-sharding/lyx/lyx"
 )
 
 func main() {
