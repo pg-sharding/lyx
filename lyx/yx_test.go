@@ -442,49 +442,49 @@ func TestSelectMultipleRelations(t *testing.T) {
 	}
 }
 
-// func TestSelectAlias(t *testing.T) {
-// 	assert := assert.New(t)
+func TestSelectAlias(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
+	for _, tt := range []tcase{
 
-// 		{
-// 			query: "SELECT kind, sum(len) AS total FROM films GROUP BY kind;",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "films",
-// 				},
-// 				},
-// 				Where: &WhereClauseEmpty{},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "SELECT kind, sum(len) AS total FROM films GROUP BY kind;",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "films",
+				},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "SELECT kind, sum(len) AS total FROM films AS f GROUP BY kind;",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "films",
-// 					Alias:        "f",
-// 				},
-// 				},
-// 				Where: &WhereClauseEmpty{},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+		{
+			query: "SELECT kind, sum(len) AS total FROM films AS f GROUP BY kind;",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "films",
+					Alias:        "f",
+				},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 // func TestCreate(t *testing.T) {
 // 	assert := assert.New(t)

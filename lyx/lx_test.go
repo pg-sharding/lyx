@@ -45,6 +45,17 @@ func TestSimple(t *testing.T) {
 			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TPLUS, lyx.IDENT, lyx.TNOT_EQUALS, lyx.SCONST, lyx.TSEMICOLON},
 			err: nil,
 		},
+		{
+			query: `
+			SELECT kind, sum(len) AS
+			 total FROM films GROUP BY kind;
+			`,
+			exp: []int{
+				lyx.SELECT, lyx.IDENT, lyx.TCOMMA,
+				lyx.IDENT, lyx.TOPENBR, lyx.IDENT, lyx.TCLOSEBR, lyx.AS, lyx.IDENT,
+				lyx.FROM, lyx.IDENT, lyx.GROUP, lyx.BY, lyx.IDENT, lyx.TSEMICOLON},
+			err: nil,
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
