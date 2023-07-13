@@ -35,12 +35,7 @@ func randomHex(n int) (string, error) {
 
     selectStmt              *Select
 
-    colref                 ColumnRef
-
-
-    aexpr                  AExpr
-
-    aexprList               []AExpr
+    statementList          []Statement
 }
 
 // any non-terminal which returns a value needs a type, which is
@@ -57,7 +52,7 @@ func randomHex(n int) (string, error) {
 
 %type<str> any_id any_val table_name
 
-%type<aexpr> where_clause
+%type<statement> where_clause
 
 %type<from_list> from_clause from_list
 
@@ -69,7 +64,7 @@ func randomHex(n int) (string, error) {
 
 %type<str> func_arg_list func_arg_expr
 
-%type<aexpr> a_expr c_expr b_expr
+%type<statement> a_expr c_expr b_expr
 
 /* CIUD */
 %token<str> CREATE ALTER
@@ -200,13 +195,15 @@ Operator:
 %type<statement> truncate_stmt drop_stmt
 %type<str> semicolon_opt
 
+%type<statement> AexprConst
+
 %type<statement> copy_stmt
 
-%type<colref> ColRef qualColRef
+%type<statement> ColRef qualColRef
 
 %type<strlist> comma_separated_col_refs insert_col_refs
 
-%type<aexprList> insert_comma_separated_tuples insert_tuples
+%type<statementList> insert_comma_separated_tuples insert_tuples
 
 %type<str> opt_insert_col_refs
 %type<str> any_tok 
@@ -435,14 +432,23 @@ func_arg_list:  func_arg_expr
 				}
 		;
 
+/*
+ * Constants
+ */
+AexprConst: SCONST {
+	$$ = &AExprConst{
+		Value: $1,
+	}
+}
 
 func_expr: func_application
 
-c_expr:		any_tok	{
-                $$ = &AExprLeaf{
-                    Value: $1,
-                }
-            } 
+c_expr:		AexprConst {
+				$$ = $1
+			}
+			| ColRef {
+				$$ = $1
+			}
             | TOPENBR a_expr TCLOSEBR {
                 $$ = $2
             }
@@ -719,13 +725,13 @@ a_expr:
 			 *	a NOTNULL
 			 */
 			| a_expr IS NULL_P							%prec IS
-                { $$ = 1 }
+                { $$ = $1 }
 			| a_expr ISNULL
-                 { $$ = 1 }
+                 { $$ = $1 }
 			| a_expr IS NOT NULL_P						%prec IS
-                    { $$ = 1 }
+                    { $$ = $1 }
 			| a_expr NOTNULL
-				 { $$ = 1 }
+				 { $$ = $1 }
 			// | row OVERLAPS row
 			// 	{
 			// 		if (list_length($1) != 2)
@@ -744,13 +750,13 @@ a_expr:
 			// 								   @2);
 			// 	}
 			| a_expr IS TRUE_P							%prec IS
-				 { $$ = 1 }
+				 { $$ = $1 }
 			| a_expr IS NOT TRUE_P						%prec IS
-				 { $$ = 1 }
+				 { $$ = $1 }
 			| a_expr IS FALSE_P							%prec IS
-				 { $$ = 1 }
+				 { $$ = $1 }
 			| a_expr IS NOT FALSE_P						%prec IS
-				 { $$ = 1 }
+				 { $$ = $1 }
 			// | a_expr IS UNKNOWN							%prec IS
 			// 	{
 			// 		BooleanTest *b = makeNode(BooleanTest);
@@ -929,16 +935,16 @@ a_expr:
 
 
 qualColRef:
-    any_val TDOT any_val {
-        $$ = ColumnRef{
+    IDENT TDOT IDENT {
+        $$ = &ColumnRef{
             ColName: $3,
             TableAlias: $1, 
         }
     }
 
 ColRef:
-    any_val {
-        $$ = ColumnRef{
+    IDENT {
+        $$ = &ColumnRef{
             ColName: $1,
         }
     } |  qualColRef {
@@ -1367,7 +1373,7 @@ opt_insert_col_refs:
 
 insert_comma_separated_tuples: 
     a_expr {
-        $$ = []AExpr{$1}
+        $$ = []Statement{$1}
     } | a_expr TCOMMA insert_comma_separated_tuples {
         $$ = append($3, $1)
     }

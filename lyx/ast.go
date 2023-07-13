@@ -6,6 +6,7 @@ type Statement interface {
 }
 
 type ColumnRef struct {
+	Statement
 	TableAlias string
 	ColName    string
 }
@@ -94,22 +95,19 @@ type JoinExpr struct {
 	Alias string
 }
 
-type AExpr interface {
-}
-
 type AExprEmpty struct {
-	AExpr
+	Statement
 }
 
-type AExprLeaf struct {
-	AExpr
+type AExprConst struct {
+	Statement
 	Value string
 }
 
 type AExprOp struct {
-	AExpr
-	Left  AExpr
-	Right AExpr
+	Statement
+	Left  Statement
+	Right Statement
 
 	Op string
 }
@@ -120,12 +118,12 @@ func (r *JoinExpr) SetAlias(s string) {
 
 type Select struct {
 	FromClause []FromClauseNode
-	Where      AExpr
+	Where      Statement
 }
 
 type Insert struct {
 	TableRef FromClauseNode
-	Values   []AExpr
+	Values   []Statement
 	Columns  []string
 
 	SubSelect *Select
@@ -133,12 +131,12 @@ type Insert struct {
 
 type Delete struct {
 	TableRef FromClauseNode
-	Where    AExpr
+	Where    Statement
 }
 
 type Update struct {
 	TableRef FromClauseNode
-	Where    AExpr
+	Where    Statement
 }
 
 type Explain struct {
@@ -237,7 +235,7 @@ func (*EmptyQuery) iStatement() {}
 
 type Copy struct {
 	TableRef FromClauseNode
-	Where    AExpr
+	Where    Statement
 	IsFrom   bool
 }
 

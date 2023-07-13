@@ -1,5 +1,12 @@
 package lyx_test
 
+import (
+	"lyx/lyx"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
 // import (
 // 	"lyx/lyx"
 // 	"testing"
@@ -379,60 +386,61 @@ package lyx_test
 // 	}
 // }
 
-// func TestSelectMultipleRelations(t *testing.T) {
-// 	assert := assert.New(t)
+func TestSelectMultipleRelations(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "select * from xx, xx2 ",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 					&RangeVar{
-// 						RelationName: "xx2",
-// 					},
-// 				},
-// 				Where: &WhereClauseEmpty{},
-// 			},
-// 			err: nil,
-// 		},
+	for _, tt := range []tcase{
+		// {
+		// 	query: "select * from xx, xx2 ",
+		// 	exp: &lyx.Select{
+		// 		FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+		// 			RelationName: "xx",
+		// 		},
+		// 			&lyx.RangeVar{
+		// 				RelationName: "xx2",
+		// 			},
+		// 		},
+		// 		Where: &lyx.AExprEmpty{},
+		// 	},
+		// 	err: nil,
+		// },
 
-// 		{
-// 			query: "select * from xx, xx2 b where b.i = 1",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 					&RangeVar{
-// 						RelationName: "xx2",
-// 						Alias:        "b",
-// 					},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName:    "i",
-// 						TableAlias: "b",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+		{
+			query: "select * from xx, xx2 b where b.i = 1",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+					&lyx.RangeVar{
+						RelationName: "xx2",
+						Alias:        "b",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "i",
+						TableAlias: "b",
+					},
+					Right: &lyx.AExprConst{Value: "1"},
+					Op:    "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err)
+		assert.NoError(err)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 // func TestSelectAlias(t *testing.T) {
 // 	assert := assert.New(t)

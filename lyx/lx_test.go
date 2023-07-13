@@ -38,6 +38,13 @@ func TestSimple(t *testing.T) {
 			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TEQ, lyx.SCONST, lyx.ORDER, lyx.BY, lyx.IDENT, lyx.TSEMICOLON},
 			err: nil,
 		},
+		{
+			query: `
+			select * from xx where i + j != 1;
+			`,
+			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TPLUS, lyx.IDENT, lyx.TNOT_EQUALS, lyx.SCONST, lyx.TSEMICOLON},
+			err: nil,
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
