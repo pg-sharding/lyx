@@ -31,6 +31,10 @@ func (t *Tokenizer) Lex(lval *yySymType) int {
 	return t.l.Lex(lval)
 }
 
+func (t *Tokenizer) LexT() int {
+	return t.l.Lex(new(yySymType))
+}
+
 func setParseTree(yylex interface{}, stmt Statement) {
 	yylex.(*Tokenizer).ParseTree = stmt
 }

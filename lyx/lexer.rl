@@ -54,6 +54,7 @@ func (l *Lexer) Error(msg string) {
 	println(msg)
 }
 
+
 func (lex *Lexer) Lex(lval *yySymType) int {
     eof := lex.pe
     var tok int
@@ -67,7 +68,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 #        xcinside	=	[^*/]+;
 
         ident_start	=	[A-Za-z\200-\377_];
-        ident_cont	=	[A-Za-z\200-\377_0-9\$];
+        ident_cont	=	[A-Za-z\200-\377_0-9$];
 
         identifier	=	ident_start ident_cont*;
 
@@ -84,17 +85,46 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         whitespace	=	space+;
 
 
-        # self		=	[,()\[\].;\:\+\-\*\/\%\^\<\>\=];
         op_chars	=	( '~' | '!' | '@' | '#' | '^' | '&' | '|' | '`' | '?' | '+' | '-' | '*' | '\\' | '%' | '<' | '>' | '=' ) ;
         operator	=	op_chars+;
 
         integer = digit+;
+
+        sconst = '\'' ident_cont* '\'';
         
         main := |*
             whitespace => { /* do nothing */ };
+            # integer const is string const 
             integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
-            identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
-            operator => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak; };
+
+            /select/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SELECT); fbreak;};
+            /update/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(UPDATE); fbreak;};
+            /delete/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(DELETE); fbreak;};
+            /table/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TABLE); fbreak;};
+            /set/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SET); fbreak;};
+
+
+            identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak;};
+            sconst      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
+            operator => { 
+
+
+
+                lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
+                fbreak;
+            };
+
+#           self		=	(',' | '(' | ')' | '[' | ']' | '.' | ';'| ':' | '+' | '-' | '*' | '\\' | '%' | '^' | '<' | '>' | '=');
+
+            ',' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TCOMMA); fbreak;};
+            '(' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TOPENBR); fbreak;};
+            ')' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TCLOSEBR); fbreak;};
+            '[' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSQCLOSEBR); fbreak;};
+            ']' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSQCLOSEBR); fbreak;};
+
+#            self => {
+#
+#            }
         *|;
 
         write exec;

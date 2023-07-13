@@ -118,6 +118,10 @@ func randomHex(n int) (string, error) {
 /* '(' & ')' */
 %token<str> TOPENBR TCLOSEBR
 
+
+/* '[' & ']' */
+%token<str> TSQOPENBR TSQCLOSEBR
+
 /* ';' != */
 %token<str> TSEMICOLON TNOT_EQUALS
 
