@@ -123,6 +123,10 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
             /returning/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = RETURNING; fbreak;};
             /default/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFAULT; fbreak;};
+            
+            /copy/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = COPY; fbreak;};
+            /to/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TO; fbreak;};
+            /stdout/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = STDOUT; fbreak;};
 
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak;};
             sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = int(SCONST); fbreak;};
@@ -130,22 +134,22 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
 #           self		=	(',' | '(' | ')' | '[' | ']' | '.' | ';'| ':' | '+' | '-' | '*' | '\\' | '%' | '^' | '<' | '>' | '=');
 
-            ',' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TCOMMA); fbreak;};
-            '(' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TOPENBR); fbreak;};
-            ')' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TCLOSEBR); fbreak;};
-            '[' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSQCLOSEBR); fbreak;};
-            ']' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSQCLOSEBR); fbreak;};
+            ',' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOMMA; fbreak;};
+            '(' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TOPENBR; fbreak;};
+            ')' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCLOSEBR; fbreak;};
+            '[' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQCLOSEBR; fbreak;};
+            ']' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQCLOSEBR; fbreak;};
             '.' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TDOT; fbreak;};
-            ';' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSEMICOLON); fbreak;};
-            ':' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TCOLON); fbreak;};
-            '+' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TPLUS); fbreak;};
-            '-' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMINUS); fbreak;};
-            '*' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMUL); fbreak;};
+            ';' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSEMICOLON; fbreak;};
+            ':' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOLON; fbreak;};
+            '+' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TPLUS; fbreak;};
+            '-' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; fbreak;};
+            '*' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMUL; fbreak;};
            # TODO: support '\\' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMUL); fbreak;};
-            '%' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMOD); fbreak;};
-            '^' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TPOW); fbreak;};
-            '<' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TLESS); fbreak;};
-            '>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TGREATER); fbreak;};
+            '%' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMOD; fbreak;};
+            '^' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TPOW; fbreak;};
+            '<' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; fbreak;};
+            '>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; fbreak;};
             '=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEQ; fbreak;};
 
             '<>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; fbreak;};

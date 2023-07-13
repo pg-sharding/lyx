@@ -978,112 +978,121 @@ func TestUpdate(t *testing.T) {
 	}
 }
 
-// func TestDelete(t *testing.T) {
-// 	assert := assert.New(t)
+func TestDelete(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		/* delete without where */
-// 		{
-// 			query: "DELETE FROM films;",
-// 			exp: &Delete{
-// 				TableRef: &RangeVar{
-// 					RelationName: "films",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Where: &WhereClauseEmpty{},
-// 			},
-// 			err: nil,
-// 		},
+	for _, tt := range []tcase{
+		/* delete without where */
+		{
+			query: "DELETE FROM films;",
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "films",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
 
-// 		/* simple delete */
-// 		{
-// 			query: "DELETE FROM films WHERE kind <> 'Musical';",
-// 			exp: &Delete{
-// 				TableRef: &RangeVar{
-// 					RelationName: "films",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						TableAlias: "",
-// 						ColName:    "kind",
-// 					},
-// 					Value: "Musical",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		/* simple delete */
+		{
+			query: "DELETE FROM films WHERE kind <> 'Musical';",
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "films",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						TableAlias: "",
+						ColName:    "kind",
+					},
+					Right: &lyx.AExprConst{
+						Value: "Musical",
+					},
+					Op: "<>",
+				},
+			},
+			err: nil,
+		},
 
-// 		/* simple delete with returning */
-// 		{
-// 			query: "DELETE FROM tasks WHERE status = 'DONE' RETURNING *;",
-// 			exp: &Delete{
-// 				TableRef: &RangeVar{
-// 					RelationName: "tasks",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						TableAlias: "",
-// 						ColName:    "status",
-// 					},
-// 					Value: "DONE",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+		/* simple delete with returning */
+		{
+			query: "DELETE FROM tasks WHERE status = 'DONE' RETURNING *;",
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "tasks",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						TableAlias: "",
+						ColName:    "status",
+					},
+					Right: &lyx.AExprConst{
+						Value: "DONE",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
-// func TestCopy(t *testing.T) {
-// 	assert := assert.New(t)
+func TestCopy(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		/* copy with where */
-// 		{
-// 			query: "COPY xx TO STDOUT WHERE id = 1",
-// 			exp: &Copy{
-// 				TableRef: &RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName: "id",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+	for _, tt := range []tcase{
+		/* copy with where */
+		{
+			query: "COPY xx TO STDOUT WHERE id = 1",
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "xx",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "id",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 // func TestSelectTargetLists(t *testing.T) {
 // 	assert := assert.New(t)
@@ -1226,42 +1235,75 @@ func TestUpdate(t *testing.T) {
 // 	}
 // }
 
-// func TestOperators(t *testing.T) {
-// 	assert := assert.New(t)
+func TestOperators(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "SELECT 1 ~~~~~~~~ 'dewoijoi'",
-// 			exp: &Select{
-// 				Where: &AExprEmpty{},
-// 			},
-// 			err: nil,
-// 		},
-// 		{
-// 			query: "SELECT 1 ~~~^%^%^^~~~~~ 'dewoijoi'",
-// 			exp: &Select{
-// 				Where: &AExprEmpty{},
-// 			},
-// 			err: nil,
-// 		},
-// 		{
-// 			query: "SELECT * FROM xxtt1 a WHERE a.w_id = 21 and j + i != 0;'",
-// 			exp: &Select{
-// 				Where: &WhereClauseEmpty{},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+	for _, tt := range []tcase{
+		{
+			query: "SELECT 1 ~~~~~~~~ 'dewoijoi'",
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+		{
+			query: "SELECT 1 ~~~^%^%^^~~~~~ 'dewoijoi'",
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+		{
+			query: "SELECT * FROM xxtt1 a WHERE a.w_id = 21 and j + i != 0;'",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xxtt1",
+						Alias:        "a",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName:    "w_id",
+							TableAlias: "a",
+						},
+						Right: &lyx.AExprConst{
+							Value: "21",
+						},
+						Op: "=",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "j",
+							},
+							Right: &lyx.ColumnRef{
+								ColName: "i",
+							},
+							Op: "+",
+						},
+						Right: &lyx.AExprConst{
+							Value: "0",
+						},
+						Op: "!=",
+					},
+					Op: "and",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
