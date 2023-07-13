@@ -28,7 +28,14 @@ func TestSimple(t *testing.T) {
 			query: `
 			update table x set i = 19;
 			`,
-			exp: []int{lyx.UPDATE, lyx.TABLE, lyx.IDENT, lyx.SET, lyx.IDENT, lyx.TEQ, lyx.SCONST},
+			exp: []int{lyx.UPDATE, lyx.TABLE, lyx.IDENT, lyx.SET, lyx.IDENT, lyx.TEQ, lyx.SCONST, lyx.TSEMICOLON},
+			err: nil,
+		},
+		{
+			query: `
+			select * from xx where i = 1 order by i;
+			`,
+			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TEQ, lyx.SCONST, lyx.ORDER, lyx.BY, lyx.IDENT, lyx.TSEMICOLON},
 			err: nil,
 		},
 	} {

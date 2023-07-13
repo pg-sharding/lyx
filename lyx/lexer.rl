@@ -95,24 +95,22 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         main := |*
             whitespace => { /* do nothing */ };
             # integer const is string const 
-            integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
+            integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
-            /select/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SELECT); fbreak;};
-            /update/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(UPDATE); fbreak;};
-            /delete/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(DELETE); fbreak;};
-            /table/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TABLE); fbreak;};
-            /set/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SET); fbreak;};
+            /select/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SELECT; fbreak;};
+            /update/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = UPDATE; fbreak;};
+            /delete/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DELETE; fbreak;};
+            /table/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLE; fbreak;};
+            /set/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SET; fbreak;};
+            /from/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FROM; fbreak;};
+            /where/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WHERE; fbreak;};
+            /order/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ORDER; fbreak;};
+            /by/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BY; fbreak;};
 
 
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak;};
             sconst      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
-            operator => { 
 
-
-
-                lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
-                fbreak;
-            };
 
 #           self		=	(',' | '(' | ')' | '[' | ']' | '.' | ';'| ':' | '+' | '-' | '*' | '\\' | '%' | '^' | '<' | '>' | '=');
 
@@ -121,6 +119,26 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             ')' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TCLOSEBR); fbreak;};
             '[' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSQCLOSEBR); fbreak;};
             ']' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSQCLOSEBR); fbreak;};
+            '.' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TDOT); fbreak;};
+            ';' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TSEMICOLON); fbreak;};
+            ':' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TCOLON); fbreak;};
+            '+' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TPLUS); fbreak;};
+            '-' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMINUS); fbreak;};
+            '*' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMUL); fbreak;};
+           # TODO: support '\\' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMUL); fbreak;};
+            '%' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMOD); fbreak;};
+            '^' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TPOW); fbreak;};
+            '<' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TLESS); fbreak;};
+            '>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TGREATER); fbreak;};
+            '=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TEQ); fbreak;};
+
+            operator => { 
+
+
+
+                lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
+                fbreak;
+            };
 
 #            self => {
 #
