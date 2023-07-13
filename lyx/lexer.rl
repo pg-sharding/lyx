@@ -118,6 +118,11 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /group/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = GROUP; fbreak;};
             /by/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BY; fbreak;};
             /as/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = AS; fbreak;};
+            /and/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = AND; fbreak;};
+            /or/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = OR; fbreak;};
+
+            /returning/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = RETURNING; fbreak;};
+            /default/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFAULT; fbreak;};
 
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak;};
             sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = int(SCONST); fbreak;};

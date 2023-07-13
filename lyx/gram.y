@@ -220,6 +220,67 @@ Operator:
 %type<str> operator
 
 
+/* Precedence: lowest to highest */
+%nonassoc	SET				/* see relation_expr_opt_alias */
+%left		UNION EXCEPT
+%left		INTERSECT
+%left		OR
+%left		AND
+%right		NOT
+%nonassoc	IS ISNULL NOTNULL	/* IS sets precedence for IS NULL, etc */
+%nonassoc	TLESS TGREATER TEQ TLESS_EQUALS TGREATER_EQUALS TNOT_EQUALS
+%nonassoc	BETWEEN IN_P LIKE ILIKE SIMILAR NOT_LA
+%nonassoc	ESCAPE			/* ESCAPE must be just above LIKE/ILIKE/SIMILAR */
+/*
+ * To support target_el without AS, it used to be necessary to assign IDENT an
+ * explicit precedence just less than Op.  While that's not really necessary
+ * since we removed postfix operators, it's still helpful to do so because
+ * there are some other unreserved keywords that need precedence assignments.
+ * If those keywords have the same precedence as IDENT then they clearly act
+ * the same as non-keywords, reducing the risk of unwanted precedence effects.
+ *
+ * We need to do this for PARTITION, RANGE, ROWS, and GROUPS to support
+ * opt_existing_window_name (see comment there).
+ *
+ * The frame_bound productions UNBOUNDED PRECEDING and UNBOUNDED FOLLOWING
+ * are even messier: since UNBOUNDED is an unreserved keyword (per spec!),
+ * there is no principled way to distinguish these from the productions
+ * a_expr PRECEDING/FOLLOWING.  We hack this up by giving UNBOUNDED slightly
+ * lower precedence than PRECEDING and FOLLOWING.  At present this doesn't
+ * appear to cause UNBOUNDED to be treated differently from other unreserved
+ * keywords anywhere else in the grammar, but it's definitely risky.  We can
+ * blame any funny behavior of UNBOUNDED on the SQL standard, though.
+ *
+ * To support CUBE and ROLLUP in GROUP BY without reserving them, we give them
+ * an explicit priority lower than '(', so that a rule with CUBE '(' will shift
+ * rather than reducing a conflicting rule that takes CUBE as a function name.
+ * Using the same precedence as IDENT seems right for the reasons given above.
+ */
+%nonassoc	UNBOUNDED		/* ideally would have same precedence as IDENT */
+%nonassoc	IDENT PARTITION RANGE ROWS GROUPS PRECEDING FOLLOWING CUBE ROLLUP
+%left		Op OPERATOR		/* multi-character ops and user-defined operators */
+%left		TPLUS TMINUS
+%left		TMUL TDIV TMOD
+%left		TPOW
+/* Unary Operators */
+%left		AT				/* sets precedence for AT TIME ZONE */
+%left		COLLATE
+%right		UMINUS
+%left		TSQOPENBR TSQCLOSEBR
+%left		TOPENBR TCLOSEBR
+%left		TYPECAST
+%left		TDOT
+/*
+ * These might seem to be low-precedence, but actually they are not part
+ * of the arithmetic hierarchy at all in their use as JOIN operators.
+ * We make them high-precedence to support their use as function names.
+ * They wouldn't be given a precedence at all, were it not that we need
+ * left-associativity among the JOIN rules themselves.
+ */
+%left		JOIN CROSS LEFT FULL RIGHT INNER_P NATURAL
+
+
+
 /* unroutable query parts */
 %type<str> opt_group_by_clause opt_window_clause opt_order_by_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 
@@ -484,9 +545,9 @@ a_expr:
 		 * also to b_expr and to the MathOp list below.
 		 */
             |
-			 TPLUS a_expr					//%prec UMINUS
+			 TPLUS a_expr					%prec TMINUS
 				{ $$ = $2 }
-			| TMINUS a_expr					//%prec UMINUS
+			| TMINUS a_expr					%prec TMINUS
 					{ $$ = $2 }
 			| a_expr TPLUS a_expr
 				{
@@ -585,7 +646,7 @@ a_expr:
                     } 
                 }
 
-			| a_expr OP a_expr				//%prec Op
+			| a_expr OP a_expr				%prec OP
 				{
                      $$ = &AExprOp{
                         Left: $1,
