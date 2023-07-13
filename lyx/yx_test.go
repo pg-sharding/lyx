@@ -1234,44 +1234,44 @@ func TestJoins(t *testing.T) {
 	}
 }
 
-// func TestMisc(t *testing.T) {
-// 	assert := assert.New(t)
+func TestMisc(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "vacuum xx;",
-// 			exp:   &Vacuum{},
-// 			err:   nil,
-// 		},
-// 		{
-// 			query: "analyze xx;",
-// 			exp:   &Analyze{},
-// 			err:   nil,
-// 		},
-// 		{
-// 			query: "cluster xx;",
-// 			exp:   &Cluster{},
-// 			err:   nil,
-// 		},
-// 		{
-// 			query: ";",
-// 			exp:   nil,
-// 			err:   nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+	for _, tt := range []tcase{
+		{
+			query: "vacuum xx;",
+			exp:   &lyx.Vacuum{},
+			err:   nil,
+		},
+		{
+			query: "analyze xx;",
+			exp:   &lyx.Analyze{},
+			err:   nil,
+		},
+		{
+			query: "cluster xx;",
+			exp:   &lyx.Cluster{},
+			err:   nil,
+		},
+		{
+			query: ";",
+			exp:   nil,
+			err:   nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 func TestOperators(t *testing.T) {
 	assert := assert.New(t)
