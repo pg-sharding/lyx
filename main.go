@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"lx/lx"
+	lx "lx/lyx"
 	"os"
 )
 
