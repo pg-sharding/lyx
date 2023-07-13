@@ -1,4 +1,4 @@
-module lyx
+module github.com/pg-sharding/lyx
 
 go 1.20
 
