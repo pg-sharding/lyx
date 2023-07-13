@@ -1,8 +1,9 @@
 package lyx_test
 
 import (
-	"lyx/lyx"
 	"testing"
+
+	"github.com/pg-sharding/lyx/lyx"
 
 	"github.com/stretchr/testify/assert"
 )
