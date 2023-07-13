@@ -226,165 +226,190 @@ import (
 // 	}
 // }
 
-// func TestSelect(t *testing.T) {
-// 	assert := assert.New(t)
+func TestSelect(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "select 42",
-// 			exp: &Select{
-// 				Where: &WhereClauseEmpty{},
-// 			},
-// 			err: nil,
-// 		},
-// 		{
-// 			query: "select * from xx where i = 1 ",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName:    "i",
-// 						TableAlias: "",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+	for _, tt := range []tcase{
+		{
+			query: "select 42",
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+		{
+			query: "select * from xx where i = 1 ",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "i",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "select * from xx where i = 1 order by i ",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName:    "i",
-// 						TableAlias: "",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "select * from xx where i = 1 order by i ",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "i",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "select * from xx where i = 1 limit 7 ",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName:    "i",
-// 						TableAlias: "",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "select * from xx where i = 1 limit 7 ",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "i",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "select * from xx where i = 1 group by i ",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName:    "i",
-// 						TableAlias: "",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "select * from xx where i = 1 group by i ",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "i",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "select * from xx where i = 1 group by i having sum(i)",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName:    "i",
-// 						TableAlias: "",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: "select * from xx where i = 1 group by i having sum(i)",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "i",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "select * from xx where i = 1 order by i limit 7 ",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				},
-// 				Where: &WhereClauseLeaf{
-// 					ColRef: ColumnRef{
-// 						ColName:    "i",
-// 						TableAlias: "",
-// 					},
-// 					Value: "1",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 		{
-// 			query: "select * from xx where i = 1 AND j = 2 ",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{&RangeVar{
-// 					RelationName: "xx",
-// 				},
-// 				},
-// 				Where: &WhereClauseOp{
-// 					Op: "AND",
-// 					Left: &WhereClauseLeaf{
-// 						ColRef: ColumnRef{
-// 							ColName:    "i",
-// 							TableAlias: "",
-// 						},
-// 						Value: "1",
-// 					},
-// 					Right: &WhereClauseLeaf{
-// 						ColRef: ColumnRef{
-// 							ColName:    "j",
-// 							TableAlias: "",
-// 						},
-// 						Value: "2",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+		{
+			query: "select * from xx where i = 1 order by i limit 7 ",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xx",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "i",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: "select * from xx where i = 1 AND j = 2 ",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Op: "AND",
+					Left: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName:    "i",
+							TableAlias: "",
+						},
+						Right: &lyx.AExprConst{
+							Value: "1",
+						},
+						Op: "=",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName:    "j",
+							TableAlias: "",
+						},
+						Right: &lyx.AExprConst{
+							Value: "2",
+						},
+						Op: "=",
+					},
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err)
+		assert.NoError(err)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 func TestSelectMultipleRelations(t *testing.T) {
 	assert := assert.New(t)
@@ -396,20 +421,20 @@ func TestSelectMultipleRelations(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
-		// {
-		// 	query: "select * from xx, xx2 ",
-		// 	exp: &lyx.Select{
-		// 		FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
-		// 			RelationName: "xx",
-		// 		},
-		// 			&lyx.RangeVar{
-		// 				RelationName: "xx2",
-		// 			},
-		// 		},
-		// 		Where: &lyx.AExprEmpty{},
-		// 	},
-		// 	err: nil,
-		// },
+		{
+			query: "select * from xx, xx2 ",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xx",
+				},
+					&lyx.RangeVar{
+						RelationName: "xx2",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
 
 		{
 			query: "select * from xx, xx2 b where b.i = 1",
@@ -1130,71 +1155,84 @@ func TestCopy(t *testing.T) {
 // 	}
 // }
 
-// func TestJoins(t *testing.T) {
-// 	assert := assert.New(t)
+func TestJoins(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "SELECT * FROM delivery JOIN orders ON order_id = id;",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{
-// 					&JoinExpr{
-// 						Larg: &RangeVar{
-// 							RelationName: "delivery",
-// 						},
-// 						Rarg: &RangeVar{
-// 							RelationName: "orders",
-// 						},
-// 					},
-// 				},
-// 				Where: &WhereClauseEmpty{},
-// 			},
-// 			err: nil,
-// 		},
+	for _, tt := range []tcase{
+		{
+			query: "SELECT * FROM delivery JOIN orders ON order_id = id;",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "delivery",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "orders",
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: "SELECT * FROM sshjt1 a join sshjt1 b ON TRUE WHERE a.i = 12 AND b.j = a.j;",
-// 			exp: &Select{
-// 				FromClause: []FromClauseNode{
-// 					&JoinExpr{
-// 						Larg: &RangeVar{
-// 							RelationName: "sshjt1",
-// 							Alias:        "a",
-// 						},
-// 						Rarg: &RangeVar{
-// 							RelationName: "sshjt1",
-// 							Alias:        "b",
-// 						},
-// 					},
-// 				},
-// 				Where: &WhereClauseOp{
-// 					Left: &WhereClauseLeaf{
-// 						ColRef: ColumnRef{
-// 							ColName:    "i",
-// 							TableAlias: "a",
-// 						},
-// 						Value: "12",
-// 					},
-// 					Right: &WhereClauseEmpty{},
-// 					Op:    "AND",
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+		{
+			query: "SELECT * FROM sshjt1 a join sshjt1 b ON TRUE WHERE a.i = 12 AND b.j = a.j;",
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "sshjt1",
+							Alias:        "a",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "sshjt1",
+							Alias:        "b",
+						},
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName:    "i",
+							TableAlias: "a",
+						},
+						Right: &lyx.AExprConst{
+							Value: "12",
+						},
+						Op: "=",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName:    "j",
+							TableAlias: "b",
+						},
+						Right: &lyx.ColumnRef{
+							ColName:    "j",
+							TableAlias: "a",
+						},
+						Op: "=",
+					},
+					Op: "AND",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.NoError(err, "query %s", tt.query)
+		assert.NoError(err, "query %s", tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 // func TestMisc(t *testing.T) {
 // 	assert := assert.New(t)

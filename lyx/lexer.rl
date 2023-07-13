@@ -128,6 +128,18 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /to/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TO; fbreak;};
             /stdout/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = STDOUT; fbreak;};
 
+            /limit/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LIMIT; fbreak;};
+            
+
+            /join/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = JOIN; fbreak;};
+            /cross/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CROSS; fbreak;};
+            /full/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FULL; fbreak;};
+            /outer/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = OUTER_P; fbreak;};
+            /inner/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INNER_P; fbreak;};
+            /on/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ON; fbreak;};
+            /for/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FOR; fbreak;};
+
+
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak;};
             sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = int(SCONST); fbreak;};
 
