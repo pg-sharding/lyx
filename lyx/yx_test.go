@@ -609,174 +609,182 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-// func TestInsert(t *testing.T) {
-// 	assert := assert.New(t)
+func TestInsert(t *testing.T) {
+	assert := assert.New(t)
 
-// 	type tcase struct {
-// 		query string
-// 		exp   Statement
-// 		err   error
-// 	}
+	type tcase struct {
+		query string
+		exp   lyx.Statement
+		err   error
+	}
 
-// 	for _, tt := range []tcase{
-// 		{
-// 			query: "insert into xx (id) values(1)",
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "xx",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Columns: []string{"id"},
-// 				Values:  []string{"1"},
-// 			},
-// 			err: nil,
-// 		},
+	for _, tt := range []tcase{
+		// {
+		// 	query: "insert into xx (id) values(1)",
+		// 	exp: &lyx.Insert{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "xx",
+		// 			SchemaName:   "",
+		// 			Alias:        "",
+		// 		},
+		// 		Columns: []string{"id"},
+		// 		Values:  []lyx.Statement{&lyx.AExprConst{Value: "1"}},
+		// 	},
+		// 	err: nil,
+		// },
 
-// 		{
-// 			query: "Insert into xx (i) select * from yy where i = 8",
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "xx",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Columns: nil,
-// 				Values:  nil,
-// 				SubSelect: &Select{
-// 					FromClause: []FromClauseNode{
-// 						&RangeVar{
-// 							RelationName: "yy",
-// 						},
-// 					},
-// 					Where: &WhereClauseLeaf{
-// 						ColRef: ColumnRef{
-// 							ColName: "i",
-// 						},
-// 						Value: "8",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		// {
+		// 	query: "Insert into xx (i) select * from yy where i = 8",
+		// 	exp: &lyx.Insert{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "xx",
+		// 			SchemaName:   "",
+		// 			Alias:        "",
+		// 		},
+		// 		Columns: nil,
+		// 		Values:  nil,
+		// 		SubSelect: &lyx.Select{
+		// 			FromClause: []lyx.FromClauseNode{
+		// 				&lyx.RangeVar{
+		// 					RelationName: "yy",
+		// 				},
+		// 			},
+		// 			Where: &lyx.AExprOp{
+		// 				Left: &lyx.ColumnRef{
+		// 					ColName: "i",
+		// 				},
+		// 				Right: &lyx.AExprConst{Value: "8"},
+		// 				Op:    "=",
+		// 			},
+		// 		},
+		// 	},
+		// 	err: nil,
+		// },
 
-// 		{
-// 			query: `INSERT INTO films (code, title, did, date_prod, kind)
-// 			VALUES ('T_601', 'Yojimbo', 106, '1961-06-16', 'Drama');`,
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "films",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Columns: []string{"kind", "date_prod", "did", "title", "code"},
-// 				Values:  []string{"Drama", "1961-06-16", "106", "Yojimbo", "T_601"},
-// 			},
-// 			err: nil,
-// 		},
+		{
+			query: `INSERT INTO films (code, title, did, date_prod, kind)
+			VALUES ('T_601', 'Yojimbo', 106, '1961-06-16', 'Drama');`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "films",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Columns: []string{"kind", "date_prod", "did", "title", "code"},
 
-// 		///
+				Values: []lyx.Statement{&lyx.AExprConst{Value: "Drama"}, &lyx.AExprConst{Value: "1961-06-16"}, &lyx.AExprConst{Value: "106"}, &lyx.AExprConst{Value: "Yojimbo"}, &lyx.AExprConst{Value: "T_601"}},
+			},
+			err: nil,
+		},
 
-// 		{
-// 			query: `INSERT INTO films SELECT * FROM tmp_films WHERE date_prod < '2004-05-07';`,
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "films",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				SubSelect: &Select{
-// 					FromClause: []FromClauseNode{&RangeVar{
-// 						RelationName: "tmp_films",
-// 					},
-// 					},
-// 					Where: &WhereClauseLeaf{
-// 						ColRef: ColumnRef{
-// 							ColName:    "date_prod",
-// 							TableAlias: "",
-// 						},
-// 						Value: "2004-05-07",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
+		///
 
-// 		{
-// 			query: "insert into xx (id,id2) values(1,2)",
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "xx",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Columns: []string{"id2", "id"},
-// 				Values:  []string{"2", "1"},
-// 			},
-// 			err: nil,
-// 		},
-// 		{
-// 			query: "INSERT INTO xxtt1 (j, i, w_id) VALUES(2121221, -211212, 21);",
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "xxtt1",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Columns: []string{"w_id", "i", "j"},
-// 				Values:  []string{"21", "2121221", "2121221"},
-// 			},
-// 			err: nil,
-// 		},
+		// {
+		// 	query: `INSERT INTO films SELECT * FROM tmp_films WHERE date_prod < '2004-05-07';`,
+		// 	exp: &lyx.Insert{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "films",
+		// 			SchemaName:   "",
+		// 			Alias:        "",
+		// 		},
+		// 		SubSelect: &lyx.Select{
+		// 			FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+		// 				RelationName: "tmp_films",
+		// 			},
+		// 			},
+		// 			Where: &lyx.AExprOp{
+		// 				Left: &lyx.ColumnRef{
+		// 					ColName:    "date_prod",
+		// 					TableAlias: "",
+		// 				},
+		// 				Right: &lyx.AExprConst{
+		// 					Value: "2004-05-07",
+		// 				},
+		// 				Op: "=",
+		// 			},
+		// 		},
+		// 	},
+		// 	err: nil,
+		// },
 
-// 		/* only first tuple from values clause parsed  */
-// 		{
-// 			query: "insert into xx (id,id2) values(1,2), (2,3), ( 4, 5)",
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "xx",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				Columns: []string{"id2", "id"},
-// 				Values:  []string{"2", "1"},
-// 			},
-// 			err: nil,
-// 		},
+		// {
+		// 	query: "insert into xx (id,id2) values(1,2)",
+		// 	exp: &lyx.Insert{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "xx",
+		// 			SchemaName:   "",
+		// 			Alias:        "",
+		// 		},
+		// 		Columns: []string{"id2", "id"},
+		// 		Values:  []lyx.Statement{&lyx.AExprConst{Value: "2"}, &lyx.AExprConst{Value: "1"}},
+		// 	},
+		// 	err: nil,
+		// },
+		// {
+		// 	query: "INSERT INTO xxtt1 (j, i, w_id) VALUES(2121221, -211212, 21);",
+		// 	exp: &lyx.Insert{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "xxtt1",
+		// 			SchemaName:   "",
+		// 			Alias:        "",
+		// 		},
+		// 		Columns: []string{"w_id", "i", "j"},
+		// 		Values:  []lyx.Statement{&lyx.AExprConst{Value: "21"}, &lyx.AExprConst{Value: "211212"}, &lyx.AExprConst{Value: "2121221"}},
+		// 	},
+		// 	err: nil,
+		// },
 
-// 		/* insert from select */
-// 		{
-// 			query: "insert into xx select * from xx2 where id2 = 7",
-// 			exp: &Insert{
-// 				TableRef: &RangeVar{
-// 					RelationName: "xx",
-// 					SchemaName:   "",
-// 					Alias:        "",
-// 				},
-// 				SubSelect: &Select{
-// 					FromClause: []FromClauseNode{&RangeVar{
-// 						RelationName: "xx2",
-// 					},
-// 					},
-// 					Where: &WhereClauseLeaf{
-// 						ColRef: ColumnRef{
-// 							TableAlias: "",
-// 							ColName:    "id2",
-// 						},
-// 						Value: "7",
-// 					},
-// 				},
-// 			},
-// 			err: nil,
-// 		},
-// 	} {
-// 		tmp, err := Parse(tt.query)
+		// /* only first tuple from values clause parsed  */
+		// {
+		// 	query: "insert into xx (id,id2) values(1,2), (2,3), ( 4, 5)",
+		// 	exp: &lyx.Insert{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "xx",
+		// 			SchemaName:   "",
+		// 			Alias:        "",
+		// 		},
+		// 		Columns: []string{"id2", "id"},
+		// 		Values:  []lyx.Statement{&lyx.AExprConst{Value: "2"}, &lyx.AExprConst{Value: "1"}},
+		// 	},
+		// 	err: nil,
+		// },
 
-// 		assert.NoError(err, "query %s", tt.query)
+		// /* insert from select */
+		// {
+		// 	query: "insert into xx select * from xx2 where id2 = 7",
+		// 	exp: &lyx.Insert{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "xx",
+		// 			SchemaName:   "",
+		// 			Alias:        "",
+		// 		},
+		// 		SubSelect: &lyx.Select{
+		// 			FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+		// 				RelationName: "xx2",
+		// 			},
+		// 			},
+		// 			Where: &lyx.AExprOp{
+		// 				Left: &lyx.ColumnRef{
+		// 					TableAlias: "",
+		// 					ColName:    "id2",
+		// 				},
+		// 				Right: &lyx.AExprConst{
+		// 					Value: "7",
+		// 				},
+		// 				Op: "=",
+		// 			},
+		// 		},
+		// 	},
+		// 	err: nil,
+		// },
+	} {
+		tmp, err := lyx.Parse(tt.query)
 
-// 		assert.Equal(tt.exp, tmp)
-// 	}
-// }
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}
 
 // func TestInsertComplex(t *testing.T) {
 // 	assert := assert.New(t)

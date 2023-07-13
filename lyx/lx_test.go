@@ -56,6 +56,61 @@ func TestSimple(t *testing.T) {
 				lyx.FROM, lyx.IDENT, lyx.GROUP, lyx.BY, lyx.IDENT, lyx.TSEMICOLON},
 			err: nil,
 		},
+		{
+			query: `
+			INSERT INTO xx VALUES
+				(1,2,'gyuguy');
+			`,
+			exp: []int{
+				lyx.INSERT, lyx.INTO, lyx.IDENT,
+				lyx.VALUES,
+				lyx.TOPENBR,
+				lyx.SCONST, lyx.TCOMMA, lyx.SCONST, lyx.TCOMMA, lyx.SCONST,
+				lyx.TCLOSEBR, lyx.TSEMICOLON},
+			err: nil,
+		},
+		{
+			query: `INSERT INTO films (code, title, did, date_prod, kind)
+			VALUES ('T_601', 'Yojimbo', 106, '1961-06-16', 'Drama');`,
+			exp: []int{
+				lyx.INSERT, lyx.INTO, lyx.IDENT,
+
+				lyx.TOPENBR,
+
+				lyx.IDENT,
+
+				lyx.TCOMMA,
+				lyx.IDENT,
+
+				lyx.TCOMMA,
+				lyx.IDENT,
+
+				lyx.TCOMMA,
+				lyx.IDENT,
+
+				lyx.TCOMMA,
+				lyx.IDENT,
+
+				lyx.TCLOSEBR,
+				lyx.VALUES,
+				lyx.TOPENBR,
+				lyx.SCONST,
+
+				lyx.TCOMMA,
+				lyx.SCONST,
+
+				lyx.TCOMMA,
+				lyx.SCONST,
+
+				lyx.TCOMMA,
+				lyx.SCONST,
+
+				lyx.TCOMMA,
+				lyx.SCONST,
+
+				lyx.TCLOSEBR, lyx.TSEMICOLON},
+			err: nil,
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int

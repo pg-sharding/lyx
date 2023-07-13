@@ -90,7 +90,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
         integer = digit+;
 
-        sconst = '\'' ident_cont* '\'';
+        sconst = '\'' (any-'\'')* '\'';
         
         main := |*
             whitespace => { /* do nothing */ };
@@ -98,6 +98,9 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
             /select/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SELECT; fbreak;};
+            /insert/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INSERT; fbreak;};
+            /into/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INTO; fbreak;};
+            /values/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = VALUES; fbreak;};
             /update/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = UPDATE; fbreak;};
             /delete/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DELETE; fbreak;};
             /create/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CREATE; fbreak;};
@@ -117,7 +120,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /as/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = AS; fbreak;};
 
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(IDENT); fbreak;};
-            sconst      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(SCONST); fbreak;};
+            sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = int(SCONST); fbreak;};
 
 
 #           self		=	(',' | '(' | ')' | '[' | ']' | '.' | ';'| ':' | '+' | '-' | '*' | '\\' | '%' | '^' | '<' | '>' | '=');
