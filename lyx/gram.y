@@ -542,6 +542,10 @@ TableFuncElement:	ColId any_val opt_collate_clause
 				{
 					$$ = $1
 				}
+		|  ColId IDENT opt_collate_clause
+				{
+					$$ = $1
+				}
 		;
 
 
@@ -620,6 +624,9 @@ array_expr: TSQOPENBR expr_list TSQCLOSEBR
 				}
 		;
 
+implicit_row:	TOPENBR expr_list TCOMMA a_expr TCLOSEBR		{  }
+		;
+
 
 c_expr:		AexprConst {
 				$$ = $1
@@ -634,6 +641,7 @@ c_expr:		AexprConst {
 			| ARRAY array_expr
 				{
 				}
+			| implicit_row {} 
 
 a_expr:		
             c_expr									{ $$ = $1; }
@@ -1674,10 +1682,6 @@ opt_only:
     /* nothing */ {}
     | ONLY {}
 
-opt_upd_from:
-    /* nothing */ {}
-    | FROM table_name {}
-
 /* https://www.postgresql.org/docs/current/sql-update.html */
 
 
@@ -1698,7 +1702,7 @@ set_clause:
 		
 
 update_stmt:
-    UPDATE opt_only relation_expr SET set_clause_list opt_upd_from where_clause opt_returning {
+    UPDATE opt_only relation_expr SET set_clause_list from_clause where_clause opt_returning {
         $$ = &Update {
             TableRef: $3,
             Where: $7,

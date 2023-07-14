@@ -1211,6 +1211,40 @@ func TestFuncApplication(t *testing.T) {
 			},
 			err: nil,
 		},
+
+		{
+			query: ` UPDATE xxtt1 
+				set i=a.i, j=a.j 
+			from unnest(ARRAY[(1,10)]) as a(i int, j int) 
+			where w_id=20 and xxtt1.j=a.j;`,
+			exp: &lyx.Update{
+				TableRef: &lyx.RangeVar{RelationName: "xxtt1"},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "w_id",
+						},
+						Right: &lyx.AExprConst{
+							Value: "20",
+						},
+						Op: "=",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							TableAlias: "xxtt1",
+							ColName:    "j",
+						},
+						Right: &lyx.ColumnRef{
+							TableAlias: "a",
+							ColName:    "j",
+						},
+						Op: "=",
+					},
+					Op: "and",
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
