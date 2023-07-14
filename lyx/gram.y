@@ -60,7 +60,10 @@ func randomHex(n int) (string, error) {
 %type<from> table_ref 
 %type<tableref> relation_expr joined_table
 
-%type<str> func_arg_list func_arg_expr
+%type<node> func_arg_expr
+%type<bool> opt_ordinality
+%type<nodeList> func_arg_list
+%type<node> func_alias_clause
 
 %type<node> a_expr c_expr b_expr
 
@@ -154,6 +157,10 @@ Operator:
 /* COPY  */
 %token<str> COPY 
 
+
+/* ARRAY  */
+%token<str> ARRAY 
+
 /* IS NOT NULL */
 %token<str> IS NOT NULL DISTINCT DEFAULT
 
@@ -168,6 +175,15 @@ Operator:
 
 /* */
 %token<str> TO STDOUT
+
+/* LATERAL */
+%token<str> LATERAL_P
+
+/* WITH_LA ORDINALITY */
+%token<str> ORDINALITY WITH_LA
+
+/* COLLATE */
+%token<str> COLLATE
 
 %token<str> AS
 
@@ -193,6 +209,11 @@ Operator:
 %type<node> truncate_stmt drop_stmt
 %type<str> semicolon_opt
 
+%type<str> opt_collate_clause
+
+%type<node> func_application
+%type<node> func_table
+%type<node> func_expr_windowless
 %type<node> AexprConst
 
 %type<node> copy_stmt
@@ -203,6 +224,10 @@ Operator:
 %type<nodeList> target_list
 
 %type<node> ColRef qualColRef
+
+%type<nodeList> expr_list
+
+%type<str> ColId
 
 %type<strlist> comma_separated_col_refs insert_col_refs
 
@@ -221,6 +246,9 @@ Operator:
 %type<str> anything set_clause
 
 %type<str> operator
+
+%type<str> TableFuncElement
+%type<strlist> TableFuncElementList OptTableFuncElementList
 
 
 /* Precedence: lowest to highest */
@@ -482,23 +510,65 @@ operator:
  * you expect!  So we use %prec annotations freely to set precedences.
  */
 
+opt_collate_clause:
+			COLLATE any_val
+				{
+
+				}
+			| /* EMPTY */				{ }
+		;
+
+
 func_name: IDENT
 
-func_application: 
-		func_name TOPENBR TCLOSEBR {} 
-		|  func_name TOPENBR func_arg_expr TCLOSEBR {}
-		/* select count(*) from x */
-		| func_name TOPENBR TMUL TCLOSEBR
 
-func_arg_expr: a_expr {}
+OptTableFuncElementList:
+			TableFuncElementList				{ $$ = $1; }
+			| /*EMPTY*/							{ $$ = nil; }
+		;
+
+TableFuncElementList:
+			TableFuncElement
+				{
+					$$ = []string{$1};
+				}
+			| TableFuncElementList TCOMMA TableFuncElement
+				{
+					$$ = append($1, $3);
+				}
+		;
+
+TableFuncElement:	ColId any_val opt_collate_clause
+				{
+					$$ = $1
+				}
+		;
+
+
+
+func_application: 
+		func_name TOPENBR TCLOSEBR {
+			$$ = nil
+		} 
+		| func_name TOPENBR func_arg_expr TCLOSEBR {
+			$$ = nil
+		}
+		/* select count(*) from x */
+		| func_name TOPENBR TMUL TCLOSEBR {
+			$$ = nil
+		}
+
+func_arg_expr: a_expr {
+	$$ = nil
+}
 
 func_arg_list:  func_arg_expr
 				{
-					$$ = ""
+					$$ = []Node{$1}
 				}
 			| func_arg_list TCOMMA func_arg_expr
 				{
-					$$ = ""
+					$$ = append($1, $3)
 				}
 		;
 
@@ -509,9 +579,47 @@ AexprConst: SCONST {
 	$$ = &AExprConst{
 		Value: $1,
 	}
+} | NULL_P {
+	$$ = &AExprConst{
+		Value: $1,
+	}
+}| TRUE_P {
+	$$ = &AExprConst{
+		Value: $1,
+	}
+}| FALSE_P {
+	$$ = &AExprConst{
+		Value: $1,
+	}
 }
 
 func_expr: func_application
+
+expr_list:	a_expr
+				{
+					$$ = []Node{$1};
+				}
+			| expr_list TCOMMA a_expr
+				{
+					$$ = append($1, $3);
+				}
+		;
+
+
+array_expr: TSQOPENBR expr_list TSQCLOSEBR
+				{
+					
+				}
+			// | TSQOPENBR array_expr_list TSQCLOSEBR
+			// 	{
+					
+			// 	}
+			| TSQOPENBR TSQCLOSEBR
+				{
+				
+				}
+		;
+
 
 c_expr:		AexprConst {
 				$$ = $1
@@ -523,6 +631,9 @@ c_expr:		AexprConst {
                 $$ = $2
             }
             | func_expr {}
+			| ARRAY array_expr
+				{
+				}
 
 a_expr:		
             c_expr									{ $$ = $1; }
@@ -1005,7 +1116,7 @@ a_expr:
 
 
 qualColRef:
-    IDENT TDOT IDENT {
+    IDENT TDOT ColId {
         $$ = &ColumnRef{
             ColName: $3,
             TableAlias: $1, 
@@ -1013,11 +1124,11 @@ qualColRef:
     }
 
 ColRef:
-    IDENT {
+    ColId {
         $$ = &ColumnRef{
             ColName: $1,
         }
-    } |  qualColRef {
+    } | qualColRef {
         $$ = $1
     }
 
@@ -1268,6 +1379,12 @@ opt_fetch_clause: /*empty*/ {} | FETCH anything {}
 opt_for_clause:  /*empty*/ {} |FOR anything {}
 
 
+/* Column identifier --- names that can be column, table, etc names.
+ */
+ColId:		IDENT									{ $$ = $1; }
+			// | reserved_keyword						{ $$ = $1; }
+			//| col_name_keyword						{ $$ = pstrdup($1); }
+		;
 
 
 from_clause:
@@ -1313,12 +1430,82 @@ opt_alias_clause:
     } | alias_clause
 
 /*
+ * As func_expr but does not accept WINDOW functions directly
+ * (but they can still be contained in arguments for functions etc).
+ * Use this when window expressions are not allowed, where needed to
+ * disambiguate the grammar (e.g. in CREATE INDEX).
+ */
+func_expr_windowless:
+			func_application						{ $$ = $1; }
+			// | func_expr_common_subexpr				{ $$ = $1; }
+			// | json_aggregate_func					{ $$ = $1; }
+		;
+
+opt_ordinality: WITH_LA ORDINALITY					{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+		;
+
+
+
+/*
+ * func_alias_clause can include both an Alias and a coldeflist, so we make it
+ * return a 2-element list that gets disassembled by calling production.
+ */
+func_alias_clause:
+			alias_clause
+				{
+					$$ = nil
+				}
+			| AS TOPENBR TableFuncElementList TCLOSEBR
+				{
+					$$ = nil
+				}
+			| AS ColId TOPENBR TableFuncElementList TCLOSEBR
+				{
+
+				}
+			| ColId TOPENBR TableFuncElementList TCLOSEBR
+				{
+
+				}
+			| /*EMPTY*/
+				{
+					$$ = nil
+				}
+		;
+
+/*
+ * func_table represents a function invocation in a FROM list. It can be
+ * a plain function call, like "foo(...)", or a ROWS FROM expression with
+ * one or more function calls, "ROWS FROM (foo(...), bar(...))",
+ * optionally with WITH ORDINALITY attached.
+ * In the ROWS FROM syntax, a column definition list can be given for each
+ * function, for example:
+ *     ROWS FROM (foo() AS (foo_res_a text, foo_res_b text),
+ *                bar() AS (bar_res_a text, bar_res_b text))
+ * It's also possible to attach a column definition list to the RangeFunction
+ * as a whole, but that's handled by the table_ref production.
+ */
+func_table: func_expr_windowless opt_ordinality
+				{
+					$$ = $1
+				}
+
+/*
  * table_ref is where an alias clause can be attached.
  */
 table_ref:	relation_expr opt_alias_clause
 				{
 					$1.SetAlias($2)
 					$$ = $1;
+				}
+			| func_table func_alias_clause
+				{
+
+				}
+			| LATERAL_P func_table func_alias_clause
+				{
+
 				}
 			| joined_table
 				{

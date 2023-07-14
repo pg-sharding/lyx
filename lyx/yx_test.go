@@ -83,8 +83,8 @@ func TestSelectComplex(t *testing.T) {
 								Left: &lyx.ColumnRef{
 									ColName: "is_something",
 								},
-								Right: &lyx.ColumnRef{
-									ColName: "true",
+								Right: &lyx.AExprConst{
+									Value: "true",
 								},
 								Op: "=",
 							},
@@ -203,8 +203,8 @@ func TestSelectComplex(t *testing.T) {
 								Left: &lyx.ColumnRef{
 									ColName: "is_something",
 								},
-								Right: &lyx.ColumnRef{
-									ColName: "true",
+								Right: &lyx.AExprConst{
+									Value: "true",
 								},
 								Op: "=",
 							},
@@ -909,7 +909,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 					&lyx.AExprConst{Value: "31337"},
 					&lyx.AExprConst{Value: "{9223372036854775806}"},
 					&lyx.AExprConst{Value: "{280,fb8,909,e6,ffc}"},
-					&lyx.ColumnRef{ColName: "true"},
+					&lyx.AExprConst{Value: "true"},
 					&lyx.AExprConst{Value: "trunk"},
 					&lyx.AExprConst{Value: "0"},
 					&lyx.AExprConst{Value: "*()*()Q*D()beiwe"},
@@ -917,8 +917,8 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 					&lyx.AExprConst{Value: "some"},
 					&lyx.AExprConst{Value: "2"},
 					&lyx.AExprConst{Value: "9223372036854775807"},
-					&lyx.ColumnRef{ColName: "NULL"},
-					&lyx.ColumnRef{ColName: "NULL"},
+					&lyx.AExprConst{Value: "NULL"},
+					&lyx.AExprConst{Value: "NULL"},
 					&lyx.AExprConst{Value: "111111"},
 					&lyx.AExprConst{Value: "1970-01-01 12:00:00.5"},
 				},
@@ -1194,7 +1194,20 @@ func TestFuncApplication(t *testing.T) {
 		{
 			query: "INSERT INTO xxtt1 (j, w_id) SELECT a, 20 from unnest(ARRAY[10]) a;",
 			exp: &lyx.Insert{
-				Columns: []string{"j", "w_id"},
+				TableRef: &lyx.RangeVar{RelationName: "xxtt1"},
+				Columns:  []string{"w_id", "j"},
+				SubSelect: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.ColumnRef{
+							ColName: "a",
+						},
+						&lyx.AExprConst{
+							Value: "20",
+						},
+					},
+					FromClause: []lyx.FromClauseNode{nil},
+					Where:      &lyx.AExprEmpty{},
+				},
 			},
 			err: nil,
 		},
@@ -1203,7 +1216,7 @@ func TestFuncApplication(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, "query %s", tt.query)
 	}
 }
 
@@ -1257,7 +1270,7 @@ func TestSelectTargetLists(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, "query %s", tt.query)
 	}
 }
 
@@ -1298,7 +1311,7 @@ func TestWithComments(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, "query %s", tt.query)
 	}
 }
 
@@ -1398,7 +1411,7 @@ func TestJoins(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, "query %s", tt.query)
 	}
 }
 
