@@ -482,7 +482,13 @@ operator:
  * you expect!  So we use %prec annotations freely to set precedences.
  */
 
-func_application: any_id TOPENBR TCLOSEBR {} |  any_id TOPENBR func_arg_expr TCLOSEBR {}
+func_name: IDENT
+
+func_application: 
+		func_name TOPENBR TCLOSEBR {} 
+		|  func_name TOPENBR func_arg_expr TCLOSEBR {}
+		/* select count(*) from x */
+		| func_name TOPENBR TMUL TCLOSEBR
 
 func_arg_expr: a_expr {}
 

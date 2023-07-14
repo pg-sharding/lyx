@@ -1182,6 +1182,31 @@ func TestCopy(t *testing.T) {
 	}
 }
 
+func TestFuncApplication(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+	for _, tt := range []tcase{
+		{
+			query: "INSERT INTO xxtt1 (j, w_id) SELECT a, 20 from unnest(ARRAY[10]) a;",
+			exp: &lyx.Insert{
+				Columns: []string{"j", "w_id"},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}
+
 func TestSelectTargetLists(t *testing.T) {
 	assert := assert.New(t)
 
@@ -1211,6 +1236,19 @@ func TestSelectTargetLists(t *testing.T) {
 					},
 					Op: "=",
 				},
+			},
+			err: nil,
+		},
+		{
+			query: "select count(*) from pgbench_branches;",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{nil},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "pgbench_branches",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
 			},
 			err: nil,
 		},
