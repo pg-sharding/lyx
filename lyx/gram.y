@@ -27,7 +27,7 @@ func randomHex(n int) (string, error) {
 	bool                   bool
 	empty                  struct{}
 
-	statement              Statement
+	node				   Node
     from_list              []FromClauseNode
     from                   FromClauseNode
     tableelt               []TableElt
@@ -35,7 +35,7 @@ func randomHex(n int) (string, error) {
 
     selectStmt              *Select
 
-    statementList          []Statement
+    nodeList              []Node
 }
 
 // any non-terminal which returns a value needs a type, which is
@@ -44,15 +44,15 @@ func randomHex(n int) (string, error) {
 
 
 // CMDS
-%type <statement> command
-%type <statement> routable_statement
+%type <node> command
+%type <node> routable_statement
 
 // same for terminals
 %token <str> SCONST IDENT
 
 %type<str> any_id any_val table_name
 
-%type<statement> where_clause
+%type<node> where_clause
 
 %type<from_list> from_clause from_list
 
@@ -64,7 +64,7 @@ func randomHex(n int) (string, error) {
 
 %type<str> func_arg_list func_arg_expr
 
-%type<statement> a_expr c_expr b_expr
+%type<node> a_expr c_expr b_expr
 
 /* CIUD */
 %token<str> CREATE ALTER
@@ -179,31 +179,31 @@ Operator:
 
 /**/
 
-%type<statement> execute_stmt
-%type<selectStmt> select_stmt
-%type<statement> insert_stmt
-%type<statement> update_stmt
-%type<statement> delete_stmt
-%type<statement> varset_stmt
-%type<statement> prepare_stmt
-%type<statement> begin_stmt 
-%type<statement> commit_stmt
-%type<statement> rollback_stmt
-%type<statement> prepare_stmt
-%type<statement> create_stmt alter_stmt
-%type<statement> vacuum_stmt cluster_stmt analyze_stmt
-%type<statement> truncate_stmt drop_stmt
+%type<node> execute_stmt
+%type<node> select_stmt
+%type<node> insert_stmt
+%type<node> update_stmt
+%type<node> delete_stmt
+%type<node> varset_stmt
+%type<node> prepare_stmt
+%type<node> begin_stmt 
+%type<node> commit_stmt
+%type<node> rollback_stmt
+%type<node> prepare_stmt
+%type<node> create_stmt alter_stmt
+%type<node> vacuum_stmt cluster_stmt analyze_stmt
+%type<node> truncate_stmt drop_stmt
 %type<str> semicolon_opt
 
-%type<statement> AexprConst
+%type<node> AexprConst
 
-%type<statement> copy_stmt
+%type<node> copy_stmt
 
-%type<statement> ColRef qualColRef
+%type<node> ColRef qualColRef
 
 %type<strlist> comma_separated_col_refs insert_col_refs
 
-%type<statementList> insert_comma_separated_tuples insert_tuples
+%type<nodeList> insert_comma_separated_tuples insert_tuples
 
 %type<str> opt_insert_col_refs
 %type<str> any_tok 
@@ -1432,9 +1432,10 @@ opt_insert_col_refs:
 
 
 
+
 insert_comma_separated_tuples: 
     a_expr {
-        $$ = []Statement{$1}
+        $$ = []Node{$1}
     } | a_expr TCOMMA insert_comma_separated_tuples {
         $$ = append($3, $1)
     }

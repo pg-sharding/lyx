@@ -13,7 +13,7 @@ func TestSelectComplex(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -257,7 +257,7 @@ func TestSelect(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -442,7 +442,7 @@ func TestSelectMultipleRelations(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -498,7 +498,7 @@ func TestSelectAlias(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -542,7 +542,7 @@ func TestCreate(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -665,7 +665,7 @@ func TestInsert(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -679,7 +679,7 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"id"},
-				Values:  []lyx.Statement{&lyx.AExprConst{Value: "1"}},
+				Values:  []lyx.Node{&lyx.AExprConst{Value: "1"}},
 			},
 			err: nil,
 		},
@@ -723,7 +723,7 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"kind", "date_prod", "did", "title", "code"},
 
-				Values: []lyx.Statement{&lyx.AExprConst{Value: "Drama"}, &lyx.AExprConst{Value: "1961-06-16"}, &lyx.AExprConst{Value: "106"}, &lyx.AExprConst{Value: "Yojimbo"}, &lyx.AExprConst{Value: "T_601"}},
+				Values: []lyx.Node{&lyx.AExprConst{Value: "Drama"}, &lyx.AExprConst{Value: "1961-06-16"}, &lyx.AExprConst{Value: "106"}, &lyx.AExprConst{Value: "Yojimbo"}, &lyx.AExprConst{Value: "T_601"}},
 			},
 			err: nil,
 		},
@@ -767,7 +767,7 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"id2", "id"},
-				Values:  []lyx.Statement{&lyx.AExprConst{Value: "2"}, &lyx.AExprConst{Value: "1"}},
+				Values:  []lyx.Node{&lyx.AExprConst{Value: "2"}, &lyx.AExprConst{Value: "1"}},
 			},
 			err: nil,
 		},
@@ -780,7 +780,7 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"w_id", "i", "j"},
-				Values:  []lyx.Statement{&lyx.AExprConst{Value: "21"}, &lyx.AExprConst{Value: "211212"}, &lyx.AExprConst{Value: "2121221"}},
+				Values:  []lyx.Node{&lyx.AExprConst{Value: "21"}, &lyx.AExprConst{Value: "211212"}, &lyx.AExprConst{Value: "2121221"}},
 			},
 			err: nil,
 		},
@@ -795,7 +795,7 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"id2", "id"},
-				Values:  []lyx.Statement{&lyx.AExprConst{Value: "2"}, &lyx.AExprConst{Value: "1"}},
+				Values:  []lyx.Node{&lyx.AExprConst{Value: "2"}, &lyx.AExprConst{Value: "1"}},
 			},
 			err: nil,
 		},
@@ -842,7 +842,7 @@ func TestInsertComplex(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -865,7 +865,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 					SchemaName:   "exschema",
 					Alias:        "",
 				},
-				Values: []lyx.Statement{
+				Values: []lyx.Node{
 					&lyx.AExprConst{Value: "0"},
 					&lyx.AExprConst{Value: "0"},
 					&lyx.AExprConst{Value: "bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././"},
@@ -920,7 +920,7 @@ func TestUpdate(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -1034,7 +1034,7 @@ func TestDelete(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -1112,7 +1112,7 @@ func TestCopy(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -1150,7 +1150,7 @@ func TestSelectTargetLists(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -1189,7 +1189,7 @@ func TestJoins(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -1268,7 +1268,7 @@ func TestMisc(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 
@@ -1307,7 +1307,7 @@ func TestOperators(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Statement
+		exp   lyx.Node
 		err   error
 	}
 

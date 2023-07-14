@@ -11,7 +11,7 @@ type Tokenizer struct {
 	s   string
 	pos int
 
-	ParseTree Statement
+	ParseTree Node
 	LastError string
 	l         *Lexer
 }
@@ -35,11 +35,11 @@ func (t *Tokenizer) LexT() int {
 	return t.l.Lex(new(yySymType))
 }
 
-func setParseTree(yylex interface{}, stmt Statement) {
+func setParseTree(yylex interface{}, stmt Node) {
 	yylex.(*Tokenizer).ParseTree = stmt
 }
 
-func Parse(sql string) (Statement, error) {
+func Parse(sql string) (Node, error) {
 	tokenizer := NewStringTokenizer(sql)
 	if yyParse(tokenizer) != 0 {
 		return nil, errors.New(tokenizer.LastError + fmt.Sprintf(" on pos %d", tokenizer.l.ts))

@@ -1,15 +1,16 @@
 package lyx
 
-// Statement represents a statement.
-type Statement interface {
-	iStatement()
+// Node represents any query.
+type Node interface {
+	iNode()
 }
 
 type ColumnRef struct {
-	Statement
 	TableAlias string
 	ColName    string
 }
+
+func (*ColumnRef) iNode() {}
 
 // /*
 //  * RangeVar - range variable, used in FROM clauses
@@ -96,20 +97,26 @@ type JoinExpr struct {
 }
 
 type AExprEmpty struct {
-	Statement
+}
+
+func (*AExprEmpty) iNode() {
 }
 
 type AExprConst struct {
-	Statement
 	Value string
 }
 
+func (*AExprConst) iNode() {
+}
+
 type AExprOp struct {
-	Statement
-	Left  Statement
-	Right Statement
+	Left  Node
+	Right Node
 
 	Op string
+}
+
+func (*AExprOp) iNode() {
 }
 
 func (r *JoinExpr) SetAlias(s string) {
@@ -118,29 +125,29 @@ func (r *JoinExpr) SetAlias(s string) {
 
 type Select struct {
 	FromClause []FromClauseNode
-	Where      Statement
+	Where      Node
 }
 
 type Insert struct {
 	TableRef FromClauseNode
-	Values   []Statement
+	Values   []Node
 	Columns  []string
 
-	SubSelect *Select
+	SubSelect Node
 }
 
 type Delete struct {
 	TableRef FromClauseNode
-	Where    Statement
+	Where    Node
 }
 
 type Update struct {
 	TableRef FromClauseNode
-	Where    Statement
+	Where    Node
 }
 
 type Explain struct {
-	Stmt Statement
+	Stmt Node
 }
 
 type Execute struct {
@@ -202,24 +209,24 @@ type VarSet struct {
 	Value   string
 }
 
-func (*Explain) iStatement()        {}
-func (*Select) iStatement()         {}
-func (*Execute) iStatement()        {}
-func (*Prepare) iStatement()        {}
-func (*VarSet) iStatement()         {}
-func (*CreateTable) iStatement()    {}
-func (*Alter) iStatement()          {}
-func (*Analyze) iStatement()        {}
-func (*Cluster) iStatement()        {}
-func (*Vacuum) iStatement()         {}
-func (*Drop) iStatement()           {}
-func (*Truncate) iStatement()       {}
-func (*Index) iStatement()          {}
-func (*CreateRole) iStatement()     {}
-func (*CreateDatabase) iStatement() {}
-func (*Insert) iStatement()         {}
-func (*Delete) iStatement()         {}
-func (*Update) iStatement()         {}
+func (*Explain) iNode()        {}
+func (*Select) iNode()         {}
+func (*Execute) iNode()        {}
+func (*Prepare) iNode()        {}
+func (*VarSet) iNode()         {}
+func (*CreateTable) iNode()    {}
+func (*Alter) iNode()          {}
+func (*Analyze) iNode()        {}
+func (*Cluster) iNode()        {}
+func (*Vacuum) iNode()         {}
+func (*Drop) iNode()           {}
+func (*Truncate) iNode()       {}
+func (*Index) iNode()          {}
+func (*CreateRole) iNode()     {}
+func (*CreateDatabase) iNode() {}
+func (*Insert) iNode()         {}
+func (*Delete) iNode()         {}
+func (*Update) iNode()         {}
 
 type Begin struct{}
 type Commit struct{}
@@ -227,16 +234,16 @@ type Rollback struct{}
 
 type EmptyQuery struct{}
 
-func (*Begin) iStatement()    {}
-func (*Commit) iStatement()   {}
-func (*Rollback) iStatement() {}
+func (*Begin) iNode()    {}
+func (*Commit) iNode()   {}
+func (*Rollback) iNode() {}
 
-func (*EmptyQuery) iStatement() {}
+func (*EmptyQuery) iNode() {}
 
 type Copy struct {
 	TableRef FromClauseNode
-	Where    Statement
+	Where    Node
 	IsFrom   bool
 }
 
-func (*Copy) iStatement() {}
+func (*Copy) iNode() {}
