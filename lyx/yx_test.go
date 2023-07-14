@@ -23,6 +23,8 @@ func TestSelectComplex(t *testing.T) {
 			SELECT * FROM "exschema"."extable" WHERE id='83912839012903' AND utype='2' AND btype='sample' AND state = 0 AND is_something = true AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}') AND c_id = 'trunk' ORDER BY entity_id asc;
 			`,
 			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "extable",
 					SchemaName:   "exschema",
@@ -142,6 +144,8 @@ func TestSelectComplex(t *testing.T) {
 	ORDER BY entity_id asc;
 			`,
 			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "extable",
 					SchemaName:   "exschema",
@@ -265,13 +269,16 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select 42",
 			exp: &lyx.Select{
-				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{&lyx.AExprConst{Value: "42"}},
+				Where:      &lyx.AExprEmpty{},
 			},
 			err: nil,
 		},
 		{
 			query: "select * from xx where i = 1 ",
 			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -293,6 +300,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 order by i ",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -314,6 +322,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 limit 7 ",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -335,6 +344,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 group by i ",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -356,6 +366,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 group by i having sum(i)",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -377,6 +388,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 order by i limit 7 ",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "xx",
@@ -398,6 +410,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 AND j = 2 ",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -450,6 +463,7 @@ func TestSelectMultipleRelations(t *testing.T) {
 		{
 			query: "select * from xx, xx2 ",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -465,6 +479,7 @@ func TestSelectMultipleRelations(t *testing.T) {
 		{
 			query: "select * from xx, xx2 b where b.i = 1",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
 				},
@@ -507,6 +522,7 @@ func TestSelectAlias(t *testing.T) {
 		{
 			query: "SELECT kind, sum(len) AS total FROM films GROUP BY kind;",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"}, nil},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
 				},
@@ -519,6 +535,7 @@ func TestSelectAlias(t *testing.T) {
 		{
 			query: "SELECT kind, sum(len) AS total FROM films AS f GROUP BY kind;",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"}, nil},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
 					Alias:        "f",
@@ -685,6 +702,22 @@ func TestInsert(t *testing.T) {
 		},
 
 		{
+			query: "INSERT INTO xx (w_id) SELECT 20;",
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "xx",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				SubSelect: &lyx.Select{
+					TargetList: []lyx.Node{&lyx.AExprConst{Value: "20"}},
+					Where:      &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+
+		{
 			query: "Insert into xx (i) select * from yy where i = 8",
 			exp: &lyx.Insert{
 				TableRef: &lyx.RangeVar{
@@ -695,6 +728,7 @@ func TestInsert(t *testing.T) {
 				Columns: nil,
 				Values:  nil,
 				SubSelect: &lyx.Select{
+					TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 					FromClause: []lyx.FromClauseNode{
 						&lyx.RangeVar{
 							RelationName: "yy",
@@ -739,6 +773,7 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				SubSelect: &lyx.Select{
+					TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 					FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 						RelationName: "tmp_films",
 					},
@@ -810,6 +845,7 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				SubSelect: &lyx.Select{
+					TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 					FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 						RelationName: "xx2",
 					},
@@ -833,7 +869,7 @@ func TestInsert(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, "query %s", tt.query)
 	}
 }
 
@@ -1158,6 +1194,8 @@ func TestSelectTargetLists(t *testing.T) {
 		{
 			query: "SELECT pg_is_in_recovery(), id FROM tsa_test WHERE id = 22;",
 			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{nil, &lyx.ColumnRef{ColName: "id"}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "tsa_test",
@@ -1197,6 +1235,26 @@ func TestJoins(t *testing.T) {
 		{
 			query: "SELECT * FROM delivery JOIN orders ON order_id = id;",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "delivery",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "orders",
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
+		{
+			query: "SELECT * FROM delivery JOIN orders ON order_id = id;",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.JoinExpr{
 						Larg: &lyx.RangeVar{
@@ -1215,6 +1273,7 @@ func TestJoins(t *testing.T) {
 		{
 			query: "SELECT * FROM sshjt1 a join sshjt1 b ON TRUE WHERE a.i = 12 AND b.j = a.j;",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.JoinExpr{
 						Larg: &lyx.RangeVar{
@@ -1320,6 +1379,11 @@ func TestOperators(t *testing.T) {
 		{
 			query: "SELECT 1 ~~~~~~~~ 'dewoijoi'",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprOp{
+					Left:  &lyx.AExprConst{Value: "1"},
+					Right: &lyx.AExprConst{Value: "dewoijoi"},
+					Op:    "~~~~~~~~",
+				}},
 				Where: &lyx.AExprEmpty{},
 			},
 			err: nil,
@@ -1327,6 +1391,11 @@ func TestOperators(t *testing.T) {
 		{
 			query: "SELECT 1 ~~~^%^%^^~~~~~ 'dewoijoi'",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprOp{
+					Left:  &lyx.AExprConst{Value: "1"},
+					Right: &lyx.AExprConst{Value: "dewoijoi"},
+					Op:    "~~~^%^%^^~~~~~",
+				}},
 				Where: &lyx.AExprEmpty{},
 			},
 			err: nil,
@@ -1334,6 +1403,7 @@ func TestOperators(t *testing.T) {
 		{
 			query: "SELECT * FROM xxtt1 a WHERE a.w_id = 21 and j + i != 0;'",
 			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "xxtt1",

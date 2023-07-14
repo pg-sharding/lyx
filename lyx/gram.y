@@ -60,8 +60,6 @@ func randomHex(n int) (string, error) {
 %type<from> table_ref 
 %type<tableref> relation_expr joined_table
 
-%type<str> target_list
-
 %type<str> func_arg_list func_arg_expr
 
 %type<node> a_expr c_expr b_expr
@@ -198,6 +196,11 @@ Operator:
 %type<node> AexprConst
 
 %type<node> copy_stmt
+
+%type<node> target_el
+
+%type<nodeList> opt_target_list
+%type<nodeList> target_list
 
 %type<node> ColRef qualColRef
 
@@ -1057,30 +1060,30 @@ where_clause:
     }
 
 
-opt_target_list: target_list						{  }
-			| /* EMPTY */							{  }
+opt_target_list: target_list						{  $$ = $1 }
+			| /* EMPTY */							{  $$ = nil }
 		;
 
 target_list:
-			target_el								{ }
-			| target_list TCOMMA target_el				{  }
+			target_el								{ $$ = []Node{$1} }
+			| target_list TCOMMA target_el				{  $$ = append($1, $3) }
 		;
 
-target_el:	a_expr AS any_id
+target_el:	a_expr AS IDENT
 				{
-
+					$$ = $1
 				}
-			| a_expr any_id
+			| a_expr IDENT
 				{
-
+					$$ = $1
 				}
 			| a_expr
 				{
-
+					$$ = $1
 				}
 			| TMUL /* '*' */
 				{
-
+					$$ = &AExprEmpty{}
 				}
 		;
 
@@ -1404,9 +1407,11 @@ select_stmt:
 		$$ = &Select{
             FromClause: $3,
             Where: $4,
+			TargetList: $2,
         }
     } | /*simple select */ SELECT target_list {
 		$$ = &Select{
+			TargetList: $2,
         }
     }
 

@@ -126,6 +126,7 @@ func (r *JoinExpr) SetAlias(s string) {
 type Select struct {
 	FromClause []FromClauseNode
 	Where      Node
+	TargetList []Node
 }
 
 type Insert struct {
