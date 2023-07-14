@@ -718,6 +718,22 @@ func TestInsert(t *testing.T) {
 		},
 
 		{
+			query: "INSERT INTO xx (w_id) SELECT 20;",
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "xx",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				SubSelect: &lyx.Select{
+					TargetList: []lyx.Node{&lyx.AExprConst{Value: "20"}},
+					Where:      &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+
+		{
 			query: "Insert into xx (i) select * from yy where i = 8",
 			exp: &lyx.Insert{
 				TableRef: &lyx.RangeVar{
@@ -1196,6 +1212,47 @@ func TestSelectTargetLists(t *testing.T) {
 			exp: &lyx.Select{
 
 				TargetList: []lyx.Node{nil, &lyx.ColumnRef{ColName: "id"}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "tsa_test",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "id",
+					},
+					Right: &lyx.AExprConst{
+						Value: "22",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}
+
+func TestWithComments(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "SELECT * /* o lo lo l ol **** *!*&*(&!89**/ FROM  tsa_test WHERE id = 22;",
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "tsa_test",

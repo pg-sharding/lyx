@@ -83,6 +83,9 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 #        comment		=	("--"{non_newline}*);
 
 
+        comment		= '/''*' (any - '*''/')* '*''/';
+
+
 #       whitespace	=	({space}+|{comment});
         whitespace	=	space+;
 
@@ -97,6 +100,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         main := |*
             whitespace => { /* do nothing */ };
             # integer const is string const 
+            comment => {/* nothing */};
             integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
             /select/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SELECT; fbreak;};
@@ -146,7 +150,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /analyze/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYZE; fbreak;};
 
             /alter/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ALTER; fbreak;};
-            
+
             qidentifier      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; fbreak;};
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = SCONST; fbreak;};

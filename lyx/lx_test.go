@@ -27,6 +27,13 @@ func TestSimple(t *testing.T) {
 		},
 		{
 			query: `
+			select /*jjiewjow****/1
+			`,
+			exp: []int{lyx.SELECT, lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
 			update table x set i = 19;
 			`,
 			exp: []int{lyx.UPDATE, lyx.TABLE, lyx.IDENT, lyx.SET, lyx.IDENT, lyx.TEQ, lyx.SCONST, lyx.TSEMICOLON},
