@@ -1618,9 +1618,9 @@ select_stmt:
 
 
 comma_separated_col_refs:
-    any_id { $$ = []string{$1} }
-    | any_id TCOMMA comma_separated_col_refs {
-        $$ = append($3, $1)
+    ColId { $$ = []string{$1} }
+    | comma_separated_col_refs TCOMMA ColId {
+        $$ = append($1, $3)
     }
 
 opt_comma_separated_col_refs:
@@ -1646,8 +1646,8 @@ opt_insert_col_refs:
 insert_comma_separated_tuples: 
     a_expr {
         $$ = []Node{$1}
-    } | a_expr TCOMMA insert_comma_separated_tuples {
-        $$ = append($3, $1)
+    } | insert_comma_separated_tuples TCOMMA a_expr {
+        $$ = append($1, $3)
     }
 
 insert_tuples:
