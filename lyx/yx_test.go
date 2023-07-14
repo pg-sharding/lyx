@@ -1284,6 +1284,11 @@ func TestMisc(t *testing.T) {
 			err:   nil,
 		},
 		{
+			query: "alter table xx add column i int;",
+			exp:   &lyx.Alter{},
+			err:   nil,
+		},
+		{
 			query: "cluster xx;",
 			exp:   &lyx.Cluster{},
 			err:   nil,
