@@ -709,22 +709,7 @@ func TestInsert(t *testing.T) {
 					SchemaName:   "",
 					Alias:        "",
 				},
-				SubSelect: &lyx.Select{
-					TargetList: []lyx.Node{&lyx.AExprConst{Value: "20"}},
-					Where:      &lyx.AExprEmpty{},
-				},
-			},
-			err: nil,
-		},
-
-		{
-			query: "INSERT INTO xx (w_id) SELECT 20;",
-			exp: &lyx.Insert{
-				TableRef: &lyx.RangeVar{
-					RelationName: "xx",
-					SchemaName:   "",
-					Alias:        "",
-				},
+				Columns: []string{"w_id"},
 				SubSelect: &lyx.Select{
 					TargetList: []lyx.Node{&lyx.AExprConst{Value: "20"}},
 					Where:      &lyx.AExprEmpty{},
@@ -741,7 +726,7 @@ func TestInsert(t *testing.T) {
 					SchemaName:   "",
 					Alias:        "",
 				},
-				Columns: nil,
+				Columns: []string{"i"},
 				Values:  nil,
 				SubSelect: &lyx.Select{
 					TargetList: []lyx.Node{&lyx.AExprEmpty{}},

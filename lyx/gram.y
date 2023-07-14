@@ -208,7 +208,7 @@ Operator:
 
 %type<nodeList> insert_comma_separated_tuples insert_tuples
 
-%type<str> opt_insert_col_refs
+%type<strlist> opt_insert_col_refs
 %type<str> any_tok 
 
 %type<strlist> opt_using delete_comma_separated_using_refs
@@ -1432,8 +1432,12 @@ insert_col_refs:
 
 
 opt_insert_col_refs:
-    /* nothing */ {} |
-    insert_col_refs {}    
+    /* nothing */ {
+		$$ = nil
+	} |
+    insert_col_refs {
+		$$ = $1
+	}    
 
 
 
@@ -1468,6 +1472,7 @@ insert_stmt:
     } | INSERT INTO relation_expr opt_insert_col_refs select_stmt {
         $$ = &Insert{
             TableRef: $3,
+            Columns: $4,
             SubSelect: $5,
         }
     }
