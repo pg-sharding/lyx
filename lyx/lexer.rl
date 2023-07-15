@@ -165,6 +165,20 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
             /alter/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ALTER; fbreak;};
 
+            /index/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INDEX; fbreak;};
+
+            /binary/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BINARY; fbreak;};
+            /DELIMITERS/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITERS; fbreak;};
+            /DELIMITER/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITER; fbreak;};
+            /CSV/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CSV; fbreak;};
+            /HEADER/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = HEADER_P; fbreak;};
+            /QUOTE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = QUOTE; fbreak;};
+            /ESCAPE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ESCAPE; fbreak;};
+            /ENCODING/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ENCODING; fbreak;};
+            /PROGRAM/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = PROGRAM; fbreak;};
+            /stdin/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = STDIN; fbreak;};
+          
+
             qidentifier      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; fbreak;};
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = SCONST; fbreak;};

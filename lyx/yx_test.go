@@ -1178,7 +1178,7 @@ func TestCopy(t *testing.T) {
 	for _, tt := range []tcase{
 		/* copy with where */
 		{
-			query: "COPY xx TO STDOUT WHERE id = 1",
+			query: "COPY (SELECT * FROM country WHERE country_name = 'R') TO  STDOUT",
 			exp: &lyx.Copy{
 				TableRef: &lyx.RangeVar{
 					RelationName: "xx",
@@ -1192,6 +1192,26 @@ func TestCopy(t *testing.T) {
 					},
 					Op: "=",
 				},
+			},
+			err: nil,
+		},
+		/* copy with where */
+		{
+			query: "COPY copy_test FROM STDIN WHERE id <= 30;",
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "copy_test",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "id",
+					},
+					Right: &lyx.AExprConst{
+						Value: "30",
+					},
+					Op: "<=",
+				},
+				IsFrom: true,
 			},
 			err: nil,
 		},

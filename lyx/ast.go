@@ -47,6 +47,8 @@ func (r *RangeVar) SetAlias(s string) {
 	r.Alias = s
 }
 
+func (r *RangeVar) iNode() {}
+
 // /*----------
 //  * JoinExpr - for SQL JOIN expressions
 //  *
@@ -245,6 +247,7 @@ type Copy struct {
 	TableRef FromClauseNode
 	Where    Node
 	IsFrom   bool
+	SubStmt  Node
 }
 
 func (*Copy) iNode() {}

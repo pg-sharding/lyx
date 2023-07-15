@@ -52,6 +52,8 @@ func randomHex(n int) (string, error) {
 
 %type<str> any_id any_val table_name
 
+%type<bool> opt_program
+
 %type<node> where_clause
 
 %type<from_list> from_clause from_list
@@ -61,7 +63,7 @@ func randomHex(n int) (string, error) {
 %type<tableref> relation_expr joined_table
 
 %type<node> func_arg_expr
-%type<bool> opt_ordinality
+%type<bool> opt_ordinality copy_from
 %type<nodeList> func_arg_list
 %type<node> func_alias_clause
 
@@ -132,8 +134,15 @@ func randomHex(n int) (string, error) {
 /* % ^ < <= >=  */
 %token<str>  TGREATER TGREATER_EQUALS TLESS TLESS_EQUALS TMOD TPOW
 
+/* copy */
+%token<str> DELIMITERS PROGRAM STDIN
 
 %token<str> FALSE_P TRUE_P 
+%token<strlist> copy_generic_opt_list
+
+/* copy opt item  */
+%token<str> BINARY FREEZE DELIMITER CSV HEADER_P QUOTE ESCAPE FORCE ENCODING
+
 
 /* '=' */
 %token<str> TEQ
@@ -209,6 +218,8 @@ Operator:
 %type<node> truncate_stmt drop_stmt
 %type<str> semicolon_opt
 
+%type<node> PreparableStmt
+
 %type<str> opt_collate_clause
 
 %type<node> func_application
@@ -233,8 +244,13 @@ Operator:
 
 %type<nodeList> insert_comma_separated_tuples insert_tuples
 
-%type<strlist> opt_insert_col_refs
-%type<str> any_tok 
+%type<strlist> opt_insert_col_refs columnList opt_column_list copy_gengeneric_opt_list copy_generic_opt_arg_list copy_opt_list
+%type<str> any_tok  columnElem copy_gengeneric_opt_elem copy_generic_opt_arg_list_item copy_opt_item
+
+%type<strlist> copy_options
+
+%type<str> attr_name ColLabel file_name
+%type<from	> qualified_name
 
 %type<strlist> opt_using delete_comma_separated_using_refs
 %type<strlist> set_clause_list
@@ -1395,6 +1411,79 @@ ColId:		IDENT									{ $$ = $1; }
 		;
 
 
+/* Column label --- allowed labels in "AS" clauses.
+ * This presently includes *all* Postgres keywords.
+ */
+ColLabel:	IDENT									{ $$ = $1; }
+			// | unreserved_keyword					{ $$ = pstrdup($1); }
+			// | col_name_keyword						{ $$ = pstrdup($1); }
+			// | type_func_name_keyword				{ $$ = pstrdup($1); }
+			// | reserved_keyword						{ $$ = pstrdup($1); }
+		;
+
+attr_name:	ColLabel								{ $$ = $1; };
+
+file_name:	SCONST									{ $$ = $1; };
+
+// indirection_el:
+// 			TDOT attr_name
+// 				{
+// 					$$ = (Node *) makeString($2);
+// 				}
+			// | TDOT TMUL
+			// 	{
+			// 		$$ = (Node *) makeNode(A_Star);
+			// 	}
+			// | '[' a_expr ']'
+			// 	{
+			// 		A_Indices *ai = makeNode(A_Indices);
+
+			// 		ai->is_slice = false;
+			// 		ai->lidx = NULL;
+			// 		ai->uidx = $2;
+			// 		$$ = (Node *) ai;
+			// 	}
+			// | '[' opt_slice_bound ':' opt_slice_bound ']'
+			// 	{
+			// 		A_Indices *ai = makeNode(A_Indices);
+
+			// 		ai->is_slice = true;
+			// 		ai->lidx = $2;
+			// 		ai->uidx = $4;
+			// 		$$ = (Node *) ai;
+			// 	}
+		;
+
+/*
+ * The production for a qualified relation name has to exactly match the
+ * production for a qualified func_name, because in a FROM clause we cannot
+ * tell which we are parsing until we see what comes after it ('(' for a
+ * func_name, something else for a relation). Therefore we allow 'indirection'
+ * which may contain subscripts, and reject that case in the C code.
+ */
+qualified_name:
+			ColId {
+			$$ = &RangeVar {
+                    SchemaName: "",
+                    RelationName: $1,
+                    Alias: "",
+                }
+            }
+			| ColId TDOT attr_name
+				{
+					$$ = &RangeVar {
+						SchemaName: $1,
+						RelationName: $3,
+						Alias: "",
+					}
+				}
+			// | ColId indirection
+			// 	{
+			// 		$$ = makeRangeVarFromQualifiedName($1, $2, @1, yyscanner);
+			// 	}
+		;
+
+
 from_clause:
 			FROM from_list							{ $$ = $2; }
 			| /*EMPTY*/								{ }
@@ -1406,21 +1495,16 @@ from_list:
 		;
 
 relation_expr:
-			any_id {
-                $$ = &RangeVar {
-                    SchemaName: "",
-                    RelationName: $1,
-                    Alias: "",
-                }
-            }
-            | any_id TDOT any_id {
-                $$ = &RangeVar {
-                    SchemaName: $1,
-                    RelationName: $3,
-                    Alias: "",
-                }
-            }
-        ;
+			qualified_name
+				{
+					/* inheritance query, implicitly */
+					$$ = $1;
+				}
+			// | extended_relation_expr
+			// 	{
+			// 		$$ = $1;
+			// 	}
+		;
 
 alias_clause:
     AS any_id {
@@ -1632,6 +1716,24 @@ insert_col_refs:
     }
 
 
+opt_column_list:
+			TOPENBR columnList TCLOSEBR				{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+
+columnElem: ColId
+				{
+					$$ = $1
+				}
+		;
+
+columnList:
+			columnElem								{ $$ = []string{$1}; }
+			| columnList TCOMMA columnElem				{ $$ = append($1, $3); }
+		;
+
+
 opt_insert_col_refs:
     /* nothing */ {
 		$$ = nil
@@ -1731,15 +1833,183 @@ delete_stmt:
         }
     }
 
+
+opt_boolean_or_string:
+			TRUE_P									{  }
+			| FALSE_P								{}
+			| ON									{ }
+			/*
+			 * OFF is also accepted as a boolean value, but is handled by
+			 * the NonReservedWord rule.  The action for booleans and strings
+			 * is the same, so we don't need to distinguish them here.
+			 */
+			| SCONST				{  }
+		;
+
+opt_binary:
+			BINARY
+				{
+				}
+			| /*EMPTY*/								{  }
+		
+
+/* new COPY option syntax */
+copy_gengeneric_opt_list:
+			copy_gengeneric_opt_elem
+				{
+					$$ = []string{$1};
+				}
+			| copy_gengeneric_opt_list TCOMMA copy_gengeneric_opt_elem
+				{
+					$$ = append($1, $3);
+				}
+		;
+
+copy_gengeneric_opt_elem:
+			ColLabel copy_generic_opt_arg
+				{
+
+				}
+		;
+
+copy_generic_opt_arg:
+			opt_boolean_or_string			{  }
+			// | NumericOnly					{  }
+			| TMUL							{  }
+			| TOPENBR copy_generic_opt_arg_list TCLOSEBR		{ }
+			| /* EMPTY */					{  }
+		;
+
+copy_generic_opt_arg_list:
+			  copy_generic_opt_arg_list_item
+				{
+					$$ = []string{$1};
+				}
+			| copy_generic_opt_arg_list TCOMMA copy_generic_opt_arg_list_item
+				{
+					$$ = append($1, $3);
+				}
+		;
+
+/* beware of emitting non-string list elements here; see commands/define.c */
+copy_generic_opt_arg_list_item:
+			opt_boolean_or_string	{  }
+		;
+
+
+copy_options: copy_opt_list							{ $$ = $1; }
+			| TOPENBR copy_generic_opt_list TCLOSEBR			{ $$ = $2; }
+		;
+
+/* old COPY option syntax */
+copy_opt_list:
+			copy_opt_list copy_opt_item				{ $$ = append($1, $2); }
+			| /* EMPTY */							{ $$ = nil; }
+		;
+
+opt_as:		AS
+			| /* EMPTY */
+		;
+
+copy_opt_item:
+			BINARY
+				{
+				}
+			| FREEZE
+				{
+				}
+			| DELIMITER opt_as SCONST
+				{
+				}
+			| NULL_P opt_as SCONST
+				{
+				}
+			| CSV
+				{
+				}
+			| HEADER_P
+				{
+				}
+			| QUOTE opt_as SCONST
+				{
+				}
+			| ESCAPE opt_as SCONST
+				{
+				}
+			| FORCE QUOTE columnList
+				{
+				}
+			| FORCE QUOTE TMUL
+				{
+				}
+			| FORCE NOT NULL_P columnList
+				{
+				}
+			| FORCE NULL_P columnList
+				{
+				}
+			| ENCODING SCONST
+				{
+				}
+		;
+
+
+copy_from:
+			FROM									{ $$ = true; }
+			| TO									{ $$ = false; }
+		;
+
+opt_program:
+			PROGRAM									{ $$ = true; }
+			| /* EMPTY */							{ $$ = false; }
+		;
+
+opt_with:	WITH_LA
+			| /*EMPTY*/
+		;
+
+copy_file_name:
+			SCONST									{ }
+			| STDIN									{  }
+			| STDOUT								{  }
+		;
+
+
+copy_delimiter:
+			opt_using DELIMITERS SCONST
+				{
+				}
+			| /*EMPTY*/								{ }
+		;
+
+
+PreparableStmt:
+			select_stmt
+			| insert_stmt
+			| update_stmt
+			| delete_stmt
+		;
+
 /* https://www.postgresql.org/docs/current/sql-copy.html */
 copy_stmt: 
-    COPY relation_expr opt_comma_separated_col_refs TO STDOUT where_clause {
-        $$ = &Copy {
-            TableRef: $2,
-            Where: $6,
-            IsFrom: false,
-        }   
-    }
+	COPY opt_binary qualified_name opt_column_list
+			copy_from opt_program copy_file_name copy_delimiter opt_with
+			copy_options where_clause {
+				$$ = &Copy {
+					TableRef: $3,
+					Where: $11,
+					IsFrom: $5,
+				}   
+		}
+		| COPY TOPENBR PreparableStmt TCLOSEBR TO opt_program copy_file_name opt_with copy_options
+				{
+					$$ = &Copy {
+						IsFrom: false,
+						SubStmt: $3,
+					}   
+				}
+		;
+
 
 %%
 
