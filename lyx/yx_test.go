@@ -1180,17 +1180,23 @@ func TestCopy(t *testing.T) {
 		{
 			query: "COPY (SELECT * FROM country WHERE country_name = 'R') TO  STDOUT",
 			exp: &lyx.Copy{
-				TableRef: &lyx.RangeVar{
-					RelationName: "xx",
-				},
-				Where: &lyx.AExprOp{
-					Left: &lyx.ColumnRef{
-						ColName: "id",
+				IsFrom: false,
+				SubStmt: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprEmpty{},
 					},
-					Right: &lyx.AExprConst{
-						Value: "1",
+					FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+						RelationName: "country",
+					}},
+					Where: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "country_name",
+						},
+						Right: &lyx.AExprConst{
+							Value: "R",
+						},
+						Op: "=",
 					},
-					Op: "=",
 				},
 			},
 			err: nil,
