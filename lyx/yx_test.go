@@ -1559,6 +1559,11 @@ func TestMisc(t *testing.T) {
 			err:   nil,
 		},
 		{
+			query: "drop table xx;",
+			exp:   &lyx.Drop{},
+			err:   nil,
+		},
+		{
 			query: "analyze xx;",
 			exp:   &lyx.Analyze{},
 			err:   nil,
