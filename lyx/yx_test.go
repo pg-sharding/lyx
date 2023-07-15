@@ -508,6 +508,52 @@ func TestSelectMultipleRelations(t *testing.T) {
 	}
 }
 
+func TestSelectBetween(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "SELECT * FROM xxmixed WHERE id BETWEEN 21 AND 22 ORDER BY id;",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "xxmixed",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "id",
+					},
+					Right: &lyx.AExprList{
+						List: []lyx.Node{
+							&lyx.AExprConst{
+								Value: "21",
+							},
+							&lyx.AExprConst{
+								Value: "22",
+							},
+						},
+					},
+					Op: "BETWEEN",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+	}
+}
+
 func TestSelectAlias(t *testing.T) {
 	assert := assert.New(t)
 

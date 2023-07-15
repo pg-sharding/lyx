@@ -182,6 +182,12 @@ Operator:
 /* DOCUMENT_P */
 %token<str> DOCUMENT_P
 
+/* ASYMMETRIC */
+%token<str> ASYMMETRIC
+
+/* order by  */
+%token<str> ASC DESC NULLS_LA FIRST_P LAST_P
+
 /* */
 %token<str> TO STDOUT
 
@@ -329,7 +335,7 @@ Operator:
 
 
 /* unroutable query parts */
-%type<str> opt_group_by_clause opt_window_clause opt_order_by_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
+%type<str> opt_group_by_clause opt_window_clause sort_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 
 %start any_command
 
@@ -625,6 +631,9 @@ expr_list:	a_expr
 				}
 		;
 
+opt_asymmetric: ASYMMETRIC
+			| /*EMPTY*/
+		;
 
 array_expr: TSQOPENBR expr_list TSQCLOSEBR
 				{
@@ -996,14 +1005,19 @@ a_expr:
                         Op: $3,
                     } 
                 }
-			// | a_expr BETWEEN opt_asymmetric b_expr AND a_expr		%prec BETWEEN
-			// 	{
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_BETWEEN,
-			// 									   "BETWEEN",
-			// 									   $1,
-			// 									   (Node *) list_make2($4, $6),
-			// 									   @2);
-			// 	}
+			| a_expr BETWEEN opt_asymmetric b_expr AND a_expr		%prec BETWEEN
+				{
+                     $$ = &AExprOp{
+                        Left: $1,
+                        Right: &AExprList{
+							List: []Node{
+								$4,
+								$6,
+							},
+						},
+                        Op: "BETWEEN",
+                    }
+				}
 			// | a_expr NOT_LA BETWEEN opt_asymmetric b_expr AND a_expr %prec NOT_LA
 			// 	{
 			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_NOT_BETWEEN,
@@ -1159,33 +1173,35 @@ ColRef:
 
 
 b_expr:
-            TPLUS a_expr					//%prec UMINUS
-				{ /* result not matter */ }
-			| TMINUS a_expr					//%prec UMINUS
+			c_expr
+				{ $$ = $1; }
+			| TPLUS b_expr					//%prec UMINUS
+				{ $$ = $2; }
+			| TMINUS b_expr					//%prec UMINUS
+					{ $$ = $2; }
+			| b_expr TPLUS b_expr
 					{ /* result not matter */ }
-			| a_expr TPLUS a_expr
+			| b_expr TMINUS b_expr
 					{ /* result not matter */ }
-			| a_expr TMINUS a_expr
+			| b_expr TMUL b_expr
 					{ /* result not matter */ }
-			| a_expr TMUL a_expr
+			| b_expr TDIV b_expr
 					{ /* result not matter */ }
-			| a_expr TDIV a_expr
-					{ /* result not matter */ }
-			| a_expr TMOD a_expr
+			| b_expr TMOD b_expr
 				    { /* result not matter */ }
-			| a_expr TPOW a_expr
+			| b_expr TPOW b_expr
 				    { /* result not matter */ }
-			| a_expr TLESS a_expr
+			| b_expr TLESS b_expr
 				    { /* result not matter */ }
-			| a_expr TGREATER a_expr
+			| b_expr TGREATER b_expr
 				    { /* result not matter */ }
-			| a_expr TEQ a_expr
+			| b_expr TEQ b_expr
 				    { /* result not matter */ }
-			| a_expr TLESS_EQUALS a_expr
+			| b_expr TLESS_EQUALS b_expr
 				    { /* result not matter */ }
-			| a_expr TGREATER_EQUALS a_expr
+			| b_expr TGREATER_EQUALS b_expr
 				    { /* result not matter */ }
-			| a_expr TNOT_EQUALS a_expr
+			| b_expr TNOT_EQUALS b_expr
 				    { /* result not matter */ }
             | func_expr {/* result not matter */}
 
@@ -1394,9 +1410,49 @@ truncate_stmt:
     }
 
 
+
+opt_asc_desc: ASC							{  }
+			| DESC							{  }
+			| /*EMPTY*/						{ }
+		;
+
+
+opt_nulls_order: NULLS_LA FIRST_P			{}
+			| NULLS_LA LAST_P				{ }
+			| /*EMPTY*/						{  }
+		;
+
+
+
+opt_sort_clause:
+			sort_clause								{  }
+			| /*EMPTY*/								{  }
+		;
+
+sort_clause:
+			ORDER BY sortby_list					{  }
+		;
+
+sortby_list:
+			sortby									{ }
+			| sortby_list TCOMMA sortby				{ }
+		;
+
+sortby:
+// sortby:		a_expr USING qual_all_Op opt_nulls_order
+// 				{
+// 				}
+//          |
+			 a_expr opt_asc_desc opt_nulls_order
+				{
+				/* no operator */
+				}
+		;
+
+
+
 opt_group_by_clause: /*empty*/ {} | GROUP BY anything {}
 opt_window_clause:  /*empty*/ {} |WINDOW anything {}
-opt_order_by_clause:  /*empty*/ {} |ORDER BY anything {}
 opt_limit_clause: /*empty*/ {} | LIMIT anything {}
 opt_offset_clause: /*empty*/ {} | OFFSET anything {}
 opt_fetch_clause: /*empty*/ {} | FETCH anything {}
@@ -1687,7 +1743,7 @@ joined_table:
 
 /* https://www.postgresql.org/docs/current/sql-select.html */
 select_stmt:
-	SELECT target_list from_clause where_clause opt_group_by_clause opt_window_clause opt_order_by_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
+	SELECT target_list from_clause where_clause opt_group_by_clause opt_window_clause opt_sort_clause opt_limit_clause opt_sort_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 	{
 		$$ = &Select{
             FromClause: $3,
