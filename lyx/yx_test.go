@@ -1583,12 +1583,49 @@ func TestMisc(t *testing.T) {
 			exp:   nil,
 			err:   nil,
 		},
+		{
+			query: "begin;",
+			exp:   &lyx.Begin{},
+			err:   nil,
+		},
+		{
+			query: "rollback;",
+			exp:   &lyx.Rollback{},
+			err:   nil,
+		},
+		{
+			query: "commit;",
+			exp:   &lyx.Commit{},
+			err:   nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
 		assert.Equal(tt.exp, tmp)
+	}
+}
+
+func TestErrors(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "SELECT * FROM sshjt1 a join sshjt1 b WHERE a.i = 12 ON TRUE;",
+			exp:   nil,
+			err:   nil,
+		},
+	} {
+		_, err := lyx.Parse(tt.query)
+
+		assert.Error(err, "query %s", tt.query)
 	}
 }
 
