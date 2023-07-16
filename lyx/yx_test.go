@@ -1622,6 +1622,11 @@ func TestErrors(t *testing.T) {
 			exp:   nil,
 			err:   nil,
 		},
+		{
+			query: "SELECT * FROM x WHERE ixxxd = 1 iuwehiuhweui;",
+			exp:   nil,
+			err:   nil,
+		},
 	} {
 		_, err := lyx.Parse(tt.query)
 

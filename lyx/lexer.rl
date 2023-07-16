@@ -1,10 +1,5 @@
 package lyx
 
-import (
-	"bufio"
-	"fmt"
-)
-
 %%{ 
     machine lexer;
     write data;
@@ -30,25 +25,11 @@ func NewLexer(data []byte) *Lexer {
     return lex
 }
 
-
-func Run(scanner *bufio.Scanner) {
-	for scanner.Scan() {
-		l := scanner.Text()
-
-		tt := NewLexer([]byte(l))
-		ySym := new(yySymType)
-		for {
-			v := tt.Lex(ySym)
-			if v == 0 {
-				fmt.Println("end")
-                break;
-			} else {
-				fmt.Printf("token type %d\n", v)
-			}
-		}
-	}
+func ResetLexer(lex *Lexer, data []byte) {
+    lex.pe = len(data)
+    lex.data = data
+    %% write init;
 }
-
 
 func (l *Lexer) Error(msg string) {
 	println(msg)

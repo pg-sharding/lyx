@@ -14,6 +14,14 @@ func randomHex(n int) (string, error) {
 	}
 	return hex.EncodeToString(bytes), nil
 }
+
+
+type LyxParser yyParser
+
+func NewLyxParser() LyxParser {
+	return yyNewParser()
+}
+
 %}
 
 // fields inside this union end up as the fields in a structure known
