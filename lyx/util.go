@@ -35,6 +35,11 @@ func (t *Tokenizer) LexT() int {
 	return t.l.Lex(new(yySymType))
 }
 
+func (t *Tokenizer) Reset(sql string) {
+	t.s = sql
+	ResetLexer(t.l, []byte(sql))
+}
+
 func setParseTree(yylex interface{}, stmt Node) {
 	yylex.(*Tokenizer).ParseTree = stmt
 }
@@ -45,5 +50,14 @@ func Parse(sql string) (Node, error) {
 		return nil, errors.New(tokenizer.LastError + fmt.Sprintf(" on pos %d", tokenizer.l.ts))
 	}
 	ast := tokenizer.ParseTree
+	return ast, nil
+}
+
+func ParseWithLexerParser(l LyxParser, t *Tokenizer, sql string) (Node, error) {
+	t.Reset(sql)
+	if l.Parse(t) != 0 {
+		return nil, errors.New(t.LastError + fmt.Sprintf(" on pos %d", t.l.ts))
+	}
+	ast := t.ParseTree
 	return ast, nil
 }
