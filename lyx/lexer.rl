@@ -59,12 +59,11 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 #        space		=	[ \t\n\r\f];
         horiz_space	= [ \t\f];
         newline		=	[\n\r];
-#        non_newline	=	[^\n\r];
+        non_newline	=	[^\n\r];
 
-#        comment		=	("--"{non_newline}*);
-
-
-        comment		= '/''*' (any - '*''/')* '*''/';
+        sql_comment = '-''-' non_newline*;
+        c_style_comment = '/''*' (any - '*''/')* '*''/';
+        comment		= sql_comment | c_style_comment;
 
 
 #       whitespace	=	({space}+|{comment});

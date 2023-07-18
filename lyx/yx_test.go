@@ -1584,6 +1584,81 @@ func TestMisc(t *testing.T) {
 			err:   nil,
 		},
 		{
+			query: "-- comment",
+			exp:   nil,
+			err:   nil,
+		},
+		{
+			query: "/* comment */",
+			exp:   nil,
+			err:   nil,
+		},
+
+		{
+			query: "select 11 /* comment */",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprConst{Value: "11"}},
+				Where:      &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
+		{
+			query: "SELECT  * FROM delivery  JOIN  /* comment */ orders ON order_id = id;",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "delivery",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "orders",
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
+		{
+			query: "SELECT  * FROM delivery  JOIN  /* comment */ orders ON order_id = id;-- ololol",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "delivery",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "orders",
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+		{
+			query: "SELECT /* comment */  * FROM delivery  JOIN  orders ON order_id = id;",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "delivery",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "orders",
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+		{
 			query: "begin;",
 			exp:   &lyx.Begin{},
 			err:   nil,
