@@ -178,6 +178,19 @@ Operator:
 /* ARRAY  */
 %token<str> ARRAY 
 
+/* ROW  */
+%token<str> ROW 
+
+/* TYPES */ 
+%token<str> SETOF INT_P  INTEGER  SMALLINT BIGINT REAL  FLOAT_P DOUBLE_P DECIMAL_P  DEC NUMERIC BOOLEAN_P BIT
+
+/* TYPES */ 
+%token<str> YEAR_P MONTH_P DAY_P HOUR_P MINUTE_P SECOND_P
+
+%token<str> CHARACTER CHAR_P VARCHAR NATIONAL NCHAR
+
+%token<str> PRECISION  VARYING TIMESTAMP TIME INTERVAL WITHOUT ZONE
+
 /* IS NOT NULL */
 %token<str> IS NOT NULL DISTINCT DEFAULT
 
@@ -280,6 +293,10 @@ Operator:
 %type<str> TableFuncElement
 %type<strlist> TableFuncElementList OptTableFuncElementList
 
+/*  TYPES */
+%type<str>  interval_second opt_interval opt_timezone ConstInterval ConstDatetime opt_varying character CharacterWithoutLength CharacterWithLength ConstCharacter Character
+%type<str>  BitWithoutLength BitWithLength ConstBit Bit opt_float Numeric opt_type_modifiers  GenericType ConstTypename SimpleTypename opt_array_bounds Typename
+%type<str> type_function_name
 
 /* Precedence: lowest to highest */
 %nonassoc	SET				/* see relation_expr_opt_alias */
@@ -428,6 +445,10 @@ reserved_keyword:
     | TGREATER_EQUALS {$$=$1}
     | TNOT_EQUALS {$$=$1}
     | OP {$$=$1}
+	| INT_P {$$=$1}
+	| FLOAT_P {$$=$1}
+	| DOUBLE_P {$$=$1}
+	| INTEGER {$$=$1}
 
 any_tok:
     reserved_keyword {$$=$1} | SCONST {$$=$1} |  IDENT {$$=$1} 
@@ -516,6 +537,375 @@ operator:
     } | OP {
         $$ = $1
     }
+
+
+/*****************************************************************************
+ *
+ *	Type syntax
+ *		SQL introduces a large amount of type-specific syntax.
+ *		Define individual clauses to handle these cases, and use
+ *		 the generic case to handle regular type-extensible Postgres syntax.
+ *		- thomas 1997-10-10
+ *
+ *****************************************************************************/
+
+Typename:	SimpleTypename opt_array_bounds
+				{
+					$$ = $1
+				}
+			| SETOF SimpleTypename opt_array_bounds
+				{
+					$$ = $2
+				}
+			/* SQL standard syntax, currently only one-dimensional */
+			| SimpleTypename ARRAY TSQOPENBR SCONST  TSQCLOSEBR
+				{
+					$$ = $1
+				}
+			| SETOF SimpleTypename ARRAY TSQOPENBR SCONST  TSQCLOSEBR
+				{
+					$$ = $2
+				}
+			| SimpleTypename ARRAY
+				{
+
+					$$ = $1
+				}
+			| SETOF SimpleTypename ARRAY
+				{
+					$$ = $2
+				}
+		;
+
+
+opt_array_bounds:
+			opt_array_bounds TSQOPENBR TSQCLOSEBR
+					{ }
+			| opt_array_bounds TSQOPENBR SCONST TSQCLOSEBR
+					{  }
+			| /*EMPTY*/
+					{  }
+		;
+
+SimpleTypename:
+			GenericType								{ 
+					$$ = $1 }
+			| Numeric								{ 
+					$$ = $1 }
+			| Bit									{
+					$$ = $1 }
+			| Character								{ 
+					$$ = $1}
+			| ConstDatetime							{ 
+					$$ = $1}
+			| ConstInterval opt_interval
+				{
+
+				}
+			| ConstInterval TOPENBR SCONST  TCLOSEBR
+				{
+
+				}
+		;
+/* We have a separate ConstTypename to allow defaulting fixed-length
+ * types such as CHAR() and BIT() to an unspecified length.
+ * SQL9x requires that these default to a length of one, but this
+ * makes no sense for constructs like CHAR 'hi' and BIT '0101',
+ * where there is an obvious better choice to make.
+ * Note that ConstInterval is not included here since it must
+ * be pushed up higher in the rules to accommodate the postfix
+ * options (e.g. INTERVAL '1' YEAR). Likewise, we have to handle
+ * the generic-type-name case in AExprConst to avoid premature
+ * reduce/reduce conflicts against function names.
+ */
+ConstTypename:
+			Numeric									{ $$ = $1; }
+			| ConstBit								{ $$ = $1; }
+			| ConstCharacter						{ $$ = $1; }
+			| ConstDatetime							{ $$ = $1; }
+		;
+
+
+type_function_name:	IDENT							{ 
+					$$ = $1}
+
+
+/*
+ * GenericType covers all type names that don't have special syntax mandated
+ * by the standard, including qualified names.  We also allow type modifiers.
+ * To avoid parsing conflicts against function invocations, the modifiers
+ * have to be shown as expr_list here, but parse analysis will only accept
+ * constants for them.
+ */
+GenericType:
+			type_function_name opt_type_modifiers
+				{
+
+					$$ = $1
+				}
+			// | type_function_name attrs opt_type_modifiers
+			// 	{
+			// 	}
+		;
+
+opt_type_modifiers: TOPENBR expr_list TCLOSEBR				{ }
+					| /* EMPTY */					{ }
+		;
+
+/*
+ * SQL numeric data types
+ */
+Numeric:	INT_P
+				{
+				
+					$$ = $1
+				}
+			| INTEGER
+				{
+					$$ = $1
+				}
+			| SMALLINT
+				{
+					$$ = $1
+				}
+			| BIGINT
+				{
+					$$ = $1
+				}
+			| REAL
+				{
+					$$ = $1
+				}
+			| FLOAT_P opt_float
+				{
+					$$ = $1
+				}
+			| DOUBLE_P PRECISION
+				{
+					$$ = $1
+				}
+			| DECIMAL_P opt_type_modifiers
+				{
+					$$ = $1
+				}
+			| DEC opt_type_modifiers
+				{
+					$$ = $1
+				}
+			| NUMERIC opt_type_modifiers
+				{
+					$$ = $1
+				}
+			| BOOLEAN_P
+				{
+					$$ = $1
+				}
+		;
+
+opt_float:	TOPENBR SCONST TCLOSEBR
+				{
+					/*
+					 * Check FLOAT() precision limits assuming IEEE floating
+					 * types - thomas 1997-09-18
+					 */
+
+				}
+			| /*EMPTY*/
+				{
+				}
+		;
+
+/*
+ * SQL bit-field data types
+ * The following implements BIT() and BIT VARYING().
+ */
+Bit:		BitWithLength
+				{
+				}
+			| BitWithoutLength
+				{
+				}
+		;
+
+/* ConstBit is like Bit except "BIT" defaults to unspecified length */
+/* See notes for ConstCharacter, which addresses same issue for "CHAR" */
+ConstBit:	BitWithLength
+				{
+				}
+			| BitWithoutLength
+				{
+				}
+		;
+
+BitWithLength:
+			BIT opt_varying TOPENBR expr_list TCLOSEBR
+				{
+
+				}
+		;
+
+BitWithoutLength:
+			BIT opt_varying
+				{
+					/* bit defaults to bit(1), varbit to no limit */
+
+				}
+		;
+
+/*
+ * SQL character data types
+ * The following implements CHAR() and VARCHAR().
+ */
+Character:  CharacterWithLength
+				{
+				}
+			| CharacterWithoutLength
+				{
+				}
+		;
+
+ConstCharacter:  CharacterWithLength
+				{
+				}
+			| CharacterWithoutLength
+				{
+					/* Length was not specified so allow to be unrestricted.
+					 * This handles problems with fixed-length (bpchar) strings
+					 * which in column definitions must default to a length
+					 * of one, but should not be constrained if the length
+					 * was not specified.
+					 */
+
+				}
+		;
+
+
+CharacterWithLength:  character TOPENBR SCONST TCLOSEBR
+				{
+
+				}
+		;
+
+CharacterWithoutLength:	 character
+				{
+					/* char defaults to char(1), varchar to no limit */
+
+				}
+		;
+
+
+character:	CHARACTER opt_varying
+										{  }
+			| CHAR_P opt_varying
+										{ }
+			| VARCHAR
+										{ }
+			| NATIONAL CHARACTER opt_varying
+										{  }
+			| NATIONAL CHAR_P opt_varying
+										{  }
+			| NCHAR opt_varying
+										{ }
+		;
+
+opt_varying:
+			VARYING									{ }
+			| /*EMPTY*/								{ }
+		;
+
+/*
+ * SQL date/time types
+ */
+
+ConstDatetime:
+			TIMESTAMP TOPENBR SCONST /* Iconst */ TCLOSEBR opt_timezone
+				{
+
+				}
+			| TIMESTAMP opt_timezone
+				{
+
+				}
+			| TIME TOPENBR SCONST /* Iconst */ TCLOSEBR opt_timezone
+				{
+
+				}
+			| TIME opt_timezone
+				{
+
+				}
+		;
+
+
+ConstInterval:
+			INTERVAL
+				{
+
+				}
+		;
+
+opt_timezone:
+			WITH_LA TIME ZONE						{  }
+			| WITHOUT TIME ZONE						{  }
+			| /*EMPTY*/								{  }
+		;
+
+opt_interval:
+			YEAR_P
+				{  }
+			| MONTH_P
+				{ }
+			| DAY_P
+				{ }
+			| HOUR_P
+				{  }
+			| MINUTE_P
+				{  }
+			| interval_second
+				{  }
+			| YEAR_P TO MONTH_P
+				{
+			
+				}
+			| DAY_P TO HOUR_P
+				{
+		
+				}
+			| DAY_P TO MINUTE_P
+				{
+	
+				}
+			| DAY_P TO interval_second
+				{
+		
+				}
+			| HOUR_P TO MINUTE_P
+				{
+		
+				}
+			| HOUR_P TO interval_second
+				{
+
+				}
+			| MINUTE_P TO interval_second
+				{
+
+				}
+			| /*EMPTY*/
+				{ }
+		;
+
+interval_second:
+			SECOND_P
+				{
+				}
+			| SECOND_P TOPENBR SCONST /* Iconst */ TCLOSEBR
+				{
+				}
+		;
+
+
+
 
 /*
  * General expressions
@@ -657,6 +1047,11 @@ array_expr: TSQOPENBR expr_list TSQCLOSEBR
 				}
 		;
 
+explicit_row:	ROW TOPENBR expr_list TCLOSEBR				{  }
+			| ROW TOPENBR TCLOSEBR							{  }
+		;
+
+
 implicit_row:	TOPENBR expr_list TCOMMA a_expr TCLOSEBR		{  }
 		;
 
@@ -675,11 +1070,12 @@ c_expr:		AexprConst {
 				{
 				}
 			| implicit_row {} 
+			| explicit_row {}
 
 a_expr:		
             c_expr									{ $$ = $1; }
-			// | a_expr TYPECAST Typename
-			// 		{ $$ = makeTypeCast($1, $3, @2); }
+			| a_expr TYPECAST Typename
+					{  }
 			// | a_expr COLLATE any_name
 			// 	{
 			// 		CollateClause *n = makeNode(CollateClause);
@@ -1339,7 +1735,7 @@ opt_ref:
     REFERENCES any_id TOPENBR any_id TCLOSEBR {}
 
 create_stmt_coldefs:
-    IDENT IDENT opt_pk {
+    IDENT Typename opt_pk {
         $$ = []TableElt {{
                 ColName: $1,
                 ColType: $2,

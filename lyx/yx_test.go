@@ -932,6 +932,61 @@ func TestInsert(t *testing.T) {
 			},
 			err: nil,
 		},
+
+		/* Explicit row */
+		{
+			query: `
+			INSERT INTO lol.kek
+(
+ id,
+ info
+ )
+VALUES(2822, ROW('none', '0'));
+`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "kek",
+					SchemaName:   "lol",
+					Alias:        "",
+				},
+				Values: []lyx.Node{
+					&lyx.AExprConst{
+						Value: "2822",
+					},
+					nil,
+				},
+				Columns:   []string{"id", "info"},
+				SubSelect: nil,
+			},
+			err: nil,
+		},
+		{
+			query: `
+			INSERT INTO lol.kek
+(
+ id,
+ info,
+ bytes
+ )
+VALUES(2822, ROW('none', '0'), ''::bytea);
+`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "kek",
+					SchemaName:   "lol",
+					Alias:        "",
+				}, Values: []lyx.Node{
+					&lyx.AExprConst{
+						Value: "2822",
+					},
+					nil,
+					&lyx.AExprConst{
+						Value: "",
+					},
+				}, Columns: []string{"id", "info", "bytes"},
+				SubSelect: nil},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 

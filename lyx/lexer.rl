@@ -83,6 +83,43 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             comment => {/* nothing */};
             integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
+            '::' =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPECAST; fbreak;};
+
+            /setof/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SETOF; fbreak;};
+            /int/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INT_P; fbreak;};
+            /integer/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INTEGER; fbreak;};
+            /smallint/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SMALLINT; fbreak;};
+            /bigint/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BIGINT; fbreak;};
+            /real/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = REAL; fbreak;};
+            /float/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FLOAT_P; fbreak;};
+            /double/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DOUBLE_P; fbreak;};
+            /decimal/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DECIMAL_P; fbreak;};
+            /dec/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEC; fbreak;};
+            /numeric/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NUMERIC; fbreak;};
+            /boolean/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BOOLEAN_P; fbreak;};
+            /bit/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BIT; fbreak;};
+            
+            /year/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = YEAR_P; fbreak;};
+            /month/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MONTH_P; fbreak;};
+            /day/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DAY_P; fbreak;};
+            /hour/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = HOUR_P; fbreak;};
+            /minute/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MINUTE_P; fbreak;};
+            /second/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SECOND_P; fbreak;};
+
+
+            /character/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHARACTER; fbreak;};
+            /char/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHAR_P; fbreak;};
+            /varchar/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = VARCHAR; fbreak;};
+            /national/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NATIONAL; fbreak;};
+            /nchar/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NCHAR; fbreak;};
+
+
+            /without/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITHOUT; fbreak;};
+            /time/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TIME; fbreak;};
+            /zone/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; fbreak;};
+
+
+
             /select/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SELECT; fbreak;};
             /insert/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INSERT; fbreak;};
             /into/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INTO; fbreak;};
@@ -135,7 +172,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
 
             /array/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ARRAY; fbreak;};
-
+            # explicit row for c_expr 
+            /row/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROW; fbreak;};
 
             /join/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = JOIN; fbreak;};
             /cross/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CROSS; fbreak;};
