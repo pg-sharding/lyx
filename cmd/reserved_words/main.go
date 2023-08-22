@@ -25,17 +25,27 @@ func main() {
 	}
 	defer f.Close()
 
+	temPar := strings.SplitAfter(gramParts[0], `/* SQL */`)
+	keyWords := getReservedWords(directory)
+	exists := getTypedTokens(bytes)
+
 	err = f.Truncate(0)
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = f.WriteString(gramParts[0])
+	_, err = f.WriteString(temPar[0])
 	if err != nil {
 		panic(err)
 	}
 
-	keyWords := getReservedWords(directory)
+	writeTypedTokens(exists, keyWords, f)
+
+	_, err = f.WriteString(temPar[1])
+	if err != nil {
+		panic(err)
+	}
+
 	num := 0
 	for word := range keyWords {
 		if num == 0 {
@@ -69,6 +79,10 @@ func main() {
 		num++
 	}
 
+	printDiff(old, keyWords, directory)
+}
+
+func printDiff(old map[string]struct{}, keyWords map[string]struct{}, directory string) {
 	fmt.Println("Removed: ")
 	for k := range old {
 		if _, ok := keyWords[k]; !ok {
@@ -92,8 +106,26 @@ func main() {
 	}
 }
 
+func writeTypedTokens(exists map[string]struct{}, keyWords map[string]struct{}, f *os.File) {
+	if len(exists) < len(keyWords) {
+		_, err := f.WriteString("\n/* generated */\n%token<str> ")
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	for word := range keyWords {
+		if _, ok := exists[word]; ok {
+			continue
+		}
+		_, err := f.WriteString(word + " ")
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
 func getReservedWords(directory string) map[string]struct{} {
-	nonKey := getOperations(directory)
 	b, err := ioutil.ReadFile(directory + "/lyx/gram.go")
 	if err != nil {
 		panic(err)
@@ -114,37 +146,29 @@ func getReservedWords(directory string) map[string]struct{} {
 			continue
 		}
 
-		if _, ok := nonKey[word]; ok {
-			continue
-		}
 		keyWords[word] = struct{}{}
 	}
 
 	return keyWords
 }
 
-func getOperations(directory string) map[string]struct{} {
-	b, err := ioutil.ReadFile(directory + "/lyx/gram.y")
-	if err != nil {
-		panic(err)
-	}
-
+func getTypedTokens(b []byte) map[string]struct{} {
 	operations := make(map[string]struct{})
 
 	temp := strings.Split(string(b), "\n")
 
 	for _, el := range temp {
-		if !(strings.Contains(el, `%right`) || strings.Contains(el, `%left`) || strings.Contains(el, `%nonassoc`)) {
+		if !strings.Contains(el, "%token<str>") {
 			continue
 		}
 
 		parts := strings.Split(strings.ReplaceAll(strings.Split(el, `/*`)[0], "	", " "), " ")
 
 		for _, part := range parts {
-			if part == `%right` || part == `%left` || part == `%nonassoc` || part == `` {
+			if part == "%token<str>" || part == `` {
 				continue
 			}
-
+			fmt.Println(part)
 			operations[part] = struct{}{}
 		}
 	}
