@@ -1873,6 +1873,21 @@ func TestParams(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: "SELECT * FROM x WHERE i = $1",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{RelationName: "x"},
+				},
+				Where: &lyx.AExprOp{
+					Op:    "=",
+					Left:  &lyx.ColumnRef{ColName: "i"},
+					Right: &lyx.ParamRef{Number: 1},
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
