@@ -81,9 +81,19 @@ func main() {
 			fmt.Println(k)
 		}
 	}
+
+	lexertokens := getTokensFromLexer(directory)
+
+	fmt.Println("\nNot in lexer.rl: ")
+	for k := range keyWords {
+		if _, ok := lexertokens[k]; !ok {
+			fmt.Println(k)
+		}
+	}
 }
 
 func getReservedWords(directory string) map[string]struct{} {
+	nonKey := getOperations(directory)
 	b, err := ioutil.ReadFile(directory + "/lyx/gram.go")
 	if err != nil {
 		panic(err)
@@ -100,11 +110,75 @@ func getReservedWords(directory string) map[string]struct{} {
 
 		word := strings.Split(el, `"`)[1]
 
-		if strings.Compare(word, "$end") == 0 || strings.Compare(word, "error") == 0 || strings.Compare(word, "$unk") == 0 {
+		if strings.Compare(word, "$end") == 0 || strings.Compare(word, "error") == 0 || strings.Compare(word, "$unk") == 0 || strings.Compare(word, "copy_generic_opt_list") == 0 {
 			continue
 		}
 
+		if _, ok := nonKey[word]; ok {
+			continue
+		}
 		keyWords[word] = struct{}{}
+	}
+
+	return keyWords
+}
+
+func getOperations(directory string) map[string]struct{} {
+	b, err := ioutil.ReadFile(directory + "/lyx/gram.y")
+	if err != nil {
+		panic(err)
+	}
+
+	operations := make(map[string]struct{})
+
+	temp := strings.Split(string(b), "\n")
+
+	for _, el := range temp {
+		if !(strings.Contains(el, `%right`) || strings.Contains(el, `%left`) || strings.Contains(el, `%nonassoc`)) {
+			continue
+		}
+
+		parts := strings.Split(strings.ReplaceAll(strings.Split(el, `/*`)[0], "	", " "), " ")
+
+		for _, part := range parts {
+			if part == `%right` || part == `%left` || part == `%nonassoc` || part == `` {
+				continue
+			}
+
+			operations[part] = struct{}{}
+		}
+	}
+
+	return operations
+}
+
+func getTokensFromLexer(directory string) map[string]struct{} {
+	b, err := ioutil.ReadFile(directory + "/lyx/lexer.rl")
+	if err != nil {
+		panic(err)
+	}
+
+	keyWords := make(map[string]struct{})
+
+	for i, el := range strings.Split(string(b), "\n") {
+		if i == 0 || strings.Contains(el, "#") {
+			continue
+		}
+
+		tem := strings.Split(el, "tok = ")
+
+		if len(tem) == 1 {
+			continue
+		} else if len(tem) > 2 {
+			panic(fmt.Errorf("more than one token in string"))
+		}
+
+		tok := strings.Split(tem[1], ";")
+		str := tok[0]
+		if strings.Contains(tok[0], "(") {
+			str = strings.ReplaceAll(strings.Split(tok[0], "(")[1], ")", "")
+		}
+		keyWords[str] = struct{}{}
 	}
 
 	return keyWords
