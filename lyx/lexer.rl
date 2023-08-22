@@ -1,5 +1,9 @@
 package lyx
 
+import (
+    "strconv"
+)
+
 %%{ 
     machine lexer;
     write data;
@@ -48,6 +52,10 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 #        xcstop		=	\*+\/;
 #        xcinside	=	[^*/]+;
 
+        integer = digit+;
+        param = '$' integer;
+        
+
         ident_start	=	[A-Za-z\200-\377_];
         ident_cont	=	[A-Za-z\200-\377_0-9$];
 
@@ -73,7 +81,6 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         op_chars	=	( '~' | '!' | '@' | '#' | '^' | '&' | '|' | '`' | '?' | '+' | '-' | '*' | '\\' | '%' | '<' | '>' | '=' ) ;
         operator	=	op_chars+;
 
-        integer = digit+;
 
         sconst = '\'' (any-'\'')* '\'';
         
@@ -81,44 +88,56 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             whitespace => { /* do nothing */ };
             # integer const is string const 
             comment => {/* nothing */};
+            
+            # skip dollar, get only param number
+            param =>  {
+                i, _ := strconv.Atoi(string(lex.data[lex.ts+1:lex.te]))
+                lval.int = int(i); tok = PARAM; fbreak;
+            };
+
             integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
+
 
             '::' =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPECAST; fbreak;};
 
-            /setof/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SETOF; fbreak;};
-            /int/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INT_P; fbreak;};
-            /integer/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INTEGER; fbreak;};
-            /smallint/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SMALLINT; fbreak;};
-            /bigint/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BIGINT; fbreak;};
-            /real/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = REAL; fbreak;};
-            /float/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FLOAT_P; fbreak;};
-            /double/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DOUBLE_P; fbreak;};
-            /decimal/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DECIMAL_P; fbreak;};
-            /dec/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEC; fbreak;};
-            /numeric/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NUMERIC; fbreak;};
-            /boolean/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BOOLEAN_P; fbreak;};
-            /bit/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BIT; fbreak;};
+            /setof/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SETOF; fbreak;};
+            /int/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INT_P; fbreak;};
+            /integer/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INTEGER; fbreak;};
+            /smallint/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SMALLINT; fbreak;};
+            /bigint/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BIGINT; fbreak;};
+            /real/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = REAL; fbreak;};
+            /float/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FLOAT_P; fbreak;};
+            /double/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DOUBLE_P; fbreak;};
+            /decimal/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DECIMAL_P; fbreak;};
+            /dec/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEC; fbreak;};
+            /numeric/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NUMERIC; fbreak;};
+            /boolean/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BOOLEAN_P; fbreak;};
+            /bit/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BIT; fbreak;};
             
-            /year/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = YEAR_P; fbreak;};
-            /month/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MONTH_P; fbreak;};
-            /day/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DAY_P; fbreak;};
-            /hour/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = HOUR_P; fbreak;};
-            /minute/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MINUTE_P; fbreak;};
-            /second/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SECOND_P; fbreak;};
+            /year/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = YEAR_P; fbreak;};
+            /month/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MONTH_P; fbreak;};
+            /day/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DAY_P; fbreak;};
+            /hour/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = HOUR_P; fbreak;};
+            /minute/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MINUTE_P; fbreak;};
+            /second/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SECOND_P; fbreak;};
 
 
-            /character/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHARACTER; fbreak;};
-            /char/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHAR_P; fbreak;};
-            /varchar/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = VARCHAR; fbreak;};
-            /national/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NATIONAL; fbreak;};
-            /nchar/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NCHAR; fbreak;};
+            /character/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHARACTER; fbreak;};
+            /char/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHAR_P; fbreak;};
+            /varchar/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = VARCHAR; fbreak;};
+            /national/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NATIONAL; fbreak;};
+            /nchar/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NCHAR; fbreak;};
 
 
-            /without/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITHOUT; fbreak;};
-            /time/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TIME; fbreak;};
-            /zone/ => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; fbreak;};
+            /without/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITHOUT; fbreak;};
+            /time/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TIME; fbreak;};
+            /zone/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; fbreak;};
 
+            /if/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = IF_P; fbreak;};
 
+            /prepare/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = PREPARE; fbreak;};
+            /deallocate/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEALLOCATE; fbreak;};
+            /execute/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = EXECUTE; fbreak;};
 
             /select/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SELECT; fbreak;};
             /insert/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INSERT; fbreak;};

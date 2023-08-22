@@ -258,3 +258,28 @@ type Copy struct {
 }
 
 func (*Copy) iNode() {}
+
+type ParamRef struct {
+	Number int
+}
+
+func (*ParamRef) iNode() {}
+
+type PrepareStmt struct {
+	Name      string
+	Statement Node
+}
+
+func (*PrepareStmt) iNode() {}
+
+type ExecuteStmt struct {
+	Name string
+}
+
+func (*ExecuteStmt) iNode() {}
+
+type DeallocateStmt struct {
+	Name string
+}
+
+func (*DeallocateStmt) iNode() {}

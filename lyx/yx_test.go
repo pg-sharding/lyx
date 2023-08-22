@@ -1847,3 +1847,37 @@ func TestOperators(t *testing.T) {
 		assert.Equal(tt.exp, tmp)
 	}
 }
+
+func TestParams(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "PREPARE P(TEXT) AS SELECT $1",
+			exp: &lyx.PrepareStmt{
+				Name: "P",
+				Statement: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.ParamRef{
+							Number: 1,
+						},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}

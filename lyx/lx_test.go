@@ -27,6 +27,27 @@ func TestSimple(t *testing.T) {
 		},
 		{
 			query: `
+			14
+			`,
+			exp: []int{lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			$14
+			`,
+			exp: []int{lyx.PARAM},
+			err: nil,
+		},
+		{
+			query: `
+			'$14'
+			`,
+			exp: []int{lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
 			select /*jjiewjow****/1
 			`,
 			exp: []int{lyx.SELECT, lyx.SCONST},
@@ -62,6 +83,17 @@ func TestSimple(t *testing.T) {
 				lyx.SELECT, lyx.IDENT, lyx.TCOMMA,
 				lyx.IDENT, lyx.TOPENBR, lyx.IDENT, lyx.TCLOSEBR, lyx.AS, lyx.IDENT,
 				lyx.FROM, lyx.IDENT, lyx.GROUP, lyx.BY, lyx.IDENT, lyx.TSEMICOLON},
+			err: nil,
+		},
+		{
+			query: `
+			PREPARE P(TEXT) AS SELECT $1
+			`,
+			exp: []int{
+				lyx.PREPARE, lyx.IDENT,
+				lyx.TOPENBR, lyx.IDENT,
+				lyx.TCLOSEBR, lyx.AS, lyx.SELECT, lyx.PARAM,
+			},
 			err: nil,
 		},
 		{

@@ -41,8 +41,6 @@ func NewLyxParser() LyxParser {
     tableelt               []TableElt
     tableref               FromClauseNode
 
-    selectStmt              *Select
-
     nodeList              []Node
 }
 
@@ -66,6 +64,7 @@ func NewLyxParser() LyxParser {
 
 %type<from_list> from_clause from_list
 
+%type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
 
 %type<from> table_ref 
 %type<tableref> relation_expr joined_table
@@ -191,6 +190,12 @@ Operator:
 
 %token<str> PRECISION  VARYING TIMESTAMP TIME INTERVAL WITHOUT ZONE
 
+%token<str> IF_P DEALLOCATE EXISTS
+
+%token<str> DELETE_P OIDS PRESERVE TABLESPACE
+
+%token<int> PARAM
+
 /* IS NOT NULL */
 %token<str> IS NOT NULL DISTINCT DEFAULT
 
@@ -212,16 +217,20 @@ Operator:
 /* */
 %token<str> TO STDOUT
 
+%token<str> TEMPORARY GLOBAL TEMP UNLOGGED
+
 /* LATERAL */
 %token<str> LATERAL_P
 
 /* WITH_LA ORDINALITY */
-%token<str> ORDINALITY WITH_LA
+%token<str> ORDINALITY WITH_LA WITH
 
 /* COLLATE */
 %token<str> COLLATE
 
 %token<str> AS
+
+%token<str> DATA_P NO
 
 
 %type<str> reserved_keyword
@@ -229,17 +238,16 @@ Operator:
 
 /**/
 
-%type<node> execute_stmt
-%type<node> select_stmt
-%type<node> insert_stmt
-%type<node> update_stmt
-%type<node> delete_stmt
+%type<node> ExecuteStmt
+%type<node> SelectStmt
+%type<node> InsertStmt
+%type<node> UpdateStmt
+%type<node> DeleteStmt
+%type<node> PrepareStmt
 %type<node> varset_stmt
-%type<node> prepare_stmt
 %type<node> begin_stmt 
 %type<node> commit_stmt
 %type<node> rollback_stmt
-%type<node> prepare_stmt
 %type<node> create_stmt alter_stmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> truncate_stmt drop_stmt
@@ -265,7 +273,15 @@ Operator:
 
 %type<nodeList> expr_list
 
-%type<str> ColId
+%type<str> opt_with_data
+
+%type<str> ColId columnref
+
+%type<str> NonReservedWord name database_name access_method index_name
+
+%type<strlist> name_list 
+
+%type<str> reloptions reloption_list opt_reloptions
 
 %type<strlist> comma_separated_col_refs insert_col_refs
 
@@ -273,6 +289,8 @@ Operator:
 
 %type<strlist> opt_insert_col_refs columnList opt_column_list copy_gengeneric_opt_list copy_generic_opt_arg_list copy_opt_list
 %type<str> any_tok  columnElem copy_gengeneric_opt_elem copy_generic_opt_arg_list_item copy_opt_item
+
+%type<str> OptTemp
 
 %type<strlist> copy_options
 
@@ -297,6 +315,10 @@ Operator:
 %type<str>  interval_second opt_interval opt_timezone ConstInterval ConstDatetime opt_varying character CharacterWithoutLength CharacterWithLength ConstCharacter Character
 %type<str>  BitWithoutLength BitWithLength ConstBit Bit opt_float Numeric opt_type_modifiers  GenericType ConstTypename SimpleTypename opt_array_bounds Typename
 %type<str> type_function_name
+
+%type<str> type_list prep_type_clause
+
+%type<str> opt_indirection indirection opt_slice_bound indirection_el 
 
 /* Precedence: lowest to highest */
 %nonassoc	SET				/* see relation_expr_opt_alias */
@@ -421,7 +443,6 @@ reserved_keyword:
     | TCOMMA {$$=$1}
     | TCOLON {$$=$1}
     | ONLY {$$=$1}
-    | TSEMICOLON {$$=$1}
     | AS {$$=$1}
     | RETURNING {$$=$1}
     | KEY {$$=$1}
@@ -439,11 +460,6 @@ reserved_keyword:
     | TRUE_P {$$=$1}
     | FALSE_P {$$=$1}
     | ON {$$=$1}
-    | TLESS {$$=$1}
-    | TLESS_EQUALS {$$=$1}
-    | TGREATER {$$=$1}
-    | TGREATER_EQUALS {$$=$1}
-    | TNOT_EQUALS {$$=$1}
     | OP {$$=$1}
 	| INT_P {$$=$1}
 	| FLOAT_P {$$=$1}
@@ -472,11 +488,13 @@ command:
 		setParseTree(yylex, $1)
     } | rollback_stmt {
 		setParseTree(yylex, $1)
-    } | execute_stmt {
+    } | ExecuteStmt {
 		setParseTree(yylex, $1)
     } | varset_stmt {
 		setParseTree(yylex, $1)
-    } | prepare_stmt {
+    } | PrepareStmt {
+		setParseTree(yylex, $1)
+	} | DeallocateStmt {
 		setParseTree(yylex, $1)
     } | vacuum_stmt {
 		setParseTree(yylex, $1)
@@ -752,6 +770,51 @@ BitWithoutLength:
 				}
 		;
 
+
+
+reloptions:
+			TOPENBR reloption_list TCLOSEBR			{ $$ = $2; }
+		;
+
+opt_reloptions:		WITH reloptions					{ $$ = $2; }
+			 |		/* EMPTY */						{  }
+		;
+
+reloption_list:
+			reloption_elem							{}
+			| reloption_list TCOMMA reloption_elem		{  }
+		;
+
+/* This should match def_elem and also allow qualified names */
+reloption_elem:
+			ColLabel TEQ def_arg
+				{
+					
+				}
+			| ColLabel
+				{
+				}
+			| ColLabel TDOT ColLabel TEQ def_arg
+				{
+				}
+			| ColLabel TDOT ColLabel
+				{
+				}
+		;
+
+
+/* Note: any simple identifier will be returned as a type name! */
+def_arg:
+	// func_type						{ $$ = (Node *)$1; }
+			// | reserved_keyword				{ $$ = (Node *)makeString(pstrdup($1)); }
+			// | qual_all_Op					{ $$ = (Node *)$1; }
+			// | NumericOnly					{ $$ = (Node *)$1; }
+			SCONST						{  }
+			// | NONE							{ $$ = (Node *)makeString(pstrdup($1)); }
+		;
+
+
+
 /*
  * SQL character data types
  * The following implements CHAR() and VARCHAR().
@@ -906,6 +969,45 @@ interval_second:
 
 
 
+/*
+ * Redundancy here is needed to avoid shift/reduce conflicts,
+ * since TEMP is not a reserved word.  See also OptTempTableName.
+ *
+ * NOTE: we accept both GLOBAL and LOCAL options.  They currently do nothing,
+ * but future versions might consider GLOBAL to request SQL-spec-compliant
+ * temp table behavior, so warn about that.  Since we have no modules the
+ * LOCAL keyword is really meaningless; furthermore, some other products
+ * implement LOCAL as meaning the same as our default temp table behavior,
+ * so we'll probably continue to treat LOCAL as a noise word.
+ */
+OptTemp:	TEMPORARY					{  }
+			| TEMP						{  }
+			| LOCAL TEMPORARY			{ }
+			| LOCAL TEMP				{ }
+			| GLOBAL TEMPORARY
+				{
+				}
+			| GLOBAL TEMP
+				{
+				}
+			| UNLOGGED					{ }
+			| /*EMPTY*/					{ }
+		;
+
+
+
+create_as_target:
+			qualified_name opt_column_list OptWith OnCommitOption OptTableSpace
+				{
+
+				}
+		;
+
+opt_with_data:
+			WITH DATA_P								{ }
+			| WITH NO DATA_P						{ }
+			| /*EMPTY*/								{ }
+		;
 
 /*
  * General expressions
@@ -1033,6 +1135,10 @@ opt_asymmetric: ASYMMETRIC
 			| /*EMPTY*/
 		;
 
+type_list:	Typename								{ }
+			| type_list TCOMMA Typename				{ }
+		;
+
 array_expr: TSQOPENBR expr_list TSQCLOSEBR
 				{
 					
@@ -1056,12 +1162,67 @@ implicit_row:	TOPENBR expr_list TCOMMA a_expr TCLOSEBR		{  }
 		;
 
 
-c_expr:		AexprConst {
-				$$ = $1
-			}
+indirection_el:
+			TDOT attr_name
+				{
+				}
+			| TDOT TMUL
+				{
+				}
+			| TSQOPENBR a_expr TSQCLOSEBR
+				{
+
+				}
+			| TSQOPENBR opt_slice_bound TCOLON opt_slice_bound TSQCLOSEBR
+				{
+
+				}
+		;
+
+opt_slice_bound:
+			a_expr									{  }
+			| /*EMPTY*/								{  }
+		;
+
+indirection:
+			indirection_el							{ }
+			| indirection indirection_el			{  }
+		;
+
+opt_indirection:
+			/*EMPTY*/								{  }
+			| opt_indirection indirection_el		{ }
+		;
+
+
+
+/*
+ * Productions that can be used in both a_expr and b_expr.
+ *
+ * Note: productions that refer recursively to a_expr or b_expr mostly
+ * cannot appear here.	However, it's OK to refer to a_exprs that occur
+ * inside parentheses, such as function arguments; that cannot introduce
+ * ambiguity to the b_expr syntax.
+ */
+c_expr:	
+
+	// columnref								
+	// 			{ 
+	// 				$$ = &AExprConst{
+	// 					Value: $1,
+	// 				}
+	// 			}
+			AexprConst
+				{ $$ = $1; }
 			| ColRef {
-				$$ = $1
+					$$ = $1
 			}
+			| PARAM opt_indirection
+				{
+					$$ = &ParamRef {
+						Number: $1,
+					}
+				}
             | TOPENBR a_expr TCLOSEBR {
                 $$ = $2
             }
@@ -1574,6 +1735,16 @@ ColRef:
         $$ = $1
     }
 
+columnref:	ColId
+				{
+					$$ = $1
+				}
+			// TODO: support
+			// | ColId indirection
+			// 	{
+			// 		$$ = $1
+			// 	}
+		;
 
 
 b_expr:
@@ -1693,30 +1864,14 @@ rollback_stmt:
         }
     }
 
-execute_stmt:
-    EXECUTE any_id /* todo params */ anything
-    {
-        $$ = &Execute {
-            Id: $2,
-        }
-    }
-
-prepare_stmt:
-    PREPARE any_id /* todo query */  anything
-    {
-        $$ = &Execute {
-            Id: $2,
-        }
-    }
-
 routable_statement:
-    select_stmt  semicolon_opt {
+    SelectStmt  semicolon_opt {
         $$ = $1
-    } | insert_stmt semicolon_opt {
+    } | InsertStmt semicolon_opt {
         $$ = $1
-    } | update_stmt semicolon_opt {
+    } | UpdateStmt semicolon_opt {
         $$ = $1
-    } | delete_stmt semicolon_opt {
+    } | DeleteStmt semicolon_opt {
         $$ = $1
     } | copy_stmt semicolon_opt {
         $$ = $1
@@ -1862,14 +2017,38 @@ opt_offset_clause: /*empty*/ {} | OFFSET anything {}
 opt_fetch_clause: /*empty*/ {} | FETCH anything {}
 opt_for_clause:  /*empty*/ {} |FOR anything {}
 
+/*
+ * Name classification hierarchy.
+ *
+ * IDENT is the lexeme returned by the lexer for identifiers that match
+ * no known keyword.  In most cases, we can accept certain keywords as
+ * names, not only IDENTs.	We prefer to accept as many such keywords
+ * as possible to minimize the impact of "reserved words" on programmers.
+ * So, we divide names into several possible classes.  The classification
+ * is chosen in part to make keywords acceptable as names wherever possible.
+ */
 
 /* Column identifier --- names that can be column, table, etc names.
  */
 ColId:		IDENT									{ $$ = $1; }
-			// | reserved_keyword						{ $$ = $1; }
-			//| col_name_keyword						{ $$ = pstrdup($1); }
+			// | unreserved_keyword					{ $$ = pstrdup($1); }
+			// | col_name_keyword						{ $$ = pstrdup($1); }
 		;
 
+/* Type/function identifier --- names that can be type or function names.
+ */
+type_function_name:	IDENT							{ $$ = $1; }
+			// | unreserved_keyword					{ $$ = pstrdup($1); }
+			// | type_func_name_keyword				{ $$ = pstrdup($1); }
+		;
+
+/* Any not-fully-reserved word --- these names can be, eg, role names.
+ */
+NonReservedWord:	IDENT							{ $$ = $1; }
+			// | unreserved_keyword					{ $$ = pstrdup($1); }
+			// | col_name_keyword						{ $$ = pstrdup($1); }
+			// | type_func_name_keyword				{ $$ = pstrdup($1); }
+		;
 
 /* Column label --- allowed labels in "AS" clauses.
  * This presently includes *all* Postgres keywords.
@@ -1878,40 +2057,7 @@ ColLabel:	IDENT									{ $$ = $1; }
 			// | unreserved_keyword					{ $$ = pstrdup($1); }
 			// | col_name_keyword						{ $$ = pstrdup($1); }
 			// | type_func_name_keyword				{ $$ = pstrdup($1); }
-			// | reserved_keyword						{ $$ = pstrdup($1); }
-		;
-
-attr_name:	ColLabel								{ $$ = $1; };
-
-file_name:	SCONST									{ $$ = $1; };
-
-// indirection_el:
-// 			TDOT attr_name
-// 				{
-// 					$$ = (Node *) makeString($2);
-// 				}
-			// | TDOT TMUL
-			// 	{
-			// 		$$ = (Node *) makeNode(A_Star);
-			// 	}
-			// | '[' a_expr ']'
-			// 	{
-			// 		A_Indices *ai = makeNode(A_Indices);
-
-			// 		ai->is_slice = false;
-			// 		ai->lidx = NULL;
-			// 		ai->uidx = $2;
-			// 		$$ = (Node *) ai;
-			// 	}
-			// | '[' opt_slice_bound ':' opt_slice_bound ']'
-			// 	{
-			// 		A_Indices *ai = makeNode(A_Indices);
-
-			// 		ai->is_slice = true;
-			// 		ai->lidx = $2;
-			// 		ai->uidx = $4;
-			// 		$$ = (Node *) ai;
-			// 	}
+			| reserved_keyword						{ $$ = $1; }
 		;
 
 /*
@@ -2146,7 +2292,7 @@ joined_table:
 
 
 /* https://www.postgresql.org/docs/current/sql-select.html */
-select_stmt:
+SelectStmt:
 	SELECT target_list from_clause where_clause opt_group_by_clause opt_window_clause opt_sort_clause opt_limit_clause opt_sort_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 	{
 		$$ = &Select{
@@ -2223,8 +2369,97 @@ opt_returning:
     | RETURNING anything {}
 
 
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				PREPARE <plan_name> [(args, ...)] AS <query>
+ *
+ *****************************************************************************/
+
+PrepareStmt: PREPARE name prep_type_clause AS PreparableStmt
+				{
+				
+					$$ = &PrepareStmt{
+						Name: $2,
+						Statement: $5,
+					};
+				}
+		;
+
+prep_type_clause: TOPENBR type_list TCLOSEBR	{  }
+				| /* EMPTY */				{  }
+		;
+
+PreparableStmt:
+			SelectStmt
+			| InsertStmt
+			| UpdateStmt
+			| DeleteStmt					/* by default all are $$=$1 */
+		;
+
+/*****************************************************************************
+ *
+ * EXECUTE <plan_name> [(params, ...)]
+ * CREATE TABLE <name> AS EXECUTE <plan_name> [(params, ...)]
+ *
+ *****************************************************************************/
+
+ExecuteStmt: EXECUTE name execute_param_clause
+				{
+					$$ = &ExecuteStmt{
+						Name: $2,
+					};
+				}
+			| CREATE OptTemp TABLE create_as_target AS
+				EXECUTE name execute_param_clause opt_with_data
+				{
+				}
+			| CREATE OptTemp TABLE IF_P NOT EXISTS create_as_target AS
+				EXECUTE name execute_param_clause opt_with_data
+				{
+
+				}
+		;
+
+execute_param_clause: TOPENBR expr_list TCLOSEBR		{  }
+					| /* EMPTY */					{ }
+					;
+
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				DEALLOCATE [PREPARE] <plan_name>
+ *
+ *****************************************************************************/
+
+DeallocateStmt: DEALLOCATE name
+					{
+						$$ = &DeallocateStmt{
+							$2,
+						};
+					}
+				| DEALLOCATE PREPARE name
+					{						
+						$$ = &DeallocateStmt{
+							$3,
+						};
+					}
+				| DEALLOCATE ALL
+					{
+						$$ = &DeallocateStmt{
+						};
+					}
+				| DEALLOCATE PREPARE ALL
+					{
+						$$ = &DeallocateStmt{
+						};
+					}
+		;
+
+
+
 /* https://www.postgresql.org/docs/current/sql-insert.html */
-insert_stmt: 
+InsertStmt: 
     /* consider only first tuple from values */
     INSERT INTO relation_expr insert_col_refs VALUES insert_tuples anything {
         $$ = &Insert{
@@ -2232,7 +2467,7 @@ insert_stmt:
             Columns: $4,
             Values: $6,
         }
-    } | INSERT INTO relation_expr opt_insert_col_refs select_stmt {
+    } | INSERT INTO relation_expr opt_insert_col_refs SelectStmt {
         $$ = &Insert{
             TableRef: $3,
             Columns: $4,
@@ -2263,7 +2498,7 @@ set_clause:
 			// 	}
 		
 
-update_stmt:
+UpdateStmt:
     UPDATE opt_only relation_expr SET set_clause_list from_clause where_clause opt_returning {
         $$ = &Update {
             TableRef: $3,
@@ -2285,7 +2520,7 @@ opt_using:
     | USING delete_comma_separated_using_refs {}
 
 
-delete_stmt:
+DeleteStmt:
     DELETE FROM opt_only relation_expr opt_using where_clause opt_returning {
         $$ = &Delete{
             TableRef: $4,
@@ -2424,9 +2659,38 @@ opt_program:
 			| /* EMPTY */							{ $$ = false; }
 		;
 
-opt_with:	WITH_LA
-			| /*EMPTY*/
+
+opt_with:	WITH									{}
+			| WITH_LA								{}
+			| /*EMPTY*/								{}
 		;
+
+
+/* WITH (options) is preferred, WITH OIDS and WITHOUT OIDS are legacy forms */
+OptWith:
+			WITH reloptions				{ }
+			| WITH OIDS					{ }
+			| WITHOUT OIDS				{ }
+			| /*EMPTY*/					{  }
+		;
+
+OnCommitOption:  ON COMMIT DROP				{ }
+			| ON COMMIT DELETE_P ROWS		{ }
+			| ON COMMIT PRESERVE ROWS		{ }
+			| /*EMPTY*/						{ }
+		;
+
+OptTableSpace:   TABLESPACE name					{ }
+			| /*EMPTY*/								{ }
+		;
+
+OptConsTableSpace:   USING INDEX TABLESPACE name	{ }
+			| /*EMPTY*/								{ }
+		;
+
+ExistingIndex:   USING INDEX index_name				{ }
+		;
+
 
 copy_file_name:
 			SCONST									{ }
@@ -2442,13 +2706,6 @@ copy_delimiter:
 			| /*EMPTY*/								{ }
 		;
 
-
-PreparableStmt:
-			select_stmt
-			| insert_stmt
-			| update_stmt
-			| delete_stmt
-		;
 
 /* https://www.postgresql.org/docs/current/sql-copy.html */
 copy_stmt: 
@@ -2470,6 +2727,28 @@ copy_stmt:
 				}
 		;
 
+
+
+name_list:	name
+					{  }
+			| name_list TCOMMA name
+					{  }
+		;
+
+
+name:		ColId									{ $$ = $1; };
+
+database_name:
+			ColId									{ $$ = $1; };
+
+access_method:
+			ColId									{ $$ = $1; };
+
+attr_name:	ColLabel								{ $$ = $1; };
+
+index_name: ColId									{ $$ = $1; };
+
+file_name:	SCONST									{ $$ = $1; };
 
 %%
 
