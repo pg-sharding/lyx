@@ -168,7 +168,6 @@ func getTypedTokens(b []byte) map[string]struct{} {
 			if part == "%token<str>" || part == `` {
 				continue
 			}
-			fmt.Println(part)
 			operations[part] = struct{}{}
 		}
 	}
