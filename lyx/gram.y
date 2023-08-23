@@ -3003,32 +3003,32 @@ opt_for_clause:  /*empty*/ {} |FOR anything {}
 /* Column identifier --- names that can be column, table, etc names.
  */
 ColId:		IDENT									{ $$ = $1; }
-			// | unreserved_keyword					{ $$ = pstrdup($1); }
-			// | col_name_keyword						{ $$ = pstrdup($1); }
+			| unreserved_keyword					{ $$ = $1; }
+			| col_name_keyword						{ $$ = $1; }
 		;
 
 /* Type/function identifier --- names that can be type or function names.
  */
 type_function_name:	IDENT							{ $$ = $1; }
-			// | unreserved_keyword					{ $$ = pstrdup($1); }
-			// | type_func_name_keyword				{ $$ = pstrdup($1); }
+			| unreserved_keyword					{ $$ = $1; }
+			| type_func_name_keyword				{ $$ = $1; }
 		;
 
 /* Any not-fully-reserved word --- these names can be, eg, role names.
  */
 NonReservedWord:	IDENT							{ $$ = $1; }
-			// | unreserved_keyword					{ $$ = pstrdup($1); }
-			// | col_name_keyword						{ $$ = pstrdup($1); }
-			// | type_func_name_keyword				{ $$ = pstrdup($1); }
+			| unreserved_keyword					{ $$ = $1; }
+			| col_name_keyword						{ $$ = $1; }
+			| type_func_name_keyword				{ $$ = $1; }
 		;
 
 /* Column label --- allowed labels in "AS" clauses.
  * This presently includes *all* Postgres keywords.
  */
 ColLabel:	IDENT									{ $$ = $1; }
-			// | unreserved_keyword					{ $$ = pstrdup($1); }
-			// | col_name_keyword						{ $$ = pstrdup($1); }
-			// | type_func_name_keyword				{ $$ = pstrdup($1); }
+			| unreserved_keyword					{ $$ = $1; }
+			| col_name_keyword						{ $$ = $1; }
+			| type_func_name_keyword				{ $$ = $1; }
 			| reserved_keyword						{ $$ = $1; }
 		;
 
