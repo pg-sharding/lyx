@@ -1,6 +1,7 @@
 package lyx_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/pg-sharding/lyx/lyx"
@@ -1892,6 +1893,156 @@ func TestParams(t *testing.T) {
 		tmp, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}
+
+func TestCreateFail(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "create table SELECT ( i int )",
+		},
+		{
+			query: "create table ASYMMETRIC ( i int )",
+		},
+		{
+			query: "create table INTEGER ( i int )",
+		},
+		{
+			query: "create table xx ( i SELECT )",
+		},
+		{
+			query: "create table xx ( ROLLBACK int )",
+		},
+		{
+			query: "create table xx ( DELETE int )",
+		},
+		{
+			query: "create table xx ( DROP int )",
+		},
+		{
+			query: "create table xx ( UPDATE int )",
+		},
+		{
+			query: "create table xx ( i WHERE )",
+		},
+		{
+			query: "create table xx ( i AS )",
+		}} {
+		_, err := lyx.Parse(tt.query)
+
+		fmt.Println(tt.query)
+
+		assert.Error(err)
+	}
+}
+
+func TestCreateSuccess(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "create table xx ( ADMIN int, ATOMIC int, CLASS int, LIKE int )",
+			exp: &lyx.CreateTable{
+				TableName: "xx",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "ADMIN",
+						ColType: "int",
+					},
+					{
+						ColName: "ATOMIC",
+						ColType: "int",
+					},
+					{
+						ColName: "CLASS",
+						ColType: "int",
+					},
+					{
+						ColName: "LIKE",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: "create table xx ( i0 BINARY, i1 CURRENT_SCHEMA, i2 IS, i3 JOIN, i4 NOTNULL, i5 TABLESAMPLE)",
+			exp: &lyx.CreateTable{
+				TableName: "xx",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "i0",
+						ColType: "BINARY",
+					},
+					{
+						ColName: "i1",
+						ColType: "CURRENT_SCHEMA",
+					},
+					{
+						ColName: "i2",
+						ColType: "IS",
+					},
+					{
+						ColName: "i3",
+						ColType: "JOIN",
+					},
+					{
+						ColName: "i4",
+						ColType: "NOTNULL",
+					},
+					{
+						ColName: "i5",
+						ColType: "TABLESAMPLE",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: "create table JSON_ARRAYAGG ( i int )",
+			exp: &lyx.CreateTable{
+				TableName: "JSON_ARRAYAGG",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: "create table XMLTABLE ( i int )",
+			exp: &lyx.CreateTable{
+				TableName: "XMLTABLE",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		}} {
+		tmp, err := lyx.Parse(tt.query)
+
+		fmt.Println(tt.query)
+
+		assert.NoError(err)
 
 		assert.Equal(tt.exp, tmp)
 	}
