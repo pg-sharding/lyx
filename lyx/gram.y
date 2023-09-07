@@ -2058,17 +2058,53 @@ TableFuncElement:	ColId any_val opt_collate_clause
 
 
 
-func_application: 
-		func_name TOPENBR TCLOSEBR {
-			$$ = nil
-		} 
-		| func_name TOPENBR func_arg_expr TCLOSEBR {
-			$$ = nil
-		}
-		/* select count(*) from x */
-		| func_name TOPENBR TMUL TCLOSEBR {
-			$$ = nil
-		}
+func_application: func_name TOPENBR TCLOSEBR
+				{
+					$$ = nil
+				}
+			| func_name TOPENBR func_arg_list opt_sort_clause TCLOSEBR
+				{
+					$$ = nil
+				}
+			| func_name TOPENBR VARIADIC func_arg_expr opt_sort_clause TCLOSEBR
+				{
+					$$ = nil
+				}
+			| func_name TOPENBR func_arg_list TCOMMA VARIADIC func_arg_expr opt_sort_clause TCLOSEBR
+				{
+					$$ = nil
+				}
+			| func_name TOPENBR ALL func_arg_list opt_sort_clause TCLOSEBR
+				{
+
+					/* Ideally we'd mark the FuncCall node to indicate
+					 * "must be an aggregate", but there's no provision
+					 * for that in FuncCall at the moment.
+					 */
+					$$ = nil
+				}
+			| func_name TOPENBR DISTINCT func_arg_list opt_sort_clause TCLOSEBR
+				{
+
+					$$ = nil
+				}
+				/* select count(*) from x */
+			| func_name TOPENBR TMUL TCLOSEBR
+				{
+					/*
+					 * We consider AGGREGATE(*) to invoke a parameterless
+					 * aggregate.  This does the right thing for COUNT(*),
+					 * and there are no other aggregates in SQL that accept
+					 * '*' as parameter.
+					 *
+					 * The FuncCall node is also marked agg_star = true,
+					 * so that later processing can detect what the argument
+					 * really was.
+					 */
+					
+					$$ = nil
+				}
+		;
 
 func_arg_expr: a_expr {
 	$$ = nil

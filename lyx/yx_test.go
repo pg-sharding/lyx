@@ -257,6 +257,47 @@ func TestSelectComplex(t *testing.T) {
 	}
 }
 
+func TestSelectDistinct(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "select count(distinct id) from a.b where other_id ~ 1337;",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{nil},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "a",
+						RelationName: "b",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "other_id",
+					},
+					Right: &lyx.AExprConst{
+						Value: "1337",
+					},
+					Op: "~",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
 func TestSelect(t *testing.T) {
 	assert := assert.New(t)
 
