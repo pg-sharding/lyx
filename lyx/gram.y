@@ -273,6 +273,10 @@ Operator:
 %type<node> select_offset_value select_limit_value offset_clause limit_clause opt_select_limit select_limit
 %type<node> opt_distinct_clause opt_all_clause distinct_clause simple_select window_clause window_definition_list
 
+%type<node> OptTempTableName into_clause set_quantifier opt_table 
+
+%type<node> LockStmt opt_lock lock_type opt_nowait opt_nowait_or_skip relation_expr_list
+
 %type<node> copy_stmt
 
 %type<node> target_el
@@ -306,7 +310,9 @@ Operator:
 %type<strlist> copy_options
 
 %type<str> attr_name ColLabel file_name
-%type<from	> qualified_name
+%type<from> qualified_name
+
+%type<node> qualified_name_list 
 
 %type<strlist> opt_using delete_comma_separated_using_refs
 %type<strlist> set_clause_list
@@ -393,7 +399,7 @@ Operator:
 
 
 /* unroutable query parts */
-%type<str> opt_group_by_clause opt_window_clause sort_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
+%type<str> opt_window_clause sort_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 
 %start any_command
 
@@ -2989,8 +2995,6 @@ sortby:
 		;
 
 
-
-opt_group_by_clause: /*empty*/ {} | GROUP BY anything {}
 opt_window_clause:  /*empty*/ {} | window_clause {}
 opt_limit_clause: /*empty*/ {} | LIMIT anything {}
 opt_offset_clause: /*empty*/ {} | OFFSET anything {}
@@ -3038,6 +3042,18 @@ ColLabel:	IDENT									{ $$ = $1; }
 			| col_name_keyword						{ $$ = $1; }
 			| type_func_name_keyword				{ $$ = $1; }
 			| reserved_keyword						{ $$ = $1; }
+		;
+
+
+/*****************************************************************************
+ *
+ *	Names and constants
+ *
+ *****************************************************************************/
+
+qualified_name_list:
+			qualified_name							{  }
+			| qualified_name_list TCOMMA qualified_name {  }
 		;
 
 /*
@@ -3091,6 +3107,13 @@ relation_expr:
 			// 		$$ = $1;
 			// 	}
 		;
+
+
+relation_expr_list:
+			relation_expr							{ }
+			| relation_expr_list TCOMMA relation_expr	{  }
+		;
+
 
 alias_clause:
     AS any_id {
@@ -3274,15 +3297,82 @@ joined_table:
  */
 window_clause:
 			WINDOW window_definition_list			{ $$ = $2; }
-			| /*EMPTY*/								{ $$ = NIL; }
+			| /*EMPTY*/								{ 
+		
+			 }
 		;
 
 window_definition_list:
 		anything {}
-		// 	window_definition						{ $$ = list_make1($1); }
+		// 	window_definition						{  }
 		// 	| window_definition_list ',' window_definition
-		// 											{ $$ = lappend($1, $3); }
+		// 											{ }
 		// ;
+
+into_clause:
+	INTO OptTempTableName
+		{
+			
+		}
+	| /*EMPTY*/
+		{ }
+;
+
+
+/*
+ * Redundancy here is needed to avoid shift/reduce conflicts,
+ * since TEMP is not a reserved word.  See also OptTemp.
+ */
+
+OptTempTableName:
+			TEMPORARY opt_table qualified_name
+				{
+					// $$ = $3;
+				}
+			| TEMP opt_table qualified_name
+				{
+					// $$ = $3;
+				}
+			| LOCAL TEMPORARY opt_table qualified_name
+				{
+					// $$ = $4;
+				}
+			| LOCAL TEMP opt_table qualified_name
+				{
+					// $$ = $4;
+				}
+			| GLOBAL TEMPORARY opt_table qualified_name
+				{
+					// $$ = $4;
+				}
+			| GLOBAL TEMP opt_table qualified_name
+				{
+					// $$ = $4;
+				}
+			| UNLOGGED opt_table qualified_name
+				{
+					// $$ = $3;
+				}
+			| TABLE qualified_name
+				{
+					// $$ = $2;
+				}
+			| qualified_name
+				{
+					// $$ = $1;
+				}
+		;
+
+opt_table:	TABLE {}
+			| /*EMPTY*/ {}
+		;
+
+set_quantifier:
+			ALL										{  }
+			| DISTINCT								{  }
+			| /*EMPTY*/								{ }
+		;
+
 
 /*
  * This rule parses SELECT statements that can appear within set operations,
@@ -3319,8 +3409,8 @@ simple_select:
 				{
 					$$ = &Select{
 						TargetList: $3,
-						FromClause: $4,
-						Where: $5,
+						FromClause: $5,
+						Where: $6,
 					}
 				}
 			| SELECT distinct_clause target_list
@@ -3329,8 +3419,8 @@ simple_select:
 				{
 					$$ = &Select{
 						TargetList: $3,
-						FromClause: $4,
-						Where: $5,
+						FromClause: $5,
+						Where: $6,
 					}
 				}
 			| values_clause							{ $$ = $1; }
@@ -3373,17 +3463,17 @@ simple_select:
  */
 distinct_clause:
 			DISTINCT								{  }
-			| DISTINCT ON TOPENBR expr_list TCLOSEBR		{ $$ = $4; }
+			| DISTINCT ON TOPENBR expr_list TCLOSEBR		{ ; }
 		;
 
 opt_all_clause:
-			ALL
-			| /*EMPTY*/
+			ALL {}
+			| /*EMPTY*/ {}
 		;
 
 opt_distinct_clause:
 			distinct_clause							{ $$ = $1; }
-			| opt_all_clause						{ $$ = NIL; }
+			| opt_all_clause						{  }
 		;
 
 
@@ -3519,7 +3609,7 @@ first_or_next: FIRST_P								{  }
  * GroupingSet node of some type.
  */
 group_clause:
-			GROUP_P BY set_quantifier group_by_list
+			GROUP BY set_quantifier group_by_list
 				{
 
 				}
@@ -3618,14 +3708,53 @@ locked_rels_list:
 values_clause:
 			VALUES TOPENBR expr_list TCLOSEBR
 				{
-					$$ = $3
+					// $$ = []Node{$3}
 				}
 			| values_clause TCOMMA TOPENBR expr_list TCLOSEBR
 				{
-					$$ = append($1, $3...)
+					// $$ = append($1, $3...)
 				}
 		;
 
+
+
+
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				LOCK TABLE
+ *
+ *****************************************************************************/
+
+LockStmt:	LOCK_P opt_table relation_expr_list opt_lock opt_nowait
+				{
+
+				}
+		;
+
+opt_lock:	IN_P lock_type MODE				{  }
+			| /*EMPTY*/						{ }
+		;
+
+lock_type:	ACCESS SHARE					{  }
+			| ROW SHARE						{ }
+			| ROW EXCLUSIVE					{  }
+			| SHARE UPDATE EXCLUSIVE		{ }
+			| SHARE							{ }
+			| SHARE ROW EXCLUSIVE			{ }
+			| EXCLUSIVE						{  }
+			| ACCESS EXCLUSIVE				{ }
+		;
+
+opt_nowait:	NOWAIT							{  }
+			| /*EMPTY*/						{ }
+		;
+
+opt_nowait_or_skip:
+			NOWAIT							{  }
+			| SKIP LOCKED					{  }
+			| /*EMPTY*/						{  }
+		;
 
 
 /*****************************************************************************
@@ -3707,22 +3836,22 @@ select_no_parens:
 				{
 					$$ = $1;
 				}
-			| with_clause select_clause
-				{
-					$$ = $2;
-				}
-			| with_clause select_clause sort_clause
-				{
-					$$ = $2;
-				}
-			| with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
-				{
-					$$ = $2;
-				}
-			| with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
-				{
-					$$ = $2;
-				}
+			// | with_clause select_clause
+			// 	{
+			// 		$$ = $2;
+			// 	}
+			// | with_clause select_clause sort_clause
+			// 	{
+			// 		$$ = $2;
+			// 	}
+			// | with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
+			// 	{
+			// 		$$ = $2;
+			// 	}
+			// | with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
+			// 	{
+			// 		$$ = $2;
+			// 	}
 		;
 
 select_clause:

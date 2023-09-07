@@ -445,9 +445,9 @@ func TestSelect(t *testing.T) {
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
-		assert.NoError(err)
+		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
