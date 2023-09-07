@@ -265,6 +265,14 @@ Operator:
 %type<node> func_expr_windowless
 %type<node> AexprConst
 
+%type<node> select_clause select_no_parens select_with_parens SelectStmt values_clause locked_rels_list 
+%type<node> for_locking_strength for_locking_item for_locking_items opt_for_locking_clause having_clause
+%type<node> grouping_sets_clause
+%type<node> cube_clause rollup_clause empty_grouping_set group_by_item group_by_list group_clause
+%type<node> first_or_next row_or_rows I_or_F_const select_fetch_first_value
+%type<node> select_offset_value select_limit_value offset_clause limit_clause opt_select_limit select_limit
+%type<node> opt_distinct_clause opt_all_clause distinct_clause simple_select window_clause window_definition_list
+
 %type<node> copy_stmt
 
 %type<node> target_el
@@ -2983,7 +2991,7 @@ sortby:
 
 
 opt_group_by_clause: /*empty*/ {} | GROUP BY anything {}
-opt_window_clause:  /*empty*/ {} |WINDOW anything {}
+opt_window_clause:  /*empty*/ {} | window_clause {}
 opt_limit_clause: /*empty*/ {} | LIMIT anything {}
 opt_offset_clause: /*empty*/ {} | OFFSET anything {}
 opt_fetch_clause: /*empty*/ {} | FETCH anything {}
@@ -3261,22 +3269,466 @@ joined_table:
 		;
 
 
+/*
+ * Window Definitions
+ */
+window_clause:
+			WINDOW window_definition_list			{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = NIL; }
+		;
+
+window_definition_list:
+		anything {}
+		// 	window_definition						{ $$ = list_make1($1); }
+		// 	| window_definition_list ',' window_definition
+		// 											{ $$ = lappend($1, $3); }
+		// ;
+
+/*
+ * This rule parses SELECT statements that can appear within set operations,
+ * including UNION, INTERSECT and EXCEPT.  '(' and ')' can be used to specify
+ * the ordering of the set operations.	Without '(' and ')' we want the
+ * operations to be ordered per the precedence specs at the head of this file.
+ *
+ * As with select_no_parens, simple_select cannot have outer parentheses,
+ * but can have parenthesized subclauses.
+ *
+ * It might appear that we could fold the first two alternatives into one
+ * by using opt_distinct_clause.  However, that causes a shift/reduce conflict
+ * against INSERT ... SELECT ... ON CONFLICT.  We avoid the ambiguity by
+ * requiring SELECT DISTINCT [ON] to be followed by a non-empty target_list.
+ *
+ * Note that sort clauses cannot be included at this level --- SQL requires
+ *		SELECT foo UNION SELECT bar ORDER BY baz
+ * to be parsed as
+ *		(SELECT foo UNION SELECT bar) ORDER BY baz
+ * not
+ *		SELECT foo UNION (SELECT bar ORDER BY baz)
+ * Likewise for WITH, FOR UPDATE and LIMIT.  Therefore, those clauses are
+ * described as part of the select_no_parens production, not simple_select.
+ * This does not limit functionality, because you can reintroduce these
+ * clauses inside parentheses.
+ *
+ * NOTE: only the leftmost component SelectStmt should have INTO.
+ * However, this is not checked by the grammar; parse analysis must check it.
+ */
+simple_select:
+			SELECT opt_all_clause opt_target_list
+			into_clause from_clause where_clause
+			group_clause having_clause window_clause
+				{
+					$$ = &Select{
+						TargetList: $3,
+						FromClause: $4,
+						Where: $5,
+					}
+				}
+			| SELECT distinct_clause target_list
+			into_clause from_clause where_clause
+			group_clause having_clause window_clause
+				{
+					$$ = &Select{
+						TargetList: $3,
+						FromClause: $4,
+						Where: $5,
+					}
+				}
+			| values_clause							{ $$ = $1; }
+		// 	| TABLE relation_expr
+		// 		{
+		// 			/* same as SELECT * FROM relation_expr */
+		// 			ColumnRef  *cr = makeNode(ColumnRef);
+		// 			ResTarget  *rt = makeNode(ResTarget);
+		// 			SelectStmt *n = makeNode(SelectStmt);
+
+		// 			cr->fields = list_make1(makeNode(A_Star));
+		// 			cr->location = -1;
+
+		// 			rt->name = NULL;
+		// 			rt->indirection = NIL;
+		// 			rt->val = (Node *) cr;
+		// 			rt->location = -1;
+
+		// 			n->targetList = list_make1(rt);
+		// 			n->fromClause = list_make1($2);
+		// 			$$ = (Node *) n;
+		// 		}
+		// 	| select_clause UNION set_quantifier select_clause
+		// 		{
+		// 			$$ = makeSetOp(SETOP_UNION, $3 == SET_QUANTIFIER_ALL, $1, $4);
+		// 		}
+		// 	| select_clause INTERSECT set_quantifier select_clause
+		// 		{
+		// 			$$ = makeSetOp(SETOP_INTERSECT, $3 == SET_QUANTIFIER_ALL, $1, $4);
+		// 		}
+		// 	| select_clause EXCEPT set_quantifier select_clause
+		// 		{
+		// 			$$ = makeSetOp(SETOP_EXCEPT, $3 == SET_QUANTIFIER_ALL, $1, $4);
+		// 		}
+		// ;
 
 
-/* https://www.postgresql.org/docs/current/sql-select.html */
-SelectStmt:
-	SELECT target_list from_clause where_clause opt_group_by_clause opt_window_clause opt_sort_clause opt_limit_clause opt_sort_clause opt_offset_clause opt_fetch_clause opt_for_clause 
-	{
-		$$ = &Select{
-            FromClause: $3,
-            Where: $4,
-			TargetList: $2,
-        }
-    } | /*simple select */ SELECT target_list {
-		$$ = &Select{
-			TargetList: $2,
-        }
-    }
+/* We use (NIL) as a placeholder to indicate that all target expressions
+ * should be placed in the DISTINCT list during parsetree analysis.
+ */
+distinct_clause:
+			DISTINCT								{  }
+			| DISTINCT ON TOPENBR expr_list TCLOSEBR		{ $$ = $4; }
+		;
+
+opt_all_clause:
+			ALL
+			| /*EMPTY*/
+		;
+
+opt_distinct_clause:
+			distinct_clause							{ $$ = $1; }
+			| opt_all_clause						{ $$ = NIL; }
+		;
+
+
+select_limit:
+			limit_clause offset_clause
+				{
+				}
+			| offset_clause limit_clause
+				{
+				}
+			| limit_clause
+				{
+				}
+			| offset_clause
+				{
+				}
+		;
+
+
+opt_select_limit:
+			select_limit						{ $$ = $1; }
+			| /* EMPTY */						{  }
+		;
+
+limit_clause:
+			LIMIT select_limit_value
+				{
+
+				}
+			| LIMIT select_limit_value ',' select_offset_value
+				{
+					// XXXX: todo forbid
+
+				}
+			/* SQL:2008 syntax */
+			/* to avoid shift/reduce conflicts, handle the optional value with
+			 * a separate production rather than an opt_ expression.  The fact
+			 * that ONLY is fully reserved means that this way, we defer any
+			 * decision about what rule reduces ROW or ROWS to the point where
+			 * we can see the ONLY token in the lookahead slot.
+			 */
+			| FETCH first_or_next select_fetch_first_value row_or_rows ONLY
+				{
+				}
+			| FETCH first_or_next select_fetch_first_value row_or_rows WITH TIES
+				{
+				}
+			| FETCH first_or_next row_or_rows ONLY
+				{
+				}
+			| FETCH first_or_next row_or_rows WITH TIES
+				{
+				}
+		;
+
+offset_clause:
+			OFFSET select_offset_value
+				{ $$ = $2; }
+			/* SQL:2008 syntax */
+			| OFFSET select_fetch_first_value row_or_rows
+				{ $$ = $2; }
+		;
+
+select_limit_value:
+			a_expr									{ $$ = $1; }
+			| ALL
+				{
+				}
+		;
+
+select_offset_value:
+			a_expr									{ $$ = $1; }
+		;
+
+/*
+ * Allowing full expressions without parentheses causes various parsing
+ * problems with the trailing ROW/ROWS key words.  SQL spec only calls for
+ * <simple value specification>, which is either a literal or a parameter (but
+ * an <SQL parameter reference> could be an identifier, bringing up conflicts
+ * with ROW/ROWS). We solve this by leveraging the presence of ONLY (see above)
+ * to determine whether the expression is missing rather than trying to make it
+ * optional in this rule.
+ *
+ * c_expr covers almost all the spec-required cases (and more), but it doesn't
+ * cover signed numeric literals, which are allowed by the spec. So we include
+ * those here explicitly. We need FCONST as well as ICONST because values that
+ * don't fit in the platform's "long", but do fit in bigint, should still be
+ * accepted here. (This is possible in 64-bit Windows as well as all 32-bit
+ * builds.)
+ */
+select_fetch_first_value:
+			c_expr									{ $$ = $1; }
+			| TPLUS I_or_F_const
+				{  }
+			| TMINUS I_or_F_const
+				{}
+		;
+
+I_or_F_const:
+		SCONST {};
+		// 	Iconst									{ }
+		// 	| FCONST								{  }
+		// ;
+
+/* noise words */
+row_or_rows: ROW									{  }
+			| ROWS									{ }
+		;
+
+first_or_next: FIRST_P								{  }
+			| NEXT									{  }
+		;
+
+
+/*
+ * This syntax for group_clause tries to follow the spec quite closely.
+ * However, the spec allows only column references, not expressions,
+ * which introduces an ambiguity between implicit row constructors
+ * (a,b) and lists of column references.
+ *
+ * We handle this by using the a_expr production for what the spec calls
+ * <ordinary grouping set>, which in the spec represents either one column
+ * reference or a parenthesized list of column references. Then, we check the
+ * top node of the a_expr to see if it's an implicit RowExpr, and if so, just
+ * grab and use the list, discarding the node. (this is done in parse analysis,
+ * not here)
+ *
+ * (we abuse the row_format field of RowExpr to distinguish implicit and
+ * explicit row constructors; it's debatable if anyone sanely wants to use them
+ * in a group clause, but if they have a reason to, we make it possible.)
+ *
+ * Each item in the group_clause list is either an expression tree or a
+ * GroupingSet node of some type.
+ */
+group_clause:
+			GROUP_P BY set_quantifier group_by_list
+				{
+
+				}
+			| /*EMPTY*/
+				{
+				}
+		;
+
+group_by_list:
+			group_by_item							{ }
+			| group_by_list TCOMMA group_by_item		{ }
+		;
+
+group_by_item:
+			a_expr									{ $$ = $1; }
+			| empty_grouping_set					{ $$ = $1; }
+			| cube_clause							{ $$ = $1; }
+			| rollup_clause							{ $$ = $1; }
+			| grouping_sets_clause					{ $$ = $1; }
+		;
+
+empty_grouping_set:
+			TOPENBR TCLOSEBR
+				{
+				}
+		;
+
+/*
+ * These hacks rely on setting precedence of CUBE and ROLLUP below that of '(',
+ * so that they shift in these rules rather than reducing the conflicting
+ * unreserved_keyword rule.
+ */
+
+rollup_clause:
+			ROLLUP TOPENBR expr_list TCLOSEBR
+				{
+				}
+		;
+
+cube_clause:
+			CUBE TOPENBR expr_list TCLOSEBR
+				{
+				}
+		;
+
+grouping_sets_clause:
+			GROUPING SETS TOPENBR group_by_list TCLOSEBR
+				{
+				}
+		;
+
+having_clause:
+			HAVING a_expr							{  }
+			| /*EMPTY*/								{ }
+		;
+
+for_locking_clause:
+			for_locking_items						{ }
+			| FOR READ ONLY							{ }
+		;
+
+opt_for_locking_clause:
+			for_locking_clause						{ }
+			| /* EMPTY */							{ }
+		;
+
+for_locking_items:
+			for_locking_item						{  }
+			| for_locking_items for_locking_item	{ }
+		;
+
+for_locking_item:
+			for_locking_strength locked_rels_list opt_nowait_or_skip
+				{
+				}
+		;
+
+for_locking_strength:
+			FOR UPDATE							{ }
+			| FOR NO KEY UPDATE					{ }
+			| FOR SHARE							{  }
+			| FOR KEY SHARE						{ }
+		;
+
+
+locked_rels_list:
+			OF qualified_name_list					{ $$ = $2; }
+			| /* EMPTY */							{ }
+		;
+
+/*
+ * We should allow ROW '(' expr_list ')' too, but that seems to require
+ * making VALUES a fully reserved word, which will probably break more apps
+ * than allowing the noise-word is worth.
+ */
+values_clause:
+			VALUES TOPENBR expr_list TCLOSEBR
+				{
+					$$ = $3
+				}
+			| values_clause TCOMMA TOPENBR expr_list TCLOSEBR
+				{
+					$$ = append($1, $3...)
+				}
+		;
+
+
+
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				SELECT STATEMENTS
+ *
+ *****************************************************************************/
+
+/* A complete SELECT statement looks like this.
+ *
+ * The rule returns either a single SelectStmt node or a tree of them,
+ * representing a set-operation tree.
+ *
+ * There is an ambiguity when a sub-SELECT is within an a_expr and there
+ * are excess parentheses: do the parentheses belong to the sub-SELECT or
+ * to the surrounding a_expr?  We don't really care, but bison wants to know.
+ * To resolve the ambiguity, we are careful to define the grammar so that
+ * the decision is staved off as long as possible: as long as we can keep
+ * absorbing parentheses into the sub-SELECT, we will do so, and only when
+ * it's no longer possible to do that will we decide that parens belong to
+ * the expression.	For example, in "SELECT (((SELECT 2)) + 3)" the extra
+ * parentheses are treated as part of the sub-select.  The necessity of doing
+ * it that way is shown by "SELECT (((SELECT 2)) UNION SELECT 2)".	Had we
+ * parsed "((SELECT 2))" as an a_expr, it'd be too late to go back to the
+ * SELECT viewpoint when we see the UNION.
+ *
+ * This approach is implemented by defining a nonterminal select_with_parens,
+ * which represents a SELECT with at least one outer layer of parentheses,
+ * and being careful to use select_with_parens, never '(' SelectStmt ')',
+ * in the expression grammar.  We will then have shift-reduce conflicts
+ * which we can resolve in favor of always treating '(' <select> ')' as
+ * a select_with_parens.  To resolve the conflicts, the productions that
+ * conflict with the select_with_parens productions are manually given
+ * precedences lower than the precedence of ')', thereby ensuring that we
+ * shift ')' (and then reduce to select_with_parens) rather than trying to
+ * reduce the inner <select> nonterminal to something else.  We use UMINUS
+ * precedence for this, which is a fairly arbitrary choice.
+ *
+ * To be able to define select_with_parens itself without ambiguity, we need
+ * a nonterminal select_no_parens that represents a SELECT structure with no
+ * outermost parentheses.  This is a little bit tedious, but it works.
+ *
+ * In non-expression contexts, we use SelectStmt which can represent a SELECT
+ * with or without outer parentheses.
+ */
+
+SelectStmt: select_no_parens			
+			| select_with_parens	
+		;
+
+select_with_parens:
+			TOPENBR select_no_parens TCLOSEBR				{ $$ = $2; }
+			| TOPENBR select_with_parens TCLOSEBR			{ $$ = $2; }
+		;
+
+/*
+ * This rule parses the equivalent of the standard's <query expression>.
+ * The duplicative productions are annoying, but hard to get rid of without
+ * creating shift/reduce conflicts.
+ *
+ *	The locking clause (FOR UPDATE etc) may be before or after LIMIT/OFFSET.
+ *	In <=7.2.X, LIMIT/OFFSET had to be after FOR UPDATE
+ *	We now support both orderings, but prefer LIMIT/OFFSET before the locking
+ * clause.
+ *	2002-08-28 bjm
+ */
+select_no_parens:
+			simple_select						{ $$ = $1; }
+			| select_clause sort_clause
+				{
+					$$ = $1;
+				}
+			| select_clause opt_sort_clause for_locking_clause opt_select_limit
+				{
+					$$ = $1;
+				}
+			| select_clause opt_sort_clause select_limit opt_for_locking_clause
+				{
+					$$ = $1;
+				}
+			| with_clause select_clause
+				{
+					$$ = $2;
+				}
+			| with_clause select_clause sort_clause
+				{
+					$$ = $2;
+				}
+			| with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
+				{
+					$$ = $2;
+				}
+			| with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
+				{
+					$$ = $2;
+				}
+		;
+
+select_clause:
+			simple_select							{ $$ = $1; }
+			| select_with_parens					{ $$ = $1; }
+		;
 
 
 comma_separated_col_refs:
