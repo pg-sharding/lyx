@@ -238,15 +238,42 @@ func (*Insert) iNode()         {}
 func (*Delete) iNode()         {}
 func (*Update) iNode()         {}
 
-type Begin struct{}
-type Commit struct{}
-type Rollback struct{}
+type TransactionStmtType int
+
+const (
+	TRANS_STMT_START             = TransactionStmtType(iota)
+	TRANS_STMT_BEGIN             = TransactionStmtType(iota)
+	TRANS_STMT_COMMIT            = TransactionStmtType(iota)
+	TRANS_STMT_ROLLBACK          = TransactionStmtType(iota)
+	TRANS_STMT_RELEASE           = TransactionStmtType(iota)
+	TRANS_STMT_ROLLBACK_TO       = TransactionStmtType(iota)
+	TRANS_STMT_SAVEPOINT         = TransactionStmtType(iota)
+	TRANS_STMT_PREPARE           = TransactionStmtType(iota)
+	TRANS_STMT_COMMIT_PREPARED   = TransactionStmtType(iota)
+	TRANS_STMT_ROLLBACK_PREPARED = TransactionStmtType(iota)
+)
+
+type TransactionStmt struct {
+	Kind          TransactionStmtType
+	Name          string
+	SavepointName string
+	Gid           string
+	Options       []TransactionModeItem
+}
+
+type TransactionModeItem int
+
+const (
+	TransactionIsolation     = TransactionModeItem(iota)
+	TransactionReadOnly      = TransactionModeItem(iota)
+	TransactionReadWrite     = TransactionModeItem(iota)
+	TransactionDeferrable    = TransactionModeItem(iota)
+	TransactionNotDeferrable = TransactionModeItem(iota)
+)
+
+func (*TransactionStmt) iNode() {}
 
 type EmptyQuery struct{}
-
-func (*Begin) iNode()    {}
-func (*Commit) iNode()   {}
-func (*Rollback) iNode() {}
 
 func (*EmptyQuery) iNode() {}
 

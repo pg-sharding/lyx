@@ -42,6 +42,9 @@ func NewLyxParser() LyxParser {
     tableref               FromClauseNode
 
     nodeList              []Node
+
+	txMode                TransactionModeItem
+	txModeList            []TransactionModeItem
 }
 
 // any non-terminal which returns a value needs a type, which is
@@ -248,9 +251,6 @@ Operator:
 %type<node> DeleteStmt
 %type<node> PrepareStmt
 %type<node> varset_stmt
-%type<node> begin_stmt 
-%type<node> commit_stmt
-%type<node> rollback_stmt
 %type<node> create_stmt alter_stmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> truncate_stmt drop_stmt
@@ -274,6 +274,9 @@ Operator:
 %type<node> opt_distinct_clause opt_all_clause distinct_clause simple_select window_clause window_definition_list
 
 %type<node> OptTempTableName into_clause set_quantifier opt_table 
+
+
+%type<node> TransactionStmt TransactionStmtLegacy opt_transaction
 
 %type<node> LockStmt opt_lock lock_type opt_nowait opt_nowait_or_skip relation_expr_list
 
@@ -327,6 +330,9 @@ Operator:
 
 %type<str> TableFuncElement
 %type<strlist> TableFuncElementList OptTableFuncElementList
+
+%type<txMode> transaction_mode_item
+%type<txModeList> transaction_mode_list_or_empty transaction_mode_list
 
 /*  TYPES */
 %type<str>  interval_second opt_interval opt_timezone ConstInterval ConstDatetime opt_varying character CharacterWithoutLength CharacterWithLength ConstCharacter Character
@@ -1468,11 +1474,9 @@ command:
 	routable_statement
 	{
 		setParseTree(yylex, $1)
-	} | begin_stmt {
+	} | TransactionStmt {
 		setParseTree(yylex, $1)
-    } | commit_stmt {
-		setParseTree(yylex, $1)
-    } | rollback_stmt {
+	} | TransactionStmtLegacy {
 		setParseTree(yylex, $1)
     } | ExecuteStmt {
 		setParseTree(yylex, $1)
@@ -2860,31 +2864,155 @@ varset_stmt:
     | RESET ALL {}
 
 
-begin_stmt:
-    BEGIN
-    {
-        $$ = &Begin{
 
-        }
-    }
+/*****************************************************************************
+ *
+ *		Transactions:
+ *
+ *		BEGIN / COMMIT / ROLLBACK
+ *		(also older versions END / ABORT)
+ *
+ *****************************************************************************/
 
+TransactionStmt:
+			ABORT_P opt_transaction opt_transaction_chain
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_ROLLBACK,
+					}
+				}
+			| START TRANSACTION transaction_mode_list_or_empty
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_START,
+					}
+				}
+			| COMMIT opt_transaction opt_transaction_chain
+				{	
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_COMMIT,
+					}
+				}
+			| ROLLBACK opt_transaction opt_transaction_chain
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_ROLLBACK,
+					}
+				}
+			| SAVEPOINT ColId
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_SAVEPOINT,
+					}
+				}
+			| RELEASE SAVEPOINT ColId
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_RELEASE,
+						Name: $3,
+					}
+				}
+			| RELEASE ColId
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_RELEASE,
+						Name: $2,
+					}
+				}
+			| ROLLBACK opt_transaction TO SAVEPOINT ColId
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_ROLLBACK_TO,
+						SavepointName: $5,
+					}
+				}
+			| ROLLBACK opt_transaction TO ColId
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_ROLLBACK_TO,
+						SavepointName: $4,
+					}
+				}
+			| PREPARE TRANSACTION SCONST
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_PREPARE,
+						Gid: $3,
+					}
+				}
+			| COMMIT PREPARED SCONST
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_COMMIT_PREPARED,
+						Gid: $3,
+					}
+				}
+			| ROLLBACK PREPARED SCONST
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_ROLLBACK_PREPARED,
+						Gid: $3,
+					}
+				}
+		;
 
-commit_stmt:
-    COMMIT
-    {
-        $$ = &Commit{
-            
-        }
-    }
+TransactionStmtLegacy:
+			BEGIN opt_transaction transaction_mode_list_or_empty
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_BEGIN,
+						Options: $3,
+					}
+				}
+			| END_P opt_transaction opt_transaction_chain
+				{
+					$$ = &TransactionStmt {
+						Kind: TRANS_STMT_COMMIT,
+						Options: nil,
+					}
+				}
+		;
 
+opt_transaction:	WORK {}
+			| TRANSACTION {}
+			| /*EMPTY*/ {}
+		;
 
-rollback_stmt:
-    ROLLBACK
-    {
-        $$ = &Rollback{
-            
-        }
-    }
+transaction_mode_item:
+			ISOLATION LEVEL SCONST /* iso_level */
+					{ $$ = TransactionIsolation }
+			| READ ONLY
+					{ $$ = TransactionReadOnly }
+			| READ WRITE
+					{ $$ = TransactionReadWrite }
+			| DEFERRABLE
+					{ $$ = TransactionDeferrable }
+			| NOT DEFERRABLE
+					{ $$ = TransactionNotDeferrable }
+		;
+
+/* Syntax with commas is SQL-spec, without commas is Postgres historical */
+transaction_mode_list:
+			transaction_mode_item
+					{ $$ = []TransactionModeItem{$1}; }
+			| transaction_mode_list TCOMMA transaction_mode_item
+					{ $$ = append($1, $3) }
+			| transaction_mode_list transaction_mode_item
+					{ $$ = append($1, $2) }
+		;
+
+transaction_mode_list_or_empty:
+			transaction_mode_list { $$ = $1 }
+			| /* EMPTY */
+					{ $$ = nil; }
+		;
+
+opt_transaction_chain:
+			AND CHAIN		{  }
+			| AND NO CHAIN	{  }
+			| /* EMPTY */	{  }
+		;
+
 
 routable_statement:
     SelectStmt  semicolon_opt {

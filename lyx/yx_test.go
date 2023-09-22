@@ -1757,18 +1757,24 @@ func TestMisc(t *testing.T) {
 		},
 		{
 			query: "begin;",
-			exp:   &lyx.Begin{},
-			err:   nil,
+			exp: &lyx.TransactionStmt{
+				Kind: lyx.TRANS_STMT_BEGIN,
+			},
+			err: nil,
 		},
 		{
 			query: "rollback;",
-			exp:   &lyx.Rollback{},
-			err:   nil,
+			exp: &lyx.TransactionStmt{
+				Kind: lyx.TRANS_STMT_ROLLBACK,
+			},
+			err: nil,
 		},
 		{
 			query: "commit;",
-			exp:   &lyx.Commit{},
-			err:   nil,
+			exp: &lyx.TransactionStmt{
+				Kind: lyx.TRANS_STMT_COMMIT,
+			},
+			err: nil,
 		},
 	} {
 		tmp, err := lyx.Parse(tt.query)

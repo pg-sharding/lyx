@@ -229,6 +229,9 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
 
             /BEGIN/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BEGIN; fbreak;};
+            /START/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = START; fbreak;};
+            /ABORT/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ABORT_P; fbreak;};
+            /END/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = END_P; fbreak;};
             /ROLLBACK/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLLBACK; fbreak;};
             /COMMIT/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMIT; fbreak;};
 
