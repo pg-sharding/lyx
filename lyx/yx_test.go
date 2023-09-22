@@ -1763,6 +1763,16 @@ func TestMisc(t *testing.T) {
 			err: nil,
 		},
 		{
+			query: "begin transaction read only;",
+			exp: &lyx.TransactionStmt{
+				Kind: lyx.TRANS_STMT_BEGIN,
+				Options: []lyx.TransactionModeItem{
+					lyx.TransactionReadOnly,
+				},
+			},
+			err: nil,
+		},
+		{
 			query: "rollback;",
 			exp: &lyx.TransactionStmt{
 				Kind: lyx.TRANS_STMT_ROLLBACK,
