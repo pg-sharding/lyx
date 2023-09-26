@@ -2006,6 +2006,32 @@ func TestCreateFail(t *testing.T) {
 	}
 }
 
+func TestTruncateTable(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+	for _, tt := range []tcase{
+		{
+			query: `
+			truncate table pgbench_accounts, pgbench_branches, pgbench_history, pgbench_tellers
+			`,
+
+			exp: &lyx.Truncate{},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}
+
 func TestCreateTableWith(t *testing.T) {
 	assert := assert.New(t)
 
