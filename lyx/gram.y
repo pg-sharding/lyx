@@ -65,6 +65,15 @@ func NewLyxParser() LyxParser {
 
 %type<node> where_clause
 
+%type<node> ColQualList opt_column_compression ColConstraintElem
+%type<node> create_generic_options ColConstraint ConstraintAttr 
+%type<node> generic_option_list opt_definition
+
+%type<node> def_elem def_list definition
+%type<node> opt_no_inherit
+
+%type<node> generic_option_name generic_option_arg generic_option_elem
+
 %type<from_list> from_clause from_list
 
 %type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
@@ -1010,6 +1019,7 @@ reserved_keyword:
 			| WHERE	{$$=$1}
 			| WINDOW	{$$=$1}
 			| WITH	{$$=$1}
+			| WITH_LA	{$$=$1}
 		;
 
 /*
@@ -1898,7 +1908,7 @@ ConstInterval:
 		;
 
 opt_timezone:
-			WITH_LA TIME ZONE						{  }
+			WITH TIME ZONE						{  }
 			| WITHOUT TIME ZONE						{  }
 			| /*EMPTY*/								{  }
 		;
@@ -3039,9 +3049,190 @@ opt_ref:
     /* nothing */ {} |
     REFERENCES any_id TOPENBR any_id TCLOSEBR {}
 
+
+
+opt_no_inherit:	NO INHERIT							{   }
+			| /* EMPTY */							{   }
+		;
+
+definition: TOPENBR def_list TCLOSEBR						{ $$ = $2; }
+		;
+
+def_list:	def_elem								{  }
+			| def_list TCOMMA def_elem					{ }
+		;
+
+def_elem:	ColLabel TEQ def_arg
+				{
+				}
+			| ColLabel
+				{
+				}
+		;
+
+
+opt_definition:
+			WITH definition							{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+/* DEFAULT NULL is already the default for Postgres.
+ * But define it here and carry it forward into the system
+ * to make it explicit.
+ * - thomas 1998-09-13
+ *
+ * WITH NULL and NULL are not SQL-standard syntax elements,
+ * so leave them out. Use DEFAULT NULL to explicitly indicate
+ * that a column may have that value. WITH NULL leads to
+ * shift/reduce conflicts with WITH TIME ZONE anyway.
+ * - thomas 1999-01-08
+ *
+ * DEFAULT expression must be b_expr not a_expr to prevent shift/reduce
+ * conflict on NOT (since NOT might start a subsequent NOT NULL constraint,
+ * or be part of a_expr NOT LIKE or similar constructs).
+ */
+ColConstraintElem:
+			NOT NULL_P
+				{
+
+				}
+			| NULL_P
+				{
+
+				}
+			// | UNIQUE opt_unique_null_treatment opt_definition OptConsTableSpace
+			// 	{
+
+			// 	}
+			| PRIMARY KEY opt_definition OptConsTableSpace
+				{
+
+				}
+			| CHECK TOPENBR a_expr TCLOSEBR opt_no_inherit
+				{
+
+				}
+			| DEFAULT b_expr
+				{
+
+				}
+			// | GENERATED generated_when AS IDENTITY_P OptParenthesizedSeqOptList
+			// 	{
+
+			// 	}
+			// | GENERATED generated_when AS TOPENBR a_expr TCLOSEBR STORED
+			// 	{
+
+			// 	}
+			// | REFERENCES qualified_name opt_column_list key_match key_actions
+			// 	{
+
+			// 	}
+		;
+
+
+
+/*
+ * ConstraintAttr represents constraint attributes, which we parse as if
+ * they were independent constraint clauses, in order to avoid shift/reduce
+ * conflicts (since NOT might start either an independent NOT NULL clause
+ * or an attribute).  parse_utilcmd.c is responsible for attaching the
+ * attribute information to the preceding "real" constraint node, and for
+ * complaining if attribute clauses appear in the wrong place or wrong
+ * combinations.
+ *
+ * See also ConstraintAttributeSpec, which can be used in places where
+ * there is no parsing conflict.  (Note: currently, NOT VALID and NO INHERIT
+ * are allowed clauses in ConstraintAttributeSpec, but not here.  Someday we
+ * might need to allow them here too, but for the moment it doesn't seem
+ * useful in the statements that use ConstraintAttr.)
+ */
+ConstraintAttr:
+			DEFERRABLE
+				{
+
+				}
+			| NOT DEFERRABLE
+				{
+
+				}
+			| INITIALLY DEFERRED
+				{
+
+				}
+			| INITIALLY IMMEDIATE
+				{
+
+				}
+		;
+
+
+
+ColQualList:
+			ColQualList ColConstraint				{  }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+ColConstraint:
+			CONSTRAINT name ColConstraintElem
+				{
+
+				}
+			| ColConstraintElem						{ $$ = $1; }
+			| ConstraintAttr						{ $$ = $1; }
+		// 	| COLLATE any_name
+		// 		{
+
+		// 		}
+		// ;
+
+column_compression:
+			COMPRESSION ColId						{  }
+			| COMPRESSION DEFAULT					{ }
+		;
+
+opt_column_compression:
+			column_compression						{  }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+/* Options definition for CREATE FDW, SERVER and USER MAPPING */
+create_generic_options:
+			OPTIONS TOPENBR generic_option_list TCLOSEBR			{ $$ = $3; }
+			| /*EMPTY*/									{ $$ = nil; }
+		;
+
+generic_option_elem:
+			generic_option_name generic_option_arg
+				{
+				}
+		;
+
+generic_option_name:
+				ColLabel			{ }
+		;
+
+/* We could use def_arg here, but the spec only requires string literals */
+generic_option_arg:
+				SCONST				{  }
+		;
+
+
+generic_option_list:
+			generic_option_elem
+				{
+				}
+			| generic_option_list TCOMMA generic_option_elem
+				{
+				}
+		;
+
+
 create_stmt_coldefs:
-    IDENT Typename opt_pk {
-        $$ = []TableElt {{
+	ColId Typename opt_column_compression create_generic_options ColQualList
+	{
+        $$ = []TableElt {
+			{
                 ColName: $1,
                 ColType: $2,
             },
@@ -3055,7 +3246,7 @@ create_stmt_coldefs:
     }
 
 create_stmt: 
-    CREATE TABLE table_name TOPENBR create_stmt_coldefs TCLOSEBR anything {
+    CREATE TABLE table_name TOPENBR create_stmt_coldefs TCLOSEBR OptWith anything {
         $$ = &CreateTable {
             TableName: $3,
             TableElts: $5,
@@ -3306,7 +3497,7 @@ func_expr_windowless:
 			// | json_aggregate_func					{ $$ = $1; }
 		;
 
-opt_ordinality: WITH_LA ORDINALITY					{ $$ = true; }
+opt_ordinality: WITH ORDINALITY					{ $$ = true; }
 			| /*EMPTY*/								{ $$ = false; }
 		;
 

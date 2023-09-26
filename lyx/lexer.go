@@ -1373,7 +1373,7 @@ tr507:
 //line lyx/lexer.rl:185
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = WITH_LA; {( lex.p)++;  lex.cs = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = WITH; {( lex.p)++;  lex.cs = 8; goto _out }}
 	goto st8
 	st8:
 //line NONE:1

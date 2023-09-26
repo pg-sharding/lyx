@@ -182,7 +182,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /notnull/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTNULL; fbreak;};
             /lateral/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LATERAL_P; fbreak;};
             /ordinality/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ORDINALITY; fbreak;};
-            /with/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITH_LA; fbreak;};
+            /with/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITH; fbreak;};
             /true/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUE_P; fbreak;};
             /false/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FALSE_P; fbreak;};
 

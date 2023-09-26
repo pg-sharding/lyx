@@ -1,7 +1,6 @@
 package lyx_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/pg-sharding/lyx/lyx"
@@ -1972,9 +1971,7 @@ func TestDrop(t *testing.T) {
 	} {
 		_, err := lyx.Parse(tt.query)
 
-		fmt.Println(tt.query)
-
-		assert.NoError(err)
+		assert.NoError(err, tt.query)
 	}
 }
 
@@ -1999,28 +1996,13 @@ func TestCreateFail(t *testing.T) {
 			query: "create table xx ( i SELECT )",
 		},
 		{
-			query: "create table xx ( ROLLBACK int )",
-		},
-		{
-			query: "create table xx ( DELETE int )",
-		},
-		{
-			query: "create table xx ( DROP int )",
-		},
-		{
-			query: "create table xx ( UPDATE int )",
-		},
-		{
 			query: "create table xx ( i WHERE )",
 		},
 		{
 			query: "create table xx ( i AS )",
 		}} {
 		_, err := lyx.Parse(tt.query)
-
-		fmt.Println(tt.query)
-
-		assert.Error(err)
+		assert.Error(err, tt.query)
 	}
 }
 
@@ -2034,16 +2016,36 @@ func TestCreateTableWith(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
-		// TODO: fix
-		// {
-		// 	query: "create table pgbench_tellers(tid int not null,bid int,tbalance int,filler char(84)) with (fillfactor=100)",
-		// 	exp:   &lyx.CreateTable{},
-		// 	err:   nil,
-		// },
+		{
+			query: `
+			create table 
+				pgbench_tellers(tid int not null,bid int,tbalance int,filler char(84)) with (fillfactor=100)
+			`,
+			exp: &lyx.CreateTable{
+				TableName: "pgbench_tellers",
+				TableElts: []lyx.TableElt{
+					{
+						ColName: "tid",
+						ColType: "int",
+					},
+					{
+						ColName: "bid",
+						ColType: "int",
+					},
+					{
+						ColName: "tbalance",
+						ColType: "int",
+					},
+					{
+						ColName: "filler",
+						ColType: "char",
+					},
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
-
-		fmt.Println(tt.query)
 
 		assert.NoError(err)
 
@@ -2147,10 +2149,8 @@ func TestCreateSuccess(t *testing.T) {
 		}} {
 		tmp, err := lyx.Parse(tt.query)
 
-		fmt.Println(tt.query)
+		assert.NoError(err, tt.query)
 
-		assert.NoError(err)
-
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
