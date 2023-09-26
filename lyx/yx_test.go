@@ -1363,6 +1363,17 @@ func TestCopy(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `copy pgbench_accounts from stdin with (freeze on)`,
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "pgbench_accounts",
+				},
+				Where:  &lyx.AExprEmpty{},
+				IsFrom: true,
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 

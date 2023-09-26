@@ -160,7 +160,6 @@ func NewLyxParser() LyxParser {
 %token<str> DELIMITERS PROGRAM STDIN
 
 %token<str> FALSE_P TRUE_P 
-%token<strlist> copy_generic_opt_list
 
 /* copy opt item  */
 %token<str> BINARY FREEZE DELIMITER CSV HEADER_P QUOTE ESCAPE FORCE ENCODING
@@ -4499,9 +4498,8 @@ copy_generic_opt_arg_list_item:
 			opt_boolean_or_string	{  }
 		;
 
-
 copy_options: copy_opt_list							{ $$ = $1; }
-			| TOPENBR copy_generic_opt_list TCLOSEBR			{ $$ = $2; }
+			| TOPENBR copy_gengeneric_opt_list TCLOSEBR			{ $$ = $2; }
 		;
 
 /* old COPY option syntax */
