@@ -1955,6 +1955,29 @@ func TestParams(t *testing.T) {
 	}
 }
 
+func TestDrop(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			drop table if exists pgbench_accounts, pgbench_branches, pgbench_history, pgbench_tellers`,
+			exp: &lyx.Drop{},
+		},
+	} {
+		_, err := lyx.Parse(tt.query)
+
+		fmt.Println(tt.query)
+
+		assert.NoError(err)
+	}
+}
+
 func TestCreateFail(t *testing.T) {
 	assert := assert.New(t)
 
@@ -1998,6 +2021,33 @@ func TestCreateFail(t *testing.T) {
 		fmt.Println(tt.query)
 
 		assert.Error(err)
+	}
+}
+
+func TestCreateTableWith(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		// TODO: fix
+		// {
+		// 	query: "create table pgbench_tellers(tid int not null,bid int,tbalance int,filler char(84)) with (fillfactor=100)",
+		// 	exp:   &lyx.CreateTable{},
+		// 	err:   nil,
+		// },
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		fmt.Println(tt.query)
+
+		assert.NoError(err)
+
+		assert.Equal(tt.exp, tmp)
 	}
 }
 

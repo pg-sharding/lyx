@@ -1459,7 +1459,7 @@ bare_label_keyword:
 		;
 
 any_tok:
-    reserved_keyword {$$=$1} | SCONST {$$=$1} |  IDENT {$$=$1} 
+    reserved_keyword {$$=$1} | SCONST {$$=$1} |  IDENT {$$=$1} | unreserved_keyword { $$ = $1 }
 
 
 anything:
