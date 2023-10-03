@@ -196,6 +196,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /array/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ARRAY; fbreak;};
             # explicit row for c_expr 
             /row/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROW; fbreak;};
+            /exists/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = EXISTS; fbreak;};
+
 
             /join/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = JOIN; fbreak;};
             /cross/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CROSS; fbreak;};

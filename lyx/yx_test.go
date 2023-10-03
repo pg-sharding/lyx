@@ -1965,6 +1965,48 @@ func TestParams(t *testing.T) {
 	}
 }
 
+func TestCreateTableWithPrimaryKey(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			create table IF NOT EXISTS item (i_id int not null, i_im_id int, i_name varchar(24), i_price decimal(5,2), i_data varchar(50),PRIMARY KEY(i_id) )`,
+			exp: &lyx.Drop{},
+		},
+	} {
+		_, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+	}
+}
+
+func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			create table IF NOT EXISTS customer (c_id int not null, c_d_id int not null, c_w_id int not null, c_first varchar(16), c_middle char(2), c_last varchar(16), c_street_1 varchar(20), c_street_2 varchar(20), c_city varchar(20), c_state char(2), c_zip char(9), c_phone char(16), c_credit char(2), c_credit_lim bigint, c_discount decimal(4,2), c_balance decimal(12,2), c_ytd_payment decimal(12,2), c_payment_cnt int, c_delivery_cnt int, c_data text, PRIMARY KEY(c_w_id, c_d_id, c_id) )`,
+			exp: &lyx.Drop{},
+		},
+	} {
+		_, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+	}
+}
+
 func TestDrop(t *testing.T) {
 	assert := assert.New(t)
 
