@@ -4406,6 +4406,11 @@ set_clause:
 				{
 					$$ = $1;
 				}
+			| 
+			any_id TO a_expr
+				{
+					$$ = $1;
+				}
 			// | TOPENBR set_target_list TCLOSEBR TEQ a_expr
 			// 	{
 			// 		$$ = $2;
