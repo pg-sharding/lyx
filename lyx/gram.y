@@ -4718,21 +4718,21 @@ analyze_keyword:
 
 
 opt_analyze:
-			analyze_keyword							{ $$ = true; }
-			| /*EMPTY*/								{ $$ = false; }
+			analyze_keyword							{  }
+			| /*EMPTY*/								{  }
 		;
 
 opt_verbose:
-			VERBOSE									{ $$ = true; }
-			| /*EMPTY*/								{ $$ = false; }
+			VERBOSE									{  }
+			| /*EMPTY*/								{  }
 		;
 
-opt_full:	FULL									{ $$ = true; }
-			| /*EMPTY*/								{ $$ = false; }
+opt_full:	FULL									{ }
+			| /*EMPTY*/								{ }
 		;
 
-opt_freeze: FREEZE									{ $$ = true; }
-			| /*EMPTY*/								{ $$ = false; }
+opt_freeze: FREEZE									{  }
+			| /*EMPTY*/								{ }
 		;
 
 

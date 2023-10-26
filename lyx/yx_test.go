@@ -2270,3 +2270,38 @@ ORDER BY 1,2;
 		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
+
+func TestExplain(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			EXPLAIN select 1
+`,
+			exp: &lyx.Explain{
+				Stmt: &lyx.Select{
+					Where: &lyx.AExprEmpty{},
+					TargetList: []lyx.Node{
+						&lyx.AExprConst{
+							Value: "1",
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}

@@ -12493,49 +12493,41 @@ yydefault:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line lyx/gram.y:4721
 		{
-			yyVAL.node = true
 		}
 	case 1649:
 		yyDollar = yyS[yypt-0 : yypt+1]
 //line lyx/gram.y:4722
 		{
-			yyVAL.node = false
 		}
 	case 1650:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line lyx/gram.y:4726
 		{
-			yyVAL.node = true
 		}
 	case 1651:
 		yyDollar = yyS[yypt-0 : yypt+1]
 //line lyx/gram.y:4727
 		{
-			yyVAL.node = false
 		}
 	case 1652:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line lyx/gram.y:4730
 		{
-			yyVAL.node = true
 		}
 	case 1653:
 		yyDollar = yyS[yypt-0 : yypt+1]
 //line lyx/gram.y:4731
 		{
-			yyVAL.node = false
 		}
 	case 1654:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line lyx/gram.y:4734
 		{
-			yyVAL.node = true
 		}
 	case 1655:
 		yyDollar = yyS[yypt-0 : yypt+1]
 //line lyx/gram.y:4735
 		{
-			yyVAL.node = false
 		}
 	case 1656:
 		yyDollar = yyS[yypt-1 : yypt+1]
