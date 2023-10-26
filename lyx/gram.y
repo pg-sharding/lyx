@@ -283,8 +283,12 @@ Operator:
 %type<node> select_offset_value select_limit_value offset_clause limit_clause opt_select_limit select_limit
 %type<node> opt_distinct_clause opt_all_clause distinct_clause simple_select window_clause window_definition_list
 
-%type<node> OptTempTableName into_clause set_quantifier opt_table 
+%type<node> ExplainStmt ExplainableStmt DeclareCursorStmt
 
+%type<node> OptTempTableName into_clause set_quantifier opt_table analyze_keyword
+
+%type<node> opt_analyze opt_verbose opt_full opt_freeze
+// %type<node> utility_option_list
 
 %type<node> TransactionStmt TransactionStmtLegacy opt_transaction
 
@@ -309,7 +313,7 @@ Operator:
 
 %type<strlist> name_list 
 
-%type<str> reloptions reloption_list opt_reloptions
+%type<str> reloptions reloption_list opt_reloptions cursor_name cursor_options
 
 %type<strlist> comma_separated_col_refs insert_col_refs
 
@@ -3785,25 +3789,11 @@ simple_select:
 					}
 				}
 			| values_clause							{ $$ = $1; }
-		// 	| TABLE relation_expr
-		// 		{
-		// 			/* same as SELECT * FROM relation_expr */
-		// 			ColumnRef  *cr = makeNode(ColumnRef);
-		// 			ResTarget  *rt = makeNode(ResTarget);
-		// 			SelectStmt *n = makeNode(SelectStmt);
+			| TABLE relation_expr
+				{
+					/* same as SELECT * FROM relation_expr */
 
-		// 			cr->fields = list_make1(makeNode(A_Star));
-		// 			cr->location = -1;
-
-		// 			rt->name = NULL;
-		// 			rt->indirection = NIL;
-		// 			rt->val = (Node *) cr;
-		// 			rt->location = -1;
-
-		// 			n->targetList = list_make1(rt);
-		// 			n->fromClause = list_make1($2);
-		// 			$$ = (Node *) n;
-		// 		}
+				}
 		// 	| select_clause UNION set_quantifier select_clause
 		// 		{
 		// 			$$ = makeSetOp(SETOP_UNION, $3 == SET_QUANTIFIER_ALL, $1, $4);
@@ -4584,6 +4574,80 @@ opt_with:	WITH									{}
 		;
 
 
+
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				EXPLAIN [ANALYZE] [VERBOSE] query
+ *				EXPLAIN ( options ) query
+ *
+ *****************************************************************************/
+
+ExplainStmt:
+		EXPLAIN ExplainableStmt
+				{
+					$$ = $2;
+				}
+		| EXPLAIN analyze_keyword opt_verbose ExplainableStmt
+				{
+					$$ = $4;
+				}
+		| EXPLAIN VERBOSE ExplainableStmt
+				{
+					$$ = $3;
+				}
+		// | EXPLAIN TOPENBR utility_option_list TCLOSEBR ExplainableStmt
+		// 		{
+		// 			$$ = $5
+		// 		}
+		// ;
+
+ExplainableStmt:
+			SelectStmt { $$=$1 }
+			| InsertStmt { $$=$1 }
+			| UpdateStmt { $$=$1 }
+			| DeleteStmt { $$=$1 }
+			// | MergeStmt { $$=$1 }
+			| DeclareCursorStmt { $$=$1 }
+			// | CreateAsStmt { $$=$1 }
+			// | CreateMatViewStmt { $$=$1 }
+			// | RefreshMatViewStmt { $$=$1 }
+			| ExecuteStmt	{ $$=$1 }				/* by default all are  */
+		;
+
+
+
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				CURSOR STATEMENTS
+ *
+ *****************************************************************************/
+DeclareCursorStmt: DECLARE cursor_name cursor_options CURSOR opt_hold FOR SelectStmt
+				{
+
+					$$ = $7;
+				}
+		;
+
+cursor_name:	name						{ $$ = $1; }
+		;
+
+cursor_options: /*EMPTY*/					{ }
+			| cursor_options NO SCROLL		{ $$ = $1}
+			| cursor_options SCROLL			{ $$ = $1 }
+			| cursor_options BINARY			{ $$ = $1  }
+			| cursor_options ASENSITIVE		{ $$ = $1  }
+			| cursor_options INSENSITIVE	{ $$ = $1 }
+		;
+
+opt_hold: /* EMPTY */						{ }
+			| WITH HOLD						{ }
+			| WITHOUT HOLD					{  }
+		;
+
+
+
 /* WITH (options) is preferred, WITH OIDS and WITHOUT OIDS are legacy forms */
 OptWith:
 			WITH reloptions				{ }
@@ -4643,6 +4707,32 @@ copy_stmt:
 						SubStmt: $3,
 					}   
 				}
+		;
+
+
+
+analyze_keyword:
+			ANALYZE {}
+			| ANALYSE {} /* British */
+		;
+
+
+opt_analyze:
+			analyze_keyword							{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+		;
+
+opt_verbose:
+			VERBOSE									{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+		;
+
+opt_full:	FULL									{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+		;
+
+opt_freeze: FREEZE									{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
 		;
 
 
