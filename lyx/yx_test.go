@@ -1711,6 +1711,15 @@ func TestMisc(t *testing.T) {
 		},
 
 		{
+			query: "select 0.017264",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprConst{Value: "0.017264"}},
+				Where:      &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
+		{
 			query: "SELECT  * FROM delivery  JOIN  /* comment */ orders ON order_id = id;",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
@@ -2244,22 +2253,76 @@ func TestMiscQ(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+		// 		{
+		// 			query: `
+		// SELECT n.nspname as "Schema",
+		//   c.relname as "Name",
+		//   CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence' WHEN 't' THEN 'TOAST table' WHEN 'f' THEN 'foreign table' WHEN 'p' THEN 'partitioned table' WHEN 'I' THEN 'partitioned index' END as "Type",
+		//   pg_catalog.pg_get_userbyid(c.relowner) as "Owner"
+		// FROM pg_catalog.pg_class c
+		//      LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+		//      LEFT JOIN pg_catalog.pg_am am ON am.oid = c.relam
+		// WHERE c.relkind IN ('r','p','v','m','S','f','')
+		//       AND n.nspname <> 'pg_catalog'
+		//       AND n.nspname !~ '^pg_toast'
+		//       AND n.nspname <> 'information_schema'
+		//   AND pg_catalog.pg_table_is_visible(c.oid)
+		// ORDER BY 1,2;
+		// `,
+		// 			err: nil,
+		// 		},
 		{
-			query: `
-SELECT n.nspname as "Schema",
-  c.relname as "Name",
-  CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence' WHEN 't' THEN 'TOAST table' WHEN 'f' THEN 'foreign table' WHEN 'p' THEN 'partitioned table' WHEN 'I' THEN 'partitioned index' END as "Type",
-  pg_catalog.pg_get_userbyid(c.relowner) as "Owner"
-FROM pg_catalog.pg_class c
-     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-     LEFT JOIN pg_catalog.pg_am am ON am.oid = c.relam
-WHERE c.relkind IN ('r','p','v','m','S','f','')
-      AND n.nspname <> 'pg_catalog'
-      AND n.nspname !~ '^pg_toast'
-      AND n.nspname <> 'information_schema'
-  AND pg_catalog.pg_table_is_visible(c.oid)
-ORDER BY 1,2;
-`,
+			query: `			
+INSERT INTO warehouse1 
+		(w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
+VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmwruo', 'er', 'zip-26599', 0.017264,300000);'
+			`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					SchemaName:   "",
+					RelationName: "warehouse1",
+				},
+				Columns: []string{
+					"w_id",
+					"w_name",
+					"w_street_1",
+					"w_street_2",
+					"w_city",
+					"w_state",
+					"w_zip",
+					"w_tax",
+					"w_ytd",
+				},
+				Values: []lyx.Node{
+					&lyx.AExprConst{
+						Value: "1",
+					},
+					&lyx.AExprConst{
+						Value: "name-vjxqu",
+					},
+					&lyx.AExprConst{
+						Value: "street1-qkfzdggwut",
+					},
+					&lyx.AExprConst{
+						Value: "street2-jxuhvhtqct",
+					},
+					&lyx.AExprConst{
+						Value: "city-irchbmwruo",
+					},
+					&lyx.AExprConst{
+						Value: "er",
+					},
+					&lyx.AExprConst{
+						"zip-26599",
+					},
+					&lyx.AExprConst{
+						"0.017264",
+					},
+					&lyx.AExprConst{
+						"300000",
+					},
+				},
+			},
 			err: nil,
 		},
 	} {

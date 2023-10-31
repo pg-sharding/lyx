@@ -55,6 +55,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         integer = digit+;
         param = '$' integer;
         
+        decimal	= ((digit*'.'digit+)|(digit+'.'digit*));
 
         ident_start	=	[A-Za-z\200-\377_];
         ident_cont	=	[A-Za-z\200-\377_0-9$];
@@ -96,6 +97,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             };
 
             integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
+
+            decimal =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
 
             '::' =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPECAST; fbreak;};
