@@ -197,6 +197,13 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /ASC/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ASC; fbreak;};
             /DESC/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DESC; fbreak;};
 
+            /CHARACTERISTICS/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHARACTERISTICS; fbreak;};
+            /SESSION/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SESSION; fbreak;};
+            /ISOLATION/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = ISOLATION; fbreak;};
+            /LEVEL/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = LEVEL; fbreak;};
+
+            /COMMITTED/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMITTED; fbreak;};
+
 
             /array/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ARRAY; fbreak;};
             # explicit row for c_expr 

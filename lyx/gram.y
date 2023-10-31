@@ -260,7 +260,7 @@ Operator:
 %type<node> UpdateStmt
 %type<node> DeleteStmt
 %type<node> PrepareStmt
-%type<node> varset_stmt
+%type<node> VariableSetStmt
 %type<node> create_stmt alter_stmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> truncate_stmt drop_stmt
@@ -284,6 +284,9 @@ Operator:
 %type<node> opt_distinct_clause opt_all_clause distinct_clause simple_select window_clause window_definition_list
 
 %type<node> ExplainStmt ExplainableStmt DeclareCursorStmt
+
+%type<node> zone_value iso_level var_value var_list var_name set_rest_more generic_set set_rest VariableSetStmt opt_boolean_or_string
+%type<node> opt_encoding
 
 %type<node> OptTempTableName into_clause set_quantifier opt_table analyze_keyword
 
@@ -1494,7 +1497,7 @@ command:
 		setParseTree(yylex, $1)
     } | ExecuteStmt {
 		setParseTree(yylex, $1)
-    } | varset_stmt {
+    } | VariableSetStmt {
 		setParseTree(yylex, $1)
     } | PrepareStmt {
 		setParseTree(yylex, $1)
@@ -2859,24 +2862,158 @@ target_el:	a_expr AS IDENT
 				}
 		;
 
+opt_encoding:
+			SCONST									{ }
+			| DEFAULT								{  }
+			| /*EMPTY*/								{  }
+		;
 
-varset_stmt:
-    SET any_id TEQ any_val {
-        $$ = &VarSet {
-            Name: $2,
-            Value: $4,
-        }
-    }
-    | SET LOCAL any_id TEQ any_val {
-        $$ = &VarSet {
-            IsLocal: true,
-            Name: $3,
-            Value: $5,
-        }
-    }
-    | RESET any_id {}
-    | RESET ALL {}
 
+
+/*****************************************************************************
+ *
+ * Set PG internal variable
+ *	  SET name TO 'var_value'
+ * Include SQL syntax (thomas 1997-10-22):
+ *	  SET TIME ZONE 'var_value'
+ *
+ *****************************************************************************/
+
+VariableSetStmt:
+			SET set_rest
+				{
+				}
+			| SET LOCAL set_rest
+				{
+				}
+			| SET SESSION set_rest
+				{
+				}
+		;
+
+set_rest:
+			TRANSACTION transaction_mode_list
+				{
+				}
+			| SESSION CHARACTERISTICS AS TRANSACTION transaction_mode_list
+				{
+				}
+			| set_rest_more
+			;
+
+generic_set:
+			var_name TO var_list
+				{
+				}
+			| var_name TEQ var_list
+				{
+				}
+			| var_name TO DEFAULT
+				{
+
+				}
+			| var_name TEQ DEFAULT
+				{
+				}
+		;
+
+set_rest_more:	/* Generic SET syntaxes: */
+			generic_set 						{$$ = $1;}
+			| var_name FROM CURRENT_P
+				{
+				}
+			/* Special syntaxes mandated by SQL standard: */
+			| TIME ZONE zone_value
+				{
+				}
+			| CATALOG_P SCONST
+				{
+
+				}
+			| SCHEMA SCONST
+				{
+				}
+			| NAMES opt_encoding
+				{
+				}
+			// | ROLE NonReservedWord_or_SCONST
+				// {
+				// }
+			// | SESSION AUTHORIZATION NonReservedWord_or_SCONST
+				// {
+				// }
+			| SESSION AUTHORIZATION DEFAULT
+				{
+				}
+			// | XML_P OPTION document_or_content
+			// 	{
+			// 	}
+			/* Special syntaxes invented by PostgreSQL: */
+			| TRANSACTION SNAPSHOT SCONST
+				{
+				}
+		;
+
+var_name:	ColId								{ }
+			| var_name TDOT ColId
+				{  }
+		;
+
+var_list:	var_value								{ ; }
+			| var_list TCOMMA var_value				{ ; }
+		;
+
+var_value:	opt_boolean_or_string
+				{  }
+			// | NumericOnly
+				// {  }
+		;
+
+iso_level:	READ UNCOMMITTED						{  }
+			| READ COMMITTED						{  }
+			| REPEATABLE READ						{ }
+			| SERIALIZABLE							{  }
+		;
+
+opt_boolean_or_string:
+			TRUE_P									{}
+			| FALSE_P								{  }
+			| ON									{}
+			/*
+			 * OFF is also accepted as a boolean value, but is handled by
+			 * the NonReservedWord rule.  The action for booleans and strings
+			 * is the same, so we don't need to distinguish them here.
+			 */
+			// | NonReservedWord_or_SCONST				{ $$ = $1; }
+		;
+
+/* Timezone values can be:
+ * - a string such as 'pst8pdt'
+ * - an identifier such as "pst8pdt"
+ * - an integer or floating point number
+ * - a time interval per SQL99
+ * ColId gives reduce/reduce errors against ConstInterval and LOCAL,
+ * so use IDENT (meaning we reject anything that is a key word).
+ */
+zone_value:
+			SCONST
+				{
+				}
+			| IDENT
+				{
+				}
+			| ConstInterval SCONST opt_interval
+				{
+
+				}
+			| ConstInterval TOPENBR SCONST TCLOSEBR SCONST
+				{
+	
+				}
+			// | NumericOnly							{  }
+			| DEFAULT								{  }
+			| LOCAL									{ }
+		;
 
 
 /*****************************************************************************
@@ -2993,7 +3130,7 @@ opt_transaction:	WORK {}
 		;
 
 transaction_mode_item:
-			ISOLATION LEVEL SCONST /* iso_level */
+			ISOLATION LEVEL iso_level /* iso_level */
 					{ $$ = TransactionIsolation }
 			| READ ONLY
 					{ $$ = TransactionReadOnly }
@@ -4436,19 +4573,6 @@ DeleteStmt:
             Where: $6,
         }
     }
-
-
-opt_boolean_or_string:
-			TRUE_P									{  }
-			| FALSE_P								{}
-			| ON									{ }
-			/*
-			 * OFF is also accepted as a boolean value, but is handled by
-			 * the NonReservedWord rule.  The action for booleans and strings
-			 * is the same, so we don't need to distinguish them here.
-			 */
-			| SCONST				{  }
-		;
 
 opt_binary:
 			BINARY

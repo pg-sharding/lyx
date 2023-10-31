@@ -2325,6 +2325,34 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 			},
 			err: nil,
 		},
+		{
+			query: `
+			SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
+			`,
+			exp: nil,
+			err: nil,
+		},
+
+		{
+			query: `
+			select ttt.i from ttt;
+			`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						TableAlias: "ttt",
+						ColName:    "i",
+					},
+				},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "ttt",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
