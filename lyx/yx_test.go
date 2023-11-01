@@ -2353,6 +2353,55 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 			},
 			err: nil,
 		},
+
+		{
+			query: `
+			UPDATE customer1
+			    SET c_balance= -4755.000000, c_ytd_payment=4755.000000
+			WHERE c_w_id = 1
+			AND c_d_id=1
+			AND c_id=963
+			`,
+			exp: &lyx.Update{
+				TableRef: &lyx.RangeVar{
+					RelationName: "customer1",
+				},
+				Where: &lyx.AExprOp{
+					Op: "AND",
+					Left: &lyx.AExprOp{
+						Left: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "c_w_id",
+							},
+							Right: &lyx.AExprConst{
+								Value: "1",
+							},
+							Op: "=",
+						},
+						Right:  &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "c_d_id",
+							},
+							Right: &lyx.AExprConst{
+								Value: "1",
+							},
+							Op: "=",
+						},
+						Op: "AND",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "c_id",
+						},
+						Right: &lyx.AExprConst{
+							Value: "963",
+						},
+						Op: "=",
+					},
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 

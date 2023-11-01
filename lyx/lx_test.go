@@ -151,6 +151,17 @@ func TestSimple(t *testing.T) {
 				lyx.TCLOSEBR, lyx.TSEMICOLON},
 			err: nil,
 		},
+		{
+			query: `
+			UPDATE customer1
+        	SET c_balance= -4755.000000
+			`,
+			exp: []int{
+				lyx.UPDATE, lyx.IDENT, lyx.SET,
+				lyx.IDENT, lyx.TEQ, lyx.SCONST,
+			},
+			err: nil,
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
