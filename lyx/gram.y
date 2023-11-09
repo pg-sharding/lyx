@@ -289,10 +289,15 @@ Operator:
 
 %type<node> ExplainStmt ExplainableStmt DeclareCursorStmt
 
-%type<nodeList> set_rest set_rest_more
+%type<str> var_name var_value
 
-%type<node> zone_value iso_level var_value var_list var_name generic_set VariableSetStmt opt_boolean_or_string
-%type<node> opt_encoding NonReservedWord_or_SCONST
+%type<strlist> var_list
+
+%type<node> zone_value iso_level generic_set set_rest set_rest_more 
+%type<node> reset_rest generic_reset SetResetClause VariableResetStmt VariableSetStmt
+%type<node> opt_encoding 
+
+%type<str> NonReservedWord_or_SCONST opt_boolean_or_string
 
 %type<node> OptTempTableName into_clause set_quantifier opt_table analyze_keyword
 
@@ -1504,6 +1509,8 @@ command:
     } | ExecuteStmt {
 		setParseTree(yylex, $1)
     } | VariableSetStmt {
+		setParseTree(yylex, $1)
+    } | VariableResetStmt {
 		setParseTree(yylex, $1)
     } | PrepareStmt {
 		setParseTree(yylex, $1)
@@ -2860,8 +2867,8 @@ opt_encoding:
 		;
 
 NonReservedWord_or_SCONST:
-			NonReservedWord							{ $$ = &VarValue{Value: $1} }
-			| SCONST								{ $$ = &VarValue{Value: $1} }
+			NonReservedWord							{ $$ = $1 }
+			| SCONST								{ $$ =  $1 }
 		;
 
 
@@ -2878,22 +2885,17 @@ NonReservedWord_or_SCONST:
 VariableSetStmt:
 			SET set_rest
 				{				
-					$$ = &VariableSetStmt{
-						Value: $2,
-					}
+					$$ = $2
 				}
 			| SET LOCAL set_rest
 				{	
-					$$ = &VariableSetStmt{
-						Value: $3,
-					}
+					$$ = $3
+					$$.(*VariableSetStmt).IsLocal = true
 				}
 			| SET SESSION set_rest
 				{
-					$$ = &VariableSetStmt{
-						Value: $3,
-						Session: true,
-					}
+					$$ = $3
+					$$.(*VariableSetStmt).Session = true
 				}
 		;
 
@@ -2913,16 +2915,33 @@ set_rest:
 generic_set:
 			var_name TO var_list
 				{
+					$$ = &VariableSetStmt{
+						Name: $1,
+						Value: $3,
+					}
 				}
 			| var_name TEQ var_list
 				{
+					$$ = &VariableSetStmt{
+						Name: $1,
+						Value: $3,
+					}
 				}
 			| var_name TO DEFAULT
 				{
-
+					$$ = &VariableSetStmt{
+						Name: $1,
+						Value: nil,
+						Default: true,
+					}
 				}
 			| var_name TEQ DEFAULT
 				{
+					$$ = &VariableSetStmt{
+						Name: $1,
+						Value: nil,
+						Default: true,
+					}
 				}
 		;
 
@@ -2964,9 +2983,9 @@ set_rest_more:	/* Generic SET syntaxes: */
 				}
 		;
 
-var_name:	ColId								{ }
+var_name:	ColId								{ $$ = $1 }
 			| var_name TDOT ColId
-				{  }
+				{ $$ = $1 + "." + $3 }
 		;
 
 var_list:	var_value								{ ; }
@@ -2986,9 +3005,9 @@ iso_level:	READ UNCOMMITTED						{  }
 		;
 
 opt_boolean_or_string:
-			TRUE_P									{ $$ = &VarValue{Value: "true"} }
-			| FALSE_P								{ $$ = &VarValue{Value: "false"} }
-			| ON									{ $$ = &VarValue{Value: "true"} }
+			TRUE_P									{ $$ = "true" }
+			| FALSE_P								{ $$ =  "false" }
+			| ON									{ $$ =  "true" }
 			/*
 			 * OFF is also accepted as a boolean value, but is handled by
 			 * the NonReservedWord rule.  The action for booleans and strings
@@ -3024,6 +3043,51 @@ zone_value:
 			| DEFAULT								{  }
 			| LOCAL									{ }
 		;
+
+
+
+
+VariableResetStmt:
+			RESET reset_rest						{ $$ = $2; }
+		;
+
+reset_rest:
+			generic_reset							{ $$ = $1; }
+			| TIME ZONE
+				{
+				}
+			| TRANSACTION ISOLATION LEVEL
+				{
+				}
+			| SESSION AUTHORIZATION
+				{
+				}
+		;
+
+generic_reset:
+			var_name
+				{
+					$$ = &VariableSetStmt{
+						Kind: VarTypeReset,
+						Name: $1,
+					}
+				}
+			| ALL
+				{
+					
+					$$ = &VariableSetStmt{
+						Kind: VarTypeResetAll,
+						Name: $1,
+					}
+				}
+		;
+
+/* SetResetClause allows SET or RESET without LOCAL */
+SetResetClause:
+			SET set_rest					{ $$ = $2; }
+			| VariableResetStmt				{ $$ = $1; }
+		;
+
 
 
 /*****************************************************************************

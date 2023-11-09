@@ -2466,10 +2466,7 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 			query: `
 			SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
 			`,
-			exp: &lyx.VariableSetStmt{
-				Session: false,
-				Value:   nil,
-			},
+			exp: nil,
 			err: nil,
 		},
 
@@ -2602,6 +2599,7 @@ func TestSetStmt(t *testing.T) {
 `,
 			exp: &lyx.VariableSetStmt{
 				Session: false,
+				Name:    "search_path",
 			},
 			err: nil,
 		},

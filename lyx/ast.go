@@ -209,31 +209,27 @@ type VarValue struct {
 	Value string
 }
 
-type VariableSetStmt struct {
-	Session bool
-	Name    string
-	Value   []Node
-}
-
 type VarType string
 
 const (
-	VarTypeSet   = VarType("SET")
-	VarTypeReset = VarType("RESET")
+	VarTypeSet      = VarType("SET")
+	VarTypeReset    = VarType("RESET")
+	VarTypeResetAll = VarType("RESET ALL")
 )
 
-type VarSet struct {
+type VariableSetStmt struct {
+	Session bool
 	IsLocal bool
-	Type    VarType
+	Default bool
 	Name    string
-	Value   string
+	Value   []string
+	Kind    VarType
 }
 
 func (*Explain) iNode()         {}
 func (*Select) iNode()          {}
 func (*Execute) iNode()         {}
 func (*Prepare) iNode()         {}
-func (*VarSet) iNode()          {}
 func (*CreateTable) iNode()     {}
 func (*Alter) iNode()           {}
 func (*Analyze) iNode()         {}
