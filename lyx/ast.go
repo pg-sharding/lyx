@@ -205,6 +205,16 @@ type CreateRole struct {
 type CreateDatabase struct {
 }
 
+type VarValue struct {
+	Value string
+}
+
+type VariableSetStmt struct {
+	Session bool
+	Name    string
+	Value   []Node
+}
+
 type VarType string
 
 const (
@@ -219,24 +229,26 @@ type VarSet struct {
 	Value   string
 }
 
-func (*Explain) iNode()        {}
-func (*Select) iNode()         {}
-func (*Execute) iNode()        {}
-func (*Prepare) iNode()        {}
-func (*VarSet) iNode()         {}
-func (*CreateTable) iNode()    {}
-func (*Alter) iNode()          {}
-func (*Analyze) iNode()        {}
-func (*Cluster) iNode()        {}
-func (*Vacuum) iNode()         {}
-func (*Drop) iNode()           {}
-func (*Truncate) iNode()       {}
-func (*Index) iNode()          {}
-func (*CreateRole) iNode()     {}
-func (*CreateDatabase) iNode() {}
-func (*Insert) iNode()         {}
-func (*Delete) iNode()         {}
-func (*Update) iNode()         {}
+func (*Explain) iNode()         {}
+func (*Select) iNode()          {}
+func (*Execute) iNode()         {}
+func (*Prepare) iNode()         {}
+func (*VarSet) iNode()          {}
+func (*CreateTable) iNode()     {}
+func (*Alter) iNode()           {}
+func (*Analyze) iNode()         {}
+func (*Cluster) iNode()         {}
+func (*Vacuum) iNode()          {}
+func (*Drop) iNode()            {}
+func (*Truncate) iNode()        {}
+func (*Index) iNode()           {}
+func (*CreateRole) iNode()      {}
+func (*CreateDatabase) iNode()  {}
+func (*Insert) iNode()          {}
+func (*Delete) iNode()          {}
+func (*Update) iNode()          {}
+func (*VarValue) iNode()        {}
+func (*VariableSetStmt) iNode() {}
 
 type TransactionStmtType int
 

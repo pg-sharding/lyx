@@ -222,9 +222,14 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /for/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FOR; fbreak;};
 
 
-
             /locked/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCKED; fbreak;};
             /skip/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SKIP; fbreak;};
+
+            /RECURSIVE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = RECURSIVE; fbreak;};
+            /SEARCH/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SEARCH; fbreak;};
+            /CYCLE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CYCLE; fbreak;};
+            /BREADTH/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BREADTH; fbreak;};
+            /DEPTH/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEPTH; fbreak;};
 
             /vacuum/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = VACUUM; fbreak;};
             /cluster/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CLUSTER; fbreak;};

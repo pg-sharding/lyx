@@ -2271,7 +2271,32 @@ func TestCte(t *testing.T) {
 		err   error
 	}
 
-	for _, tt := range []tcase{} {
+	for _, tt := range []tcase{
+
+		{
+			query: `
+with cte (i) as (values (12), (13))
+select * from tbl inner join cte on tbl.i = cte.i;
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "tbl",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "cte",
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+	} {
 		tmp, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
@@ -2441,7 +2466,10 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 			query: `
 			SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
 			`,
-			exp: nil,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Value:   nil,
+			},
 			err: nil,
 		},
 
@@ -2546,6 +2574,34 @@ func TestExplain(t *testing.T) {
 						},
 					},
 				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
+func TestSetStmt(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			SET search_path to 'test'
+`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
 			},
 			err: nil,
 		},

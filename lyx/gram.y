@@ -76,6 +76,10 @@ func NewLyxParser() LyxParser {
 
 %type<from_list> from_clause from_list
 
+
+%type<node> opt_search_clause opt_cycle_clause
+%type<nodeList> cte_list common_table_expr with_clause opt_with_clause
+
 %type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
 
 %type<from> table_ref 
@@ -285,8 +289,10 @@ Operator:
 
 %type<node> ExplainStmt ExplainableStmt DeclareCursorStmt
 
-%type<node> zone_value iso_level var_value var_list var_name set_rest_more generic_set set_rest VariableSetStmt opt_boolean_or_string
-%type<node> opt_encoding
+%type<nodeList> set_rest set_rest_more
+
+%type<node> zone_value iso_level var_value var_list var_name generic_set VariableSetStmt opt_boolean_or_string
+%type<node> opt_encoding NonReservedWord_or_SCONST
 
 %type<node> OptTempTableName into_clause set_quantifier opt_table analyze_keyword
 
@@ -314,7 +320,7 @@ Operator:
 
 %type<str> NonReservedWord name database_name access_method index_name
 
-%type<strlist> name_list 
+%type<strlist> name_list opt_name_list
 
 %type<str> reloptions reloption_list opt_reloptions cursor_name cursor_options
 
@@ -2853,6 +2859,11 @@ opt_encoding:
 			| /*EMPTY*/								{  }
 		;
 
+NonReservedWord_or_SCONST:
+			NonReservedWord							{ $$ = &VarValue{Value: $1} }
+			| SCONST								{ $$ = &VarValue{Value: $1} }
+		;
+
 
 
 /*****************************************************************************
@@ -2866,25 +2877,38 @@ opt_encoding:
 
 VariableSetStmt:
 			SET set_rest
-				{
+				{				
+					$$ = &VariableSetStmt{
+						Value: $2,
+					}
 				}
 			| SET LOCAL set_rest
-				{
+				{	
+					$$ = &VariableSetStmt{
+						Value: $3,
+					}
 				}
 			| SET SESSION set_rest
 				{
+					$$ = &VariableSetStmt{
+						Value: $3,
+						Session: true,
+					}
 				}
 		;
 
 set_rest:
 			TRANSACTION transaction_mode_list
 				{
+					$$ = nil
 				}
 			| SESSION CHARACTERISTICS AS TRANSACTION transaction_mode_list
 				{
+					$$ = nil
 				}
-			| set_rest_more
-			;
+			| set_rest_more {
+				$$ = $1
+			}
 
 generic_set:
 			var_name TO var_list
@@ -2903,8 +2927,9 @@ generic_set:
 		;
 
 set_rest_more:	/* Generic SET syntaxes: */
-			generic_set 						{$$ = $1;}
-			| var_name FROM CURRENT_P
+			generic_set 						{
+
+			} | var_name FROM CURRENT_P
 				{
 				}
 			/* Special syntaxes mandated by SQL standard: */
@@ -2921,12 +2946,12 @@ set_rest_more:	/* Generic SET syntaxes: */
 			| NAMES opt_encoding
 				{
 				}
-			// | ROLE NonReservedWord_or_SCONST
-				// {
-				// }
-			// | SESSION AUTHORIZATION NonReservedWord_or_SCONST
-				// {
-				// }
+			| ROLE NonReservedWord_or_SCONST
+				{
+				}
+			| SESSION AUTHORIZATION NonReservedWord_or_SCONST
+				{
+				}
 			| SESSION AUTHORIZATION DEFAULT
 				{
 				}
@@ -2949,7 +2974,7 @@ var_list:	var_value								{ ; }
 		;
 
 var_value:	opt_boolean_or_string
-				{  }
+				{ $$ = $1 }
 			// | NumericOnly
 				// {  }
 		;
@@ -2961,15 +2986,15 @@ iso_level:	READ UNCOMMITTED						{  }
 		;
 
 opt_boolean_or_string:
-			TRUE_P									{}
-			| FALSE_P								{  }
-			| ON									{}
+			TRUE_P									{ $$ = &VarValue{Value: "true"} }
+			| FALSE_P								{ $$ = &VarValue{Value: "false"} }
+			| ON									{ $$ = &VarValue{Value: "true"} }
 			/*
 			 * OFF is also accepted as a boolean value, but is handled by
 			 * the NonReservedWord rule.  The action for booleans and strings
 			 * is the same, so we don't need to distinguish them here.
 			 */
-			// | NonReservedWord_or_SCONST				{ $$ = $1; }
+			| NonReservedWord_or_SCONST				{ $$ = $1; }
 		;
 
 /* Timezone values can be:
@@ -4309,23 +4334,99 @@ select_no_parens:
 				{
 					$$ = $1;
 				}
-			// | with_clause select_clause
-			// 	{
-			// 		$$ = $2;
-			// 	}
-			// | with_clause select_clause sort_clause
-			// 	{
-			// 		$$ = $2;
-			// 	}
-			// | with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
-			// 	{
-			// 		$$ = $2;
-			// 	}
-			// | with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
-			// 	{
-			// 		$$ = $2;
-			// 	}
+			| with_clause select_clause
+				{
+					$$ = $2;
+				}
+			| with_clause select_clause sort_clause
+				{
+					$$ = $2;
+				}
+			| with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
+				{
+					$$ = $2;
+				}
+			| with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
+				{
+					$$ = $2;
+				}
+
+
+/*
+ * SQL standard WITH clause looks like:
+ *
+ * WITH [ RECURSIVE ] <query name> [ (<column>,...) ]
+ *		AS (query) [ SEARCH or CYCLE clause ]
+ *
+ * Recognizing WITH_LA here allows a CTE to be named TIME or ORDINALITY.
+ */
+with_clause:
+		WITH cte_list
+			{
+				$$ = $2
+			}
+		| WITH_LA cte_list
+			{
+				$$ = $2
+			}
+		| WITH RECURSIVE cte_list
+			{
+				$$ = $3
+			}
 		;
+
+cte_list:
+		common_table_expr						{ $$ = $1; }
+		| cte_list TCOMMA common_table_expr		{ $$ = append($1, $3...); }
+		;
+
+common_table_expr:  name opt_name_list AS opt_materialized TOPENBR PreparableStmt TCLOSEBR opt_search_clause opt_cycle_clause
+			{
+				$$ = []Node{$6}
+			}
+		;
+
+opt_materialized:
+		MATERIALIZED							{  }
+		| NOT MATERIALIZED						{ }
+		| /*EMPTY*/								{  }
+		;
+
+opt_search_clause:
+		SEARCH DEPTH FIRST_P BY columnList SET ColId
+			{
+
+			}
+		| SEARCH BREADTH FIRST_P BY columnList SET ColId
+			{
+
+			}
+		| /*EMPTY*/
+			{
+				$$ = nil;
+			}
+		;
+
+opt_cycle_clause:
+		CYCLE columnList SET ColId TO AexprConst DEFAULT AexprConst USING ColId
+			{
+
+			}
+		| CYCLE columnList SET ColId USING ColId
+			{
+
+			}
+		| /*EMPTY*/
+			{
+				$$ = nil;
+			}
+		;
+
+opt_with_clause:
+		with_clause								{ $$ = $1; }
+		| /*EMPTY*/								{ $$ = nil; }
+		;
+
 
 select_clause:
 			simple_select							{ $$ = $1; }
@@ -4851,6 +4952,13 @@ name_list:	name
 			| name_list TCOMMA name
 					{  }
 		;
+
+
+opt_name_list:
+			TOPENBR name_list TCLOSEBR						{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
 
 
 name:		ColId									{ $$ = $1; };
