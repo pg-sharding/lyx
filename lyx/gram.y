@@ -86,7 +86,7 @@ func NewLyxParser() LyxParser {
 %type<nodeList> func_arg_list
 %type<node> func_alias_clause
 
-%type<node> a_expr c_expr b_expr
+%type<node> a_expr c_expr b_expr in_expr
 
 /* CIUD */
 %token<str> CREATE ALTER
@@ -2239,6 +2239,23 @@ opt_indirection:
 
 
 
+
+in_expr:	select_with_parens
+				{
+					/* other fields will be filled later */
+					$$ = $1
+				}
+			| TOPENBR expr_list TCLOSEBR						
+			{
+				if len($2) > 0 {
+					$$ = $2[0] 
+				} else {
+					$$ = nil
+				}
+			}
+		;
+
+
 /*
  * Productions that can be used in both a_expr and b_expr.
  *
@@ -2650,50 +2667,18 @@ a_expr:
 			// 									   (Node *) list_make2($5, $7),
 			// 									   @2);
 			// 	}
-			// | a_expr IN_P in_expr
-			// 	{
-			// 		/* in_expr returns a SubLink or a list of a_exprs */
-			// 		if (IsA($3, SubLink))
-			// 		{
-			// 			/* generate foo = ANY (subquery) */
-			// 			SubLink	   *n = (SubLink *) $3;
-
-			// 			n->subLinkType = ANY_SUBLINK;
-			// 			n->subLinkId = 0;
-			// 			n->testexpr = $1;
-			// 			n->operName = NIL;		/* show it's IN not = ANY */
-			// 			n->location = @2;
-			// 			$$ = (Node *) n;
-			// 		}
-			// 		else
-			// 		{
-			// 			/* generate scalar IN expression */
-			// 			$$ = (Node *) makeSimpleA_Expr(AEXPR_IN, "=", $1, $3, @2);
-			// 		}
-			// 	}
-			// | a_expr NOT_LA IN_P in_expr						%prec NOT_LA
-			// 	{
-			// 		/* in_expr returns a SubLink or a list of a_exprs */
-			// 		if (IsA($4, SubLink))
-			// 		{
-			// 			/* generate NOT (foo = ANY (subquery)) */
-			// 			/* Make an = ANY node */
-			// 			SubLink	   *n = (SubLink *) $4;
-
-			// 			n->subLinkType = ANY_SUBLINK;
-			// 			n->subLinkId = 0;
-			// 			n->testexpr = $1;
-			// 			n->operName = NIL;		/* show it's IN not = ANY */
-			// 			n->location = @2;
-			// 			/* Stick a NOT on top; must have same parse location */
-			// 			$$ = makeNotExpr((Node *) n, @2);
-			// 		}
-			// 		else
-			// 		{
-			// 			/* generate scalar NOT IN expression */
-			// 			$$ = (Node *) makeSimpleA_Expr(AEXPR_IN, "<>", $1, $4, @2);
-			// 		}
-			// 	}
+			| a_expr IN_P in_expr
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $3,
+						Op: "IN",
+					}
+				}
+			| a_expr NOT_LA IN_P in_expr						%prec NOT_LA
+				{
+					
+				}
 			// | a_expr subquery_Op sub_type select_with_parens	%prec Op
 			// 	{
 			// 		SubLink	   *n = makeNode(SubLink);

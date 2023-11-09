@@ -482,6 +482,25 @@ func TestSelect(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `
+			select id from tbl where i = 12 for update skip locked limit 1
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "tbl",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left:  &lyx.ColumnRef{ColName: "i"},
+					Right: &lyx.AExprConst{Value: "12"},
+					Op:    "=",
+				},
+				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
@@ -2243,6 +2262,24 @@ func TestCreateSuccess(t *testing.T) {
 	}
 }
 
+func TestCte(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
 func TestMiscQ(t *testing.T) {
 	assert := assert.New(t)
 
@@ -2253,6 +2290,81 @@ func TestMiscQ(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+		{
+			query: `
+			SELECT * from X where id in ( select 1 );
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "X",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "id",
+					},
+
+					Right: &lyx.Select{
+						Where: &lyx.AExprEmpty{},
+						TargetList: []lyx.Node{
+							&lyx.AExprConst{Value: "1"},
+						},
+					},
+					Op: "IN",
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: `
+			delete from tbl where id in (select id from tbl where i = 12 for update skip locked limit 1)
+			and i = 12 returning *;
+			`,
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "tbl",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+
+						Left: &lyx.ColumnRef{
+							ColName: "id",
+						},
+						Right: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "tbl",
+								},
+							},
+							Where: &lyx.AExprOp{
+								Left:  &lyx.ColumnRef{ColName: "i"},
+								Right: &lyx.AExprConst{Value: "12"},
+								Op:    "=",
+							},
+							TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
+						},
+						Op: "IN",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "i",
+						},
+						Right: &lyx.AExprConst{
+							Value: "12",
+						},
+						Op: "=",
+					},
+					Op: "and",
+				},
+			},
+			err: nil,
+		},
+
 		// 		{
 		// 			query: `
 		// SELECT n.nspname as "Schema",
@@ -2378,7 +2490,7 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 							},
 							Op: "=",
 						},
-						Right:  &lyx.AExprOp{
+						Right: &lyx.AExprOp{
 							Left: &lyx.ColumnRef{
 								ColName: "c_d_id",
 							},
