@@ -10965,7 +10965,7 @@ yydefault:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line lyx/gram.y:2959
 		{
-
+			yyVAL.node = yyDollar[1].node
 		}
 	case 1255:
 		yyDollar = yyS[yypt-3 : yypt+1]

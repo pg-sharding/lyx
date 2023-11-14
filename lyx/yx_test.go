@@ -2607,6 +2607,33 @@ func TestSetStmt(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `
+			SET search_path = 'test'
+`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Name:    "search_path",
+				Kind:    lyx.VarTypeSet,
+				Value: []string{
+					"test",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			set __spqr_lol to 'kek';`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Name:    "__spqr_lol",
+				Kind:    lyx.VarTypeSet,
+				Value: []string{
+					"kek",
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 

@@ -2956,8 +2956,8 @@ generic_set:
 		;
 
 set_rest_more:	/* Generic SET syntaxes: */
-			generic_set 						{
-
+			generic_set {
+				$$ = $1 
 			} | var_name FROM CURRENT_P
 				{
 				}
