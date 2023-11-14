@@ -2600,6 +2600,10 @@ func TestSetStmt(t *testing.T) {
 			exp: &lyx.VariableSetStmt{
 				Session: false,
 				Name:    "search_path",
+				Kind:    lyx.VarTypeSet,
+				Value: []string{
+					"test",
+				},
 			},
 			err: nil,
 		},

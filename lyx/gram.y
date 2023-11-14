@@ -2886,16 +2886,26 @@ VariableSetStmt:
 			SET set_rest
 				{				
 					$$ = $2
+					if ($$ != nil) {
+						$$.(*VariableSetStmt).Kind = VarTypeSet
+					}
 				}
 			| SET LOCAL set_rest
 				{	
 					$$ = $3
-					$$.(*VariableSetStmt).IsLocal = true
+					if ($$ != nil) {
+						$$.(*VariableSetStmt).IsLocal = true
+						$$.(*VariableSetStmt).Kind = VarTypeSet
+					}
 				}
 			| SET SESSION set_rest
 				{
 					$$ = $3
-					$$.(*VariableSetStmt).Session = true
+
+					if ($$ != nil) {
+						$$.(*VariableSetStmt).Session = true
+						$$.(*VariableSetStmt).Kind = VarTypeSet
+					}
 				}
 		;
 
@@ -2988,8 +2998,8 @@ var_name:	ColId								{ $$ = $1 }
 				{ $$ = $1 + "." + $3 }
 		;
 
-var_list:	var_value								{ ; }
-			| var_list TCOMMA var_value				{ ; }
+var_list:	var_value								{ $$ = []string{$1} }
+			| var_list TCOMMA var_value				{ $$ = append($1, $3) }
 		;
 
 var_value:	opt_boolean_or_string
