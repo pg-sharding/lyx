@@ -2642,3 +2642,40 @@ func TestSetStmt(t *testing.T) {
 		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
+
+func TestShowStmt(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			SHOW transaction_read_only
+`,
+			exp: &lyx.VariableShowStmt{
+				Name: "transaction_read_only",
+			},
+			err: nil,
+		},
+		{
+			query: `
+			SHOW all
+`,
+			exp: &lyx.VariableShowStmt{
+				Name: "all",
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}

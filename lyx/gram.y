@@ -294,7 +294,7 @@ Operator:
 %type<strlist> var_list
 
 %type<node> zone_value iso_level generic_set set_rest set_rest_more 
-%type<node> reset_rest generic_reset SetResetClause VariableResetStmt VariableSetStmt
+%type<node> reset_rest generic_reset SetResetClause VariableResetStmt VariableSetStmt VariableShowStmt
 %type<node> opt_encoding 
 
 %type<str> NonReservedWord_or_SCONST opt_boolean_or_string
@@ -1512,7 +1512,9 @@ command:
 		setParseTree(yylex, $1)
     } | VariableResetStmt {
 		setParseTree(yylex, $1)
-    } | PrepareStmt {
+    } | VariableShowStmt {
+		setParseTree(yylex, $1)
+	}| PrepareStmt {
 		setParseTree(yylex, $1)
 	} | DeallocateStmt {
 		setParseTree(yylex, $1)
@@ -3097,6 +3099,42 @@ SetResetClause:
 			SET set_rest					{ $$ = $2; }
 			| VariableResetStmt				{ $$ = $1; }
 		;
+
+
+
+VariableShowStmt:
+			SHOW var_name
+				{
+					$$ = &VariableShowStmt{
+						Name: $2, 
+					}
+				}
+			| SHOW TIME ZONE
+				{
+					$$ = &VariableShowStmt{
+						Name: "timezone", 
+					}
+				}
+			| SHOW TRANSACTION ISOLATION LEVEL
+				{
+					$$ = &VariableShowStmt{
+						Name: "transaction_isolation", 
+					}
+				}
+			| SHOW SESSION AUTHORIZATION
+				{
+					$$ = &VariableShowStmt{
+						Name: "session_authorization", 
+					}
+				}
+			| SHOW ALL
+				{
+					$$ = &VariableShowStmt{
+						Name: "all", 
+					}
+				}
+		;
+
 
 
 
