@@ -118,6 +118,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /boolean/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BOOLEAN_P; fbreak;};
             /bit/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BIT; fbreak;};
             
+
+            /interval/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INTERVAL; fbreak;};
             /year/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = YEAR_P; fbreak;};
             /month/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MONTH_P; fbreak;};
             /day/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DAY_P; fbreak;};

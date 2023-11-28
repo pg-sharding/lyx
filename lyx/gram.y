@@ -1642,7 +1642,7 @@ SimpleTypename:
 				{
 
 				}
-			| ConstInterval TOPENBR SCONST  TCLOSEBR
+			| ConstInterval TOPENBR SCONST TCLOSEBR
 				{
 
 				}
@@ -2159,23 +2159,60 @@ func_arg_list:  func_arg_expr
 /*
  * Constants
  */
-AexprConst: SCONST {
-	$$ = &AExprConst{
-		Value: $1,
+AexprConst: 
+	SCONST {
+		$$ = &AExprConst{
+			Value: $1,
+		}
 	}
-} | NULL_P {
-	$$ = &AExprConst{
-		Value: $1,
-	}
-}| TRUE_P {
-	$$ = &AExprConst{
-		Value: $1,
-	}
-}| FALSE_P {
-	$$ = &AExprConst{
-		Value: $1,
-	}
-}
+			| func_name SCONST
+				{
+					/* generic type 'literal' syntax */
+					
+				}
+			| func_name TOPENBR func_arg_list opt_sort_clause TCLOSEBR SCONST
+				{
+					/* generic syntax with a type modifier */
+				
+
+					/*
+					 * We must use func_arg_list and opt_sort_clause in the
+					 * production to avoid reduce/reduce conflicts, but we
+					 * don't actually wish to allow NamedArgExpr in this
+					 * context, nor ORDER BY.
+					 */
+				}
+			| ConstTypename SCONST
+				{
+				}
+			| ConstInterval SCONST opt_interval
+				{
+
+				}
+			| ConstInterval TOPENBR SCONST TCLOSEBR SCONST
+				{
+
+				}
+			| TRUE_P
+				{
+					$$ = &AExprConst{
+						Value: "true",
+					}
+				}
+			| FALSE_P
+				{
+					$$ = &AExprConst{
+						Value: "false",
+					}
+				}
+			| NULL_P
+				{
+					$$ = &AExprConst{
+						Value: "NULL",
+					}
+				}
+		;
+
 
 func_expr: func_application
 

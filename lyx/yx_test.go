@@ -2679,3 +2679,46 @@ func TestShowStmt(t *testing.T) {
 		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
+
+func TestIntervalSelectStmt(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			select count(1)
+from tt
+where created < now() - interval '3' month
+
+`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{RelationName: "tt"},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "created",
+					},
+					Right: &lyx.AExprOp{
+						Op: "-",
+					},
+					Op: "<",
+				},
+				TargetList: []lyx.Node{nil},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
