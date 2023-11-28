@@ -1599,6 +1599,25 @@ func TestJoins(t *testing.T) {
 		},
 
 		{
+			query: "SELECT * FROM delivery LEFT JOIN orders ON order_id = id;",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "delivery",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "orders",
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
+		{
 			query: "SELECT * FROM delivery JOIN orders ON order_id = id;",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
