@@ -265,6 +265,13 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /READ/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = READ; fbreak;};
             /ONLY/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ONLY; fbreak;};
             /WRITE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WRITE; fbreak;};
+            /DEFERRABLE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFERRABLE; fbreak;};
+            /ISOLATION/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ISOLATION; fbreak;};
+            /LEVEL/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LEVEL; fbreak;};
+            /UNCOMMITTED/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = UNCOMMITTED; fbreak;};
+            /COMMITTED/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMITTED; fbreak;};
+            /REPEATABLE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = REPEATABLE; fbreak;};
+            /SERIALIZABLE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SERIALIZABLE; fbreak;};
 
             /START/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = START; fbreak;};
             /ABORT/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ABORT_P; fbreak;};
