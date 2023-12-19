@@ -1597,7 +1597,6 @@ func TestJoins(t *testing.T) {
 			},
 			err: nil,
 		},
-
 		{
 			query: "SELECT * FROM delivery LEFT JOIN orders ON order_id = id;",
 			exp: &lyx.Select{
@@ -2699,7 +2698,7 @@ func TestShowStmt(t *testing.T) {
 	}
 }
 
-func TestIntervalSelectStmt(t *testing.T) {
+func TestSetSessionStmt(t *testing.T) {
 	assert := assert.New(t)
 
 	type tcase struct {
@@ -2711,25 +2710,9 @@ func TestIntervalSelectStmt(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
-			select count(1)
-from tt
-where created < now() - interval '3' month
-
-`,
-			exp: &lyx.Select{
-				FromClause: []lyx.FromClauseNode{
-					&lyx.RangeVar{RelationName: "tt"},
-				},
-				Where: &lyx.AExprOp{
-					Left: &lyx.ColumnRef{
-						ColName: "created",
-					},
-					Right: &lyx.AExprOp{
-						Op: "-",
-					},
-					Op: "<",
-				},
-				TargetList: []lyx.Node{nil},
+			SET SESSION CHARACTERISTICS AS TRANSACTION READ ONLY`,
+			exp: &lyx.VariableSetStmt{
+				Kind: lyx.VarTypeSet,
 			},
 			err: nil,
 		},

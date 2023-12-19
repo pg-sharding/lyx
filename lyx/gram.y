@@ -2951,11 +2951,13 @@ VariableSetStmt:
 set_rest:
 			TRANSACTION transaction_mode_list
 				{
-					$$ = nil
+					$$ = &VariableSetStmt{
+					}
 				}
 			| SESSION CHARACTERISTICS AS TRANSACTION transaction_mode_list
 				{
-					$$ = nil
+					$$ = &VariableSetStmt{
+					}
 				}
 			| set_rest_more {
 				$$ = $1
