@@ -1,6 +1,6 @@
 # lyx
 
-lyx is a SQL parser. It tokenize, parse SQL queries and creates Query structures. Inspired by [src/backend/parser](https://github.com/postgres/postgres/tree/master/src/backend/parser).
+lyx is a SQL parser. It tokenizes, parses SQL queries and creates Query structures. Inspired by [src/backend/parser](https://github.com/postgres/postgres/tree/master/src/backend/parser).
 
 
 ```
