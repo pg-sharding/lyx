@@ -59,7 +59,7 @@ func NewLyxParser() LyxParser {
 // same for terminals
 %token <str> SCONST IDENT
 
-%type<str> any_id any_val table_name
+%type<str> any_id any_val table_name func_name
 
 %type<bool> opt_program
 
@@ -277,6 +277,7 @@ Operator:
 %type<node> func_application
 %type<node> func_table
 %type<node> func_expr_windowless
+%type<node> func_expr
 %type<node> AexprConst
 
 %type<node> select_clause select_no_parens select_with_parens SelectStmt values_clause locked_rels_list 
@@ -2096,19 +2097,27 @@ TableFuncElement:	ColId any_val opt_collate_clause
 
 func_application: func_name TOPENBR TCLOSEBR
 				{
-					$$ = nil
+					$$ = &FuncApplication{
+						Name: $1,
+					}
 				}
 			| func_name TOPENBR func_arg_list opt_sort_clause TCLOSEBR
 				{
-					$$ = nil
+					$$ = &FuncApplication{
+						Name: $1,
+					}
 				}
 			| func_name TOPENBR VARIADIC func_arg_expr opt_sort_clause TCLOSEBR
 				{
-					$$ = nil
+					$$ = &FuncApplication{
+						Name: $1,
+					}
 				}
 			| func_name TOPENBR func_arg_list TCOMMA VARIADIC func_arg_expr opt_sort_clause TCLOSEBR
 				{
-					$$ = nil
+					$$ = &FuncApplication{
+						Name: $1,
+					}
 				}
 			| func_name TOPENBR ALL func_arg_list opt_sort_clause TCLOSEBR
 				{
@@ -2117,12 +2126,16 @@ func_application: func_name TOPENBR TCLOSEBR
 					 * "must be an aggregate", but there's no provision
 					 * for that in FuncCall at the moment.
 					 */
-					$$ = nil
+					$$ = &FuncApplication{
+						Name: $1,
+					}
 				}
 			| func_name TOPENBR DISTINCT func_arg_list opt_sort_clause TCLOSEBR
 				{
 
-					$$ = nil
+					$$ = &FuncApplication{
+						Name: $1,
+					}
 				}
 				/* select count(*) from x */
 			| func_name TOPENBR TMUL TCLOSEBR
@@ -2138,7 +2151,9 @@ func_application: func_name TOPENBR TCLOSEBR
 					 * really was.
 					 */
 					
-					$$ = nil
+					$$ = &FuncApplication{
+						Name: $1,
+					}
 				}
 		;
 
@@ -2338,7 +2353,9 @@ c_expr:
             | TOPENBR a_expr TCLOSEBR {
                 $$ = $2
             }
-            | func_expr {}
+            | func_expr {
+				$$ = $1
+			}
 			| ARRAY array_expr
 				{
 				}
@@ -2858,7 +2875,9 @@ b_expr:
 				    { /* result not matter */ }
 			| b_expr TNOT_EQUALS b_expr
 				    { /* result not matter */ }
-            | func_expr {/* result not matter */}
+            | func_expr {
+				$$ = $1
+			}
 
 
 where_clause:

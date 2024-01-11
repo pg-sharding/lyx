@@ -269,7 +269,11 @@ func TestSelectDistinct(t *testing.T) {
 		{
 			query: "select count(distinct id) from a.b where other_id ~ 1337;",
 			exp: &lyx.Select{
-				TargetList: []lyx.Node{nil},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "count",
+					},
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						SchemaName:   "a",
@@ -628,7 +632,10 @@ func TestSelectAlias(t *testing.T) {
 		{
 			query: "SELECT kind, sum(len) AS total FROM films GROUP BY kind;",
 			exp: &lyx.Select{
-				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"}, nil},
+				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"},
+					&lyx.FuncApplication{
+						Name: "sum",
+					}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
 				},
@@ -641,7 +648,10 @@ func TestSelectAlias(t *testing.T) {
 		{
 			query: "SELECT kind, sum(len) AS total FROM films AS f GROUP BY kind;",
 			exp: &lyx.Select{
-				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"}, nil},
+				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"},
+					&lyx.FuncApplication{
+						Name: "sum",
+					}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
 					Alias:        "f",
@@ -656,7 +666,7 @@ func TestSelectAlias(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
@@ -1485,10 +1495,27 @@ func TestSelectTargetLists(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `SELECT current_schema()`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "current_schema",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
 			query: "SELECT pg_is_in_recovery(), id FROM tsa_test WHERE id = 22;",
 			exp: &lyx.Select{
 
-				TargetList: []lyx.Node{nil, &lyx.ColumnRef{ColName: "id"}},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "pg_is_in_recovery",
+					},
+					&lyx.ColumnRef{ColName: "id"},
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "tsa_test",
@@ -1509,7 +1536,11 @@ func TestSelectTargetLists(t *testing.T) {
 		{
 			query: "select count(*) from pgbench_branches;",
 			exp: &lyx.Select{
-				TargetList: []lyx.Node{nil},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "count",
+					},
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "pgbench_branches",
@@ -2484,10 +2515,16 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 			query: `
 			SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
 			`,
-			exp: nil,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				IsLocal: false,
+				Default: false,
+				Name:    "",
+				Value:   nil,
+				Kind:    "SET",
+			},
 			err: nil,
 		},
-
 		{
 			query: `
 			select ttt.i from ttt;
