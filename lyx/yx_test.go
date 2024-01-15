@@ -2522,6 +2522,9 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 				Name:    "",
 				Value:   nil,
 				Kind:    "SET",
+				TxMode: []lyx.TransactionModeItem{
+					0,
+				},
 			},
 			err: nil,
 		},
@@ -2750,6 +2753,9 @@ func TestSetSessionStmt(t *testing.T) {
 			SET SESSION CHARACTERISTICS AS TRANSACTION READ ONLY`,
 			exp: &lyx.VariableSetStmt{
 				Kind: lyx.VarTypeSet,
+				TxMode: []lyx.TransactionModeItem{
+					lyx.TransactionReadOnly,
+				},
 			},
 			err: nil,
 		},

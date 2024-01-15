@@ -2971,11 +2971,13 @@ set_rest:
 			TRANSACTION transaction_mode_list
 				{
 					$$ = &VariableSetStmt{
+						TxMode: $2,
 					}
 				}
 			| SESSION CHARACTERISTICS AS TRANSACTION transaction_mode_list
 				{
 					$$ = &VariableSetStmt{
+						TxMode: $5,
 					}
 				}
 			| set_rest_more {

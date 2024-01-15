@@ -218,12 +218,13 @@ const (
 )
 
 type VariableSetStmt struct {
+	Kind    VarType
 	Session bool
 	IsLocal bool
 	Default bool
+	TxMode  []TransactionModeItem
 	Name    string
 	Value   []string
-	Kind    VarType
 }
 
 type VariableShowStmt struct {
