@@ -111,11 +111,32 @@ type AExprList struct {
 func (*AExprList) iNode() {
 }
 
-type AExprConst struct {
+type AExprSConst struct {
 	Value string
 }
 
-func (*AExprConst) iNode() {
+type AExprIConst struct {
+	Value int
+}
+
+type AExprBConst struct {
+	Value bool
+}
+
+// NULL
+type AExprNConst struct {
+	Value bool
+}
+
+func (*AExprIConst) iNode() {
+}
+func (*AExprSConst) iNode() {
+}
+
+func (*AExprBConst) iNode() {
+}
+
+func (*AExprNConst) iNode() {
 }
 
 type AExprOp struct {
@@ -138,9 +159,12 @@ type Select struct {
 	TargetList []Node
 }
 
+type ValueClause struct {
+	Values []Node
+}
+
 type Insert struct {
 	TableRef FromClauseNode
-	Values   []Node
 	Columns  []string
 
 	SubSelect Node
@@ -233,6 +257,7 @@ type VariableShowStmt struct {
 
 func (*Explain) iNode()          {}
 func (*Select) iNode()           {}
+func (*ValueClause) iNode()      {}
 func (*Execute) iNode()          {}
 func (*Prepare) iNode()          {}
 func (*CreateTable) iNode()      {}

@@ -58,6 +58,7 @@ func NewLyxParser() LyxParser {
 
 // same for terminals
 %token <str> SCONST IDENT
+%token <int> ICONST
 
 %type<str> any_id any_val table_name func_name
 
@@ -1829,10 +1830,11 @@ reloption_elem:
 /* Note: any simple identifier will be returned as a type name! */
 def_arg:
 	// func_type						{ $$ = (Node *)$1; }
-			// | reserved_keyword				{ $$ = (Node *)makeString(pstrdup($1)); }
+			reserved_keyword				{} 
 			// | qual_all_Op					{ $$ = (Node *)$1; }
-			// | NumericOnly					{ $$ = (Node *)$1; }
-			SCONST						{  }
+			// NumericOnly					{ }
+			| ICONST {} 
+			| SCONST						{  }
 			// | NONE							{ $$ = (Node *)makeString(pstrdup($1)); }
 		;
 
@@ -1866,7 +1868,7 @@ ConstCharacter:  CharacterWithLength
 		;
 
 
-CharacterWithLength:  character TOPENBR SCONST TCLOSEBR
+CharacterWithLength:  character TOPENBR ICONST TCLOSEBR
 				{
 
 				}
@@ -2176,7 +2178,12 @@ func_arg_list:  func_arg_expr
  */
 AexprConst: 
 	SCONST {
-		$$ = &AExprConst{
+		$$ = &AExprSConst{
+			Value: $1,
+		}
+	} |
+	ICONST {
+		$$ = &AExprIConst{
 			Value: $1,
 		}
 	}
@@ -2210,20 +2217,19 @@ AexprConst:
 				}
 			| TRUE_P
 				{
-					$$ = &AExprConst{
-						Value: "true",
+					$$ = &AExprBConst{
+						Value: true,
 					}
 				}
 			| FALSE_P
 				{
-					$$ = &AExprConst{
-						Value: "false",
+					$$ = &AExprBConst{
+						Value: false,
 					}
 				}
 			| NULL_P
 				{
-					$$ = &AExprConst{
-						Value: "NULL",
+					$$ = &AExprNConst{
 					}
 				}
 		;
@@ -4243,8 +4249,7 @@ select_fetch_first_value:
 		;
 
 I_or_F_const:
-		SCONST {};
-		// 	Iconst									{ }
+			ICONST									{ }
 		// 	| FCONST								{  }
 		// ;
 
@@ -4378,11 +4383,13 @@ locked_rels_list:
 values_clause:
 			VALUES TOPENBR expr_list TCLOSEBR
 				{
-					// $$ = []Node{$3}
+					$$ = &ValueClause{
+						Values: $3,
+					}
 				}
 			| values_clause TCOMMA TOPENBR expr_list TCLOSEBR
 				{
-					// $$ = append($1, $3...)
+					$$ = $1
 				}
 		;
 
@@ -4760,13 +4767,7 @@ DeallocateStmt: DEALLOCATE name
 /* https://www.postgresql.org/docs/current/sql-insert.html */
 InsertStmt: 
     /* consider only first tuple from values */
-    INSERT INTO relation_expr insert_col_refs VALUES insert_tuples anything {
-        $$ = &Insert{
-            TableRef: $3,
-            Columns: $4,
-            Values: $6,
-        }
-    } | INSERT INTO relation_expr opt_insert_col_refs SelectStmt {
+	INSERT INTO relation_expr opt_insert_col_refs SelectStmt {
         $$ = &Insert{
             TableRef: $3,
             Columns: $4,

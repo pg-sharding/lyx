@@ -22,14 +22,14 @@ func TestSimple(t *testing.T) {
 			query: `
 			select 1
 			`,
-			exp: []int{lyx.SELECT, lyx.SCONST},
+			exp: []int{lyx.SELECT, lyx.ICONST},
 			err: nil,
 		},
 		{
 			query: `
 			14
 			`,
-			exp: []int{lyx.SCONST},
+			exp: []int{lyx.ICONST},
 			err: nil,
 		},
 		{
@@ -50,28 +50,28 @@ func TestSimple(t *testing.T) {
 			query: `
 			select /*jjiewjow****/1
 			`,
-			exp: []int{lyx.SELECT, lyx.SCONST},
+			exp: []int{lyx.SELECT, lyx.ICONST},
 			err: nil,
 		},
 		{
 			query: `
 			update table x set i = 19;
 			`,
-			exp: []int{lyx.UPDATE, lyx.TABLE, lyx.IDENT, lyx.SET, lyx.IDENT, lyx.TEQ, lyx.SCONST, lyx.TSEMICOLON},
+			exp: []int{lyx.UPDATE, lyx.TABLE, lyx.IDENT, lyx.SET, lyx.IDENT, lyx.TEQ, lyx.ICONST, lyx.TSEMICOLON},
 			err: nil,
 		},
 		{
 			query: `
 			select * from xx where i = 1 order by i;
 			`,
-			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TEQ, lyx.SCONST, lyx.ORDER, lyx.BY, lyx.IDENT, lyx.TSEMICOLON},
+			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TEQ, lyx.ICONST, lyx.ORDER, lyx.BY, lyx.IDENT, lyx.TSEMICOLON},
 			err: nil,
 		},
 		{
 			query: `
 			select * from xx where i + j != 1;
 			`,
-			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TPLUS, lyx.IDENT, lyx.TNOT_EQUALS, lyx.SCONST, lyx.TSEMICOLON},
+			exp: []int{lyx.SELECT, lyx.TMUL, lyx.FROM, lyx.IDENT, lyx.WHERE, lyx.IDENT, lyx.TPLUS, lyx.IDENT, lyx.TNOT_EQUALS, lyx.ICONST, lyx.TSEMICOLON},
 			err: nil,
 		},
 		{
@@ -105,7 +105,7 @@ func TestSimple(t *testing.T) {
 				lyx.INSERT, lyx.INTO, lyx.IDENT,
 				lyx.VALUES,
 				lyx.TOPENBR,
-				lyx.SCONST, lyx.TCOMMA, lyx.SCONST, lyx.TCOMMA, lyx.SCONST,
+				lyx.ICONST, lyx.TCOMMA, lyx.ICONST, lyx.TCOMMA, lyx.SCONST,
 				lyx.TCLOSEBR, lyx.TSEMICOLON},
 			err: nil,
 		},
@@ -140,7 +140,7 @@ func TestSimple(t *testing.T) {
 				lyx.SCONST,
 
 				lyx.TCOMMA,
-				lyx.SCONST,
+				lyx.ICONST,
 
 				lyx.TCOMMA,
 				lyx.SCONST,
@@ -173,6 +173,6 @@ func TestSimple(t *testing.T) {
 			res = append(res, v)
 		}
 
-		assert.Equal(tt.exp, res)
+		assert.Equal(tt.exp, res, tt.query)
 	}
 }

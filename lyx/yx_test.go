@@ -41,7 +41,7 @@ func TestSelectComplex(t *testing.T) {
 											Left: &lyx.ColumnRef{
 												ColName: "id",
 											},
-											Right: &lyx.AExprConst{
+											Right: &lyx.AExprSConst{
 												Value: "83912839012903",
 											},
 											Op: "=",
@@ -50,7 +50,7 @@ func TestSelectComplex(t *testing.T) {
 											Left: &lyx.ColumnRef{
 												ColName: "utype",
 											},
-											Right: &lyx.AExprConst{
+											Right: &lyx.AExprSConst{
 												Value: "2",
 											},
 											Op: "=",
@@ -61,7 +61,7 @@ func TestSelectComplex(t *testing.T) {
 										Left: &lyx.ColumnRef{
 											ColName: "btype",
 										},
-										Right: &lyx.AExprConst{
+										Right: &lyx.AExprSConst{
 											Value: "sample",
 										},
 										Op: "=",
@@ -72,8 +72,8 @@ func TestSelectComplex(t *testing.T) {
 									Left: &lyx.ColumnRef{
 										ColName: "state",
 									},
-									Right: &lyx.AExprConst{
-										Value: "0",
+									Right: &lyx.AExprIConst{
+										Value: 0,
 									},
 									Op: "=",
 								},
@@ -83,8 +83,8 @@ func TestSelectComplex(t *testing.T) {
 								Left: &lyx.ColumnRef{
 									ColName: "is_something",
 								},
-								Right: &lyx.AExprConst{
-									Value: "true",
+								Right: &lyx.AExprBConst{
+									Value: true,
 								},
 								Op: "=",
 							},
@@ -95,14 +95,14 @@ func TestSelectComplex(t *testing.T) {
 								ColName: "keys",
 							},
 							Right: &lyx.AExprOp{
-								Left: &lyx.AExprConst{
+								Left: &lyx.AExprSConst{
 									Value: "{reshke,denchick}",
 								},
 								Right: &lyx.AExprOp{
 									Left: &lyx.ColumnRef{
 										ColName: "keys",
 									},
-									Right: &lyx.AExprConst{
+									Right: &lyx.AExprSConst{
 										Value: "{munakoiso,werelaxe,x4mmm}",
 									},
 									Op: "@>",
@@ -117,7 +117,7 @@ func TestSelectComplex(t *testing.T) {
 						Left: &lyx.ColumnRef{
 							ColName: "c_id",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "trunk",
 						},
 						Op: "=",
@@ -161,7 +161,7 @@ func TestSelectComplex(t *testing.T) {
 											Left: &lyx.ColumnRef{
 												ColName: "id",
 											},
-											Right: &lyx.AExprConst{
+											Right: &lyx.AExprSConst{
 												Value: "83912839012903",
 											},
 											Op: "=",
@@ -170,7 +170,7 @@ func TestSelectComplex(t *testing.T) {
 											Left: &lyx.ColumnRef{
 												ColName: "utype",
 											},
-											Right: &lyx.AExprConst{
+											Right: &lyx.AExprSConst{
 												Value: "2",
 											},
 											Op: "=",
@@ -181,7 +181,7 @@ func TestSelectComplex(t *testing.T) {
 										Left: &lyx.ColumnRef{
 											ColName: "btype",
 										},
-										Right: &lyx.AExprConst{
+										Right: &lyx.AExprSConst{
 											Value: "sample",
 										},
 										Op: "=",
@@ -192,8 +192,8 @@ func TestSelectComplex(t *testing.T) {
 									Left: &lyx.ColumnRef{
 										ColName: "state",
 									},
-									Right: &lyx.AExprConst{
-										Value: "0",
+									Right: &lyx.AExprIConst{
+										Value: 0,
 									},
 									Op: "=",
 								},
@@ -203,8 +203,8 @@ func TestSelectComplex(t *testing.T) {
 								Left: &lyx.ColumnRef{
 									ColName: "is_something",
 								},
-								Right: &lyx.AExprConst{
-									Value: "true",
+								Right: &lyx.AExprBConst{
+									Value: true,
 								},
 								Op: "=",
 							},
@@ -215,14 +215,14 @@ func TestSelectComplex(t *testing.T) {
 								ColName: "keys",
 							},
 							Right: &lyx.AExprOp{
-								Left: &lyx.AExprConst{
+								Left: &lyx.AExprSConst{
 									Value: "{reshke,denchick}",
 								},
 								Right: &lyx.AExprOp{
 									Left: &lyx.ColumnRef{
 										ColName: "keys",
 									},
-									Right: &lyx.AExprConst{
+									Right: &lyx.AExprSConst{
 										Value: "{munakoiso,werelaxe,x4mmm}",
 									},
 									Op: "@>",
@@ -237,7 +237,7 @@ func TestSelectComplex(t *testing.T) {
 						Left: &lyx.ColumnRef{
 							ColName: "c_id",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "trunk",
 						},
 						Op: "=",
@@ -284,8 +284,8 @@ func TestSelectDistinct(t *testing.T) {
 					Left: &lyx.ColumnRef{
 						ColName: "other_id",
 					},
-					Right: &lyx.AExprConst{
-						Value: "1337",
+					Right: &lyx.AExprIConst{
+						Value: 1337,
 					},
 					Op: "~",
 				},
@@ -314,7 +314,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select 42",
 			exp: &lyx.Select{
-				TargetList: []lyx.Node{&lyx.AExprConst{Value: "42"}},
+				TargetList: []lyx.Node{&lyx.AExprIConst{Value: 42}},
 				Where:      &lyx.AExprEmpty{},
 			},
 			err: nil,
@@ -333,8 +333,8 @@ func TestSelect(t *testing.T) {
 						ColName:    "i",
 						TableAlias: "",
 					},
-					Right: &lyx.AExprConst{
-						Value: "1",
+					Right: &lyx.AExprIConst{
+						Value: 1,
 					},
 					Op: "=",
 				},
@@ -355,8 +355,8 @@ func TestSelect(t *testing.T) {
 						ColName:    "i",
 						TableAlias: "",
 					},
-					Right: &lyx.AExprConst{
-						Value: "1",
+					Right: &lyx.AExprIConst{
+						Value: 1,
 					},
 					Op: "=",
 				},
@@ -377,8 +377,8 @@ func TestSelect(t *testing.T) {
 						ColName:    "i",
 						TableAlias: "",
 					},
-					Right: &lyx.AExprConst{
-						Value: "1",
+					Right: &lyx.AExprIConst{
+						Value: 1,
 					},
 					Op: "=",
 				},
@@ -399,8 +399,8 @@ func TestSelect(t *testing.T) {
 						ColName:    "i",
 						TableAlias: "",
 					},
-					Right: &lyx.AExprConst{
-						Value: "1",
+					Right: &lyx.AExprIConst{
+						Value: 1,
 					},
 					Op: "=",
 				},
@@ -421,8 +421,8 @@ func TestSelect(t *testing.T) {
 						ColName:    "i",
 						TableAlias: "",
 					},
-					Right: &lyx.AExprConst{
-						Value: "1",
+					Right: &lyx.AExprIConst{
+						Value: 1,
 					},
 					Op: "=",
 				},
@@ -444,8 +444,8 @@ func TestSelect(t *testing.T) {
 						ColName:    "i",
 						TableAlias: "",
 					},
-					Right: &lyx.AExprConst{
-						Value: "1",
+					Right: &lyx.AExprIConst{
+						Value: 1,
 					},
 					Op: "=",
 				},
@@ -467,8 +467,8 @@ func TestSelect(t *testing.T) {
 							ColName:    "i",
 							TableAlias: "",
 						},
-						Right: &lyx.AExprConst{
-							Value: "1",
+						Right: &lyx.AExprIConst{
+							Value: 1,
 						},
 						Op: "=",
 					},
@@ -477,8 +477,8 @@ func TestSelect(t *testing.T) {
 							ColName:    "j",
 							TableAlias: "",
 						},
-						Right: &lyx.AExprConst{
-							Value: "2",
+						Right: &lyx.AExprIConst{
+							Value: 2,
 						},
 						Op: "=",
 					},
@@ -498,7 +498,7 @@ func TestSelect(t *testing.T) {
 				},
 				Where: &lyx.AExprOp{
 					Left:  &lyx.ColumnRef{ColName: "i"},
-					Right: &lyx.AExprConst{Value: "12"},
+					Right: &lyx.AExprIConst{Value: 12},
 					Op:    "=",
 				},
 				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
@@ -557,7 +557,7 @@ func TestSelectMultipleRelations(t *testing.T) {
 						ColName:    "i",
 						TableAlias: "b",
 					},
-					Right: &lyx.AExprConst{Value: "1"},
+					Right: &lyx.AExprIConst{Value: 1},
 					Op:    "=",
 				},
 			},
@@ -596,11 +596,11 @@ func TestSelectBetween(t *testing.T) {
 					},
 					Right: &lyx.AExprList{
 						List: []lyx.Node{
-							&lyx.AExprConst{
-								Value: "21",
+							&lyx.AExprIConst{
+								Value: 21,
 							},
-							&lyx.AExprConst{
-								Value: "22",
+							&lyx.AExprIConst{
+								Value: 22,
 							},
 						},
 					},
@@ -812,7 +812,9 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"id"},
-				Values:  []lyx.Node{&lyx.AExprConst{Value: "1"}},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{&lyx.AExprIConst{Value: 1}},
+				},
 			},
 			err: nil,
 		},
@@ -827,7 +829,7 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"w_id"},
 				SubSelect: &lyx.Select{
-					TargetList: []lyx.Node{&lyx.AExprConst{Value: "20"}},
+					TargetList: []lyx.Node{&lyx.AExprIConst{Value: 20}},
 					Where:      &lyx.AExprEmpty{},
 				},
 			},
@@ -843,7 +845,6 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"i"},
-				Values:  nil,
 				SubSelect: &lyx.Select{
 					TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 					FromClause: []lyx.FromClauseNode{
@@ -855,7 +856,7 @@ func TestInsert(t *testing.T) {
 						Left: &lyx.ColumnRef{
 							ColName: "i",
 						},
-						Right: &lyx.AExprConst{Value: "8"},
+						Right: &lyx.AExprIConst{Value: 8},
 						Op:    "=",
 					},
 				},
@@ -873,12 +874,14 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"code", "title", "did", "date_prod", "kind"},
-				Values: []lyx.Node{
-					&lyx.AExprConst{Value: "T_601"},
-					&lyx.AExprConst{Value: "Yojimbo"},
-					&lyx.AExprConst{Value: "106"},
-					&lyx.AExprConst{Value: "1961-06-16"},
-					&lyx.AExprConst{Value: "Drama"},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprSConst{Value: "T_601"},
+						&lyx.AExprSConst{Value: "Yojimbo"},
+						&lyx.AExprIConst{Value: 106},
+						&lyx.AExprSConst{Value: "1961-06-16"},
+						&lyx.AExprSConst{Value: "Drama"},
+					},
 				},
 			},
 			err: nil,
@@ -905,7 +908,7 @@ func TestInsert(t *testing.T) {
 							ColName:    "date_prod",
 							TableAlias: "",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "2004-05-07",
 						},
 						Op: "<",
@@ -927,9 +930,11 @@ func TestInsert(t *testing.T) {
 					"id",
 					"id2",
 				},
-				Values: []lyx.Node{
-					&lyx.AExprConst{Value: "1"},
-					&lyx.AExprConst{Value: "2"},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprIConst{Value: 1},
+						&lyx.AExprIConst{Value: 2},
+					},
 				},
 			},
 			err: nil,
@@ -943,10 +948,12 @@ func TestInsert(t *testing.T) {
 					Alias:        "",
 				},
 				Columns: []string{"j", "i", "w_id"},
-				Values: []lyx.Node{
-					&lyx.AExprConst{Value: "2121221"},
-					&lyx.AExprConst{Value: "211212"},
-					&lyx.AExprConst{Value: "21"},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprIConst{Value: 2121221},
+						&lyx.AExprIConst{Value: -211212},
+						&lyx.AExprIConst{Value: 21},
+					},
 				},
 			},
 			err: nil,
@@ -965,9 +972,11 @@ func TestInsert(t *testing.T) {
 					"id",
 					"id2",
 				},
-				Values: []lyx.Node{
-					&lyx.AExprConst{Value: "1"},
-					&lyx.AExprConst{Value: "2"},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprIConst{Value: 1},
+						&lyx.AExprIConst{Value: 2},
+					},
 				},
 			},
 			err: nil,
@@ -993,8 +1002,8 @@ func TestInsert(t *testing.T) {
 							TableAlias: "",
 							ColName:    "id2",
 						},
-						Right: &lyx.AExprConst{
-							Value: "7",
+						Right: &lyx.AExprIConst{
+							Value: 7,
 						},
 						Op: "=",
 					},
@@ -1019,14 +1028,16 @@ VALUES(2822, ROW('none', '0'));
 					SchemaName:   "lol",
 					Alias:        "",
 				},
-				Values: []lyx.Node{
-					&lyx.AExprConst{
-						Value: "2822",
+
+				Columns: []string{"id", "info"},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprIConst{
+							Value: 2822,
+						},
+						nil,
 					},
-					nil,
 				},
-				Columns:   []string{"id", "info"},
-				SubSelect: nil,
 			},
 			err: nil,
 		},
@@ -1045,16 +1056,20 @@ VALUES(2822, ROW('none', '0'), ''::bytea);
 					RelationName: "kek",
 					SchemaName:   "lol",
 					Alias:        "",
-				}, Values: []lyx.Node{
-					&lyx.AExprConst{
-						Value: "2822",
+				},
+				Columns: []string{"id", "info", "bytes"},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprIConst{
+							Value: 2822,
+						},
+						nil,
+						&lyx.AExprSConst{
+							Value: "",
+						},
 					},
-					nil,
-					&lyx.AExprConst{
-						Value: "",
-					},
-				}, Columns: []string{"id", "info", "bytes"},
-				SubSelect: nil},
+				},
+			},
 			err: nil,
 		},
 	} {
@@ -1094,25 +1109,27 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 					SchemaName:   "exschema",
 					Alias:        "",
 				},
-				Values: []lyx.Node{
-					&lyx.AExprConst{Value: "1970-01-01 12:00:00.5"},
-					&lyx.AExprConst{Value: "111111"},
-					&lyx.AExprConst{Value: "NULL"},
-					&lyx.AExprConst{Value: "NULL"},
-					&lyx.AExprConst{Value: "9223372036854775807"},
-					&lyx.AExprConst{Value: "2"},
-					&lyx.AExprConst{Value: "some"},
-					&lyx.AExprConst{Value: "thing"},
-					&lyx.AExprConst{Value: "*()*()Q*D()beiwe"},
-					&lyx.AExprConst{Value: "0"},
-					&lyx.AExprConst{Value: "trunk"},
-					&lyx.AExprConst{Value: "true"},
-					&lyx.AExprConst{Value: "{280,fb8,909,e6,ffc}"},
-					&lyx.AExprConst{Value: "{9223372036854775806}"},
-					&lyx.AExprConst{Value: "31337"},
-					&lyx.AExprConst{Value: "bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././"},
-					&lyx.AExprConst{Value: "0"},
-					&lyx.AExprConst{Value: "0"},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprSConst{Value: "1970-01-01 12:00:00.5"},
+						&lyx.AExprIConst{Value: 111111},
+						&lyx.AExprNConst{},
+						&lyx.AExprNConst{},
+						&lyx.AExprSConst{Value: "9223372036854775807"},
+						&lyx.AExprSConst{Value: "2"},
+						&lyx.AExprSConst{Value: "some"},
+						&lyx.AExprSConst{Value: "thing"},
+						&lyx.AExprSConst{Value: "*()*()Q*D()beiwe"},
+						&lyx.AExprSConst{Value: "0"},
+						&lyx.AExprSConst{Value: "trunk"},
+						&lyx.AExprBConst{Value: true},
+						&lyx.AExprSConst{Value: "{280,fb8,909,e6,ffc}"},
+						&lyx.AExprSConst{Value: "{9223372036854775806}"},
+						&lyx.AExprSConst{Value: "31337"},
+						&lyx.AExprSConst{Value: "bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././"},
+						&lyx.AExprSConst{Value: "0"},
+						&lyx.AExprIConst{Value: 0},
+					},
 				},
 				Columns: []string{
 					"cat",
@@ -1133,7 +1150,8 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 					"key_value",
 					"value_type",
 					"state",
-				}, SubSelect: nil},
+				},
+			},
 			err: nil,
 		},
 	} {
@@ -1169,7 +1187,7 @@ func TestUpdate(t *testing.T) {
 						TableAlias: "",
 						ColName:    "kind",
 					},
-					Right: &lyx.AExprConst{Value: "Drama"},
+					Right: &lyx.AExprSConst{Value: "Drama"},
 					Op:    "=",
 				},
 			},
@@ -1192,7 +1210,7 @@ func TestUpdate(t *testing.T) {
 							TableAlias: "",
 							ColName:    "city",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "San Francisco",
 						},
 						Op: "=",
@@ -1202,7 +1220,7 @@ func TestUpdate(t *testing.T) {
 							TableAlias: "",
 							ColName:    "date",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "2003-07-03",
 						},
 						Op: "=",
@@ -1230,7 +1248,7 @@ func TestUpdate(t *testing.T) {
 							TableAlias: "",
 							ColName:    "city",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "San Francisco",
 						},
 						Op: "=",
@@ -1240,7 +1258,7 @@ func TestUpdate(t *testing.T) {
 							TableAlias: "",
 							ColName:    "date",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "2003-07-03",
 						},
 						Op: "=",
@@ -1297,7 +1315,7 @@ func TestDelete(t *testing.T) {
 						TableAlias: "",
 						ColName:    "kind",
 					},
-					Right: &lyx.AExprConst{
+					Right: &lyx.AExprSConst{
 						Value: "Musical",
 					},
 					Op: "<>",
@@ -1320,7 +1338,7 @@ func TestDelete(t *testing.T) {
 						TableAlias: "",
 						ColName:    "status",
 					},
-					Right: &lyx.AExprConst{
+					Right: &lyx.AExprSConst{
 						Value: "DONE",
 					},
 					Op: "=",
@@ -1363,7 +1381,7 @@ func TestCopy(t *testing.T) {
 						Left: &lyx.ColumnRef{
 							ColName: "country_name",
 						},
-						Right: &lyx.AExprConst{
+						Right: &lyx.AExprSConst{
 							Value: "R",
 						},
 						Op: "=",
@@ -1383,8 +1401,8 @@ func TestCopy(t *testing.T) {
 					Left: &lyx.ColumnRef{
 						ColName: "id",
 					},
-					Right: &lyx.AExprConst{
-						Value: "30",
+					Right: &lyx.AExprIConst{
+						Value: 30,
 					},
 					Op: "<=",
 				},
@@ -1431,8 +1449,8 @@ func TestFuncApplication(t *testing.T) {
 						&lyx.ColumnRef{
 							ColName: "a",
 						},
-						&lyx.AExprConst{
-							Value: "20",
+						&lyx.AExprIConst{
+							Value: 20,
 						},
 					},
 					FromClause: []lyx.FromClauseNode{nil},
@@ -1454,8 +1472,8 @@ func TestFuncApplication(t *testing.T) {
 						Left: &lyx.ColumnRef{
 							ColName: "w_id",
 						},
-						Right: &lyx.AExprConst{
-							Value: "20",
+						Right: &lyx.AExprIConst{
+							Value: 20,
 						},
 						Op: "=",
 					},
@@ -1525,8 +1543,8 @@ func TestSelectTargetLists(t *testing.T) {
 					Left: &lyx.ColumnRef{
 						ColName: "id",
 					},
-					Right: &lyx.AExprConst{
-						Value: "22",
+					Right: &lyx.AExprIConst{
+						Value: 22,
 					},
 					Op: "=",
 				},
@@ -1583,8 +1601,8 @@ func TestWithComments(t *testing.T) {
 					Left: &lyx.ColumnRef{
 						ColName: "id",
 					},
-					Right: &lyx.AExprConst{
-						Value: "22",
+					Right: &lyx.AExprIConst{
+						Value: 22,
 					},
 					Op: "=",
 				},
@@ -1688,8 +1706,8 @@ func TestJoins(t *testing.T) {
 							ColName:    "i",
 							TableAlias: "a",
 						},
-						Right: &lyx.AExprConst{
-							Value: "12",
+						Right: &lyx.AExprIConst{
+							Value: 12,
 						},
 						Op: "=",
 					},
@@ -1772,7 +1790,7 @@ func TestMisc(t *testing.T) {
 		{
 			query: "select 11 /* comment */",
 			exp: &lyx.Select{
-				TargetList: []lyx.Node{&lyx.AExprConst{Value: "11"}},
+				TargetList: []lyx.Node{&lyx.AExprIConst{Value: 11}},
 				Where:      &lyx.AExprEmpty{},
 			},
 			err: nil,
@@ -1781,7 +1799,7 @@ func TestMisc(t *testing.T) {
 		{
 			query: "select 0.017264",
 			exp: &lyx.Select{
-				TargetList: []lyx.Node{&lyx.AExprConst{Value: "0.017264"}},
+				TargetList: []lyx.Node{&lyx.AExprSConst{Value: "0.017264"}},
 				Where:      &lyx.AExprEmpty{},
 			},
 			err: nil,
@@ -1923,8 +1941,8 @@ func TestOperators(t *testing.T) {
 			query: "SELECT 1 ~~~~~~~~ 'dewoijoi'",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.AExprOp{
-					Left:  &lyx.AExprConst{Value: "1"},
-					Right: &lyx.AExprConst{Value: "dewoijoi"},
+					Left:  &lyx.AExprIConst{Value: 1},
+					Right: &lyx.AExprSConst{Value: "dewoijoi"},
 					Op:    "~~~~~~~~",
 				}},
 				Where: &lyx.AExprEmpty{},
@@ -1935,8 +1953,8 @@ func TestOperators(t *testing.T) {
 			query: "SELECT 1 ~~~^%^%^^~~~~~ 'dewoijoi'",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.AExprOp{
-					Left:  &lyx.AExprConst{Value: "1"},
-					Right: &lyx.AExprConst{Value: "dewoijoi"},
+					Left:  &lyx.AExprIConst{Value: 1},
+					Right: &lyx.AExprSConst{Value: "dewoijoi"},
 					Op:    "~~~^%^%^^~~~~~",
 				}},
 				Where: &lyx.AExprEmpty{},
@@ -1959,8 +1977,8 @@ func TestOperators(t *testing.T) {
 							ColName:    "w_id",
 							TableAlias: "a",
 						},
-						Right: &lyx.AExprConst{
-							Value: "21",
+						Right: &lyx.AExprIConst{
+							Value: 21,
 						},
 						Op: "=",
 					},
@@ -1974,8 +1992,8 @@ func TestOperators(t *testing.T) {
 							},
 							Op: "+",
 						},
-						Right: &lyx.AExprConst{
-							Value: "0",
+						Right: &lyx.AExprIConst{
+							Value: 0,
 						},
 						Op: "!=",
 					},
@@ -2158,7 +2176,7 @@ func TestTruncateTable(t *testing.T) {
 
 		assert.NoError(err)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
@@ -2205,7 +2223,7 @@ func TestCreateTableWith(t *testing.T) {
 
 		assert.NoError(err)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
@@ -2385,7 +2403,7 @@ func TestMiscQ(t *testing.T) {
 					Right: &lyx.Select{
 						Where: &lyx.AExprEmpty{},
 						TargetList: []lyx.Node{
-							&lyx.AExprConst{Value: "1"},
+							&lyx.AExprIConst{Value: 1},
 						},
 					},
 					Op: "IN",
@@ -2417,7 +2435,7 @@ func TestMiscQ(t *testing.T) {
 							},
 							Where: &lyx.AExprOp{
 								Left:  &lyx.ColumnRef{ColName: "i"},
-								Right: &lyx.AExprConst{Value: "12"},
+								Right: &lyx.AExprIConst{Value: 12},
 								Op:    "=",
 							},
 							TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
@@ -2428,8 +2446,8 @@ func TestMiscQ(t *testing.T) {
 						Left: &lyx.ColumnRef{
 							ColName: "i",
 						},
-						Right: &lyx.AExprConst{
-							Value: "12",
+						Right: &lyx.AExprIConst{
+							Value: 12,
 						},
 						Op: "=",
 					},
@@ -2479,33 +2497,35 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 					"w_tax",
 					"w_ytd",
 				},
-				Values: []lyx.Node{
-					&lyx.AExprConst{
-						Value: "1",
-					},
-					&lyx.AExprConst{
-						Value: "name-vjxqu",
-					},
-					&lyx.AExprConst{
-						Value: "street1-qkfzdggwut",
-					},
-					&lyx.AExprConst{
-						Value: "street2-jxuhvhtqct",
-					},
-					&lyx.AExprConst{
-						Value: "city-irchbmwruo",
-					},
-					&lyx.AExprConst{
-						Value: "er",
-					},
-					&lyx.AExprConst{
-						"zip-26599",
-					},
-					&lyx.AExprConst{
-						"0.017264",
-					},
-					&lyx.AExprConst{
-						"300000",
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprIConst{
+							Value: 1,
+						},
+						&lyx.AExprSConst{
+							Value: "name-vjxqu",
+						},
+						&lyx.AExprSConst{
+							Value: "street1-qkfzdggwut",
+						},
+						&lyx.AExprSConst{
+							Value: "street2-jxuhvhtqct",
+						},
+						&lyx.AExprSConst{
+							Value: "city-irchbmwruo",
+						},
+						&lyx.AExprSConst{
+							Value: "er",
+						},
+						&lyx.AExprSConst{
+							"zip-26599",
+						},
+						&lyx.AExprSConst{
+							"0.017264",
+						},
+						&lyx.AExprIConst{
+							300000,
+						},
 					},
 				},
 			},
@@ -2568,8 +2588,8 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 							Left: &lyx.ColumnRef{
 								ColName: "c_w_id",
 							},
-							Right: &lyx.AExprConst{
-								Value: "1",
+							Right: &lyx.AExprIConst{
+								Value: 1,
 							},
 							Op: "=",
 						},
@@ -2577,8 +2597,8 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 							Left: &lyx.ColumnRef{
 								ColName: "c_d_id",
 							},
-							Right: &lyx.AExprConst{
-								Value: "1",
+							Right: &lyx.AExprIConst{
+								Value: 1,
 							},
 							Op: "=",
 						},
@@ -2588,8 +2608,8 @@ VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmw
 						Left: &lyx.ColumnRef{
 							ColName: "c_id",
 						},
-						Right: &lyx.AExprConst{
-							Value: "963",
+						Right: &lyx.AExprIConst{
+							Value: 963,
 						},
 						Op: "=",
 					},
@@ -2624,8 +2644,8 @@ func TestExplain(t *testing.T) {
 				Stmt: &lyx.Select{
 					Where: &lyx.AExprEmpty{},
 					TargetList: []lyx.Node{
-						&lyx.AExprConst{
-							Value: "1",
+						&lyx.AExprIConst{
+							Value: 1,
 						},
 					},
 				},

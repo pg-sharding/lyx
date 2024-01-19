@@ -53,6 +53,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 #        xcinside	=	[^*/]+;
 
         integer = digit+;
+        ninteger = '-' integer;
         param = '$' integer;
         
         decimal	= ((digit*'.'digit+)|(digit+'.'digit*));
@@ -97,7 +98,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
                 lval.int = int(i); tok = PARAM; fbreak;
             };
 
-            integer =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
+            integer =>  { lval.int, _ = strconv.Atoi(string(lex.data[lex.ts:lex.te])); tok = ICONST; fbreak;};
+            ninteger => { lval.int, _ = strconv.Atoi(string(lex.data[lex.ts:lex.te])); tok = ICONST; fbreak;};
 
             real =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
