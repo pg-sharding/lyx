@@ -2107,6 +2107,7 @@ func_application: func_name TOPENBR TCLOSEBR
 				{
 					$$ = &FuncApplication{
 						Name: $1,
+						Args: $3,
 					}
 				}
 			| func_name TOPENBR VARIADIC func_arg_expr opt_sort_clause TCLOSEBR
@@ -2134,7 +2135,6 @@ func_application: func_name TOPENBR TCLOSEBR
 				}
 			| func_name TOPENBR DISTINCT func_arg_list opt_sort_clause TCLOSEBR
 				{
-
 					$$ = &FuncApplication{
 						Name: $1,
 					}
@@ -2160,7 +2160,7 @@ func_application: func_name TOPENBR TCLOSEBR
 		;
 
 func_arg_expr: a_expr {
-	$$ = nil
+	$$ = $1
 }
 
 func_arg_list:  func_arg_expr
@@ -2277,6 +2277,16 @@ explicit_row:	ROW TOPENBR expr_list TCLOSEBR				{  }
 implicit_row:	TOPENBR expr_list TCOMMA a_expr TCLOSEBR		{  }
 		;
 
+sub_type:	ANY										{  }
+			| SOME									{  }
+			| ALL									{  }
+		;
+
+
+
+subquery_Op:
+			OP
+					{  }
 
 indirection_el:
 			TDOT attr_name
@@ -2362,6 +2372,12 @@ c_expr:
             | func_expr {
 				$$ = $1
 			}
+			| ARRAY select_with_parens
+				{
+				    $$ = &SubLink{
+						SubSelect: $2,
+					}
+				}
 			| ARRAY array_expr
 				{
 				}
@@ -2754,18 +2770,12 @@ a_expr:
 				{
 					
 				}
-			// | a_expr subquery_Op sub_type select_with_parens	%prec Op
-			// 	{
-			// 		SubLink	   *n = makeNode(SubLink);
-
-			// 		n->subLinkType = $3;
-			// 		n->subLinkId = 0;
-			// 		n->testexpr = $1;
-			// 		n->operName = $2;
-			// 		n->subselect = $4;
-			// 		n->location = @2;
-			// 		$$ = (Node *) n;
-			// 	}
+			| a_expr subquery_Op sub_type select_with_parens	%prec Op
+				{
+					$$ = &SubLink {
+						SubSelect: $4,
+					}
+				}
 			// | a_expr subquery_Op sub_type '(' a_expr ')'		%prec Op
 			// 	{
 			// 		if ($3 == ANY_SUBLINK)

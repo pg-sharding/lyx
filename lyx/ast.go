@@ -47,6 +47,10 @@ func (r *RangeVar) SetAlias(s string) {
 	r.Alias = s
 }
 
+type SubLink struct {
+	SubSelect Node
+}
+
 func (r *RangeVar) iNode() {}
 
 // /*----------
@@ -276,6 +280,7 @@ func (*Update) iNode()           {}
 func (*VarValue) iNode()         {}
 func (*VariableSetStmt) iNode()  {}
 func (*VariableShowStmt) iNode() {}
+func (*SubLink) iNode()          {}
 
 type TransactionStmtType int
 
@@ -352,6 +357,7 @@ func (*DeallocateStmt) iNode() {}
 
 type FuncApplication struct {
 	Name string
+	Args []Node
 }
 
 func (*FuncApplication) iNode() {}

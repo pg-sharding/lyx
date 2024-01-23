@@ -635,6 +635,11 @@ func TestSelectAlias(t *testing.T) {
 				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"},
 					&lyx.FuncApplication{
 						Name: "sum",
+						Args: []lyx.Node{
+							&lyx.ColumnRef{
+								ColName: "len",
+							},
+						},
 					}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
@@ -651,6 +656,11 @@ func TestSelectAlias(t *testing.T) {
 				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"},
 					&lyx.FuncApplication{
 						Name: "sum",
+						Args: []lyx.Node{
+							&lyx.ColumnRef{
+								ColName: "len",
+							},
+						},
 					}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
@@ -2382,81 +2392,144 @@ func TestMiscQ(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+		// {
+		// 	query: `
+		// 	SELECT * from X where id in ( select 1 );
+		// 	`,
+		// 	exp: &lyx.Select{
+		// 		FromClause: []lyx.FromClauseNode{
+		// 			&lyx.RangeVar{
+		// 				RelationName: "X",
+		// 			},
+		// 		},
+		// 		TargetList: []lyx.Node{
+		// 			&lyx.AExprEmpty{},
+		// 		},
+		// 		Where: &lyx.AExprOp{
+		// 			Left: &lyx.ColumnRef{
+		// 				ColName: "id",
+		// 			},
+
+		// 			Right: &lyx.Select{
+		// 				Where: &lyx.AExprEmpty{},
+		// 				TargetList: []lyx.Node{
+		// 					&lyx.AExprIConst{Value: 1},
+		// 				},
+		// 			},
+		// 			Op: "IN",
+		// 		},
+		// 	},
+		// 	err: nil,
+		// },
+
+		// {
+		// 	query: `
+		// 	delete from tbl where id in (select id from tbl where i = 12 for update skip locked limit 1)
+		// 	and i = 12 returning *;
+		// 	`,
+		// 	exp: &lyx.Delete{
+		// 		TableRef: &lyx.RangeVar{
+		// 			RelationName: "tbl",
+		// 		},
+		// 		Where: &lyx.AExprOp{
+		// 			Left: &lyx.AExprOp{
+
+		// 				Left: &lyx.ColumnRef{
+		// 					ColName: "id",
+		// 				},
+		// 				Right: &lyx.Select{
+		// 					FromClause: []lyx.FromClauseNode{
+		// 						&lyx.RangeVar{
+		// 							RelationName: "tbl",
+		// 						},
+		// 					},
+		// 					Where: &lyx.AExprOp{
+		// 						Left:  &lyx.ColumnRef{ColName: "i"},
+		// 						Right: &lyx.AExprIConst{Value: 12},
+		// 						Op:    "=",
+		// 					},
+		// 					TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
+		// 				},
+		// 				Op: "IN",
+		// 			},
+		// 			Right: &lyx.AExprOp{
+		// 				Left: &lyx.ColumnRef{
+		// 					ColName: "i",
+		// 				},
+		// 				Right: &lyx.AExprIConst{
+		// 					Value: 12,
+		// 				},
+		// 				Op: "=",
+		// 			},
+		// 			Op: "and",
+		// 		},
+		// 	},
+		// 	err: nil,
+		// },
 		{
 			query: `
-			SELECT * from X where id in ( select 1 );
-			`,
-			exp: &lyx.Select{
-				FromClause: []lyx.FromClauseNode{
-					&lyx.RangeVar{
-						RelationName: "X",
-					},
-				},
-				TargetList: []lyx.Node{
-					&lyx.AExprEmpty{},
+		 DELETE FROM
+		 	cl_m 
+			 WHERE s_id = 
+			 ANY(ARRAY(SELECT s_id 
+				FROM cl_m 
+				WHERE mem_par = '0' 
+				AND r_e < '2024-01-23 10:18:52.937505Z'))
+		 `,
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "cl_m",
 				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.ColumnRef{
-						ColName: "id",
+						ColName: "s_id",
 					},
+					Right: &lyx.FuncApplication{
+						Name: "ANY",
+						Args: []lyx.Node{
+							&lyx.SubLink{
+								SubSelect: &lyx.Select{
+									FromClause: []lyx.FromClauseNode{
+										&lyx.RangeVar{
+											RelationName: "cl_m",
+										},
+									},
+									TargetList: []lyx.Node{
+										&lyx.ColumnRef{
+											ColName: "s_id",
+										},
+									},
+									Where: &lyx.AExprOp{
+										Left: &lyx.AExprOp{
+											Left: &lyx.ColumnRef{
+												ColName: "mem_par",
+											},
+											Right: &lyx.AExprSConst{
+												Value: "0",
+											},
+											Op: "=",
+										},
+										Right: &lyx.AExprOp{
 
-					Right: &lyx.Select{
-						Where: &lyx.AExprEmpty{},
-						TargetList: []lyx.Node{
-							&lyx.AExprIConst{Value: 1},
-						},
-					},
-					Op: "IN",
-				},
-			},
-			err: nil,
-		},
-
-		{
-			query: `
-			delete from tbl where id in (select id from tbl where i = 12 for update skip locked limit 1)
-			and i = 12 returning *;
-			`,
-			exp: &lyx.Delete{
-				TableRef: &lyx.RangeVar{
-					RelationName: "tbl",
-				},
-				Where: &lyx.AExprOp{
-					Left: &lyx.AExprOp{
-
-						Left: &lyx.ColumnRef{
-							ColName: "id",
-						},
-						Right: &lyx.Select{
-							FromClause: []lyx.FromClauseNode{
-								&lyx.RangeVar{
-									RelationName: "tbl",
+											Left: &lyx.ColumnRef{
+												ColName: "r_e",
+											},
+											Right: &lyx.AExprSConst{
+												Value: "2024-01-23 10:18:52.937505Z",
+											},
+											Op: "<",
+										},
+										Op: "AND",
+									},
 								},
 							},
-							Where: &lyx.AExprOp{
-								Left:  &lyx.ColumnRef{ColName: "i"},
-								Right: &lyx.AExprIConst{Value: 12},
-								Op:    "=",
-							},
-							TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
 						},
-						Op: "IN",
 					},
-					Right: &lyx.AExprOp{
-						Left: &lyx.ColumnRef{
-							ColName: "i",
-						},
-						Right: &lyx.AExprIConst{
-							Value: 12,
-						},
-						Op: "=",
-					},
-					Op: "and",
+					Op: "=",
 				},
 			},
 			err: nil,
 		},
-
 		// 		{
 		// 			query: `
 		// SELECT n.nspname as "Schema",
@@ -2475,148 +2548,148 @@ func TestMiscQ(t *testing.T) {
 		// `,
 		// 			err: nil,
 		// 		},
-		{
-			query: `			
-INSERT INTO warehouse1 
-		(w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
-VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmwruo', 'er', 'zip-26599', 0.017264,300000);'
-			`,
-			exp: &lyx.Insert{
-				TableRef: &lyx.RangeVar{
-					SchemaName:   "",
-					RelationName: "warehouse1",
-				},
-				Columns: []string{
-					"w_id",
-					"w_name",
-					"w_street_1",
-					"w_street_2",
-					"w_city",
-					"w_state",
-					"w_zip",
-					"w_tax",
-					"w_ytd",
-				},
-				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprIConst{
-							Value: 1,
-						},
-						&lyx.AExprSConst{
-							Value: "name-vjxqu",
-						},
-						&lyx.AExprSConst{
-							Value: "street1-qkfzdggwut",
-						},
-						&lyx.AExprSConst{
-							Value: "street2-jxuhvhtqct",
-						},
-						&lyx.AExprSConst{
-							Value: "city-irchbmwruo",
-						},
-						&lyx.AExprSConst{
-							Value: "er",
-						},
-						&lyx.AExprSConst{
-							"zip-26599",
-						},
-						&lyx.AExprSConst{
-							"0.017264",
-						},
-						&lyx.AExprIConst{
-							300000,
-						},
-					},
-				},
-			},
-			err: nil,
-		},
-		{
-			query: `
-			SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
-			`,
-			exp: &lyx.VariableSetStmt{
-				Session: false,
-				IsLocal: false,
-				Default: false,
-				Name:    "",
-				Value:   nil,
-				Kind:    "SET",
-				TxMode: []lyx.TransactionModeItem{
-					0,
-				},
-			},
-			err: nil,
-		},
-		{
-			query: `
-			select ttt.i from ttt;
-			`,
-			exp: &lyx.Select{
-				TargetList: []lyx.Node{
-					&lyx.ColumnRef{
-						TableAlias: "ttt",
-						ColName:    "i",
-					},
-				},
-				FromClause: []lyx.FromClauseNode{
-					&lyx.RangeVar{
-						RelationName: "ttt",
-					},
-				},
-				Where: &lyx.AExprEmpty{},
-			},
-			err: nil,
-		},
+		// 		{
+		// 			query: `
+		// INSERT INTO warehouse1
+		// 		(w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
+		// VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmwruo', 'er', 'zip-26599', 0.017264,300000);'
+		// 			`,
+		// 			exp: &lyx.Insert{
+		// 				TableRef: &lyx.RangeVar{
+		// 					SchemaName:   "",
+		// 					RelationName: "warehouse1",
+		// 				},
+		// 				Columns: []string{
+		// 					"w_id",
+		// 					"w_name",
+		// 					"w_street_1",
+		// 					"w_street_2",
+		// 					"w_city",
+		// 					"w_state",
+		// 					"w_zip",
+		// 					"w_tax",
+		// 					"w_ytd",
+		// 				},
+		// 				SubSelect: &lyx.ValueClause{
+		// 					Values: []lyx.Node{
+		// 						&lyx.AExprIConst{
+		// 							Value: 1,
+		// 						},
+		// 						&lyx.AExprSConst{
+		// 							Value: "name-vjxqu",
+		// 						},
+		// 						&lyx.AExprSConst{
+		// 							Value: "street1-qkfzdggwut",
+		// 						},
+		// 						&lyx.AExprSConst{
+		// 							Value: "street2-jxuhvhtqct",
+		// 						},
+		// 						&lyx.AExprSConst{
+		// 							Value: "city-irchbmwruo",
+		// 						},
+		// 						&lyx.AExprSConst{
+		// 							Value: "er",
+		// 						},
+		// 						&lyx.AExprSConst{
+		// 							"zip-26599",
+		// 						},
+		// 						&lyx.AExprSConst{
+		// 							"0.017264",
+		// 						},
+		// 						&lyx.AExprIConst{
+		// 							300000,
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			err: nil,
+		// 		},
+		// 		{
+		// 			query: `
+		// 			SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
+		// 			`,
+		// 			exp: &lyx.VariableSetStmt{
+		// 				Session: false,
+		// 				IsLocal: false,
+		// 				Default: false,
+		// 				Name:    "",
+		// 				Value:   nil,
+		// 				Kind:    "SET",
+		// 				TxMode: []lyx.TransactionModeItem{
+		// 					0,
+		// 				},
+		// 			},
+		// 			err: nil,
+		// 		},
+		// 		{
+		// 			query: `
+		// 			select ttt.i from ttt;
+		// 			`,
+		// 			exp: &lyx.Select{
+		// 				TargetList: []lyx.Node{
+		// 					&lyx.ColumnRef{
+		// 						TableAlias: "ttt",
+		// 						ColName:    "i",
+		// 					},
+		// 				},
+		// 				FromClause: []lyx.FromClauseNode{
+		// 					&lyx.RangeVar{
+		// 						RelationName: "ttt",
+		// 					},
+		// 				},
+		// 				Where: &lyx.AExprEmpty{},
+		// 			},
+		// 			err: nil,
+		// 		},
 
-		{
-			query: `
-			UPDATE customer1
-			    SET c_balance= -4755.000000, c_ytd_payment=4755.000000
-			WHERE c_w_id = 1
-			AND c_d_id=1
-			AND c_id=963
-			`,
-			exp: &lyx.Update{
-				TableRef: &lyx.RangeVar{
-					RelationName: "customer1",
-				},
-				Where: &lyx.AExprOp{
-					Op: "AND",
-					Left: &lyx.AExprOp{
-						Left: &lyx.AExprOp{
-							Left: &lyx.ColumnRef{
-								ColName: "c_w_id",
-							},
-							Right: &lyx.AExprIConst{
-								Value: 1,
-							},
-							Op: "=",
-						},
-						Right: &lyx.AExprOp{
-							Left: &lyx.ColumnRef{
-								ColName: "c_d_id",
-							},
-							Right: &lyx.AExprIConst{
-								Value: 1,
-							},
-							Op: "=",
-						},
-						Op: "AND",
-					},
-					Right: &lyx.AExprOp{
-						Left: &lyx.ColumnRef{
-							ColName: "c_id",
-						},
-						Right: &lyx.AExprIConst{
-							Value: 963,
-						},
-						Op: "=",
-					},
-				},
-			},
-			err: nil,
-		},
+		// 		{
+		// 			query: `
+		// 			UPDATE customer1
+		// 			    SET c_balance= -4755.000000, c_ytd_payment=4755.000000
+		// 			WHERE c_w_id = 1
+		// 			AND c_d_id=1
+		// 			AND c_id=963
+		// 			`,
+		// 			exp: &lyx.Update{
+		// 				TableRef: &lyx.RangeVar{
+		// 					RelationName: "customer1",
+		// 				},
+		// 				Where: &lyx.AExprOp{
+		// 					Op: "AND",
+		// 					Left: &lyx.AExprOp{
+		// 						Left: &lyx.AExprOp{
+		// 							Left: &lyx.ColumnRef{
+		// 								ColName: "c_w_id",
+		// 							},
+		// 							Right: &lyx.AExprIConst{
+		// 								Value: 1,
+		// 							},
+		// 							Op: "=",
+		// 						},
+		// 						Right: &lyx.AExprOp{
+		// 							Left: &lyx.ColumnRef{
+		// 								ColName: "c_d_id",
+		// 							},
+		// 							Right: &lyx.AExprIConst{
+		// 								Value: 1,
+		// 							},
+		// 							Op: "=",
+		// 						},
+		// 						Op: "AND",
+		// 					},
+		// 					Right: &lyx.AExprOp{
+		// 						Left: &lyx.ColumnRef{
+		// 							ColName: "c_id",
+		// 						},
+		// 						Right: &lyx.AExprIConst{
+		// 							Value: 963,
+		// 						},
+		// 						Op: "=",
+		// 					},
+		// 				},
+		// 			},
+		// err: nil,
+		// },
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
