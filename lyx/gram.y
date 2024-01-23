@@ -4,6 +4,7 @@ package lyx
 
 import (
 	"crypto/rand"
+	"fmt"
 	"encoding/hex"
 )
 
@@ -91,7 +92,7 @@ func NewLyxParser() LyxParser {
 %type<nodeList> func_arg_list
 %type<node> func_alias_clause
 
-%type<node> a_expr c_expr b_expr in_expr
+%type<node> a_expr c_expr b_expr in_expr case_expr case_default case_arg
 
 /* CIUD */
 %token<str> CREATE ALTER
@@ -2066,7 +2067,7 @@ opt_collate_clause:
 		;
 
 
-func_name: IDENT
+func_name: ColId { $$ = $1 } |  ColId TDOT attr_name { $$ = $1 }
 
 
 OptTableFuncElementList:
@@ -2340,6 +2341,42 @@ in_expr:	select_with_parens
 
 
 /*
+ * Define SQL-style CASE clause.
+ * - Full specification
+ *	CASE WHEN a = b THEN c ... ELSE d END
+ * - Implicit argument
+ *	CASE a WHEN b THEN c ... ELSE d END
+ */
+case_expr:	CASE case_arg when_clause_list case_default END_P
+				{
+				}
+		;
+
+
+when_clause_list:
+			/* There must be at least one */
+			when_clause								{ }
+			| when_clause_list when_clause			{  }
+		;
+
+when_clause:
+			WHEN a_expr THEN a_expr
+				{
+				}
+		;
+
+case_default:
+			ELSE a_expr								{ $$ = $2; }
+			| /*EMPTY*/								{  }
+		;
+
+case_arg:	a_expr									{ $$ = $1; }
+			| /*EMPTY*/								{ }
+		;
+
+
+
+/*
  * Productions that can be used in both a_expr and b_expr.
  *
  * Note: productions that refer recursively to a_expr or b_expr mostly
@@ -2368,7 +2405,10 @@ c_expr:
 				}
             | TOPENBR a_expr TCLOSEBR {
                 $$ = $2
-            }
+            } 
+			| case_expr {
+				$$ = $1
+			}
             | func_expr {
 				$$ = $1
 			}
@@ -3082,8 +3122,8 @@ var_list:	var_value								{ $$ = []string{$1} }
 
 var_value:	opt_boolean_or_string
 				{ $$ = $1 }
-			// | NumericOnly
-				// {  }
+			| ICONST
+				{  $$ = fmt.Sprintf("%d", $1) }
 		;
 
 iso_level:	READ UNCOMMITTED						{  }
@@ -3765,12 +3805,12 @@ qualified_name_list:
  */
 qualified_name:
 			ColId {
-			$$ = &RangeVar {
-                    SchemaName: "",
-                    RelationName: $1,
-                    Alias: "",
-                }
-            }
+				$$ = &RangeVar {
+						SchemaName: "",
+						RelationName: $1,
+						Alias: "",
+					}
+				}
 			| ColId TDOT attr_name
 				{
 					$$ = &RangeVar {

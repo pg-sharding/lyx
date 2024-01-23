@@ -2392,80 +2392,80 @@ func TestMiscQ(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
-		// {
-		// 	query: `
-		// 	SELECT * from X where id in ( select 1 );
-		// 	`,
-		// 	exp: &lyx.Select{
-		// 		FromClause: []lyx.FromClauseNode{
-		// 			&lyx.RangeVar{
-		// 				RelationName: "X",
-		// 			},
-		// 		},
-		// 		TargetList: []lyx.Node{
-		// 			&lyx.AExprEmpty{},
-		// 		},
-		// 		Where: &lyx.AExprOp{
-		// 			Left: &lyx.ColumnRef{
-		// 				ColName: "id",
-		// 			},
+		{
+			query: `
+			SELECT * from X where id in ( select 1 );
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "X",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "id",
+					},
 
-		// 			Right: &lyx.Select{
-		// 				Where: &lyx.AExprEmpty{},
-		// 				TargetList: []lyx.Node{
-		// 					&lyx.AExprIConst{Value: 1},
-		// 				},
-		// 			},
-		// 			Op: "IN",
-		// 		},
-		// 	},
-		// 	err: nil,
-		// },
+					Right: &lyx.Select{
+						Where: &lyx.AExprEmpty{},
+						TargetList: []lyx.Node{
+							&lyx.AExprIConst{Value: 1},
+						},
+					},
+					Op: "IN",
+				},
+			},
+			err: nil,
+		},
 
-		// {
-		// 	query: `
-		// 	delete from tbl where id in (select id from tbl where i = 12 for update skip locked limit 1)
-		// 	and i = 12 returning *;
-		// 	`,
-		// 	exp: &lyx.Delete{
-		// 		TableRef: &lyx.RangeVar{
-		// 			RelationName: "tbl",
-		// 		},
-		// 		Where: &lyx.AExprOp{
-		// 			Left: &lyx.AExprOp{
+		{
+			query: `
+			delete from tbl where id in (select id from tbl where i = 12 for update skip locked limit 1)
+			and i = 12 returning *;
+			`,
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "tbl",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
 
-		// 				Left: &lyx.ColumnRef{
-		// 					ColName: "id",
-		// 				},
-		// 				Right: &lyx.Select{
-		// 					FromClause: []lyx.FromClauseNode{
-		// 						&lyx.RangeVar{
-		// 							RelationName: "tbl",
-		// 						},
-		// 					},
-		// 					Where: &lyx.AExprOp{
-		// 						Left:  &lyx.ColumnRef{ColName: "i"},
-		// 						Right: &lyx.AExprIConst{Value: 12},
-		// 						Op:    "=",
-		// 					},
-		// 					TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
-		// 				},
-		// 				Op: "IN",
-		// 			},
-		// 			Right: &lyx.AExprOp{
-		// 				Left: &lyx.ColumnRef{
-		// 					ColName: "i",
-		// 				},
-		// 				Right: &lyx.AExprIConst{
-		// 					Value: 12,
-		// 				},
-		// 				Op: "=",
-		// 			},
-		// 			Op: "and",
-		// 		},
-		// 	},
-		// 	err: nil,
-		// },
+						Left: &lyx.ColumnRef{
+							ColName: "id",
+						},
+						Right: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "tbl",
+								},
+							},
+							Where: &lyx.AExprOp{
+								Left:  &lyx.ColumnRef{ColName: "i"},
+								Right: &lyx.AExprIConst{Value: 12},
+								Op:    "=",
+							},
+							TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
+						},
+						Op: "IN",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "i",
+						},
+						Right: &lyx.AExprIConst{
+							Value: 12,
+						},
+						Op: "=",
+					},
+					Op: "and",
+				},
+			},
+			err: nil,
+		},
 		{
 			query: `
 		 DELETE FROM
@@ -2530,8 +2530,8 @@ func TestMiscQ(t *testing.T) {
 			},
 			err: nil,
 		},
-		// 		{
-		// 			query: `
+		// {
+		// 	query: `
 		// SELECT n.nspname as "Schema",
 		//   c.relname as "Name",
 		//   CASE c.relkind WHEN 'r' THEN 'table' WHEN 'v' THEN 'view' WHEN 'm' THEN 'materialized view' WHEN 'i' THEN 'index' WHEN 'S' THEN 'sequence' WHEN 't' THEN 'TOAST table' WHEN 'f' THEN 'foreign table' WHEN 'p' THEN 'partitioned table' WHEN 'I' THEN 'partitioned index' END as "Type",
@@ -2546,150 +2546,150 @@ func TestMiscQ(t *testing.T) {
 		//   AND pg_catalog.pg_table_is_visible(c.oid)
 		// ORDER BY 1,2;
 		// `,
-		// 			err: nil,
-		// 		},
-		// 		{
-		// 			query: `
-		// INSERT INTO warehouse1
-		// 		(w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
-		// VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmwruo', 'er', 'zip-26599', 0.017264,300000);'
-		// 			`,
-		// 			exp: &lyx.Insert{
-		// 				TableRef: &lyx.RangeVar{
-		// 					SchemaName:   "",
-		// 					RelationName: "warehouse1",
-		// 				},
-		// 				Columns: []string{
-		// 					"w_id",
-		// 					"w_name",
-		// 					"w_street_1",
-		// 					"w_street_2",
-		// 					"w_city",
-		// 					"w_state",
-		// 					"w_zip",
-		// 					"w_tax",
-		// 					"w_ytd",
-		// 				},
-		// 				SubSelect: &lyx.ValueClause{
-		// 					Values: []lyx.Node{
-		// 						&lyx.AExprIConst{
-		// 							Value: 1,
-		// 						},
-		// 						&lyx.AExprSConst{
-		// 							Value: "name-vjxqu",
-		// 						},
-		// 						&lyx.AExprSConst{
-		// 							Value: "street1-qkfzdggwut",
-		// 						},
-		// 						&lyx.AExprSConst{
-		// 							Value: "street2-jxuhvhtqct",
-		// 						},
-		// 						&lyx.AExprSConst{
-		// 							Value: "city-irchbmwruo",
-		// 						},
-		// 						&lyx.AExprSConst{
-		// 							Value: "er",
-		// 						},
-		// 						&lyx.AExprSConst{
-		// 							"zip-26599",
-		// 						},
-		// 						&lyx.AExprSConst{
-		// 							"0.017264",
-		// 						},
-		// 						&lyx.AExprIConst{
-		// 							300000,
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 			err: nil,
-		// 		},
-		// 		{
-		// 			query: `
-		// 			SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
-		// 			`,
-		// 			exp: &lyx.VariableSetStmt{
-		// 				Session: false,
-		// 				IsLocal: false,
-		// 				Default: false,
-		// 				Name:    "",
-		// 				Value:   nil,
-		// 				Kind:    "SET",
-		// 				TxMode: []lyx.TransactionModeItem{
-		// 					0,
-		// 				},
-		// 			},
-		// 			err: nil,
-		// 		},
-		// 		{
-		// 			query: `
-		// 			select ttt.i from ttt;
-		// 			`,
-		// 			exp: &lyx.Select{
-		// 				TargetList: []lyx.Node{
-		// 					&lyx.ColumnRef{
-		// 						TableAlias: "ttt",
-		// 						ColName:    "i",
-		// 					},
-		// 				},
-		// 				FromClause: []lyx.FromClauseNode{
-		// 					&lyx.RangeVar{
-		// 						RelationName: "ttt",
-		// 					},
-		// 				},
-		// 				Where: &lyx.AExprEmpty{},
-		// 			},
-		// 			err: nil,
-		// 		},
-
-		// 		{
-		// 			query: `
-		// 			UPDATE customer1
-		// 			    SET c_balance= -4755.000000, c_ytd_payment=4755.000000
-		// 			WHERE c_w_id = 1
-		// 			AND c_d_id=1
-		// 			AND c_id=963
-		// 			`,
-		// 			exp: &lyx.Update{
-		// 				TableRef: &lyx.RangeVar{
-		// 					RelationName: "customer1",
-		// 				},
-		// 				Where: &lyx.AExprOp{
-		// 					Op: "AND",
-		// 					Left: &lyx.AExprOp{
-		// 						Left: &lyx.AExprOp{
-		// 							Left: &lyx.ColumnRef{
-		// 								ColName: "c_w_id",
-		// 							},
-		// 							Right: &lyx.AExprIConst{
-		// 								Value: 1,
-		// 							},
-		// 							Op: "=",
-		// 						},
-		// 						Right: &lyx.AExprOp{
-		// 							Left: &lyx.ColumnRef{
-		// 								ColName: "c_d_id",
-		// 							},
-		// 							Right: &lyx.AExprIConst{
-		// 								Value: 1,
-		// 							},
-		// 							Op: "=",
-		// 						},
-		// 						Op: "AND",
-		// 					},
-		// 					Right: &lyx.AExprOp{
-		// 						Left: &lyx.ColumnRef{
-		// 							ColName: "c_id",
-		// 						},
-		// 						Right: &lyx.AExprIConst{
-		// 							Value: 963,
-		// 						},
-		// 						Op: "=",
-		// 					},
-		// 				},
-		// 			},
-		// err: nil,
+		// 	err: nil,
 		// },
+		{
+			query: `
+		INSERT INTO warehouse1
+				(w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
+		VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmwruo', 'er', 'zip-26599', 0.017264,300000);'
+					`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					SchemaName:   "",
+					RelationName: "warehouse1",
+				},
+				Columns: []string{
+					"w_id",
+					"w_name",
+					"w_street_1",
+					"w_street_2",
+					"w_city",
+					"w_state",
+					"w_zip",
+					"w_tax",
+					"w_ytd",
+				},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprIConst{
+							Value: 1,
+						},
+						&lyx.AExprSConst{
+							Value: "name-vjxqu",
+						},
+						&lyx.AExprSConst{
+							Value: "street1-qkfzdggwut",
+						},
+						&lyx.AExprSConst{
+							Value: "street2-jxuhvhtqct",
+						},
+						&lyx.AExprSConst{
+							Value: "city-irchbmwruo",
+						},
+						&lyx.AExprSConst{
+							Value: "er",
+						},
+						&lyx.AExprSConst{
+							"zip-26599",
+						},
+						&lyx.AExprSConst{
+							"0.017264",
+						},
+						&lyx.AExprIConst{
+							300000,
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+					SET SESSION CHARACTERISTICS AS TRANSACTION ISOLATION LEVEL READ COMMITTED
+					`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				IsLocal: false,
+				Default: false,
+				Name:    "",
+				Value:   nil,
+				Kind:    "SET",
+				TxMode: []lyx.TransactionModeItem{
+					0,
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+					select ttt.i from ttt;
+					`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						TableAlias: "ttt",
+						ColName:    "i",
+					},
+				},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "ttt",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
+		{
+			query: `
+					UPDATE customer1
+					    SET c_balance= -4755.000000, c_ytd_payment=4755.000000
+					WHERE c_w_id = 1
+					AND c_d_id=1
+					AND c_id=963
+					`,
+			exp: &lyx.Update{
+				TableRef: &lyx.RangeVar{
+					RelationName: "customer1",
+				},
+				Where: &lyx.AExprOp{
+					Op: "AND",
+					Left: &lyx.AExprOp{
+						Left: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "c_w_id",
+							},
+							Right: &lyx.AExprIConst{
+								Value: 1,
+							},
+							Op: "=",
+						},
+						Right: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "c_d_id",
+							},
+							Right: &lyx.AExprIConst{
+								Value: 1,
+							},
+							Op: "=",
+						},
+						Op: "AND",
+					},
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "c_id",
+						},
+						Right: &lyx.AExprIConst{
+							Value: 963,
+						},
+						Op: "=",
+					},
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
@@ -2754,6 +2754,20 @@ func TestSetStmt(t *testing.T) {
 				Kind:    lyx.VarTypeSet,
 				Value: []string{
 					"test",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			SET extra_float_digits = 3
+`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Name:    "extra_float_digits",
+				Kind:    lyx.VarTypeSet,
+				Value: []string{
+					"3",
 				},
 			},
 			err: nil,
