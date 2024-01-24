@@ -1102,6 +1102,33 @@ func TestInsertComplex(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `INSERT INTO "people" ("first_name","last_name","email","id") VALUES ('John','Smith','','1') RETURNING "i"`,
+			err:   nil,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "people",
+				},
+				Columns: []string{
+					"first_name",
+					"last_name",
+					"email",
+					"id",
+				},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprSConst{
+							Value: "John",
+						},
+						&lyx.AExprSConst{
+							Value: "Smith",
+						},
+						&lyx.AExprSConst{Value: ""},
+						&lyx.AExprSConst{Value: "1"},
+					},
+				},
+			},
+		},
+		{
 			query: `
 
 INSERT

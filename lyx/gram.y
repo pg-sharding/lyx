@@ -66,6 +66,7 @@ func NewLyxParser() LyxParser {
 %type<bool> opt_program
 
 %type<node> where_clause
+%type<node> returning_clause opt_on_conflict opt_conf_expr
 
 %type<node> ColQualList opt_column_compression ColConstraintElem
 %type<node> create_generic_options ColConstraint ConstraintAttr 
@@ -1542,6 +1543,11 @@ any_id:
 	{
 		$$ = string($1)
 	}
+
+any_name:	ColId						{ }
+			// | ColId attrs				{ }
+		;
+
 
 any_val:
     reserved_keyword {
@@ -4722,7 +4728,76 @@ insert_tuples:
 
 opt_returning:
     /* nothing */ {}
-    | RETURNING anything {}
+    | returning_clause {}
+
+
+opt_on_conflict:
+			ON CONFLICT opt_conf_expr DO UPDATE SET set_clause_list	where_clause
+				{
+
+				}
+			|
+			ON CONFLICT opt_conf_expr DO NOTHING
+				{
+
+				}
+			| /*EMPTY*/
+				{
+				}
+		;
+
+opt_conf_expr:
+			TOPENBR index_params TCLOSEBR where_clause
+				{
+				}
+			|
+			ON CONSTRAINT name
+				{
+				}
+			| /*EMPTY*/
+				{
+				}
+		;
+
+
+index_params:	index_elem							{ }
+			| index_params TCOMMA index_elem			{ }
+		;
+
+opt_collate: COLLATE any_val						{  }
+			| /*EMPTY*/								{ }
+		;
+
+opt_class:	any_name								{}
+			| /*EMPTY*/								{}
+		;
+
+index_elem_options:
+	opt_collate opt_class opt_asc_desc opt_nulls_order
+		{
+		}
+	| opt_collate any_name reloptions opt_asc_desc opt_nulls_order
+		{
+		}
+	;
+
+/*
+ * Index attributes can be either simple column references, or arbitrary
+ * expressions in parens.  For backwards-compatibility reasons, we allow
+ * an expression that's just a function call to be written without parens.
+ */
+index_elem: ColId index_elem_options
+				{
+				}
+			| func_expr_windowless index_elem_options
+				{
+				}
+			| TOPENBR a_expr TCLOSEBR index_elem_options
+				{
+				}
+		;
+
+
 
 
 /*****************************************************************************
@@ -4814,10 +4889,16 @@ DeallocateStmt: DEALLOCATE name
 
 
 
+returning_clause:
+			RETURNING target_list		{ }
+			| /* EMPTY */				{  }
+		;
+
+
 /* https://www.postgresql.org/docs/current/sql-insert.html */
 InsertStmt: 
     /* consider only first tuple from values */
-	INSERT INTO relation_expr opt_insert_col_refs SelectStmt {
+	INSERT INTO relation_expr opt_insert_col_refs SelectStmt opt_on_conflict returning_clause {
         $$ = &Insert{
             TableRef: $3,
             Columns: $4,
