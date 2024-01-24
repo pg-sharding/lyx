@@ -1102,6 +1102,62 @@ func TestInsertComplex(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `
+			INSERT INTO
+			cluster_membership(membership_partition, host_id, rpc_address, rpc_port, role, session_start, last_heartbeat, record_expiry)
+			VALUES('0', '\x0d1e9794bac311ee8a19ea2e156ae3d8', '2a02:6b8:c08:6819:0:5c2f:8548:0', '6934', '2', '2024-01-24 14:15:39.699192Z', '2024-01-24 14:15:39.750655Z', '2024-01-26 14:15:39.750655Z')
+			ON CONFLICT(membership_partition, host_id)
+			DO UPDATE SET 
+			membership_partition = '0', host_id = '\x0d1e9794bac311ee8a19ea2e156ae3d8',
+			rpc_address = '2a02:6b8:c08:6819:0:5c2f:8548:0', rpc_port = '6934', role = '2', 
+			session_start = '2024-01-24 14:15:39.699192Z', last_heartbeat = '2024-01-24 14:15:39.750655Z', record_expiry = '2024-01-26 14:15:39.750655Z'
+			`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "cluster_membership",
+				},
+				Columns: []string{
+					"membership_partition",
+					"host_id",
+					"rpc_address",
+					"rpc_port",
+					"role",
+					"session_start",
+					"last_heartbeat",
+					"record_expiry",
+				},
+				SubSelect: &lyx.ValueClause{
+					Values: []lyx.Node{
+						&lyx.AExprSConst{
+							Value: "0",
+						},
+						&lyx.AExprSConst{
+							Value: "\\x0d1e9794bac311ee8a19ea2e156ae3d8",
+						},
+						&lyx.AExprSConst{
+							Value: "2a02:6b8:c08:6819:0:5c2f:8548:0",
+						},
+						&lyx.AExprSConst{
+							Value: "6934",
+						},
+						&lyx.AExprSConst{
+							Value: "2",
+						},
+						&lyx.AExprSConst{
+							Value: "2024-01-24 14:15:39.699192Z",
+						},
+						&lyx.AExprSConst{
+							Value: "2024-01-24 14:15:39.750655Z",
+						},
+						&lyx.AExprSConst{
+							Value: "2024-01-26 14:15:39.750655Z",
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
 			query: `INSERT INTO "people" ("first_name","last_name","email","id") VALUES ('John','Smith','','1') RETURNING "i"`,
 			err:   nil,
 			exp: &lyx.Insert{

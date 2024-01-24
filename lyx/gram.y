@@ -325,7 +325,7 @@ Operator:
 
 %type<str> opt_with_data
 
-%type<str> ColId columnref
+%type<str> ColId columnref set_target
 
 %type<str> NonReservedWord name database_name access_method index_name
 
@@ -4918,13 +4918,21 @@ set_clause_list:
 			| set_clause_list TCOMMA set_clause	{ $$ = append($1, $3); }
 		
 
+
+set_target:
+			ColId opt_indirection
+				{
+					$$ = $1	
+				}
+		;
+
 set_clause:
-			any_id TEQ a_expr
+			set_target TEQ a_expr
 				{
 					$$ = $1;
 				}
 			| 
-			any_id TO a_expr
+			set_target TO a_expr
 				{
 					$$ = $1;
 				}
