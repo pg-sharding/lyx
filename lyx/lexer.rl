@@ -238,6 +238,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /BREADTH/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = BREADTH; fbreak;};
             /DEPTH/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEPTH; fbreak;};
 
+            /SHARE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SHARE; fbreak;};
+
             /vacuum/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = VACUUM; fbreak;};
             /cluster/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CLUSTER; fbreak;};
             /analyze/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYZE; fbreak;};

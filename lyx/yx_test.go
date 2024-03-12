@@ -312,6 +312,31 @@ func TestSelect(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `SELECT rid FROM shds WHERE sds = '1122' FOR SHARE`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "shds",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "sds",
+					},
+					Right: &lyx.AExprSConst{
+						Value: "1122",
+					},
+					Op: "=",
+				},
+				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "rid",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
 			query: "select 42",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.AExprIConst{Value: 42}},
