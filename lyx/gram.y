@@ -2429,6 +2429,10 @@ c_expr:
 				}
 			| implicit_row {} 
 			| explicit_row {}
+			| EXISTS select_with_parens
+				{
+
+				}
 
 a_expr:		
             c_expr									{ $$ = $1; }

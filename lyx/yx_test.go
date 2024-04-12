@@ -1630,6 +1630,21 @@ func TestSelectTargetLists(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+
+		{
+			query: `
+			SELECT NOT EXISTS (SELECT 1) AS invalid
+			`,
+
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					nil,
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
 		{
 			query: `SELECT current_schema()`,
 			exp: &lyx.Select{
