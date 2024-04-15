@@ -247,6 +247,15 @@ func TestSelectComplex(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `
+				SELECT * 
+				FROM a
+  				  LEFT JOIN (SELECT * FROM b) c ON a.id = c.id
+			`,
+			exp: nil,
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
