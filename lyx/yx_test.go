@@ -20,8 +20,8 @@ func TestSelectComplex(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
-			SELECT * FROM "exschema"."extable" WHERE id='83912839012903' AND utype='2' AND btype='sample' AND state = 0 AND is_something = true AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}') AND c_id = 'trunk' ORDER BY entity_id asc;
-			`,
+				SELECT * FROM "exschema"."extable" WHERE id='83912839012903' AND utype='2' AND btype='sample' AND state = 0 AND is_something = true AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}') AND c_id = 'trunk' ORDER BY entity_id asc;
+				`,
 			exp: &lyx.Select{
 
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
@@ -131,18 +131,18 @@ func TestSelectComplex(t *testing.T) {
 
 		{
 			query: `
-	SELECT *
-	FROM "exschema"."extable"
-	WHERE
-		id='83912839012903'
-		AND utype='2'
-		AND btype='sample'
-		AND state = 0
-		AND is_something = true
-		AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}')
-		AND c_id = 'trunk'
-	ORDER BY entity_id asc;
-			`,
+		SELECT *
+		FROM "exschema"."extable"
+		WHERE
+			id='83912839012903'
+			AND utype='2'
+			AND btype='sample'
+			AND state = 0
+			AND is_something = true
+			AND (keys @> '{reshke,denchick}' OR keys @> '{munakoiso,werelaxe,x4mmm}')
+			AND c_id = 'trunk'
+		ORDER BY entity_id asc;
+				`,
 			exp: &lyx.Select{
 
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
@@ -253,7 +253,17 @@ func TestSelectComplex(t *testing.T) {
 				FROM a
   				  LEFT JOIN (SELECT * FROM b) c ON a.id = c.id
 			`,
-			exp: nil,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.JoinExpr{
+					Larg: &lyx.RangeVar{
+						RelationName: "a",
+					},
+				}},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
 			err: nil,
 		},
 	} {
