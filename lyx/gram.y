@@ -3958,6 +3958,9 @@ table_ref:	relation_expr opt_alias_clause
 				{
 
 				}
+		    | select_with_parens opt_alias_clause
+				{
+				}
 			| joined_table
 				{
 					$$ = $1;
