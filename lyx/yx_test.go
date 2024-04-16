@@ -277,6 +277,14 @@ func TestSelectComplex(t *testing.T) {
 					},
 				}},
 				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName:    "first",
+						TableAlias: "a",
+					},
+					&lyx.ColumnRef{
+						ColName:    "second",
+						TableAlias: "a",
+					},
 					&lyx.AExprEmpty{},
 				},
 				Where: &lyx.AExprEmpty{},
