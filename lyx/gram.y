@@ -46,6 +46,9 @@ func NewLyxParser() LyxParser {
 
 	txMode                TransactionModeItem
 	txModeList            []TransactionModeItem
+
+	cte                   *CommonTableExpr
+	cteList               []*CommonTableExpr
 }
 
 // any non-terminal which returns a value needs a type, which is
@@ -81,7 +84,10 @@ func NewLyxParser() LyxParser {
 
 
 %type<node> opt_search_clause opt_cycle_clause
-%type<nodeList> cte_list common_table_expr with_clause opt_with_clause
+
+%type<cte> common_table_expr
+%type<cteList> cte_list with_clause opt_with_clause
+
 
 %type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
 
@@ -4628,13 +4634,16 @@ with_clause:
 		;
 
 cte_list:
-		common_table_expr						{ $$ = $1; }
-		| cte_list TCOMMA common_table_expr		{ $$ = append($1, $3...); }
+		common_table_expr						{ $$ = []*CommonTableExpr{$1}; }
+		| cte_list TCOMMA common_table_expr		{ $$ = append($1, $3); }
 		;
 
 common_table_expr:  name opt_name_list AS opt_materialized TOPENBR PreparableStmt TCLOSEBR opt_search_clause opt_cycle_clause
 			{
-				$$ = []Node{$6}
+				$$ = &CommonTableExpr{
+					Name: $1,
+					SubQuery:$6,
+				}
 			}
 		;
 

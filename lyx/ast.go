@@ -158,12 +158,13 @@ func (r *JoinExpr) SetAlias(s string) {
 }
 
 type CommonTableExpr struct {
+	Name     string
 	SubQuery Node
 }
 
 type Select struct {
 	FromClause []FromClauseNode
-	WithClause []Node
+	WithClause []*CommonTableExpr
 	Where      Node
 	TargetList []Node
 }
