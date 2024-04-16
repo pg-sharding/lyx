@@ -319,7 +319,7 @@ Operator:
 %type<nodeList> opt_target_list
 %type<nodeList> target_list
 
-%type<node> ColRef qualColRef
+%type<node> ColRef qualColRef relAllCols
 
 %type<nodeList> expr_list
 
@@ -2889,6 +2889,11 @@ qualColRef:
         }
     }
 
+relAllCols:
+    IDENT TDOT TMUL {
+    	$$ = &AExprEmpty{}
+    }
+
 ColRef:
     ColId {
         $$ = &ColumnRef{
@@ -2896,6 +2901,8 @@ ColRef:
         }
     } | qualColRef {
         $$ = $1
+    } | relAllCols {
+    	$$ = $1
     }
 
 columnref:	ColId

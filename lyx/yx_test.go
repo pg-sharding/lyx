@@ -266,6 +266,31 @@ func TestSelectComplex(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `SELECT a.first, a.second, c.*
+					FROM a
+  				  	 LEFT JOIN (SELECT * FROM b) c ON a.id = c.id`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{&lyx.JoinExpr{
+					Larg: &lyx.RangeVar{
+						RelationName: "a",
+					},
+				}},
+				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName:    "first",
+						TableAlias: "a",
+					},
+					&lyx.ColumnRef{
+						ColName:    "second",
+						TableAlias: "a",
+					},
+					&lyx.AExprEmpty{},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
