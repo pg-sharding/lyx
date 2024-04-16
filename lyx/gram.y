@@ -4551,8 +4551,8 @@ opt_nowait_or_skip:
  * with or without outer parentheses.
  */
 
-SelectStmt: select_no_parens			
-			| select_with_parens	
+SelectStmt: select_no_parens			{ $$ = $1 }
+			| select_with_parens	{ $$ = $1 }
 		;
 
 select_with_parens:
@@ -4587,6 +4587,7 @@ select_no_parens:
 				}
 			| with_clause select_clause
 				{
+					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
 			| with_clause select_clause sort_clause
@@ -4838,10 +4839,10 @@ prep_type_clause: TOPENBR type_list TCLOSEBR	{  }
 		;
 
 PreparableStmt:
-			SelectStmt
-			| InsertStmt
-			| UpdateStmt
-			| DeleteStmt					/* by default all are $$=$1 */
+			SelectStmt { $$ = $1 }
+			| InsertStmt { $$ = $1 }
+			| UpdateStmt { $$ = $1 }
+			| DeleteStmt	{ $$ = $1 }				/* by default all are $$=$1 */
 		;
 
 /*****************************************************************************

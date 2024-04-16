@@ -157,8 +157,13 @@ func (r *JoinExpr) SetAlias(s string) {
 	r.Alias = s
 }
 
+type CommonTableExpr struct {
+	SubQuery Node
+}
+
 type Select struct {
 	FromClause []FromClauseNode
+	WithClause []Node
 	Where      Node
 	TargetList []Node
 }
@@ -281,6 +286,7 @@ func (*VarValue) iNode()         {}
 func (*VariableSetStmt) iNode()  {}
 func (*VariableShowStmt) iNode() {}
 func (*SubLink) iNode()          {}
+func (*CommonTableExpr) iNode()  {}
 
 type TransactionStmtType int
 

@@ -2552,6 +2552,15 @@ with cte (i) as (values (12), (13))
 select * from tbl inner join cte on tbl.i = cte.i;
 			`,
 			exp: &lyx.Select{
+				WithClause: []lyx.Node{
+					&lyx.ValueClause{
+						Values: []lyx.Node{
+							&lyx.AExprIConst{
+								Value: 12,
+							},
+						},
+					},
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.JoinExpr{
 						Larg: &lyx.RangeVar{
@@ -2565,6 +2574,53 @@ select * from tbl inner join cte on tbl.i = cte.i;
 				Where: &lyx.AExprEmpty{},
 				TargetList: []lyx.Node{
 					&lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: `
+			WITH xxxx AS (
+				SELECT * from t where i = 1
+			) 
+			SELECT * from xxxx WHERE i = 2;
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xxxx",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "i",
+					},
+					Right: &lyx.AExprIConst{Value: 2},
+					Op:    "=",
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+
+				WithClause: []lyx.Node{
+					&lyx.Select{
+						FromClause: []lyx.FromClauseNode{
+							&lyx.RangeVar{
+								RelationName: "t",
+							},
+						},
+						Where: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "i",
+							},
+							Right: &lyx.AExprIConst{Value: 1},
+							Op:    "=",
+						},
+						TargetList: []lyx.Node{
+							&lyx.AExprEmpty{},
+						},
+					},
 				},
 			},
 			err: nil,
