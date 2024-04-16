@@ -48,6 +48,9 @@ type yySymType struct {
 
 	txMode     TransactionModeItem
 	txModeList []TransactionModeItem
+
+	cte     *CommonTableExpr
+	cteList []*CommonTableExpr
 }
 
 const SCONST = 57346
@@ -1079,7 +1082,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line lyx/gram.y:5307
+//line lyx/gram.y:5316
 
 //line yacctab:1
 var yyExca = [...]int{
@@ -4448,7 +4451,7 @@ var yyPgo = [...]int{
 	0, 1410, 1126, 29, 21, 1409, 111, 122, 11, 98,
 	1397, 1395, 1394, 1391, 17, 1390, 1389, 1385, 1381, 1380,
 	6, 1379, 1377, 1376, 1375, 1374, 13, 125, 1373, 1372,
-	1371, 146, 135, 1369, 1369, 1368, 41, 1367, 84, 175,
+	1371, 135, 146, 1369, 1369, 1368, 41, 1367, 84, 175,
 	153, 90, 71, 1366, 1365, 9, 74, 120, 26, 193,
 	108, 1364, 1363, 1360, 1359, 22, 20, 33, 1358, 12,
 	130, 1177, 1163, 1122, 1356, 1354, 1350, 1348, 1346, 1345,
@@ -4639,7 +4642,7 @@ var yyR1 = [...]int{
 	83, 83, 144, 145, 145, 146, 146, 146, 146, 146,
 	146, 146, 146, 147, 147, 148, 148, 148, 60, 60,
 	82, 82, 81, 81, 81, 81, 81, 81, 81, 81,
-	33, 33, 33, 31, 31, 32, 278, 278, 278, 29,
+	33, 33, 33, 32, 32, 31, 278, 278, 278, 29,
 	29, 29, 30, 30, 30, 34, 34, 80, 80, 174,
 	174, 279, 279, 175, 180, 180, 185, 179, 179, 178,
 	178, 176, 176, 177, 280, 280, 10, 10, 10, 11,
@@ -4944,7 +4947,7 @@ var yyChk = [...]int{
 	53, 269, 321, 344, 339, 212, 89, -203, -203, -203,
 	-203, -203, 371, -200, 436, 18, -286, 399, 425, -243,
 	-256, 381, -80, -110, -82, -81, -82, -108, -109, 391,
-	483, 398, -40, -194, -159, -31, 198, -32, -163, -31,
+	483, 398, -40, -194, -159, -32, 198, -31, -163, -32,
 	399, -265, 20, -210, -211, -209, 237, 57, 277, 481,
 	-265, 4, -265, 494, 4, -159, 4, -237, 399, -210,
 	-265, -36, 399, -54, 472, -203, -203, -203, 12, 496,
@@ -4963,7 +4966,7 @@ var yyChk = [...]int{
 	-225, -221, -216, 469, 5, 442, 443, 444, 445, 446,
 	447, 448, 449, 450, 451, 452, -224, -223, -220, -219,
 	467, 468, 453, 461, 460, 463, 464, 462, -218, -153,
-	408, 399, 405, 398, -31, -168, 399, -157, -47, 39,
+	408, 399, 405, 398, -32, -168, 399, -157, -47, 39,
 	507, 398, -209, 230, 436, 100, 277, 42, -159, 505,
 	-236, -234, -232, 441, -230, -228, -226, -222, -216, -215,
 	-235, 442, 443, 444, 445, 446, 447, 449, 450, 451,
@@ -4992,7 +4995,7 @@ var yyChk = [...]int{
 	46, 199, 69, 90, 313, 54, 324, 484, 277, 490,
 	483, 353, 30, 180, 161, 55, 500, 229, 225, 289,
 	481, 406, 202, 14, 235, 194, 335, 259, 27, 245,
-	109, 64, 396, 251, 217, -32, 505, -167, -163, 398,
+	109, 64, 396, 251, 217, -31, 505, -167, -163, 398,
 	400, 39, -209, -120, 57, 208, 183, -159, -38, 398,
 	400, -233, 439, -232, -213, 399, 454, 455, 456, 457,
 	458, -212, 459, -229, 400, 399, 474, 505, 481, -180,
@@ -5740,4405 +5743,4405 @@ yydefault:
 
 	case 2:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:451
+//line lyx/gram.y:457
 		{
 		}
 	case 3:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:452
+//line lyx/gram.y:458
 		{
 
 		}
 	case 318:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:800
+//line lyx/gram.y:806
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 319:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:801
+//line lyx/gram.y:807
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 320:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:802
+//line lyx/gram.y:808
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 321:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:803
+//line lyx/gram.y:809
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 322:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:804
+//line lyx/gram.y:810
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 323:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:805
+//line lyx/gram.y:811
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 324:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:806
+//line lyx/gram.y:812
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 325:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:807
+//line lyx/gram.y:813
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 326:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:808
+//line lyx/gram.y:814
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 327:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:809
+//line lyx/gram.y:815
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 328:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:810
+//line lyx/gram.y:816
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 329:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:811
+//line lyx/gram.y:817
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 330:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:812
+//line lyx/gram.y:818
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 331:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:813
+//line lyx/gram.y:819
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 332:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:814
+//line lyx/gram.y:820
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 333:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:815
+//line lyx/gram.y:821
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 334:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:816
+//line lyx/gram.y:822
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 335:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:817
+//line lyx/gram.y:823
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 336:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:818
+//line lyx/gram.y:824
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 337:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:819
+//line lyx/gram.y:825
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 338:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:820
+//line lyx/gram.y:826
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 339:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:821
+//line lyx/gram.y:827
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 340:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:822
+//line lyx/gram.y:828
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 341:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:823
+//line lyx/gram.y:829
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 342:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:824
+//line lyx/gram.y:830
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 343:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:825
+//line lyx/gram.y:831
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 344:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:826
+//line lyx/gram.y:832
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 345:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:827
+//line lyx/gram.y:833
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 346:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:828
+//line lyx/gram.y:834
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 347:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:829
+//line lyx/gram.y:835
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 348:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:830
+//line lyx/gram.y:836
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 349:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:831
+//line lyx/gram.y:837
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 350:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:832
+//line lyx/gram.y:838
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 351:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:833
+//line lyx/gram.y:839
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 352:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:834
+//line lyx/gram.y:840
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 353:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:835
+//line lyx/gram.y:841
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 354:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:836
+//line lyx/gram.y:842
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 355:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:837
+//line lyx/gram.y:843
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 356:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:838
+//line lyx/gram.y:844
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 357:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:839
+//line lyx/gram.y:845
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 358:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:840
+//line lyx/gram.y:846
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 359:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:841
+//line lyx/gram.y:847
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 360:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:842
+//line lyx/gram.y:848
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 361:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:843
+//line lyx/gram.y:849
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 362:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:844
+//line lyx/gram.y:850
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 363:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:845
+//line lyx/gram.y:851
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 364:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:846
+//line lyx/gram.y:852
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 365:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:847
+//line lyx/gram.y:853
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 366:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:848
+//line lyx/gram.y:854
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 367:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:849
+//line lyx/gram.y:855
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 368:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:850
+//line lyx/gram.y:856
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 369:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:851
+//line lyx/gram.y:857
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 370:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:852
+//line lyx/gram.y:858
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 371:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:853
+//line lyx/gram.y:859
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 372:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:854
+//line lyx/gram.y:860
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 373:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:855
+//line lyx/gram.y:861
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 374:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:856
+//line lyx/gram.y:862
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 375:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:857
+//line lyx/gram.y:863
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 376:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:871
+//line lyx/gram.y:877
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 377:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:872
+//line lyx/gram.y:878
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 378:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:873
+//line lyx/gram.y:879
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 379:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:874
+//line lyx/gram.y:880
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 380:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:875
+//line lyx/gram.y:881
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 381:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:876
+//line lyx/gram.y:882
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 382:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:877
+//line lyx/gram.y:883
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 383:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:878
+//line lyx/gram.y:884
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 384:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:879
+//line lyx/gram.y:885
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 385:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:880
+//line lyx/gram.y:886
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 386:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:881
+//line lyx/gram.y:887
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 387:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:882
+//line lyx/gram.y:888
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 388:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:883
+//line lyx/gram.y:889
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 389:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:884
+//line lyx/gram.y:890
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 390:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:885
+//line lyx/gram.y:891
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 391:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:886
+//line lyx/gram.y:892
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 392:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:887
+//line lyx/gram.y:893
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 393:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:888
+//line lyx/gram.y:894
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 394:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:889
+//line lyx/gram.y:895
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 395:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:890
+//line lyx/gram.y:896
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 396:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:891
+//line lyx/gram.y:897
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 397:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:892
+//line lyx/gram.y:898
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 398:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:893
+//line lyx/gram.y:899
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 399:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:903
+//line lyx/gram.y:909
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 400:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:904
+//line lyx/gram.y:910
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 401:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:905
+//line lyx/gram.y:911
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 402:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:906
+//line lyx/gram.y:912
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 403:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:907
+//line lyx/gram.y:913
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 404:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:908
+//line lyx/gram.y:914
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 405:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:909
+//line lyx/gram.y:915
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 406:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:910
+//line lyx/gram.y:916
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 407:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:911
+//line lyx/gram.y:917
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 408:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:912
+//line lyx/gram.y:918
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 409:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:913
+//line lyx/gram.y:919
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 410:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:914
+//line lyx/gram.y:920
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 411:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:915
+//line lyx/gram.y:921
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 412:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:916
+//line lyx/gram.y:922
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 413:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:917
+//line lyx/gram.y:923
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 414:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:918
+//line lyx/gram.y:924
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 415:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:919
+//line lyx/gram.y:925
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 416:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:920
+//line lyx/gram.y:926
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 417:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:921
+//line lyx/gram.y:927
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 418:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:922
+//line lyx/gram.y:928
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 419:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:923
+//line lyx/gram.y:929
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 420:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:924
+//line lyx/gram.y:930
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 421:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:925
+//line lyx/gram.y:931
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 422:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:926
+//line lyx/gram.y:932
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 423:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:927
+//line lyx/gram.y:933
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 424:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:928
+//line lyx/gram.y:934
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 425:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:929
+//line lyx/gram.y:935
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 426:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:930
+//line lyx/gram.y:936
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 427:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:931
+//line lyx/gram.y:937
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 428:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:932
+//line lyx/gram.y:938
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 429:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:933
+//line lyx/gram.y:939
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 430:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:934
+//line lyx/gram.y:940
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 431:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:935
+//line lyx/gram.y:941
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 432:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:936
+//line lyx/gram.y:942
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 433:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:937
+//line lyx/gram.y:943
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 434:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:938
+//line lyx/gram.y:944
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 435:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:939
+//line lyx/gram.y:945
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 436:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:940
+//line lyx/gram.y:946
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 437:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:941
+//line lyx/gram.y:947
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 438:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:942
+//line lyx/gram.y:948
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 439:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:943
+//line lyx/gram.y:949
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 440:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:944
+//line lyx/gram.y:950
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 441:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:945
+//line lyx/gram.y:951
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 442:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:946
+//line lyx/gram.y:952
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 443:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:947
+//line lyx/gram.y:953
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 444:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:948
+//line lyx/gram.y:954
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 445:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:949
+//line lyx/gram.y:955
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 446:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:950
+//line lyx/gram.y:956
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 447:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:951
+//line lyx/gram.y:957
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 448:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:952
+//line lyx/gram.y:958
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 449:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:953
+//line lyx/gram.y:959
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 450:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:954
+//line lyx/gram.y:960
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 451:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:955
+//line lyx/gram.y:961
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 452:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:956
+//line lyx/gram.y:962
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 453:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:957
+//line lyx/gram.y:963
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 454:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:958
+//line lyx/gram.y:964
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 455:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:959
+//line lyx/gram.y:965
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 456:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:960
+//line lyx/gram.y:966
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 457:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:961
+//line lyx/gram.y:967
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 458:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:962
+//line lyx/gram.y:968
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 459:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:963
+//line lyx/gram.y:969
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 460:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:964
+//line lyx/gram.y:970
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 461:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:965
+//line lyx/gram.y:971
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 462:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:966
+//line lyx/gram.y:972
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 463:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:967
+//line lyx/gram.y:973
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 464:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:968
+//line lyx/gram.y:974
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 465:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:969
+//line lyx/gram.y:975
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 466:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:970
+//line lyx/gram.y:976
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 467:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:971
+//line lyx/gram.y:977
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 468:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:972
+//line lyx/gram.y:978
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 469:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:973
+//line lyx/gram.y:979
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 470:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:974
+//line lyx/gram.y:980
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 471:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:975
+//line lyx/gram.y:981
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 472:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:976
+//line lyx/gram.y:982
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 473:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:977
+//line lyx/gram.y:983
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 474:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:978
+//line lyx/gram.y:984
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 475:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:979
+//line lyx/gram.y:985
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 476:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:980
+//line lyx/gram.y:986
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 477:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:981
+//line lyx/gram.y:987
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 478:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:982
+//line lyx/gram.y:988
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 479:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:983
+//line lyx/gram.y:989
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 480:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:984
+//line lyx/gram.y:990
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 481:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:985
+//line lyx/gram.y:991
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 482:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:986
+//line lyx/gram.y:992
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 483:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:987
+//line lyx/gram.y:993
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 484:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:988
+//line lyx/gram.y:994
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 485:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:989
+//line lyx/gram.y:995
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 486:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:990
+//line lyx/gram.y:996
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 487:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:991
+//line lyx/gram.y:997
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 488:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:992
+//line lyx/gram.y:998
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 489:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:993
+//line lyx/gram.y:999
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 490:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:994
+//line lyx/gram.y:1000
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 491:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:995
+//line lyx/gram.y:1001
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 492:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:996
+//line lyx/gram.y:1002
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 493:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:997
+//line lyx/gram.y:1003
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 494:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:998
+//line lyx/gram.y:1004
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 495:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:999
+//line lyx/gram.y:1005
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 496:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1000
+//line lyx/gram.y:1006
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 497:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1001
+//line lyx/gram.y:1007
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 498:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1002
+//line lyx/gram.y:1008
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 499:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1003
+//line lyx/gram.y:1009
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 500:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1004
+//line lyx/gram.y:1010
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 501:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1005
+//line lyx/gram.y:1011
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 502:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1006
+//line lyx/gram.y:1012
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 503:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1007
+//line lyx/gram.y:1013
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 504:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1008
+//line lyx/gram.y:1014
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 505:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1009
+//line lyx/gram.y:1015
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 506:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1010
+//line lyx/gram.y:1016
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 507:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1011
+//line lyx/gram.y:1017
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 508:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1012
+//line lyx/gram.y:1018
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 509:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1013
+//line lyx/gram.y:1019
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 510:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1014
+//line lyx/gram.y:1020
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 511:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1015
+//line lyx/gram.y:1021
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 512:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1016
+//line lyx/gram.y:1022
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 513:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1017
+//line lyx/gram.y:1023
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 514:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1018
+//line lyx/gram.y:1024
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 515:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1019
+//line lyx/gram.y:1025
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 516:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1020
+//line lyx/gram.y:1026
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 517:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1021
+//line lyx/gram.y:1027
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 518:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1022
+//line lyx/gram.y:1028
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 519:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1023
+//line lyx/gram.y:1029
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 520:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1024
+//line lyx/gram.y:1030
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 521:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1025
+//line lyx/gram.y:1031
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 522:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1026
+//line lyx/gram.y:1032
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 523:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1027
+//line lyx/gram.y:1033
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 524:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1028
+//line lyx/gram.y:1034
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 525:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1029
+//line lyx/gram.y:1035
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 526:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1030
+//line lyx/gram.y:1036
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 527:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1031
+//line lyx/gram.y:1037
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 528:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1032
+//line lyx/gram.y:1038
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 529:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1033
+//line lyx/gram.y:1039
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 530:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1034
+//line lyx/gram.y:1040
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 531:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1035
+//line lyx/gram.y:1041
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 532:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1036
+//line lyx/gram.y:1042
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 533:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1037
+//line lyx/gram.y:1043
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 534:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1038
+//line lyx/gram.y:1044
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 535:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1039
+//line lyx/gram.y:1045
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 536:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1040
+//line lyx/gram.y:1046
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 537:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1041
+//line lyx/gram.y:1047
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 538:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1042
+//line lyx/gram.y:1048
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 539:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1043
+//line lyx/gram.y:1049
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 540:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1044
+//line lyx/gram.y:1050
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 541:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1045
+//line lyx/gram.y:1051
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 542:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1058
+//line lyx/gram.y:1064
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 543:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1059
+//line lyx/gram.y:1065
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 544:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1060
+//line lyx/gram.y:1066
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 545:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1061
+//line lyx/gram.y:1067
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 546:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1062
+//line lyx/gram.y:1068
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 547:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1063
+//line lyx/gram.y:1069
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 548:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1064
+//line lyx/gram.y:1070
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 549:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1065
+//line lyx/gram.y:1071
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 550:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1066
+//line lyx/gram.y:1072
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 551:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1067
+//line lyx/gram.y:1073
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 552:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1068
+//line lyx/gram.y:1074
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 553:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1069
+//line lyx/gram.y:1075
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 554:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1070
+//line lyx/gram.y:1076
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 555:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1071
+//line lyx/gram.y:1077
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 556:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1072
+//line lyx/gram.y:1078
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 557:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1073
+//line lyx/gram.y:1079
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 558:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1074
+//line lyx/gram.y:1080
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 559:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1075
+//line lyx/gram.y:1081
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 560:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1076
+//line lyx/gram.y:1082
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 561:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1077
+//line lyx/gram.y:1083
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 562:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1078
+//line lyx/gram.y:1084
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 563:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1079
+//line lyx/gram.y:1085
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 564:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1080
+//line lyx/gram.y:1086
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 565:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1081
+//line lyx/gram.y:1087
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 566:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1082
+//line lyx/gram.y:1088
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 567:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1083
+//line lyx/gram.y:1089
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 568:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1084
+//line lyx/gram.y:1090
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 569:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1085
+//line lyx/gram.y:1091
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 570:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1086
+//line lyx/gram.y:1092
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 571:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1087
+//line lyx/gram.y:1093
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 572:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1088
+//line lyx/gram.y:1094
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 573:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1089
+//line lyx/gram.y:1095
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 574:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1090
+//line lyx/gram.y:1096
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 575:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1091
+//line lyx/gram.y:1097
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 576:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1092
+//line lyx/gram.y:1098
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 577:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1093
+//line lyx/gram.y:1099
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 578:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1094
+//line lyx/gram.y:1100
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 579:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1095
+//line lyx/gram.y:1101
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 580:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1096
+//line lyx/gram.y:1102
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 581:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1097
+//line lyx/gram.y:1103
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 582:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1098
+//line lyx/gram.y:1104
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 583:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1099
+//line lyx/gram.y:1105
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 584:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1100
+//line lyx/gram.y:1106
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 585:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1101
+//line lyx/gram.y:1107
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 586:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1102
+//line lyx/gram.y:1108
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 587:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1103
+//line lyx/gram.y:1109
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 588:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1104
+//line lyx/gram.y:1110
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 589:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1105
+//line lyx/gram.y:1111
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 590:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1106
+//line lyx/gram.y:1112
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 591:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1107
+//line lyx/gram.y:1113
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 592:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1108
+//line lyx/gram.y:1114
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 593:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1109
+//line lyx/gram.y:1115
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 594:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1110
+//line lyx/gram.y:1116
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 595:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1111
+//line lyx/gram.y:1117
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 596:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1112
+//line lyx/gram.y:1118
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 597:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1113
+//line lyx/gram.y:1119
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 598:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1114
+//line lyx/gram.y:1120
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 599:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1115
+//line lyx/gram.y:1121
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 600:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1116
+//line lyx/gram.y:1122
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 601:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1117
+//line lyx/gram.y:1123
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 602:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1118
+//line lyx/gram.y:1124
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 603:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1119
+//line lyx/gram.y:1125
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 604:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1120
+//line lyx/gram.y:1126
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 605:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1121
+//line lyx/gram.y:1127
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 606:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1122
+//line lyx/gram.y:1128
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 607:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1123
+//line lyx/gram.y:1129
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 608:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1124
+//line lyx/gram.y:1130
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 609:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1125
+//line lyx/gram.y:1131
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 610:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1126
+//line lyx/gram.y:1132
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 611:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1127
+//line lyx/gram.y:1133
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 612:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1128
+//line lyx/gram.y:1134
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 613:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1129
+//line lyx/gram.y:1135
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 614:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1130
+//line lyx/gram.y:1136
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 615:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1131
+//line lyx/gram.y:1137
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 616:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1132
+//line lyx/gram.y:1138
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 617:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1133
+//line lyx/gram.y:1139
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 618:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1134
+//line lyx/gram.y:1140
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 619:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1135
+//line lyx/gram.y:1141
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 620:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1136
+//line lyx/gram.y:1142
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 621:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1137
+//line lyx/gram.y:1143
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 622:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1138
+//line lyx/gram.y:1144
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 623:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1139
+//line lyx/gram.y:1145
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 624:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1140
+//line lyx/gram.y:1146
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 625:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1141
+//line lyx/gram.y:1147
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 626:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1142
+//line lyx/gram.y:1148
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 627:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1143
+//line lyx/gram.y:1149
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 628:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1144
+//line lyx/gram.y:1150
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 629:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1145
+//line lyx/gram.y:1151
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 630:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1146
+//line lyx/gram.y:1152
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 631:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1147
+//line lyx/gram.y:1153
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 632:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1148
+//line lyx/gram.y:1154
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 633:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1149
+//line lyx/gram.y:1155
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 634:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1150
+//line lyx/gram.y:1156
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 635:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1151
+//line lyx/gram.y:1157
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 636:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1152
+//line lyx/gram.y:1158
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 637:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1153
+//line lyx/gram.y:1159
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 638:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1154
+//line lyx/gram.y:1160
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 639:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1155
+//line lyx/gram.y:1161
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 640:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1156
+//line lyx/gram.y:1162
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 641:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1157
+//line lyx/gram.y:1163
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 642:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1158
+//line lyx/gram.y:1164
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 643:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1159
+//line lyx/gram.y:1165
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 644:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1160
+//line lyx/gram.y:1166
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 645:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1161
+//line lyx/gram.y:1167
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 646:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1162
+//line lyx/gram.y:1168
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 647:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1163
+//line lyx/gram.y:1169
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 648:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1164
+//line lyx/gram.y:1170
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 649:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1165
+//line lyx/gram.y:1171
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 650:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1166
+//line lyx/gram.y:1172
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 651:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1167
+//line lyx/gram.y:1173
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 652:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1168
+//line lyx/gram.y:1174
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 653:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1169
+//line lyx/gram.y:1175
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 654:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1170
+//line lyx/gram.y:1176
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 655:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1171
+//line lyx/gram.y:1177
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 656:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1172
+//line lyx/gram.y:1178
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 657:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1173
+//line lyx/gram.y:1179
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 658:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1174
+//line lyx/gram.y:1180
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 659:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1175
+//line lyx/gram.y:1181
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 660:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1176
+//line lyx/gram.y:1182
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 661:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1177
+//line lyx/gram.y:1183
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 662:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1178
+//line lyx/gram.y:1184
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 663:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1179
+//line lyx/gram.y:1185
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 664:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1180
+//line lyx/gram.y:1186
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 665:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1181
+//line lyx/gram.y:1187
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 666:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1182
+//line lyx/gram.y:1188
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 667:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1183
+//line lyx/gram.y:1189
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 668:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1184
+//line lyx/gram.y:1190
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 669:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1185
+//line lyx/gram.y:1191
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 670:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1186
+//line lyx/gram.y:1192
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 671:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1187
+//line lyx/gram.y:1193
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 672:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1188
+//line lyx/gram.y:1194
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 673:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1189
+//line lyx/gram.y:1195
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 674:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1190
+//line lyx/gram.y:1196
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 675:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1191
+//line lyx/gram.y:1197
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 676:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1192
+//line lyx/gram.y:1198
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 677:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1193
+//line lyx/gram.y:1199
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 678:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1194
+//line lyx/gram.y:1200
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 679:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1195
+//line lyx/gram.y:1201
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 680:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1196
+//line lyx/gram.y:1202
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 681:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1197
+//line lyx/gram.y:1203
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 682:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1198
+//line lyx/gram.y:1204
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 683:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1199
+//line lyx/gram.y:1205
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 684:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1200
+//line lyx/gram.y:1206
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 685:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1201
+//line lyx/gram.y:1207
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 686:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1202
+//line lyx/gram.y:1208
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 687:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1203
+//line lyx/gram.y:1209
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 688:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1204
+//line lyx/gram.y:1210
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 689:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1205
+//line lyx/gram.y:1211
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 690:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1206
+//line lyx/gram.y:1212
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 691:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1207
+//line lyx/gram.y:1213
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 692:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1208
+//line lyx/gram.y:1214
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 693:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1209
+//line lyx/gram.y:1215
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 694:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1210
+//line lyx/gram.y:1216
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 695:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1211
+//line lyx/gram.y:1217
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 696:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1212
+//line lyx/gram.y:1218
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 697:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1213
+//line lyx/gram.y:1219
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 698:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1214
+//line lyx/gram.y:1220
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 699:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1215
+//line lyx/gram.y:1221
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 700:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1216
+//line lyx/gram.y:1222
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 701:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1217
+//line lyx/gram.y:1223
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 702:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1218
+//line lyx/gram.y:1224
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 703:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1219
+//line lyx/gram.y:1225
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 704:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1220
+//line lyx/gram.y:1226
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 705:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1221
+//line lyx/gram.y:1227
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 706:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1222
+//line lyx/gram.y:1228
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 707:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1223
+//line lyx/gram.y:1229
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 708:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1224
+//line lyx/gram.y:1230
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 709:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1225
+//line lyx/gram.y:1231
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 710:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1226
+//line lyx/gram.y:1232
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 711:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1227
+//line lyx/gram.y:1233
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 712:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1228
+//line lyx/gram.y:1234
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 713:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1229
+//line lyx/gram.y:1235
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 714:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1230
+//line lyx/gram.y:1236
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 715:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1231
+//line lyx/gram.y:1237
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 716:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1232
+//line lyx/gram.y:1238
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 717:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1233
+//line lyx/gram.y:1239
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 718:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1234
+//line lyx/gram.y:1240
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 719:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1235
+//line lyx/gram.y:1241
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 720:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1236
+//line lyx/gram.y:1242
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 721:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1237
+//line lyx/gram.y:1243
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 722:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1238
+//line lyx/gram.y:1244
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 723:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1239
+//line lyx/gram.y:1245
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 724:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1240
+//line lyx/gram.y:1246
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 725:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1241
+//line lyx/gram.y:1247
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 726:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1242
+//line lyx/gram.y:1248
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 727:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1243
+//line lyx/gram.y:1249
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 728:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1244
+//line lyx/gram.y:1250
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 729:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1245
+//line lyx/gram.y:1251
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 730:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1246
+//line lyx/gram.y:1252
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 731:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1247
+//line lyx/gram.y:1253
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 732:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1248
+//line lyx/gram.y:1254
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 733:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1249
+//line lyx/gram.y:1255
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 734:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1250
+//line lyx/gram.y:1256
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 735:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1251
+//line lyx/gram.y:1257
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 736:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1252
+//line lyx/gram.y:1258
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 737:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1253
+//line lyx/gram.y:1259
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 738:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1254
+//line lyx/gram.y:1260
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 739:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1255
+//line lyx/gram.y:1261
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 740:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1256
+//line lyx/gram.y:1262
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 741:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1257
+//line lyx/gram.y:1263
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 742:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1258
+//line lyx/gram.y:1264
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 743:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1259
+//line lyx/gram.y:1265
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 744:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1260
+//line lyx/gram.y:1266
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 745:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1261
+//line lyx/gram.y:1267
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 746:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1262
+//line lyx/gram.y:1268
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 747:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1263
+//line lyx/gram.y:1269
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 748:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1264
+//line lyx/gram.y:1270
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 749:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1265
+//line lyx/gram.y:1271
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 750:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1266
+//line lyx/gram.y:1272
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 751:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1267
+//line lyx/gram.y:1273
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 752:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1268
+//line lyx/gram.y:1274
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 753:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1269
+//line lyx/gram.y:1275
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 754:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1270
+//line lyx/gram.y:1276
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 755:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1271
+//line lyx/gram.y:1277
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 756:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1272
+//line lyx/gram.y:1278
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 757:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1273
+//line lyx/gram.y:1279
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 758:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1274
+//line lyx/gram.y:1280
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 759:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1275
+//line lyx/gram.y:1281
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 760:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1276
+//line lyx/gram.y:1282
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 761:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1277
+//line lyx/gram.y:1283
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 762:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1278
+//line lyx/gram.y:1284
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 763:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1279
+//line lyx/gram.y:1285
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 764:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1280
+//line lyx/gram.y:1286
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 765:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1281
+//line lyx/gram.y:1287
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 766:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1282
+//line lyx/gram.y:1288
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 767:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1283
+//line lyx/gram.y:1289
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 768:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1284
+//line lyx/gram.y:1290
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 769:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1285
+//line lyx/gram.y:1291
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 770:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1286
+//line lyx/gram.y:1292
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 771:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1287
+//line lyx/gram.y:1293
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 772:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1288
+//line lyx/gram.y:1294
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 773:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1289
+//line lyx/gram.y:1295
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 774:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1290
+//line lyx/gram.y:1296
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 775:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1291
+//line lyx/gram.y:1297
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 776:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1292
+//line lyx/gram.y:1298
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 777:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1293
+//line lyx/gram.y:1299
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 778:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1294
+//line lyx/gram.y:1300
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 779:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1295
+//line lyx/gram.y:1301
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 780:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1296
+//line lyx/gram.y:1302
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 781:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1297
+//line lyx/gram.y:1303
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 782:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1298
+//line lyx/gram.y:1304
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 783:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1299
+//line lyx/gram.y:1305
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 784:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1300
+//line lyx/gram.y:1306
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 785:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1301
+//line lyx/gram.y:1307
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 786:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1302
+//line lyx/gram.y:1308
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 787:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1303
+//line lyx/gram.y:1309
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 788:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1304
+//line lyx/gram.y:1310
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 789:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1305
+//line lyx/gram.y:1311
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 790:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1306
+//line lyx/gram.y:1312
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 791:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1307
+//line lyx/gram.y:1313
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 792:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1308
+//line lyx/gram.y:1314
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 793:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1309
+//line lyx/gram.y:1315
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 794:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1310
+//line lyx/gram.y:1316
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 795:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1311
+//line lyx/gram.y:1317
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 796:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1312
+//line lyx/gram.y:1318
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 797:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1313
+//line lyx/gram.y:1319
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 798:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1314
+//line lyx/gram.y:1320
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 799:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1315
+//line lyx/gram.y:1321
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 800:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1316
+//line lyx/gram.y:1322
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 801:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1317
+//line lyx/gram.y:1323
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 802:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1318
+//line lyx/gram.y:1324
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 803:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1319
+//line lyx/gram.y:1325
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 804:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1320
+//line lyx/gram.y:1326
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 805:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1321
+//line lyx/gram.y:1327
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 806:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1322
+//line lyx/gram.y:1328
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 807:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1323
+//line lyx/gram.y:1329
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 808:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1324
+//line lyx/gram.y:1330
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 809:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1325
+//line lyx/gram.y:1331
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 810:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1326
+//line lyx/gram.y:1332
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 811:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1327
+//line lyx/gram.y:1333
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 812:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1328
+//line lyx/gram.y:1334
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 813:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1329
+//line lyx/gram.y:1335
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 814:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1330
+//line lyx/gram.y:1336
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 815:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1331
+//line lyx/gram.y:1337
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 816:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1332
+//line lyx/gram.y:1338
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 817:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1333
+//line lyx/gram.y:1339
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 818:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1334
+//line lyx/gram.y:1340
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 819:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1335
+//line lyx/gram.y:1341
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 820:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1336
+//line lyx/gram.y:1342
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 821:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1337
+//line lyx/gram.y:1343
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 822:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1338
+//line lyx/gram.y:1344
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 823:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1339
+//line lyx/gram.y:1345
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 824:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1340
+//line lyx/gram.y:1346
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 825:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1341
+//line lyx/gram.y:1347
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 826:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1342
+//line lyx/gram.y:1348
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 827:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1343
+//line lyx/gram.y:1349
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 828:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1344
+//line lyx/gram.y:1350
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 829:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1345
+//line lyx/gram.y:1351
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 830:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1346
+//line lyx/gram.y:1352
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 831:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1347
+//line lyx/gram.y:1353
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 832:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1348
+//line lyx/gram.y:1354
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 833:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1349
+//line lyx/gram.y:1355
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 834:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1350
+//line lyx/gram.y:1356
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 835:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1351
+//line lyx/gram.y:1357
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 836:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1352
+//line lyx/gram.y:1358
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 837:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1353
+//line lyx/gram.y:1359
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 838:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1354
+//line lyx/gram.y:1360
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 839:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1355
+//line lyx/gram.y:1361
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 840:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1356
+//line lyx/gram.y:1362
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 841:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1357
+//line lyx/gram.y:1363
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 842:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1358
+//line lyx/gram.y:1364
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 843:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1359
+//line lyx/gram.y:1365
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 844:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1360
+//line lyx/gram.y:1366
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 845:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1361
+//line lyx/gram.y:1367
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 846:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1362
+//line lyx/gram.y:1368
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 847:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1363
+//line lyx/gram.y:1369
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 848:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1364
+//line lyx/gram.y:1370
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 849:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1365
+//line lyx/gram.y:1371
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 850:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1366
+//line lyx/gram.y:1372
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 851:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1367
+//line lyx/gram.y:1373
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 852:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1368
+//line lyx/gram.y:1374
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 853:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1369
+//line lyx/gram.y:1375
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 854:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1370
+//line lyx/gram.y:1376
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 855:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1371
+//line lyx/gram.y:1377
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 856:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1372
+//line lyx/gram.y:1378
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 857:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1373
+//line lyx/gram.y:1379
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 858:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1374
+//line lyx/gram.y:1380
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 859:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1375
+//line lyx/gram.y:1381
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 860:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1376
+//line lyx/gram.y:1382
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 861:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1377
+//line lyx/gram.y:1383
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 862:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1378
+//line lyx/gram.y:1384
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 863:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1379
+//line lyx/gram.y:1385
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 864:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1380
+//line lyx/gram.y:1386
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 865:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1381
+//line lyx/gram.y:1387
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 866:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1382
+//line lyx/gram.y:1388
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 867:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1383
+//line lyx/gram.y:1389
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 868:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1384
+//line lyx/gram.y:1390
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 869:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1385
+//line lyx/gram.y:1391
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 870:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1386
+//line lyx/gram.y:1392
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 871:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1387
+//line lyx/gram.y:1393
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 872:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1388
+//line lyx/gram.y:1394
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 873:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1389
+//line lyx/gram.y:1395
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 874:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1390
+//line lyx/gram.y:1396
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 875:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1391
+//line lyx/gram.y:1397
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 876:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1392
+//line lyx/gram.y:1398
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 877:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1393
+//line lyx/gram.y:1399
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 878:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1394
+//line lyx/gram.y:1400
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 879:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1395
+//line lyx/gram.y:1401
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 880:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1396
+//line lyx/gram.y:1402
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 881:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1397
+//line lyx/gram.y:1403
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 882:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1398
+//line lyx/gram.y:1404
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 883:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1399
+//line lyx/gram.y:1405
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 884:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1400
+//line lyx/gram.y:1406
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 885:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1401
+//line lyx/gram.y:1407
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 886:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1402
+//line lyx/gram.y:1408
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 887:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1403
+//line lyx/gram.y:1409
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 888:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1404
+//line lyx/gram.y:1410
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 889:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1405
+//line lyx/gram.y:1411
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 890:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1406
+//line lyx/gram.y:1412
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 891:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1407
+//line lyx/gram.y:1413
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 892:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1408
+//line lyx/gram.y:1414
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 893:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1409
+//line lyx/gram.y:1415
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 894:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1410
+//line lyx/gram.y:1416
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 895:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1411
+//line lyx/gram.y:1417
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 896:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1412
+//line lyx/gram.y:1418
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 897:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1413
+//line lyx/gram.y:1419
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 898:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1414
+//line lyx/gram.y:1420
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 899:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1415
+//line lyx/gram.y:1421
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 900:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1416
+//line lyx/gram.y:1422
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 901:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1417
+//line lyx/gram.y:1423
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 902:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1418
+//line lyx/gram.y:1424
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 903:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1419
+//line lyx/gram.y:1425
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 904:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1420
+//line lyx/gram.y:1426
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 905:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1421
+//line lyx/gram.y:1427
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 906:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1422
+//line lyx/gram.y:1428
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 907:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1423
+//line lyx/gram.y:1429
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 908:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1424
+//line lyx/gram.y:1430
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 909:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1425
+//line lyx/gram.y:1431
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 910:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1426
+//line lyx/gram.y:1432
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 911:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1427
+//line lyx/gram.y:1433
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 912:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1428
+//line lyx/gram.y:1434
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 913:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1429
+//line lyx/gram.y:1435
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 914:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1430
+//line lyx/gram.y:1436
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 915:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1431
+//line lyx/gram.y:1437
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 916:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1432
+//line lyx/gram.y:1438
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 917:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1433
+//line lyx/gram.y:1439
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 918:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1434
+//line lyx/gram.y:1440
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 919:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1435
+//line lyx/gram.y:1441
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 920:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1436
+//line lyx/gram.y:1442
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 921:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1437
+//line lyx/gram.y:1443
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 922:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1438
+//line lyx/gram.y:1444
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 923:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1439
+//line lyx/gram.y:1445
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 924:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1440
+//line lyx/gram.y:1446
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 925:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1441
+//line lyx/gram.y:1447
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 926:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1442
+//line lyx/gram.y:1448
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 927:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1443
+//line lyx/gram.y:1449
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 928:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1444
+//line lyx/gram.y:1450
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 929:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1445
+//line lyx/gram.y:1451
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 930:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1446
+//line lyx/gram.y:1452
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 931:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1447
+//line lyx/gram.y:1453
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 932:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1448
+//line lyx/gram.y:1454
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 933:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1449
+//line lyx/gram.y:1455
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 934:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1450
+//line lyx/gram.y:1456
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 935:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1451
+//line lyx/gram.y:1457
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 936:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1452
+//line lyx/gram.y:1458
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 937:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1453
+//line lyx/gram.y:1459
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 938:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1454
+//line lyx/gram.y:1460
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 939:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1455
+//line lyx/gram.y:1461
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 940:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1456
+//line lyx/gram.y:1462
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 941:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1457
+//line lyx/gram.y:1463
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 942:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1458
+//line lyx/gram.y:1464
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 943:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1459
+//line lyx/gram.y:1465
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 944:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1460
+//line lyx/gram.y:1466
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 945:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1461
+//line lyx/gram.y:1467
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 946:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1462
+//line lyx/gram.y:1468
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 947:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1463
+//line lyx/gram.y:1469
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 948:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1464
+//line lyx/gram.y:1470
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 949:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1465
+//line lyx/gram.y:1471
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 950:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1466
+//line lyx/gram.y:1472
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 951:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1467
+//line lyx/gram.y:1473
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 952:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1468
+//line lyx/gram.y:1474
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 953:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1469
+//line lyx/gram.y:1475
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 954:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1470
+//line lyx/gram.y:1476
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 955:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1471
+//line lyx/gram.y:1477
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 956:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1472
+//line lyx/gram.y:1478
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 957:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1473
+//line lyx/gram.y:1479
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 958:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1474
+//line lyx/gram.y:1480
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 959:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1475
+//line lyx/gram.y:1481
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 960:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1476
+//line lyx/gram.y:1482
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 961:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1477
+//line lyx/gram.y:1483
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 962:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1478
+//line lyx/gram.y:1484
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 963:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1479
+//line lyx/gram.y:1485
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 964:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1480
+//line lyx/gram.y:1486
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 965:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1481
+//line lyx/gram.y:1487
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 966:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1482
+//line lyx/gram.y:1488
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 967:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1483
+//line lyx/gram.y:1489
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 968:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1484
+//line lyx/gram.y:1490
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 969:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1485
+//line lyx/gram.y:1491
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 970:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1486
+//line lyx/gram.y:1492
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 971:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1487
+//line lyx/gram.y:1493
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 972:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1488
+//line lyx/gram.y:1494
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 973:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1489
+//line lyx/gram.y:1495
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 974:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1490
+//line lyx/gram.y:1496
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 975:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1491
+//line lyx/gram.y:1497
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 976:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1495
+//line lyx/gram.y:1501
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 977:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1495
+//line lyx/gram.y:1501
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 978:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1495
+//line lyx/gram.y:1501
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 979:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1495
+//line lyx/gram.y:1501
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 980:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1495
+//line lyx/gram.y:1501
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 981:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1498
+//line lyx/gram.y:1504
 		{
 		}
 	case 982:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1499
+//line lyx/gram.y:1505
 		{
 		}
 	case 983:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1505
+//line lyx/gram.y:1511
 		{
 			yyVAL.node = nil
 		}
 	case 984:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1507
+//line lyx/gram.y:1513
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 985:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1509
+//line lyx/gram.y:1515
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 986:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1511
+//line lyx/gram.y:1517
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 987:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1513
+//line lyx/gram.y:1519
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 988:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1515
+//line lyx/gram.y:1521
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 989:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1517
+//line lyx/gram.y:1523
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 990:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1519
+//line lyx/gram.y:1525
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 991:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1521
+//line lyx/gram.y:1527
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 992:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1523
+//line lyx/gram.y:1529
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 993:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1525
+//line lyx/gram.y:1531
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 994:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1527
+//line lyx/gram.y:1533
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 995:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1529
+//line lyx/gram.y:1535
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 996:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1531
+//line lyx/gram.y:1537
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 997:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1533
+//line lyx/gram.y:1539
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 998:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1535
+//line lyx/gram.y:1541
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 999:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1537
+//line lyx/gram.y:1543
 		{
 			setParseTree(yylex, yyDollar[1].node)
 		}
 	case 1000:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1543
+//line lyx/gram.y:1549
 		{
 			yyVAL.str = string(yyDollar[1].str)
 		}
 	case 1001:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1547
+//line lyx/gram.y:1553
 		{
 		}
 	case 1002:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1553
+//line lyx/gram.y:1559
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1003:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1557
+//line lyx/gram.y:1563
 		{
 			yyVAL.str = string(yyDollar[1].str)
 		}
 	case 1004:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1563
+//line lyx/gram.y:1569
 		{
 			yyVAL.str = string(yyDollar[1].str)
 		}
 	case 1005:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1568
+//line lyx/gram.y:1574
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1006:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1570
+//line lyx/gram.y:1576
 		{
 			yyVAL.str = "AND"
 		}
 	case 1007:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1572
+//line lyx/gram.y:1578
 		{
 			yyVAL.str = "OR"
 		}
 	case 1008:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1574
+//line lyx/gram.y:1580
 		{
 			yyVAL.str = "!="
 		}
 	case 1009:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1576
+//line lyx/gram.y:1582
 		{
 			yyVAL.str = "="
 		}
 	case 1010:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1578
+//line lyx/gram.y:1584
 		{
 			yyVAL.str = "<"
 		}
 	case 1011:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1580
+//line lyx/gram.y:1586
 		{
 			yyVAL.str = ">"
 		}
 	case 1012:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1582
+//line lyx/gram.y:1588
 		{
 			yyVAL.str = ">="
 		}
 	case 1013:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1584
+//line lyx/gram.y:1590
 		{
 			yyVAL.str = "<="
 		}
 	case 1014:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1586
+//line lyx/gram.y:1592
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1015:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1602
+//line lyx/gram.y:1608
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1016:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1606
+//line lyx/gram.y:1612
 		{
 			yyVAL.str = yyDollar[2].str
 		}
 	case 1017:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:1611
+//line lyx/gram.y:1617
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1018:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:1615
+//line lyx/gram.y:1621
 		{
 			yyVAL.str = yyDollar[2].str
 		}
 	case 1019:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1619
+//line lyx/gram.y:1625
 		{
 
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1020:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1624
+//line lyx/gram.y:1630
 		{
 			yyVAL.str = yyDollar[2].str
 		}
 	case 1021:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1632
+//line lyx/gram.y:1638
 		{
 		}
 	case 1022:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:1634
+//line lyx/gram.y:1640
 		{
 		}
 	case 1023:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1636
+//line lyx/gram.y:1642
 		{
 		}
 	case 1024:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1640
-		{
-			yyVAL.str = yyDollar[1].str
-		}
-	case 1025:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1642
-		{
-			yyVAL.str = yyDollar[1].str
-		}
-	case 1026:
-		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1644
-		{
-			yyVAL.str = yyDollar[1].str
-		}
-	case 1027:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line lyx/gram.y:1646
 		{
 			yyVAL.str = yyDollar[1].str
 		}
-	case 1028:
+	case 1025:
 		yyDollar = yyS[yypt-1 : yypt+1]
 //line lyx/gram.y:1648
 		{
 			yyVAL.str = yyDollar[1].str
 		}
+	case 1026:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line lyx/gram.y:1650
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 1027:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line lyx/gram.y:1652
+		{
+			yyVAL.str = yyDollar[1].str
+		}
+	case 1028:
+		yyDollar = yyS[yypt-1 : yypt+1]
+//line lyx/gram.y:1654
+		{
+			yyVAL.str = yyDollar[1].str
+		}
 	case 1029:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1651
+//line lyx/gram.y:1657
 		{
 
 		}
 	case 1030:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:1655
+//line lyx/gram.y:1661
 		{
 
 		}
 	case 1031:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1671
+//line lyx/gram.y:1677
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1032:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1672
+//line lyx/gram.y:1678
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1033:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1673
+//line lyx/gram.y:1679
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1034:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1674
+//line lyx/gram.y:1680
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1035:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1678
+//line lyx/gram.y:1684
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1036:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1691
+//line lyx/gram.y:1697
 		{
 
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1037:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1700
+//line lyx/gram.y:1706
 		{
 		}
 	case 1038:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1701
+//line lyx/gram.y:1707
 		{
 		}
 	case 1039:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1708
+//line lyx/gram.y:1714
 		{
 
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1040:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1713
+//line lyx/gram.y:1719
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1041:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1717
+//line lyx/gram.y:1723
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1042:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1721
+//line lyx/gram.y:1727
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1043:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1725
+//line lyx/gram.y:1731
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1044:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1729
+//line lyx/gram.y:1735
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1045:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1733
+//line lyx/gram.y:1739
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1046:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1737
+//line lyx/gram.y:1743
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1047:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1741
+//line lyx/gram.y:1747
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1048:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1745
+//line lyx/gram.y:1751
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1049:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1749
+//line lyx/gram.y:1755
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1050:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1755
+//line lyx/gram.y:1761
 		{
 			/*
 			 * Check FLOAT() precision limits assuming IEEE floating
@@ -10148,123 +10151,123 @@ yydefault:
 		}
 	case 1051:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1763
+//line lyx/gram.y:1769
 		{
 		}
 	case 1052:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1772
+//line lyx/gram.y:1778
 		{
 		}
 	case 1053:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1775
+//line lyx/gram.y:1781
 		{
 		}
 	case 1054:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1782
+//line lyx/gram.y:1788
 		{
 		}
 	case 1055:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1785
+//line lyx/gram.y:1791
 		{
 		}
 	case 1056:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:1791
+//line lyx/gram.y:1797
 		{
 
 		}
 	case 1057:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1798
+//line lyx/gram.y:1804
 		{
 			/* bit defaults to bit(1), varbit to no limit */
 
 		}
 	case 1058:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1807
+//line lyx/gram.y:1813
 		{
 			yyVAL.str = yyDollar[2].str
 		}
 	case 1059:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1810
+//line lyx/gram.y:1816
 		{
 			yyVAL.str = yyDollar[2].str
 		}
 	case 1060:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1811
+//line lyx/gram.y:1817
 		{
 		}
 	case 1061:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1815
+//line lyx/gram.y:1821
 		{
 		}
 	case 1062:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1816
+//line lyx/gram.y:1822
 		{
 		}
 	case 1063:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1822
+//line lyx/gram.y:1828
 		{
 
 		}
 	case 1064:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1826
+//line lyx/gram.y:1832
 		{
 		}
 	case 1065:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:1829
+//line lyx/gram.y:1835
 		{
 		}
 	case 1066:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1832
+//line lyx/gram.y:1838
 		{
 		}
 	case 1067:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1840
+//line lyx/gram.y:1846
 		{
 		}
 	case 1068:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1843
+//line lyx/gram.y:1849
 		{
 		}
 	case 1069:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1844
+//line lyx/gram.y:1850
 		{
 		}
 	case 1070:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1855
+//line lyx/gram.y:1861
 		{
 		}
 	case 1071:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1858
+//line lyx/gram.y:1864
 		{
 		}
 	case 1072:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1863
+//line lyx/gram.y:1869
 		{
 		}
 	case 1073:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1866
+//line lyx/gram.y:1872
 		{
 			/* Length was not specified so allow to be unrestricted.
 			 * This handles problems with fixed-length (bpchar) strings
@@ -10276,312 +10279,312 @@ yydefault:
 		}
 	case 1074:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:1879
+//line lyx/gram.y:1885
 		{
 
 		}
 	case 1075:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1885
+//line lyx/gram.y:1891
 		{
 			/* char defaults to char(1), varchar to no limit */
 
 		}
 	case 1076:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1893
+//line lyx/gram.y:1899
 		{
 		}
 	case 1077:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1895
+//line lyx/gram.y:1901
 		{
 		}
 	case 1078:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1897
+//line lyx/gram.y:1903
 		{
 		}
 	case 1079:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1899
+//line lyx/gram.y:1905
 		{
 		}
 	case 1080:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1901
+//line lyx/gram.y:1907
 		{
 		}
 	case 1081:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1903
+//line lyx/gram.y:1909
 		{
 		}
 	case 1082:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1907
+//line lyx/gram.y:1913
 		{
 		}
 	case 1083:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1908
+//line lyx/gram.y:1914
 		{
 		}
 	case 1084:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:1917
+//line lyx/gram.y:1923
 		{
 
 		}
 	case 1085:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1921
+//line lyx/gram.y:1927
 		{
 
 		}
 	case 1086:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:1925
+//line lyx/gram.y:1931
 		{
 
 		}
 	case 1087:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:1929
+//line lyx/gram.y:1935
 		{
 
 		}
 	case 1088:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1937
+//line lyx/gram.y:1943
 		{
 
 		}
 	case 1089:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1943
+//line lyx/gram.y:1949
 		{
 		}
 	case 1090:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1944
+//line lyx/gram.y:1950
 		{
 		}
 	case 1091:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1945
+//line lyx/gram.y:1951
 		{
 		}
 	case 1092:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1950
+//line lyx/gram.y:1956
 		{
 		}
 	case 1093:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1952
+//line lyx/gram.y:1958
 		{
 		}
 	case 1094:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1954
+//line lyx/gram.y:1960
 		{
 		}
 	case 1095:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1956
+//line lyx/gram.y:1962
 		{
 		}
 	case 1096:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1958
+//line lyx/gram.y:1964
 		{
 		}
 	case 1097:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1960
+//line lyx/gram.y:1966
 		{
 		}
 	case 1098:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1962
+//line lyx/gram.y:1968
 		{
 
 		}
 	case 1099:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1966
+//line lyx/gram.y:1972
 		{
 
 		}
 	case 1100:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1970
+//line lyx/gram.y:1976
 		{
 
 		}
 	case 1101:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1974
+//line lyx/gram.y:1980
 		{
 
 		}
 	case 1102:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1978
+//line lyx/gram.y:1984
 		{
 
 		}
 	case 1103:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1982
+//line lyx/gram.y:1988
 		{
 
 		}
 	case 1104:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:1986
+//line lyx/gram.y:1992
 		{
 
 		}
 	case 1105:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:1990
+//line lyx/gram.y:1996
 		{
 		}
 	case 1106:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1995
+//line lyx/gram.y:2001
 		{
 		}
 	case 1107:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:1998
+//line lyx/gram.y:2004
 		{
 		}
 	case 1108:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2015
+//line lyx/gram.y:2021
 		{
 		}
 	case 1109:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2016
+//line lyx/gram.y:2022
 		{
 		}
 	case 1110:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2017
+//line lyx/gram.y:2023
 		{
 		}
 	case 1111:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2018
+//line lyx/gram.y:2024
 		{
 		}
 	case 1112:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2020
+//line lyx/gram.y:2026
 		{
 		}
 	case 1113:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2023
+//line lyx/gram.y:2029
 		{
 		}
 	case 1114:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2025
+//line lyx/gram.y:2031
 		{
 		}
 	case 1115:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2026
+//line lyx/gram.y:2032
 		{
 		}
 	case 1116:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:2033
+//line lyx/gram.y:2039
 		{
 
 		}
 	case 1117:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2039
+//line lyx/gram.y:2045
 		{
 		}
 	case 1118:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2040
+//line lyx/gram.y:2046
 		{
 		}
 	case 1119:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2041
+//line lyx/gram.y:2047
 		{
 		}
 	case 1120:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2069
+//line lyx/gram.y:2075
 		{
 
 		}
 	case 1121:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2072
+//line lyx/gram.y:2078
 		{
 		}
 	case 1122:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2076
+//line lyx/gram.y:2082
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1123:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2076
+//line lyx/gram.y:2082
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1124:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2080
+//line lyx/gram.y:2086
 		{
 			yyVAL.strlist = yyDollar[1].strlist
 		}
 	case 1125:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2081
+//line lyx/gram.y:2087
 		{
 			yyVAL.strlist = nil
 		}
 	case 1126:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2086
+//line lyx/gram.y:2092
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1127:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2090
+//line lyx/gram.y:2096
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[3].str)
 		}
 	case 1128:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2096
+//line lyx/gram.y:2102
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1129:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2100
+//line lyx/gram.y:2106
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1130:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2108
+//line lyx/gram.y:2114
 		{
 			yyVAL.node = &FuncApplication{
 				Name: yyDollar[1].str,
@@ -10589,7 +10592,7 @@ yydefault:
 		}
 	case 1131:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:2114
+//line lyx/gram.y:2120
 		{
 			yyVAL.node = &FuncApplication{
 				Name: yyDollar[1].str,
@@ -10598,7 +10601,7 @@ yydefault:
 		}
 	case 1132:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:2121
+//line lyx/gram.y:2127
 		{
 			yyVAL.node = &FuncApplication{
 				Name: yyDollar[1].str,
@@ -10606,7 +10609,7 @@ yydefault:
 		}
 	case 1133:
 		yyDollar = yyS[yypt-8 : yypt+1]
-//line lyx/gram.y:2127
+//line lyx/gram.y:2133
 		{
 			yyVAL.node = &FuncApplication{
 				Name: yyDollar[1].str,
@@ -10614,7 +10617,7 @@ yydefault:
 		}
 	case 1134:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:2133
+//line lyx/gram.y:2139
 		{
 
 			/* Ideally we'd mark the FuncCall node to indicate
@@ -10627,7 +10630,7 @@ yydefault:
 		}
 	case 1135:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:2144
+//line lyx/gram.y:2150
 		{
 			yyVAL.node = &FuncApplication{
 				Name: yyDollar[1].str,
@@ -10635,7 +10638,7 @@ yydefault:
 		}
 	case 1136:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2151
+//line lyx/gram.y:2157
 		{
 			/*
 			 * We consider AGGREGATE(*) to invoke a parameterless
@@ -10654,25 +10657,25 @@ yydefault:
 		}
 	case 1137:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2169
+//line lyx/gram.y:2175
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1138:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2174
+//line lyx/gram.y:2180
 		{
 			yyVAL.nodeList = []Node{yyDollar[1].node}
 		}
 	case 1139:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2178
+//line lyx/gram.y:2184
 		{
 			yyVAL.nodeList = append(yyDollar[1].nodeList, yyDollar[3].node)
 		}
 	case 1140:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2187
+//line lyx/gram.y:2193
 		{
 			yyVAL.node = &AExprSConst{
 				Value: yyDollar[1].str,
@@ -10680,7 +10683,7 @@ yydefault:
 		}
 	case 1141:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2192
+//line lyx/gram.y:2198
 		{
 			yyVAL.node = &AExprIConst{
 				Value: yyDollar[1].int,
@@ -10688,14 +10691,14 @@ yydefault:
 		}
 	case 1142:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2198
+//line lyx/gram.y:2204
 		{
 			/* generic type 'literal' syntax */
 
 		}
 	case 1143:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:2203
+//line lyx/gram.y:2209
 		{
 			/* generic syntax with a type modifier */
 
@@ -10708,24 +10711,24 @@ yydefault:
 		}
 	case 1144:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2215
+//line lyx/gram.y:2221
 		{
 		}
 	case 1145:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2218
+//line lyx/gram.y:2224
 		{
 
 		}
 	case 1146:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:2222
+//line lyx/gram.y:2228
 		{
 
 		}
 	case 1147:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2226
+//line lyx/gram.y:2232
 		{
 			yyVAL.node = &AExprBConst{
 				Value: true,
@@ -10733,7 +10736,7 @@ yydefault:
 		}
 	case 1148:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2232
+//line lyx/gram.y:2238
 		{
 			yyVAL.node = &AExprBConst{
 				Value: false,
@@ -10741,141 +10744,141 @@ yydefault:
 		}
 	case 1149:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2238
+//line lyx/gram.y:2244
 		{
 			yyVAL.node = &AExprNConst{}
 		}
 	case 1151:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2248
+//line lyx/gram.y:2254
 		{
 			yyVAL.nodeList = []Node{yyDollar[1].node}
 		}
 	case 1152:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2252
+//line lyx/gram.y:2258
 		{
 			yyVAL.nodeList = append(yyDollar[1].nodeList, yyDollar[3].node)
 		}
 	case 1155:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2261
+//line lyx/gram.y:2267
 		{
 		}
 	case 1156:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2262
+//line lyx/gram.y:2268
 		{
 		}
 	case 1157:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2266
+//line lyx/gram.y:2272
 		{
 
 		}
 	case 1158:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2274
+//line lyx/gram.y:2280
 		{
 
 		}
 	case 1159:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2279
+//line lyx/gram.y:2285
 		{
 		}
 	case 1160:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2280
+//line lyx/gram.y:2286
 		{
 		}
 	case 1161:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:2284
+//line lyx/gram.y:2290
 		{
 		}
 	case 1162:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2287
+//line lyx/gram.y:2293
 		{
 		}
 	case 1163:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2288
+//line lyx/gram.y:2294
 		{
 		}
 	case 1164:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2289
+//line lyx/gram.y:2295
 		{
 		}
 	case 1165:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2296
+//line lyx/gram.y:2302
 		{
 		}
 	case 1166:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2300
+//line lyx/gram.y:2306
 		{
 		}
 	case 1167:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2303
+//line lyx/gram.y:2309
 		{
 		}
 	case 1168:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2306
+//line lyx/gram.y:2312
 		{
 
 		}
 	case 1169:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:2310
+//line lyx/gram.y:2316
 		{
 
 		}
 	case 1170:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2316
+//line lyx/gram.y:2322
 		{
 		}
 	case 1171:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2317
+//line lyx/gram.y:2323
 		{
 		}
 	case 1172:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2321
+//line lyx/gram.y:2327
 		{
 		}
 	case 1173:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2322
+//line lyx/gram.y:2328
 		{
 		}
 	case 1174:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2326
+//line lyx/gram.y:2332
 		{
 		}
 	case 1175:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2327
+//line lyx/gram.y:2333
 		{
 		}
 	case 1176:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2334
+//line lyx/gram.y:2340
 		{
 			/* other fields will be filled later */
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1177:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2339
+//line lyx/gram.y:2345
 		{
 			if len(yyDollar[2].nodeList) > 0 {
 				yyVAL.node = yyDollar[2].nodeList[0]
@@ -10885,61 +10888,61 @@ yydefault:
 		}
 	case 1178:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:2357
+//line lyx/gram.y:2363
 		{
 		}
 	case 1179:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2364
+//line lyx/gram.y:2370
 		{
 		}
 	case 1180:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2365
+//line lyx/gram.y:2371
 		{
 		}
 	case 1181:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2370
+//line lyx/gram.y:2376
 		{
 		}
 	case 1182:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2375
+//line lyx/gram.y:2381
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1183:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2376
+//line lyx/gram.y:2382
 		{
 		}
 	case 1184:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2379
+//line lyx/gram.y:2385
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1185:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2380
+//line lyx/gram.y:2386
 		{
 		}
 	case 1186:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2402
+//line lyx/gram.y:2408
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1187:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2403
+//line lyx/gram.y:2409
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1188:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2407
+//line lyx/gram.y:2413
 		{
 			yyVAL.node = &ParamRef{
 				Number: yyDollar[1].int,
@@ -10947,25 +10950,25 @@ yydefault:
 		}
 	case 1189:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2412
+//line lyx/gram.y:2418
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1190:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2415
+//line lyx/gram.y:2421
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1191:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2418
+//line lyx/gram.y:2424
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1192:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2422
+//line lyx/gram.y:2428
 		{
 			yyVAL.node = &SubLink{
 				SubSelect: yyDollar[2].node,
@@ -10973,51 +10976,51 @@ yydefault:
 		}
 	case 1193:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2428
+//line lyx/gram.y:2434
 		{
 		}
 	case 1194:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2430
+//line lyx/gram.y:2436
 		{
 		}
 	case 1195:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2431
+//line lyx/gram.y:2437
 		{
 		}
 	case 1196:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2433
+//line lyx/gram.y:2439
 		{
 
 		}
 	case 1197:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2438
+//line lyx/gram.y:2444
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1198:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2440
+//line lyx/gram.y:2446
 		{
 		}
 	case 1199:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2468
+//line lyx/gram.y:2474
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1200:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2470
+//line lyx/gram.y:2476
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1201:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2472
+//line lyx/gram.y:2478
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11027,7 +11030,7 @@ yydefault:
 		}
 	case 1202:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2480
+//line lyx/gram.y:2486
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11037,7 +11040,7 @@ yydefault:
 		}
 	case 1203:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2488
+//line lyx/gram.y:2494
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11047,7 +11050,7 @@ yydefault:
 		}
 	case 1204:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2496
+//line lyx/gram.y:2502
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11057,7 +11060,7 @@ yydefault:
 		}
 	case 1205:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2504
+//line lyx/gram.y:2510
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11067,7 +11070,7 @@ yydefault:
 		}
 	case 1206:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2512
+//line lyx/gram.y:2518
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11077,7 +11080,7 @@ yydefault:
 		}
 	case 1207:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2520
+//line lyx/gram.y:2526
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11087,7 +11090,7 @@ yydefault:
 		}
 	case 1208:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2528
+//line lyx/gram.y:2534
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11097,7 +11100,7 @@ yydefault:
 		}
 	case 1209:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2536
+//line lyx/gram.y:2542
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11107,7 +11110,7 @@ yydefault:
 		}
 	case 1210:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2544
+//line lyx/gram.y:2550
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11117,7 +11120,7 @@ yydefault:
 		}
 	case 1211:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2552
+//line lyx/gram.y:2558
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11127,7 +11130,7 @@ yydefault:
 		}
 	case 1212:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2560
+//line lyx/gram.y:2566
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11137,7 +11140,7 @@ yydefault:
 		}
 	case 1213:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2569
+//line lyx/gram.y:2575
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11147,7 +11150,7 @@ yydefault:
 		}
 	case 1214:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2582
+//line lyx/gram.y:2588
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11157,7 +11160,7 @@ yydefault:
 		}
 	case 1215:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2590
+//line lyx/gram.y:2596
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11167,61 +11170,61 @@ yydefault:
 		}
 	case 1216:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2598
+//line lyx/gram.y:2604
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1217:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2708
+//line lyx/gram.y:2714
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1218:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2710
+//line lyx/gram.y:2716
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1219:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2712
+//line lyx/gram.y:2718
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1220:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2714
+//line lyx/gram.y:2720
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1221:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2733
+//line lyx/gram.y:2739
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1222:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2735
+//line lyx/gram.y:2741
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1223:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2737
+//line lyx/gram.y:2743
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1224:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2739
+//line lyx/gram.y:2745
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1225:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:2759
+//line lyx/gram.y:2765
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11231,7 +11234,7 @@ yydefault:
 		}
 	case 1226:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:2767
+//line lyx/gram.y:2773
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11241,7 +11244,7 @@ yydefault:
 		}
 	case 1227:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:2775
+//line lyx/gram.y:2781
 		{
 			yyVAL.node = &AExprOp{
 				Left: yyDollar[1].node,
@@ -11256,7 +11259,7 @@ yydefault:
 		}
 	case 1228:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2812
+//line lyx/gram.y:2818
 		{
 			yyVAL.node = &AExprOp{
 				Left:  yyDollar[1].node,
@@ -11266,13 +11269,13 @@ yydefault:
 		}
 	case 1229:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2820
+//line lyx/gram.y:2826
 		{
 
 		}
 	case 1230:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2824
+//line lyx/gram.y:2830
 		{
 			yyVAL.node = &SubLink{
 				SubSelect: yyDollar[4].node,
@@ -11280,31 +11283,31 @@ yydefault:
 		}
 	case 1231:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2853
+//line lyx/gram.y:2859
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1232:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2855
+//line lyx/gram.y:2861
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1233:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2857
+//line lyx/gram.y:2863
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1234:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:2861
+//line lyx/gram.y:2867
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1235:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2871
+//line lyx/gram.y:2877
 		{
 			/*
 			 * The SQL spec only allows DEFAULT in "contextually typed
@@ -11317,13 +11320,13 @@ yydefault:
 		}
 	case 1236:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2882
+//line lyx/gram.y:2888
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1237:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2887
+//line lyx/gram.y:2893
 		{
 			yyVAL.node = &ColumnRef{
 				ColName:    yyDollar[3].str,
@@ -11332,13 +11335,13 @@ yydefault:
 		}
 	case 1238:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2895
+//line lyx/gram.y:2901
 		{
 			yyVAL.node = &AExprEmpty{}
 		}
 	case 1239:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2900
+//line lyx/gram.y:2906
 		{
 			yyVAL.node = &ColumnRef{
 				ColName: yyDollar[1].str,
@@ -11346,196 +11349,196 @@ yydefault:
 		}
 	case 1240:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2904
+//line lyx/gram.y:2910
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1241:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2906
+//line lyx/gram.y:2912
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1242:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2911
+//line lyx/gram.y:2917
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1243:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2924
+//line lyx/gram.y:2930
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1244:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2926
+//line lyx/gram.y:2932
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1245:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2928
+//line lyx/gram.y:2934
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1246:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2930
+//line lyx/gram.y:2936
 		{ /* result not matter */
 		}
 	case 1247:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2932
+//line lyx/gram.y:2938
 		{ /* result not matter */
 		}
 	case 1248:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2934
+//line lyx/gram.y:2940
 		{ /* result not matter */
 		}
 	case 1249:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2936
+//line lyx/gram.y:2942
 		{ /* result not matter */
 		}
 	case 1250:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2938
+//line lyx/gram.y:2944
 		{ /* result not matter */
 		}
 	case 1251:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2940
+//line lyx/gram.y:2946
 		{ /* result not matter */
 		}
 	case 1252:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2942
+//line lyx/gram.y:2948
 		{ /* result not matter */
 		}
 	case 1253:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2944
+//line lyx/gram.y:2950
 		{ /* result not matter */
 		}
 	case 1254:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2946
+//line lyx/gram.y:2952
 		{ /* result not matter */
 		}
 	case 1255:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2948
+//line lyx/gram.y:2954
 		{ /* result not matter */
 		}
 	case 1256:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2950
+//line lyx/gram.y:2956
 		{ /* result not matter */
 		}
 	case 1257:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2952
+//line lyx/gram.y:2958
 		{ /* result not matter */
 		}
 	case 1258:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2953
+//line lyx/gram.y:2959
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1259:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2960
+//line lyx/gram.y:2966
 		{
 			yyVAL.node = &AExprEmpty{}
 		}
 	case 1260:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2964
+//line lyx/gram.y:2970
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1261:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2969
+//line lyx/gram.y:2975
 		{
 			yyVAL.nodeList = yyDollar[1].nodeList
 		}
 	case 1262:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2970
+//line lyx/gram.y:2976
 		{
 			yyVAL.nodeList = nil
 		}
 	case 1263:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2974
+//line lyx/gram.y:2980
 		{
 			yyVAL.nodeList = []Node{yyDollar[1].node}
 		}
 	case 1264:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2975
+//line lyx/gram.y:2981
 		{
 			yyVAL.nodeList = append(yyDollar[1].nodeList, yyDollar[3].node)
 		}
 	case 1265:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:2979
+//line lyx/gram.y:2985
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1266:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:2983
+//line lyx/gram.y:2989
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1267:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2987
+//line lyx/gram.y:2993
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1268:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2991
+//line lyx/gram.y:2997
 		{
 			yyVAL.node = &AExprEmpty{}
 		}
 	case 1269:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2997
+//line lyx/gram.y:3003
 		{
 		}
 	case 1270:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:2998
+//line lyx/gram.y:3004
 		{
 		}
 	case 1271:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:2999
+//line lyx/gram.y:3005
 		{
 		}
 	case 1272:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3003
+//line lyx/gram.y:3009
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1273:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3004
+//line lyx/gram.y:3010
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1274:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3020
+//line lyx/gram.y:3026
 		{
 			yyVAL.node = yyDollar[2].node
 			if yyVAL.node != nil {
@@ -11544,7 +11547,7 @@ yydefault:
 		}
 	case 1275:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3027
+//line lyx/gram.y:3033
 		{
 			yyVAL.node = yyDollar[3].node
 			if yyVAL.node != nil {
@@ -11554,7 +11557,7 @@ yydefault:
 		}
 	case 1276:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3035
+//line lyx/gram.y:3041
 		{
 			yyVAL.node = yyDollar[3].node
 
@@ -11565,7 +11568,7 @@ yydefault:
 		}
 	case 1277:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3047
+//line lyx/gram.y:3053
 		{
 			yyVAL.node = &VariableSetStmt{
 				TxMode: yyDollar[2].txModeList,
@@ -11573,7 +11576,7 @@ yydefault:
 		}
 	case 1278:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:3053
+//line lyx/gram.y:3059
 		{
 			yyVAL.node = &VariableSetStmt{
 				TxMode: yyDollar[5].txModeList,
@@ -11581,13 +11584,13 @@ yydefault:
 		}
 	case 1279:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3058
+//line lyx/gram.y:3064
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1280:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3064
+//line lyx/gram.y:3070
 		{
 			yyVAL.node = &VariableSetStmt{
 				Name:  yyDollar[1].str,
@@ -11596,7 +11599,7 @@ yydefault:
 		}
 	case 1281:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3071
+//line lyx/gram.y:3077
 		{
 			yyVAL.node = &VariableSetStmt{
 				Name:  yyDollar[1].str,
@@ -11605,7 +11608,7 @@ yydefault:
 		}
 	case 1282:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3078
+//line lyx/gram.y:3084
 		{
 			yyVAL.node = &VariableSetStmt{
 				Name:    yyDollar[1].str,
@@ -11615,7 +11618,7 @@ yydefault:
 		}
 	case 1283:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3086
+//line lyx/gram.y:3092
 		{
 			yyVAL.node = &VariableSetStmt{
 				Name:    yyDollar[1].str,
@@ -11625,198 +11628,198 @@ yydefault:
 		}
 	case 1284:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3096
+//line lyx/gram.y:3102
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1285:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3099
+//line lyx/gram.y:3105
 		{
 		}
 	case 1286:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3103
+//line lyx/gram.y:3109
 		{
 		}
 	case 1287:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3106
+//line lyx/gram.y:3112
 		{
 
 		}
 	case 1288:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3110
+//line lyx/gram.y:3116
 		{
 		}
 	case 1289:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3113
+//line lyx/gram.y:3119
 		{
 		}
 	case 1290:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3116
+//line lyx/gram.y:3122
 		{
 		}
 	case 1291:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3119
+//line lyx/gram.y:3125
 		{
 		}
 	case 1292:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3122
+//line lyx/gram.y:3128
 		{
 		}
 	case 1293:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3129
+//line lyx/gram.y:3135
 		{
 		}
 	case 1294:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3133
+//line lyx/gram.y:3139
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1295:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3135
+//line lyx/gram.y:3141
 		{
 			yyVAL.str = yyDollar[1].str + "." + yyDollar[3].str
 		}
 	case 1296:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3138
+//line lyx/gram.y:3144
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1297:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3139
+//line lyx/gram.y:3145
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[3].str)
 		}
 	case 1298:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3143
+//line lyx/gram.y:3149
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1299:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3145
+//line lyx/gram.y:3151
 		{
 			yyVAL.str = fmt.Sprintf("%d", yyDollar[1].int)
 		}
 	case 1300:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3148
+//line lyx/gram.y:3154
 		{
 		}
 	case 1301:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3149
+//line lyx/gram.y:3155
 		{
 		}
 	case 1302:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3150
+//line lyx/gram.y:3156
 		{
 		}
 	case 1303:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3151
+//line lyx/gram.y:3157
 		{
 		}
 	case 1304:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3155
+//line lyx/gram.y:3161
 		{
 			yyVAL.str = "true"
 		}
 	case 1305:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3156
+//line lyx/gram.y:3162
 		{
 			yyVAL.str = "false"
 		}
 	case 1306:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3157
+//line lyx/gram.y:3163
 		{
 			yyVAL.str = "true"
 		}
 	case 1307:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3163
+//line lyx/gram.y:3169
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1308:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3176
+//line lyx/gram.y:3182
 		{
 		}
 	case 1309:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3179
+//line lyx/gram.y:3185
 		{
 		}
 	case 1310:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3182
+//line lyx/gram.y:3188
 		{
 
 		}
 	case 1311:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:3186
+//line lyx/gram.y:3192
 		{
 
 		}
 	case 1312:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3190
+//line lyx/gram.y:3196
 		{
 		}
 	case 1313:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3191
+//line lyx/gram.y:3197
 		{
 		}
 	case 1314:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3198
+//line lyx/gram.y:3204
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1315:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3202
+//line lyx/gram.y:3208
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1316:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3204
+//line lyx/gram.y:3210
 		{
 		}
 	case 1317:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3207
+//line lyx/gram.y:3213
 		{
 		}
 	case 1318:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3210
+//line lyx/gram.y:3216
 		{
 		}
 	case 1319:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3216
+//line lyx/gram.y:3222
 		{
 			yyVAL.node = &VariableSetStmt{
 				Kind: VarTypeReset,
@@ -11825,7 +11828,7 @@ yydefault:
 		}
 	case 1320:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3223
+//line lyx/gram.y:3229
 		{
 
 			yyVAL.node = &VariableSetStmt{
@@ -11835,19 +11838,19 @@ yydefault:
 		}
 	case 1321:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3234
+//line lyx/gram.y:3240
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1322:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3235
+//line lyx/gram.y:3241
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1323:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3242
+//line lyx/gram.y:3248
 		{
 			yyVAL.node = &VariableShowStmt{
 				Name: yyDollar[2].str,
@@ -11855,7 +11858,7 @@ yydefault:
 		}
 	case 1324:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3248
+//line lyx/gram.y:3254
 		{
 			yyVAL.node = &VariableShowStmt{
 				Name: "timezone",
@@ -11863,7 +11866,7 @@ yydefault:
 		}
 	case 1325:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:3254
+//line lyx/gram.y:3260
 		{
 			yyVAL.node = &VariableShowStmt{
 				Name: "transaction_isolation",
@@ -11871,7 +11874,7 @@ yydefault:
 		}
 	case 1326:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3260
+//line lyx/gram.y:3266
 		{
 			yyVAL.node = &VariableShowStmt{
 				Name: "session_authorization",
@@ -11879,7 +11882,7 @@ yydefault:
 		}
 	case 1327:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3266
+//line lyx/gram.y:3272
 		{
 			yyVAL.node = &VariableShowStmt{
 				Name: "all",
@@ -11887,7 +11890,7 @@ yydefault:
 		}
 	case 1328:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3287
+//line lyx/gram.y:3293
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_ROLLBACK,
@@ -11895,7 +11898,7 @@ yydefault:
 		}
 	case 1329:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3293
+//line lyx/gram.y:3299
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_START,
@@ -11903,7 +11906,7 @@ yydefault:
 		}
 	case 1330:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3299
+//line lyx/gram.y:3305
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_COMMIT,
@@ -11911,7 +11914,7 @@ yydefault:
 		}
 	case 1331:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3305
+//line lyx/gram.y:3311
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_ROLLBACK,
@@ -11919,7 +11922,7 @@ yydefault:
 		}
 	case 1332:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3311
+//line lyx/gram.y:3317
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_SAVEPOINT,
@@ -11927,7 +11930,7 @@ yydefault:
 		}
 	case 1333:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3317
+//line lyx/gram.y:3323
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_RELEASE,
@@ -11936,7 +11939,7 @@ yydefault:
 		}
 	case 1334:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3324
+//line lyx/gram.y:3330
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_RELEASE,
@@ -11945,7 +11948,7 @@ yydefault:
 		}
 	case 1335:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:3331
+//line lyx/gram.y:3337
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind:          TRANS_STMT_ROLLBACK_TO,
@@ -11954,7 +11957,7 @@ yydefault:
 		}
 	case 1336:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:3338
+//line lyx/gram.y:3344
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind:          TRANS_STMT_ROLLBACK_TO,
@@ -11963,7 +11966,7 @@ yydefault:
 		}
 	case 1337:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3345
+//line lyx/gram.y:3351
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_PREPARE,
@@ -11972,7 +11975,7 @@ yydefault:
 		}
 	case 1338:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3352
+//line lyx/gram.y:3358
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_COMMIT_PREPARED,
@@ -11981,7 +11984,7 @@ yydefault:
 		}
 	case 1339:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3359
+//line lyx/gram.y:3365
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind: TRANS_STMT_ROLLBACK_PREPARED,
@@ -11990,7 +11993,7 @@ yydefault:
 		}
 	case 1340:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3369
+//line lyx/gram.y:3375
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind:    TRANS_STMT_BEGIN,
@@ -11999,7 +12002,7 @@ yydefault:
 		}
 	case 1341:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3376
+//line lyx/gram.y:3382
 		{
 			yyVAL.node = &TransactionStmt{
 				Kind:    TRANS_STMT_COMMIT,
@@ -12008,127 +12011,127 @@ yydefault:
 		}
 	case 1342:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3384
+//line lyx/gram.y:3390
 		{
 		}
 	case 1343:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3385
+//line lyx/gram.y:3391
 		{
 		}
 	case 1344:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3386
+//line lyx/gram.y:3392
 		{
 		}
 	case 1345:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3391
+//line lyx/gram.y:3397
 		{
 			yyVAL.txMode = TransactionIsolation
 		}
 	case 1346:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3393
+//line lyx/gram.y:3399
 		{
 			yyVAL.txMode = TransactionReadOnly
 		}
 	case 1347:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3395
+//line lyx/gram.y:3401
 		{
 			yyVAL.txMode = TransactionReadWrite
 		}
 	case 1348:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3397
+//line lyx/gram.y:3403
 		{
 			yyVAL.txMode = TransactionDeferrable
 		}
 	case 1349:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3399
+//line lyx/gram.y:3405
 		{
 			yyVAL.txMode = TransactionNotDeferrable
 		}
 	case 1350:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3405
+//line lyx/gram.y:3411
 		{
 			yyVAL.txModeList = []TransactionModeItem{yyDollar[1].txMode}
 		}
 	case 1351:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3407
+//line lyx/gram.y:3413
 		{
 			yyVAL.txModeList = append(yyDollar[1].txModeList, yyDollar[3].txMode)
 		}
 	case 1352:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3409
+//line lyx/gram.y:3415
 		{
 			yyVAL.txModeList = append(yyDollar[1].txModeList, yyDollar[2].txMode)
 		}
 	case 1353:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3413
+//line lyx/gram.y:3419
 		{
 			yyVAL.txModeList = yyDollar[1].txModeList
 		}
 	case 1354:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3415
+//line lyx/gram.y:3421
 		{
 			yyVAL.txModeList = nil
 		}
 	case 1355:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3419
+//line lyx/gram.y:3425
 		{
 		}
 	case 1356:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3420
+//line lyx/gram.y:3426
 		{
 		}
 	case 1357:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3421
+//line lyx/gram.y:3427
 		{
 		}
 	case 1358:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3426
-		{
-			yyVAL.node = yyDollar[1].node
-		}
-	case 1359:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3428
-		{
-			yyVAL.node = yyDollar[1].node
-		}
-	case 1360:
-		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3430
-		{
-			yyVAL.node = yyDollar[1].node
-		}
-	case 1361:
 		yyDollar = yyS[yypt-2 : yypt+1]
 //line lyx/gram.y:3432
 		{
 			yyVAL.node = yyDollar[1].node
 		}
-	case 1362:
+	case 1359:
 		yyDollar = yyS[yypt-2 : yypt+1]
 //line lyx/gram.y:3434
 		{
 			yyVAL.node = yyDollar[1].node
 		}
-	case 1363:
+	case 1360:
 		yyDollar = yyS[yypt-2 : yypt+1]
 //line lyx/gram.y:3436
+		{
+			yyVAL.node = yyDollar[1].node
+		}
+	case 1361:
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line lyx/gram.y:3438
+		{
+			yyVAL.node = yyDollar[1].node
+		}
+	case 1362:
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line lyx/gram.y:3440
+		{
+			yyVAL.node = yyDollar[1].node
+		}
+	case 1363:
+		yyDollar = yyS[yypt-2 : yypt+1]
+//line lyx/gram.y:3442
 		{
 			yyVAL.node = &Explain{
 				Stmt: yyDollar[2].node,
@@ -12136,216 +12139,216 @@ yydefault:
 		}
 	case 1364:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3443
+//line lyx/gram.y:3449
 		{
 		}
 	case 1365:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3444
+//line lyx/gram.y:3450
 		{
 		}
 	case 1366:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3447
+//line lyx/gram.y:3453
 		{
 		}
 	case 1367:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:3448
+//line lyx/gram.y:3454
 		{
 		}
 	case 1368:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3452
+//line lyx/gram.y:3458
 		{
 		}
 	case 1369:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3453
+//line lyx/gram.y:3459
 		{
 		}
 	case 1370:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3456
+//line lyx/gram.y:3462
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1371:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3459
+//line lyx/gram.y:3465
 		{
 		}
 	case 1372:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3460
+//line lyx/gram.y:3466
 		{
 		}
 	case 1373:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3464
+//line lyx/gram.y:3470
 		{
 		}
 	case 1374:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3467
+//line lyx/gram.y:3473
 		{
 		}
 	case 1375:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3473
+//line lyx/gram.y:3479
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1376:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3474
+//line lyx/gram.y:3480
 		{
 			yyVAL.node = nil
 		}
 	case 1377:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3494
+//line lyx/gram.y:3500
 		{
 
 		}
 	case 1378:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3498
+//line lyx/gram.y:3504
 		{
 
 		}
 	case 1379:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:3506
+//line lyx/gram.y:3512
 		{
 
 		}
 	case 1380:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:3510
+//line lyx/gram.y:3516
 		{
 
 		}
 	case 1381:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3514
+//line lyx/gram.y:3520
 		{
 
 		}
 	case 1382:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3550
+//line lyx/gram.y:3556
 		{
 
 		}
 	case 1383:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3554
+//line lyx/gram.y:3560
 		{
 
 		}
 	case 1384:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3558
+//line lyx/gram.y:3564
 		{
 
 		}
 	case 1385:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3562
+//line lyx/gram.y:3568
 		{
 
 		}
 	case 1386:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3570
+//line lyx/gram.y:3576
 		{
 		}
 	case 1387:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3571
+//line lyx/gram.y:3577
 		{
 			yyVAL.node = nil
 		}
 	case 1388:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3576
+//line lyx/gram.y:3582
 		{
 
 		}
 	case 1389:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3579
+//line lyx/gram.y:3585
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1390:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3580
+//line lyx/gram.y:3586
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1391:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3588
+//line lyx/gram.y:3594
 		{
 		}
 	case 1392:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3589
+//line lyx/gram.y:3595
 		{
 		}
 	case 1393:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3593
+//line lyx/gram.y:3599
 		{
 		}
 	case 1394:
-		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3594
-		{
-			yyVAL.node = nil
-		}
-	case 1395:
-		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:3599
-		{
-			yyVAL.node = yyDollar[3].node
-		}
-	case 1396:
 		yyDollar = yyS[yypt-0 : yypt+1]
 //line lyx/gram.y:3600
 		{
 			yyVAL.node = nil
 		}
+	case 1395:
+		yyDollar = yyS[yypt-4 : yypt+1]
+//line lyx/gram.y:3605
+		{
+			yyVAL.node = yyDollar[3].node
+		}
+	case 1396:
+		yyDollar = yyS[yypt-0 : yypt+1]
+//line lyx/gram.y:3606
+		{
+			yyVAL.node = nil
+		}
 	case 1397:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3605
+//line lyx/gram.y:3611
 		{
 		}
 	case 1398:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3610
+//line lyx/gram.y:3616
 		{
 		}
 	case 1399:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3615
+//line lyx/gram.y:3621
 		{
 		}
 	case 1400:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3621
+//line lyx/gram.y:3627
 		{
 		}
 	case 1401:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3624
+//line lyx/gram.y:3630
 		{
 		}
 	case 1402:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:3631
+//line lyx/gram.y:3637
 		{
 			yyVAL.tableelt = []TableElt{
 				{
@@ -12356,35 +12359,35 @@ yydefault:
 		}
 	case 1403:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:3639
+//line lyx/gram.y:3645
 		{
 			yyVAL.tableelt = nil
 		}
 	case 1404:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:3642
+//line lyx/gram.y:3648
 		{
 			yyVAL.tableelt = nil
 		}
 	case 1405:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3645
+//line lyx/gram.y:3651
 		{
 			yyVAL.tableelt = append(yyDollar[1].tableelt, yyDollar[3].tableelt...)
 		}
 	case 1406:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3650
+//line lyx/gram.y:3656
 		{
 		}
 	case 1407:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3650
+//line lyx/gram.y:3656
 		{
 		}
 	case 1408:
 		yyDollar = yyS[yypt-9 : yypt+1]
-//line lyx/gram.y:3653
+//line lyx/gram.y:3659
 		{
 			yyVAL.node = &CreateTable{
 				TableName: yyDollar[4].str,
@@ -12393,272 +12396,272 @@ yydefault:
 		}
 	case 1409:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3658
+//line lyx/gram.y:3664
 		{
 			yyVAL.node = &Index{}
 		}
 	case 1410:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3662
+//line lyx/gram.y:3668
 		{
 			yyVAL.node = &CreateRole{}
 		}
 	case 1411:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3666
+//line lyx/gram.y:3672
 		{
 			yyVAL.node = &CreateDatabase{}
 		}
 	case 1412:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3673
+//line lyx/gram.y:3679
 		{
 			yyVAL.node = &Alter{}
 		}
 	case 1413:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3680
+//line lyx/gram.y:3686
 		{
 			yyVAL.node = &Vacuum{}
 		}
 	case 1414:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3687
+//line lyx/gram.y:3693
 		{
 			yyVAL.node = &Cluster{}
 		}
 	case 1415:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3695
+//line lyx/gram.y:3701
 		{
 			yyVAL.node = &Analyze{}
 		}
 	case 1416:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3702
+//line lyx/gram.y:3708
 		{
 			yyVAL.node = &Drop{}
 		}
 	case 1417:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3710
+//line lyx/gram.y:3716
 		{
 			yyVAL.node = &Truncate{}
 		}
 	case 1418:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3718
+//line lyx/gram.y:3724
 		{
 		}
 	case 1419:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3719
+//line lyx/gram.y:3725
 		{
 		}
 	case 1420:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3720
+//line lyx/gram.y:3726
 		{
 		}
 	case 1421:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3724
+//line lyx/gram.y:3730
 		{
 		}
 	case 1422:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3725
+//line lyx/gram.y:3731
 		{
 		}
 	case 1423:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3726
+//line lyx/gram.y:3732
 		{
 		}
 	case 1424:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3732
+//line lyx/gram.y:3738
 		{
 		}
 	case 1425:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3733
+//line lyx/gram.y:3739
 		{
 		}
 	case 1426:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3737
+//line lyx/gram.y:3743
 		{
 		}
 	case 1427:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3741
+//line lyx/gram.y:3747
 		{
 		}
 	case 1428:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3742
+//line lyx/gram.y:3748
 		{
 		}
 	case 1429:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3751
+//line lyx/gram.y:3757
 		{
 			/* no operator */
 		}
 	case 1430:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3757
+//line lyx/gram.y:3763
 		{
 		}
 	case 1431:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3757
+//line lyx/gram.y:3763
 		{
 		}
 	case 1432:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3758
+//line lyx/gram.y:3764
 		{
 		}
 	case 1433:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3758
+//line lyx/gram.y:3764
 		{
 		}
 	case 1434:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3759
+//line lyx/gram.y:3765
 		{
 		}
 	case 1435:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3759
+//line lyx/gram.y:3765
 		{
 		}
 	case 1436:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3760
+//line lyx/gram.y:3766
 		{
 		}
 	case 1437:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3760
+//line lyx/gram.y:3766
 		{
 		}
 	case 1438:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3761
+//line lyx/gram.y:3767
 		{
 		}
 	case 1439:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3761
+//line lyx/gram.y:3767
 		{
 		}
 	case 1440:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3776
+//line lyx/gram.y:3782
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1441:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3777
+//line lyx/gram.y:3783
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1442:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3778
+//line lyx/gram.y:3784
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1443:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3783
+//line lyx/gram.y:3789
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1444:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3784
+//line lyx/gram.y:3790
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1445:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3785
+//line lyx/gram.y:3791
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1446:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3790
+//line lyx/gram.y:3796
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1447:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3791
+//line lyx/gram.y:3797
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1448:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3792
+//line lyx/gram.y:3798
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1449:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3793
+//line lyx/gram.y:3799
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1450:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3799
+//line lyx/gram.y:3805
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1451:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3800
+//line lyx/gram.y:3806
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1452:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3801
+//line lyx/gram.y:3807
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1453:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3802
+//line lyx/gram.y:3808
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1454:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3803
+//line lyx/gram.y:3809
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1455:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3814
+//line lyx/gram.y:3820
 		{
 		}
 	case 1456:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3815
+//line lyx/gram.y:3821
 		{
 		}
 	case 1457:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3826
+//line lyx/gram.y:3832
 		{
 			yyVAL.from = &RangeVar{
 				SchemaName:   "",
@@ -12668,7 +12671,7 @@ yydefault:
 		}
 	case 1458:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3834
+//line lyx/gram.y:3840
 		{
 			yyVAL.from = &RangeVar{
 				SchemaName:   yyDollar[1].str,
@@ -12678,198 +12681,198 @@ yydefault:
 		}
 	case 1459:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3849
+//line lyx/gram.y:3855
 		{
 			yyVAL.from_list = yyDollar[2].from_list
 		}
 	case 1460:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3850
+//line lyx/gram.y:3856
 		{
 		}
 	case 1461:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3854
+//line lyx/gram.y:3860
 		{
 			yyVAL.from_list = []FromClauseNode{yyDollar[1].from}
 		}
 	case 1462:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3855
+//line lyx/gram.y:3861
 		{
 			yyVAL.from_list = append(yyDollar[1].from_list, yyDollar[3].from)
 		}
 	case 1463:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3860
+//line lyx/gram.y:3866
 		{
 			/* inheritance query, implicitly */
 			yyVAL.tableref = yyDollar[1].from
 		}
 	case 1464:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3872
+//line lyx/gram.y:3878
 		{
 		}
 	case 1465:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3873
+//line lyx/gram.y:3879
 		{
 		}
 	case 1466:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3878
+//line lyx/gram.y:3884
 		{
 			yyVAL.str = yyDollar[2].str
 		}
 	case 1467:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3882
+//line lyx/gram.y:3888
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1468:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3888
+//line lyx/gram.y:3894
 		{
 			yyVAL.str = ""
 		}
 	case 1470:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3899
+//line lyx/gram.y:3905
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1471:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3904
+//line lyx/gram.y:3910
 		{
 			yyVAL.bool = true
 		}
 	case 1472:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3905
+//line lyx/gram.y:3911
 		{
 			yyVAL.bool = false
 		}
 	case 1473:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3916
+//line lyx/gram.y:3922
 		{
 			yyVAL.node = nil
 		}
 	case 1474:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:3920
+//line lyx/gram.y:3926
 		{
 			yyVAL.node = nil
 		}
 	case 1475:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:3924
+//line lyx/gram.y:3930
 		{
 
 		}
 	case 1476:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:3928
+//line lyx/gram.y:3934
 		{
 
 		}
 	case 1477:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3932
+//line lyx/gram.y:3938
 		{
 			yyVAL.node = nil
 		}
 	case 1478:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3950
+//line lyx/gram.y:3956
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1479:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3958
+//line lyx/gram.y:3964
 		{
 			yyDollar[1].tableref.SetAlias(yyDollar[2].str)
 			yyVAL.from = yyDollar[1].tableref
 		}
 	case 1480:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3963
+//line lyx/gram.y:3969
 		{
 
 		}
 	case 1481:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:3967
+//line lyx/gram.y:3973
 		{
 
 		}
 	case 1482:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3971
+//line lyx/gram.y:3977
 		{
 		}
 	case 1483:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3974
+//line lyx/gram.y:3980
 		{
 			yyVAL.from = yyDollar[1].tableref
 		}
 	case 1484:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:3978
+//line lyx/gram.y:3984
 		{
 			yyDollar[2].tableref.SetAlias(yyDollar[4].str)
 			yyVAL.from = yyDollar[2].tableref
 		}
 	case 1485:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3986
+//line lyx/gram.y:3992
 		{
 		}
 	case 1486:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:3987
+//line lyx/gram.y:3993
 		{
 		}
 	case 1487:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3991
+//line lyx/gram.y:3997
 		{
 		}
 	case 1488:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3992
+//line lyx/gram.y:3998
 		{
 		}
 	case 1489:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:3993
+//line lyx/gram.y:3999
 		{
 		}
 	case 1490:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:3994
+//line lyx/gram.y:4000
 		{
 		}
 	case 1491:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4005
+//line lyx/gram.y:4011
 		{
 
 		}
 	case 1492:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4013
+//line lyx/gram.y:4019
 		{
 			yyVAL.tableref = yyDollar[2].tableref
 		}
 	case 1493:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4017
+//line lyx/gram.y:4023
 		{
 			/* CROSS JOIN is same as unqualified inner join */
 			yyVAL.tableref = &JoinExpr{
@@ -12879,7 +12882,7 @@ yydefault:
 		}
 	case 1494:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4025
+//line lyx/gram.y:4031
 		{
 			yyVAL.tableref = &JoinExpr{
 				Larg: yyDollar[1].from,
@@ -12888,7 +12891,7 @@ yydefault:
 		}
 	case 1495:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4032
+//line lyx/gram.y:4038
 		{
 			/* letting join_type reduce to empty doesn't work */
 			yyVAL.tableref = &JoinExpr{
@@ -12898,7 +12901,7 @@ yydefault:
 		}
 	case 1496:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4040
+//line lyx/gram.y:4046
 		{
 			yyVAL.tableref = &JoinExpr{
 				Larg: yyDollar[1].from,
@@ -12907,7 +12910,7 @@ yydefault:
 		}
 	case 1497:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4047
+//line lyx/gram.y:4053
 		{
 			/* letting join_type reduce to empty doesn't work */
 			yyVAL.tableref = &JoinExpr{
@@ -12917,114 +12920,114 @@ yydefault:
 		}
 	case 1498:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4061
+//line lyx/gram.y:4067
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1499:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4062
+//line lyx/gram.y:4068
 		{
 
 		}
 	case 1500:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4068
+//line lyx/gram.y:4074
 		{
 		}
 	case 1501:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4076
+//line lyx/gram.y:4082
 		{
 
 		}
 	case 1502:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4080
+//line lyx/gram.y:4086
 		{
 		}
 	case 1503:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4091
+//line lyx/gram.y:4097
 		{
 			// $$ = $3;
 		}
 	case 1504:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4095
+//line lyx/gram.y:4101
 		{
 			// $$ = $3;
 		}
 	case 1505:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4099
+//line lyx/gram.y:4105
 		{
 			// $$ = $4;
 		}
 	case 1506:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4103
+//line lyx/gram.y:4109
 		{
 			// $$ = $4;
 		}
 	case 1507:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4107
+//line lyx/gram.y:4113
 		{
 			// $$ = $4;
 		}
 	case 1508:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4111
+//line lyx/gram.y:4117
 		{
 			// $$ = $4;
 		}
 	case 1509:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4115
+//line lyx/gram.y:4121
 		{
 			// $$ = $3;
 		}
 	case 1510:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4119
+//line lyx/gram.y:4125
 		{
 			// $$ = $2;
 		}
 	case 1511:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4123
+//line lyx/gram.y:4129
 		{
 			// $$ = $1;
 		}
 	case 1512:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4128
+//line lyx/gram.y:4134
 		{
 		}
 	case 1513:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4129
+//line lyx/gram.y:4135
 		{
 		}
 	case 1514:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4133
+//line lyx/gram.y:4139
 		{
 		}
 	case 1515:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4134
+//line lyx/gram.y:4140
 		{
 		}
 	case 1516:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4135
+//line lyx/gram.y:4141
 		{
 		}
 	case 1517:
 		yyDollar = yyS[yypt-9 : yypt+1]
-//line lyx/gram.y:4171
+//line lyx/gram.y:4177
 		{
 			yyVAL.node = &Select{
 				TargetList: yyDollar[3].nodeList,
@@ -13034,7 +13037,7 @@ yydefault:
 		}
 	case 1518:
 		yyDollar = yyS[yypt-9 : yypt+1]
-//line lyx/gram.y:4181
+//line lyx/gram.y:4187
 		{
 			yyVAL.node = &Select{
 				TargetList: yyDollar[3].nodeList,
@@ -13044,332 +13047,332 @@ yydefault:
 		}
 	case 1519:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4188
+//line lyx/gram.y:4194
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1520:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4190
+//line lyx/gram.y:4196
 		{
 			/* same as SELECT * FROM relation_expr */
 
 		}
 	case 1521:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4213
+//line lyx/gram.y:4219
 		{
 		}
 	case 1522:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4214
+//line lyx/gram.y:4220
 		{
 		}
 	case 1523:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4218
+//line lyx/gram.y:4224
 		{
 		}
 	case 1524:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4219
+//line lyx/gram.y:4225
 		{
 		}
 	case 1525:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4223
+//line lyx/gram.y:4229
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1526:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4224
+//line lyx/gram.y:4230
 		{
 		}
 	case 1527:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4230
+//line lyx/gram.y:4236
 		{
 		}
 	case 1528:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4233
+//line lyx/gram.y:4239
 		{
 		}
 	case 1529:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4236
+//line lyx/gram.y:4242
 		{
 		}
 	case 1530:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4239
+//line lyx/gram.y:4245
 		{
 		}
 	case 1531:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4245
+//line lyx/gram.y:4251
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1532:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4246
+//line lyx/gram.y:4252
 		{
 		}
 	case 1533:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4251
+//line lyx/gram.y:4257
 		{
 
 		}
 	case 1534:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4255
+//line lyx/gram.y:4261
 		{
 			// XXXX: todo forbid
 
 		}
 	case 1535:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4267
+//line lyx/gram.y:4273
 		{
 		}
 	case 1536:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:4270
+//line lyx/gram.y:4276
 		{
 		}
 	case 1537:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4273
+//line lyx/gram.y:4279
 		{
 		}
 	case 1538:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4276
+//line lyx/gram.y:4282
 		{
 		}
 	case 1539:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4282
+//line lyx/gram.y:4288
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1540:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4285
+//line lyx/gram.y:4291
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1541:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4289
+//line lyx/gram.y:4295
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1542:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4291
+//line lyx/gram.y:4297
 		{
 		}
 	case 1543:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4296
+//line lyx/gram.y:4302
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1544:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4316
+//line lyx/gram.y:4322
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1545:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4318
+//line lyx/gram.y:4324
 		{
 		}
 	case 1546:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4320
+//line lyx/gram.y:4326
 		{
 		}
 	case 1547:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4324
+//line lyx/gram.y:4330
 		{
 		}
 	case 1548:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4329
+//line lyx/gram.y:4335
 		{
 		}
 	case 1549:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4330
+//line lyx/gram.y:4336
 		{
 		}
 	case 1550:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4333
+//line lyx/gram.y:4339
 		{
 		}
 	case 1551:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4334
+//line lyx/gram.y:4340
 		{
 		}
 	case 1552:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4360
+//line lyx/gram.y:4366
 		{
 
 		}
 	case 1553:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4364
+//line lyx/gram.y:4370
 		{
 		}
 	case 1554:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4369
+//line lyx/gram.y:4375
 		{
 		}
 	case 1555:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4370
+//line lyx/gram.y:4376
 		{
 		}
 	case 1556:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4374
+//line lyx/gram.y:4380
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1557:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4375
+//line lyx/gram.y:4381
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1558:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4376
+//line lyx/gram.y:4382
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1559:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4377
+//line lyx/gram.y:4383
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1560:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4378
+//line lyx/gram.y:4384
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1561:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4383
+//line lyx/gram.y:4389
 		{
 		}
 	case 1562:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4395
+//line lyx/gram.y:4401
 		{
 		}
 	case 1563:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4401
+//line lyx/gram.y:4407
 		{
 		}
 	case 1564:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4407
+//line lyx/gram.y:4413
 		{
 		}
 	case 1565:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4412
+//line lyx/gram.y:4418
 		{
 		}
 	case 1566:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4413
+//line lyx/gram.y:4419
 		{
 		}
 	case 1567:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4417
+//line lyx/gram.y:4423
 		{
 		}
 	case 1568:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4418
+//line lyx/gram.y:4424
 		{
 		}
 	case 1569:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4422
+//line lyx/gram.y:4428
 		{
 		}
 	case 1570:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4423
+//line lyx/gram.y:4429
 		{
 		}
 	case 1571:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4427
+//line lyx/gram.y:4433
 		{
 		}
 	case 1572:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4428
+//line lyx/gram.y:4434
 		{
 		}
 	case 1573:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4433
+//line lyx/gram.y:4439
 		{
 		}
 	case 1574:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4438
+//line lyx/gram.y:4444
 		{
 		}
 	case 1575:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4439
+//line lyx/gram.y:4445
 		{
 		}
 	case 1576:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4440
+//line lyx/gram.y:4446
 		{
 		}
 	case 1577:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4441
+//line lyx/gram.y:4447
 		{
 		}
 	case 1578:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4446
+//line lyx/gram.y:4452
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1579:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4447
+//line lyx/gram.y:4453
 		{
 		}
 	case 1580:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4457
+//line lyx/gram.y:4463
 		{
 			yyVAL.node = &ValueClause{
 				Values: yyDollar[3].nodeList,
@@ -13377,463 +13380,466 @@ yydefault:
 		}
 	case 1581:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4463
+//line lyx/gram.y:4469
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1582:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4479
+//line lyx/gram.y:4485
 		{
 
 		}
 	case 1583:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4484
+//line lyx/gram.y:4490
 		{
 		}
 	case 1584:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4485
+//line lyx/gram.y:4491
 		{
 		}
 	case 1585:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4488
+//line lyx/gram.y:4494
 		{
 		}
 	case 1586:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4489
+//line lyx/gram.y:4495
 		{
 		}
 	case 1587:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4490
+//line lyx/gram.y:4496
 		{
 		}
 	case 1588:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4491
+//line lyx/gram.y:4497
 		{
 		}
 	case 1589:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4492
+//line lyx/gram.y:4498
 		{
 		}
 	case 1590:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4493
+//line lyx/gram.y:4499
 		{
 		}
 	case 1591:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4494
+//line lyx/gram.y:4500
 		{
 		}
 	case 1592:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4495
+//line lyx/gram.y:4501
 		{
 		}
 	case 1593:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4498
+//line lyx/gram.y:4504
 		{
 		}
 	case 1594:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4499
+//line lyx/gram.y:4505
 		{
 		}
 	case 1595:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4503
+//line lyx/gram.y:4509
 		{
 		}
 	case 1596:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4504
+//line lyx/gram.y:4510
 		{
 		}
 	case 1597:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4505
+//line lyx/gram.y:4511
 		{
 		}
 	case 1598:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4554
+//line lyx/gram.y:4560
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1599:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4555
+//line lyx/gram.y:4561
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1600:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4559
+//line lyx/gram.y:4565
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1601:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4560
+//line lyx/gram.y:4566
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1602:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4575
+//line lyx/gram.y:4581
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1603:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4577
+//line lyx/gram.y:4583
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1604:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4581
+//line lyx/gram.y:4587
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1605:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4585
+//line lyx/gram.y:4591
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1606:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4589
+//line lyx/gram.y:4595
 		{
-			yyDollar[2].node.(*Select).WithClause = yyDollar[1].nodeList
+			yyDollar[2].node.(*Select).WithClause = yyDollar[1].cteList
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1607:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4594
+//line lyx/gram.y:4600
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1608:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4598
+//line lyx/gram.y:4604
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1609:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4602
+//line lyx/gram.y:4608
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1610:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4617
+//line lyx/gram.y:4623
 		{
-			yyVAL.nodeList = yyDollar[2].nodeList
+			yyVAL.cteList = yyDollar[2].cteList
 		}
 	case 1611:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4621
+//line lyx/gram.y:4627
 		{
-			yyVAL.nodeList = yyDollar[2].nodeList
+			yyVAL.cteList = yyDollar[2].cteList
 		}
 	case 1612:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4625
+//line lyx/gram.y:4631
 		{
-			yyVAL.nodeList = yyDollar[3].nodeList
+			yyVAL.cteList = yyDollar[3].cteList
 		}
 	case 1613:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4631
+//line lyx/gram.y:4637
 		{
-			yyVAL.nodeList = yyDollar[1].nodeList
+			yyVAL.cteList = []*CommonTableExpr{yyDollar[1].cte}
 		}
 	case 1614:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4632
+//line lyx/gram.y:4638
 		{
-			yyVAL.nodeList = append(yyDollar[1].nodeList, yyDollar[3].nodeList...)
+			yyVAL.cteList = append(yyDollar[1].cteList, yyDollar[3].cte)
 		}
 	case 1615:
 		yyDollar = yyS[yypt-9 : yypt+1]
-//line lyx/gram.y:4636
+//line lyx/gram.y:4642
 		{
-			yyVAL.nodeList = []Node{yyDollar[6].node}
+			yyVAL.cte = &CommonTableExpr{
+				Name:     yyDollar[1].str,
+				SubQuery: yyDollar[6].node,
+			}
 		}
 	case 1616:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4642
+//line lyx/gram.y:4651
 		{
 		}
 	case 1617:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4643
+//line lyx/gram.y:4652
 		{
 		}
 	case 1618:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4644
+//line lyx/gram.y:4653
 		{
 		}
 	case 1619:
 		yyDollar = yyS[yypt-7 : yypt+1]
-//line lyx/gram.y:4649
+//line lyx/gram.y:4658
 		{
 
 		}
 	case 1620:
 		yyDollar = yyS[yypt-7 : yypt+1]
-//line lyx/gram.y:4653
+//line lyx/gram.y:4662
 		{
 
 		}
 	case 1621:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4657
+//line lyx/gram.y:4666
 		{
 			yyVAL.node = nil
 		}
 	case 1622:
 		yyDollar = yyS[yypt-10 : yypt+1]
-//line lyx/gram.y:4664
+//line lyx/gram.y:4673
 		{
 
 		}
 	case 1623:
 		yyDollar = yyS[yypt-6 : yypt+1]
-//line lyx/gram.y:4668
+//line lyx/gram.y:4677
 		{
 
 		}
 	case 1624:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4672
+//line lyx/gram.y:4681
 		{
 			yyVAL.node = nil
 		}
 	case 1625:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4678
+//line lyx/gram.y:4687
 		{
-			yyVAL.nodeList = yyDollar[1].nodeList
+			yyVAL.cteList = yyDollar[1].cteList
 		}
 	case 1626:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4679
+//line lyx/gram.y:4688
 		{
-			yyVAL.nodeList = nil
+			yyVAL.cteList = nil
 		}
 	case 1627:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4684
+//line lyx/gram.y:4693
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1628:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4685
+//line lyx/gram.y:4694
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1629:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4690
+//line lyx/gram.y:4699
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1630:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4691
+//line lyx/gram.y:4700
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[3].str)
 		}
 	case 1631:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4696
+//line lyx/gram.y:4705
 		{
 		}
 	case 1632:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4696
+//line lyx/gram.y:4705
 		{
 		}
 	case 1633:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4699
+//line lyx/gram.y:4708
 		{
 			yyVAL.strlist = yyDollar[2].strlist
 		}
 	case 1634:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4705
+//line lyx/gram.y:4714
 		{
 			yyVAL.strlist = yyDollar[2].strlist
 		}
 	case 1635:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4706
+//line lyx/gram.y:4715
 		{
 			yyVAL.strlist = nil
 		}
 	case 1636:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4711
+//line lyx/gram.y:4720
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1637:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4717
+//line lyx/gram.y:4726
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1638:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4718
+//line lyx/gram.y:4727
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[3].str)
 		}
 	case 1639:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4723
+//line lyx/gram.y:4732
 		{
 			yyVAL.strlist = nil
 		}
 	case 1640:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4726
+//line lyx/gram.y:4735
 		{
 			yyVAL.strlist = yyDollar[1].strlist
 		}
 	case 1641:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4734
+//line lyx/gram.y:4743
 		{
 			yyVAL.nodeList = []Node{yyDollar[1].node}
 		}
 	case 1642:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4736
+//line lyx/gram.y:4745
 		{
 			yyVAL.nodeList = append(yyDollar[1].nodeList, yyDollar[3].node)
 		}
 	case 1643:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4741
+//line lyx/gram.y:4750
 		{
 			yyVAL.nodeList = yyDollar[2].nodeList
 		}
 	case 1644:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4747
+//line lyx/gram.y:4756
 		{
 		}
 	case 1645:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4748
+//line lyx/gram.y:4757
 		{
 		}
 	case 1646:
 		yyDollar = yyS[yypt-8 : yypt+1]
-//line lyx/gram.y:4753
+//line lyx/gram.y:4762
 		{
 
 		}
 	case 1647:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4758
+//line lyx/gram.y:4767
 		{
 
 		}
 	case 1648:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4762
+//line lyx/gram.y:4771
 		{
 		}
 	case 1649:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4768
+//line lyx/gram.y:4777
 		{
 		}
 	case 1650:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4772
+//line lyx/gram.y:4781
 		{
 		}
 	case 1651:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4775
+//line lyx/gram.y:4784
 		{
 		}
 	case 1652:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4780
+//line lyx/gram.y:4789
 		{
 		}
 	case 1653:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4781
+//line lyx/gram.y:4790
 		{
 		}
 	case 1654:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4784
+//line lyx/gram.y:4793
 		{
 		}
 	case 1655:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4785
+//line lyx/gram.y:4794
 		{
 		}
 	case 1656:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4788
+//line lyx/gram.y:4797
 		{
 		}
 	case 1657:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4789
+//line lyx/gram.y:4798
 		{
 		}
 	case 1658:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4794
+//line lyx/gram.y:4803
 		{
 		}
 	case 1659:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4797
+//line lyx/gram.y:4806
 		{
 		}
 	case 1660:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4807
+//line lyx/gram.y:4816
 		{
 		}
 	case 1661:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4810
+//line lyx/gram.y:4819
 		{
 		}
 	case 1662:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:4813
+//line lyx/gram.y:4822
 		{
 		}
 	case 1663:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:4828
+//line lyx/gram.y:4837
 		{
 
 			yyVAL.node = &PrepareStmt{
@@ -13843,41 +13849,41 @@ yydefault:
 		}
 	case 1664:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4837
+//line lyx/gram.y:4846
 		{
 		}
 	case 1665:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4838
+//line lyx/gram.y:4847
 		{
 		}
 	case 1666:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4842
+//line lyx/gram.y:4851
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1667:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4843
+//line lyx/gram.y:4852
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1668:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4844
+//line lyx/gram.y:4853
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1669:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4845
+//line lyx/gram.y:4854
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1670:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4856
+//line lyx/gram.y:4865
 		{
 			yyVAL.node = &ExecuteStmt{
 				Name: yyDollar[2].str,
@@ -13885,28 +13891,28 @@ yydefault:
 		}
 	case 1671:
 		yyDollar = yyS[yypt-9 : yypt+1]
-//line lyx/gram.y:4863
+//line lyx/gram.y:4872
 		{
 		}
 	case 1672:
 		yyDollar = yyS[yypt-12 : yypt+1]
-//line lyx/gram.y:4867
+//line lyx/gram.y:4876
 		{
 
 		}
 	case 1673:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4872
+//line lyx/gram.y:4881
 		{
 		}
 	case 1674:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4873
+//line lyx/gram.y:4882
 		{
 		}
 	case 1675:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4884
+//line lyx/gram.y:4893
 		{
 			yyVAL.node = &DeallocateStmt{
 				yyDollar[2].str,
@@ -13914,7 +13920,7 @@ yydefault:
 		}
 	case 1676:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4890
+//line lyx/gram.y:4899
 		{
 			yyVAL.node = &DeallocateStmt{
 				yyDollar[3].str,
@@ -13922,29 +13928,29 @@ yydefault:
 		}
 	case 1677:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4896
+//line lyx/gram.y:4905
 		{
 			yyVAL.node = &DeallocateStmt{}
 		}
 	case 1678:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4901
+//line lyx/gram.y:4910
 		{
 			yyVAL.node = &DeallocateStmt{}
 		}
 	case 1679:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4910
+//line lyx/gram.y:4919
 		{
 		}
 	case 1680:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4911
+//line lyx/gram.y:4920
 		{
 		}
 	case 1681:
 		yyDollar = yyS[yypt-7 : yypt+1]
-//line lyx/gram.y:4918
+//line lyx/gram.y:4927
 		{
 			yyVAL.node = &Insert{
 				TableRef:  yyDollar[3].tableref,
@@ -13954,47 +13960,47 @@ yydefault:
 		}
 	case 1682:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4927
+//line lyx/gram.y:4936
 		{
 		}
 	case 1683:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4928
+//line lyx/gram.y:4937
 		{
 		}
 	case 1684:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4934
+//line lyx/gram.y:4943
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1685:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4935
+//line lyx/gram.y:4944
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[3].str)
 		}
 	case 1686:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4941
+//line lyx/gram.y:4950
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1687:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4948
+//line lyx/gram.y:4957
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1688:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4953
+//line lyx/gram.y:4962
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1689:
 		yyDollar = yyS[yypt-8 : yypt+1]
-//line lyx/gram.y:4963
+//line lyx/gram.y:4972
 		{
 			yyVAL.node = &Update{
 				TableRef: yyDollar[3].tableref,
@@ -14003,29 +14009,29 @@ yydefault:
 		}
 	case 1690:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4974
+//line lyx/gram.y:4983
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1691:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:4975
+//line lyx/gram.y:4984
 		{
 			yyVAL.strlist = append(yyDollar[3].strlist, yyDollar[1].str)
 		}
 	case 1692:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4980
+//line lyx/gram.y:4989
 		{
 		}
 	case 1693:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:4981
+//line lyx/gram.y:4990
 		{
 		}
 	case 1694:
 		yyDollar = yyS[yypt-7 : yypt+1]
-//line lyx/gram.y:4985
+//line lyx/gram.y:4994
 		{
 			yyVAL.node = &Delete{
 				TableRef: yyDollar[4].tableref,
@@ -14034,407 +14040,407 @@ yydefault:
 		}
 	case 1695:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:4994
+//line lyx/gram.y:5003
 		{
 		}
 	case 1696:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:4996
+//line lyx/gram.y:5005
 		{
 		}
 	case 1697:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5002
+//line lyx/gram.y:5011
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1698:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5006
+//line lyx/gram.y:5015
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[3].str)
 		}
 	case 1699:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5013
+//line lyx/gram.y:5022
 		{
 
 		}
 	case 1700:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5019
+//line lyx/gram.y:5028
 		{
 		}
 	case 1701:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5021
+//line lyx/gram.y:5030
 		{
 		}
 	case 1702:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5022
+//line lyx/gram.y:5031
 		{
 		}
 	case 1703:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5023
+//line lyx/gram.y:5032
 		{
 		}
 	case 1704:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5028
+//line lyx/gram.y:5037
 		{
 			yyVAL.strlist = []string{yyDollar[1].str}
 		}
 	case 1705:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5032
+//line lyx/gram.y:5041
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[3].str)
 		}
 	case 1706:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5039
+//line lyx/gram.y:5048
 		{
 		}
 	case 1707:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5042
+//line lyx/gram.y:5051
 		{
 			yyVAL.strlist = yyDollar[1].strlist
 		}
 	case 1708:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5043
+//line lyx/gram.y:5052
 		{
 			yyVAL.strlist = yyDollar[2].strlist
 		}
 	case 1709:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5048
+//line lyx/gram.y:5057
 		{
 			yyVAL.strlist = append(yyDollar[1].strlist, yyDollar[2].str)
 		}
 	case 1710:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5049
+//line lyx/gram.y:5058
 		{
 			yyVAL.strlist = nil
 		}
 	case 1713:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5058
+//line lyx/gram.y:5067
 		{
 		}
 	case 1714:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5061
+//line lyx/gram.y:5070
 		{
 		}
 	case 1715:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5064
+//line lyx/gram.y:5073
 		{
 		}
 	case 1716:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5067
+//line lyx/gram.y:5076
 		{
 		}
 	case 1717:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5070
+//line lyx/gram.y:5079
 		{
 		}
 	case 1718:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5073
+//line lyx/gram.y:5082
 		{
 		}
 	case 1719:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5076
+//line lyx/gram.y:5085
 		{
 		}
 	case 1720:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5079
+//line lyx/gram.y:5088
 		{
 		}
 	case 1721:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5082
+//line lyx/gram.y:5091
 		{
 		}
 	case 1722:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5085
+//line lyx/gram.y:5094
 		{
 		}
 	case 1723:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:5088
+//line lyx/gram.y:5097
 		{
 		}
 	case 1724:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5091
+//line lyx/gram.y:5100
 		{
 		}
 	case 1725:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5094
+//line lyx/gram.y:5103
 		{
 		}
 	case 1726:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5100
+//line lyx/gram.y:5109
 		{
 			yyVAL.bool = true
 		}
 	case 1727:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5101
+//line lyx/gram.y:5110
 		{
 			yyVAL.bool = false
 		}
 	case 1728:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5105
+//line lyx/gram.y:5114
 		{
 			yyVAL.bool = true
 		}
 	case 1729:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5106
+//line lyx/gram.y:5115
 		{
 			yyVAL.bool = false
 		}
 	case 1730:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5110
+//line lyx/gram.y:5119
 		{
 		}
 	case 1731:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5111
+//line lyx/gram.y:5120
 		{
 		}
 	case 1732:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5112
+//line lyx/gram.y:5121
 		{
 		}
 	case 1733:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5127
+//line lyx/gram.y:5136
 		{
 			yyVAL.node = yyDollar[2].node
 		}
 	case 1734:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:5131
+//line lyx/gram.y:5140
 		{
 			yyVAL.node = yyDollar[4].node
 		}
 	case 1735:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5135
+//line lyx/gram.y:5144
 		{
 			yyVAL.node = yyDollar[3].node
 		}
 	case 1736:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5145
+//line lyx/gram.y:5154
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1737:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5146
+//line lyx/gram.y:5155
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1738:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5147
+//line lyx/gram.y:5156
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1739:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5148
+//line lyx/gram.y:5157
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1740:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5150
+//line lyx/gram.y:5159
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1741:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5154
+//line lyx/gram.y:5163
 		{
 			yyVAL.node = yyDollar[1].node
 		}
 	case 1742:
 		yyDollar = yyS[yypt-7 : yypt+1]
-//line lyx/gram.y:5166
+//line lyx/gram.y:5175
 		{
 
 			yyVAL.node = yyDollar[7].node
 		}
 	case 1743:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5172
+//line lyx/gram.y:5181
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1744:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5175
+//line lyx/gram.y:5184
 		{
 		}
 	case 1745:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5176
+//line lyx/gram.y:5185
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1746:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5177
+//line lyx/gram.y:5186
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1747:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5178
+//line lyx/gram.y:5187
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1748:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5179
+//line lyx/gram.y:5188
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1749:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5180
+//line lyx/gram.y:5189
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1750:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5183
+//line lyx/gram.y:5192
 		{
 		}
 	case 1751:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5184
+//line lyx/gram.y:5193
 		{
 		}
 	case 1752:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5185
+//line lyx/gram.y:5194
 		{
 		}
 	case 1753:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5192
+//line lyx/gram.y:5201
 		{
 		}
 	case 1754:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5193
+//line lyx/gram.y:5202
 		{
 		}
 	case 1755:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5194
+//line lyx/gram.y:5203
 		{
 		}
 	case 1756:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5195
+//line lyx/gram.y:5204
 		{
 		}
 	case 1757:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5198
+//line lyx/gram.y:5207
 		{
 		}
 	case 1758:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:5199
+//line lyx/gram.y:5208
 		{
 		}
 	case 1759:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:5200
+//line lyx/gram.y:5209
 		{
 		}
 	case 1760:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5201
+//line lyx/gram.y:5210
 		{
 		}
 	case 1761:
 		yyDollar = yyS[yypt-2 : yypt+1]
-//line lyx/gram.y:5204
+//line lyx/gram.y:5213
 		{
 		}
 	case 1762:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5205
+//line lyx/gram.y:5214
 		{
 		}
 	case 1763:
 		yyDollar = yyS[yypt-4 : yypt+1]
-//line lyx/gram.y:5208
+//line lyx/gram.y:5217
 		{
 		}
 	case 1764:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5209
+//line lyx/gram.y:5218
 		{
 		}
 	case 1765:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5212
+//line lyx/gram.y:5221
 		{
 		}
 	case 1766:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5217
+//line lyx/gram.y:5226
 		{
 		}
 	case 1767:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5218
+//line lyx/gram.y:5227
 		{
 		}
 	case 1768:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5219
+//line lyx/gram.y:5228
 		{
 		}
 	case 1769:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5225
+//line lyx/gram.y:5234
 		{
 		}
 	case 1770:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5227
+//line lyx/gram.y:5236
 		{
 		}
 	case 1771:
 		yyDollar = yyS[yypt-11 : yypt+1]
-//line lyx/gram.y:5235
+//line lyx/gram.y:5244
 		{
 			yyVAL.node = &Copy{
 				TableRef: yyDollar[3].from,
@@ -14444,7 +14450,7 @@ yydefault:
 		}
 	case 1772:
 		yyDollar = yyS[yypt-9 : yypt+1]
-//line lyx/gram.y:5243
+//line lyx/gram.y:5252
 		{
 			yyVAL.node = &Copy{
 				IsFrom:  false,
@@ -14453,109 +14459,109 @@ yydefault:
 		}
 	case 1773:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5254
+//line lyx/gram.y:5263
 		{
 		}
 	case 1774:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5255
+//line lyx/gram.y:5264
 		{
 		}
 	case 1775:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5260
+//line lyx/gram.y:5269
 		{
 		}
 	case 1776:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5261
+//line lyx/gram.y:5270
 		{
 		}
 	case 1777:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5265
+//line lyx/gram.y:5274
 		{
 		}
 	case 1778:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5266
+//line lyx/gram.y:5275
 		{
 		}
 	case 1779:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5269
+//line lyx/gram.y:5278
 		{
 		}
 	case 1780:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5270
+//line lyx/gram.y:5279
 		{
 		}
 	case 1781:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5273
+//line lyx/gram.y:5282
 		{
 		}
 	case 1782:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5274
+//line lyx/gram.y:5283
 		{
 		}
 	case 1783:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5280
+//line lyx/gram.y:5289
 		{
 		}
 	case 1784:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5282
+//line lyx/gram.y:5291
 		{
 		}
 	case 1785:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line lyx/gram.y:5287
+//line lyx/gram.y:5296
 		{
 			yyVAL.strlist = yyDollar[2].strlist
 		}
 	case 1786:
 		yyDollar = yyS[yypt-0 : yypt+1]
-//line lyx/gram.y:5288
+//line lyx/gram.y:5297
 		{
 			yyVAL.strlist = nil
 		}
 	case 1787:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5293
+//line lyx/gram.y:5302
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1788:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5296
+//line lyx/gram.y:5305
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1789:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5299
+//line lyx/gram.y:5308
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1790:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5301
+//line lyx/gram.y:5310
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1791:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5303
+//line lyx/gram.y:5312
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1792:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:5305
+//line lyx/gram.y:5314
 		{
 			yyVAL.str = yyDollar[1].str
 		}
