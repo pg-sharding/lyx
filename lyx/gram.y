@@ -2878,6 +2878,8 @@ a_expr:
 					 */
 
 				}
+			| select_with_parens
+				{ $$ = $1 }
 		;
 
 

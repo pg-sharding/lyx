@@ -291,6 +291,35 @@ func TestSelectComplex(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `SELECT * FROM a WHERE (SELECT COUNT(*) FROM b) = 1`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "a",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.Select{
+						FromClause: []lyx.FromClauseNode{
+							&lyx.RangeVar{RelationName: "b"},
+						},
+						TargetList: []lyx.Node{
+							&lyx.FuncApplication{
+								Name: "COUNT",
+							},
+						},
+						Where: &lyx.AExprEmpty{},
+					},
+					Right: &lyx.AExprIConst{Value: 1},
+					Op:    "=",
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
