@@ -2631,6 +2631,159 @@ select * from tbl inner join cte on tbl.i = cte.i;
 			},
 			err: nil,
 		},
+
+		{
+			query: `
+			WITH xxxx AS (
+				SELECT * from t where i = 1
+			) 
+			SELECT * from xxxx WHERE i = 2
+			LIMIT 1;
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xxxx",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "i",
+					},
+					Right: &lyx.AExprIConst{Value: 2},
+					Op:    "=",
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+
+				WithClause: []*lyx.CommonTableExpr{
+					{
+						Name: "xxxx",
+						SubQuery: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "t",
+								},
+							},
+							Where: &lyx.AExprOp{
+								Left: &lyx.ColumnRef{
+									ColName: "i",
+								},
+								Right: &lyx.AExprIConst{Value: 1},
+								Op:    "=",
+							},
+							TargetList: []lyx.Node{
+								&lyx.AExprEmpty{},
+							},
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: `
+			WITH xxxx AS (
+				SELECT * from t where i = 1
+			) 
+			SELECT * from xxxx WHERE i = 2
+			ORDER BY i;
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xxxx",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "i",
+					},
+					Right: &lyx.AExprIConst{Value: 2},
+					Op:    "=",
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+
+				WithClause: []*lyx.CommonTableExpr{
+					{
+						Name: "xxxx",
+						SubQuery: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "t",
+								},
+							},
+							Where: &lyx.AExprOp{
+								Left: &lyx.ColumnRef{
+									ColName: "i",
+								},
+								Right: &lyx.AExprIConst{Value: 1},
+								Op:    "=",
+							},
+							TargetList: []lyx.Node{
+								&lyx.AExprEmpty{},
+							},
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: `
+			WITH xxxx AS (
+				SELECT * from t where i = 1
+			) 
+			SELECT * from xxxx WHERE i = 2
+			FOR UPDATE;
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xxxx",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "i",
+					},
+					Right: &lyx.AExprIConst{Value: 2},
+					Op:    "=",
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+
+				WithClause: []*lyx.CommonTableExpr{
+					{
+						Name: "xxxx",
+						SubQuery: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "t",
+								},
+							},
+							Where: &lyx.AExprOp{
+								Left: &lyx.ColumnRef{
+									ColName: "i",
+								},
+								Right: &lyx.AExprIConst{Value: 1},
+								Op:    "=",
+							},
+							TargetList: []lyx.Node{
+								&lyx.AExprEmpty{},
+							},
+						},
+					},
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 

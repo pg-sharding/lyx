@@ -4598,14 +4598,17 @@ select_no_parens:
 				}
 			| with_clause select_clause sort_clause
 				{
+					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
 			| with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
 				{
+					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
 			| with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
 				{
+					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
 
