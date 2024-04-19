@@ -4199,7 +4199,7 @@ simple_select:
 				}
 		 	| select_clause UNION set_quantifier select_clause
 		 		{
-		 			$$ = &SetOp {
+		 			$$ = &Select {
 		 				Op: SetOpUnion,
 		 				LArg: $1,
 		 				RArg: $4,
@@ -4207,7 +4207,7 @@ simple_select:
 		 		}
 		 	| select_clause INTERSECT set_quantifier select_clause
 		 		{
-		 			$$ = &SetOp {
+		 			$$ = &Select {
 		 				Op: SetOpIntersect,
 		 				LArg: $1,
 		 				RArg: $4,
@@ -4215,7 +4215,7 @@ simple_select:
 		 		}
 		 	| select_clause EXCEPT set_quantifier select_clause
 		 		{
-		 			$$ = &SetOp {
+		 			$$ = &Select {
 		 				Op: SetOpExcept,
 		 				LArg: $1,
 		 				RArg: $4,

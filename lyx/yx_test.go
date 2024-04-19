@@ -624,7 +624,7 @@ func TestSetOp(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `SELECT 1 UNION SELECT 2`,
-			exp: &lyx.SetOp{
+			exp: &lyx.Select{
 				Op: lyx.SetOpUnion,
 				LArg: &lyx.Select{
 					TargetList: []lyx.Node{
@@ -643,7 +643,7 @@ func TestSetOp(t *testing.T) {
 		},
 		{
 			query: `SELECT 1 INTERSECT SELECT 2`,
-			exp: &lyx.SetOp{
+			exp: &lyx.Select{
 				Op: lyx.SetOpIntersect,
 				LArg: &lyx.Select{
 					TargetList: []lyx.Node{
@@ -662,7 +662,7 @@ func TestSetOp(t *testing.T) {
 		},
 		{
 			query: `SELECT 1 EXCEPT SELECT 2`,
-			exp: &lyx.SetOp{
+			exp: &lyx.Select{
 				Op: lyx.SetOpExcept,
 				LArg: &lyx.Select{
 					TargetList: []lyx.Node{

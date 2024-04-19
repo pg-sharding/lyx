@@ -13096,7 +13096,7 @@ yydefault:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line lyx/gram.y:4201
 		{
-			yyVAL.node = &SetOp{
+			yyVAL.node = &Select{
 				Op:   SetOpUnion,
 				LArg: yyDollar[1].node,
 				RArg: yyDollar[4].node,
@@ -13106,7 +13106,7 @@ yydefault:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line lyx/gram.y:4209
 		{
-			yyVAL.node = &SetOp{
+			yyVAL.node = &Select{
 				Op:   SetOpIntersect,
 				LArg: yyDollar[1].node,
 				RArg: yyDollar[4].node,
@@ -13116,7 +13116,7 @@ yydefault:
 		yyDollar = yyS[yypt-4 : yypt+1]
 //line lyx/gram.y:4217
 		{
-			yyVAL.node = &SetOp{
+			yyVAL.node = &Select{
 				Op:   SetOpExcept,
 				LArg: yyDollar[1].node,
 				RArg: yyDollar[4].node,
