@@ -4197,19 +4197,31 @@ simple_select:
 					/* same as SELECT * FROM relation_expr */
 
 				}
-		// 	| select_clause UNION set_quantifier select_clause
-		// 		{
-		// 			$$ = makeSetOp(SETOP_UNION, $3 == SET_QUANTIFIER_ALL, $1, $4);
-		// 		}
-		// 	| select_clause INTERSECT set_quantifier select_clause
-		// 		{
-		// 			$$ = makeSetOp(SETOP_INTERSECT, $3 == SET_QUANTIFIER_ALL, $1, $4);
-		// 		}
-		// 	| select_clause EXCEPT set_quantifier select_clause
-		// 		{
-		// 			$$ = makeSetOp(SETOP_EXCEPT, $3 == SET_QUANTIFIER_ALL, $1, $4);
-		// 		}
-		// ;
+		 	| select_clause UNION set_quantifier select_clause
+		 		{
+		 			$$ = &SetOp {
+		 				Op: SetOpUnion,
+		 				LArg: $1,
+		 				RArg: $4,
+		 			}
+		 		}
+		 	| select_clause INTERSECT set_quantifier select_clause
+		 		{
+		 			$$ = &SetOp {
+		 				Op: SetOpIntersect,
+		 				LArg: $1,
+		 				RArg: $4,
+		 			}
+		 		}
+		 	| select_clause EXCEPT set_quantifier select_clause
+		 		{
+		 			$$ = &SetOp {
+		 				Op: SetOpExcept,
+		 				LArg: $1,
+		 				RArg: $4,
+		 			}
+		 		}
+//		 ;
 
 
 /* We use (NIL) as a placeholder to indicate that all target expressions

@@ -265,6 +265,20 @@ type VariableShowStmt struct {
 	Name string
 }
 
+type SetOperation string
+
+const (
+	SetOpUnion     = SetOperation("UNION")
+	SetOpIntersect = SetOperation("INTERSECT")
+	SetOpExcept    = SetOperation("EXCEPT")
+)
+
+type SetOp struct {
+	Op   SetOperation
+	LArg Node
+	RArg Node
+}
+
 func (*Explain) iNode()          {}
 func (*Select) iNode()           {}
 func (*ValueClause) iNode()      {}
@@ -288,6 +302,7 @@ func (*VariableSetStmt) iNode()  {}
 func (*VariableShowStmt) iNode() {}
 func (*SubLink) iNode()          {}
 func (*CommonTableExpr) iNode()  {}
+func (*SetOp) iNode()            {}
 
 type TransactionStmtType int
 
