@@ -162,6 +162,15 @@ func TestSimple(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `
+			SELECT 1 UNION SELECT 2
+			`,
+			exp: []int{
+				lyx.SELECT, lyx.ICONST, lyx.UNION, lyx.SELECT, lyx.ICONST,
+			},
+			err: nil,
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
