@@ -612,6 +612,82 @@ func TestSelect(t *testing.T) {
 	}
 }
 
+func TestSetOp(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `SELECT 1 UNION SELECT 2`,
+			exp: &lyx.Select{
+				Op: lyx.SetOpUnion,
+				LArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{Value: 1},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+				RArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{Value: 2},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `SELECT 1 INTERSECT SELECT 2`,
+			exp: &lyx.Select{
+				Op: lyx.SetOpIntersect,
+				LArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{Value: 1},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+				RArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{Value: 2},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `SELECT 1 EXCEPT SELECT 2`,
+			exp: &lyx.Select{
+				Op: lyx.SetOpExcept,
+				LArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{Value: 1},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+				RArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{Value: 2},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
 func TestSelectMultipleRelations(t *testing.T) {
 	assert := assert.New(t)
 

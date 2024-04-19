@@ -167,6 +167,11 @@ type Select struct {
 	WithClause []*CommonTableExpr
 	Where      Node
 	TargetList []Node
+
+	// Used in set operations
+	Op   SetOperation
+	LArg Node
+	RArg Node
 }
 
 type ValueClause struct {
@@ -264,6 +269,14 @@ type VariableSetStmt struct {
 type VariableShowStmt struct {
 	Name string
 }
+
+type SetOperation string
+
+const (
+	SetOpUnion     = SetOperation("UNION")
+	SetOpIntersect = SetOperation("INTERSECT")
+	SetOpExcept    = SetOperation("EXCEPT")
+)
 
 func (*Explain) iNode()          {}
 func (*Select) iNode()           {}
