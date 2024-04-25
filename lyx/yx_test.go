@@ -679,6 +679,89 @@ func TestSetOp(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `SELECT * FROM a WHERE i = 1 UNION SELECT * FROM b WHERE j = 1`,
+			exp: &lyx.Select{
+				Op: lyx.SetOpUnion,
+				LArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprEmpty{},
+					},
+					Where: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "i",
+						},
+						Right: &lyx.AExprIConst{Value: 1},
+						Op:    "=",
+					},
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							RelationName: "a",
+						},
+					},
+				},
+				RArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprEmpty{},
+					},
+					Where: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "j",
+						},
+						Right: &lyx.AExprIConst{Value: 1},
+						Op:    "=",
+					},
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							RelationName: "b",
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: `SELECT * FROM a WHERE i = 1 UNION ALL SELECT * FROM b WHERE j = 1`,
+			exp: &lyx.Select{
+				Op: lyx.SetOpUnion,
+				LArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprEmpty{},
+					},
+					Where: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "i",
+						},
+						Right: &lyx.AExprIConst{Value: 1},
+						Op:    "=",
+					},
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							RelationName: "a",
+						},
+					},
+				},
+				RArg: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprEmpty{},
+					},
+					Where: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName: "j",
+						},
+						Right: &lyx.AExprIConst{Value: 1},
+						Op:    "=",
+					},
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							RelationName: "b",
+						},
+					},
+				},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
