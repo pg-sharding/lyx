@@ -2984,7 +2984,7 @@ where_or_current_clause:
 			// 		n->cursor_param = 0;
 			// 		$$ = (Node *) n;
 			// 	}
-			// | /*EMPTY*/								{ $$ = NULL; }
+			| /*EMPTY*/								{ $$ = &AExprEmpty{} }
 		;
 
 
