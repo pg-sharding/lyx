@@ -68,7 +68,7 @@ func NewLyxParser() LyxParser {
 
 %type<bool> opt_program
 
-%type<node> where_clause
+%type<node> where_clause where_or_current_clause
 %type<node> returning_clause opt_on_conflict opt_conf_expr
 
 %type<node> ColQualList opt_column_compression ColConstraintElem
@@ -80,7 +80,7 @@ func NewLyxParser() LyxParser {
 
 %type<node> generic_option_name generic_option_arg generic_option_elem
 
-%type<from_list> from_clause from_list
+%type<from_list> from_clause from_list using_clause
 
 
 %type<node> opt_search_clause opt_cycle_clause
@@ -92,7 +92,7 @@ func NewLyxParser() LyxParser {
 %type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
 
 %type<from> table_ref 
-%type<tableref> relation_expr joined_table
+%type<tableref> relation_expr joined_table relation_expr_opt_alias
 
 %type<node> func_arg_expr
 %type<bool> opt_ordinality copy_from
@@ -2972,6 +2972,23 @@ where_clause:
     }
 
 
+
+/* variant for UPDATE and DELETE */
+where_or_current_clause:
+			WHERE a_expr							{ $$ = $2; }
+			// | WHERE CURRENT_P OF cursor_name
+			// 	{
+			// 		CurrentOfExpr *n = makeNode(CurrentOfExpr);
+			// 		/* cvarno is filled in by parse analysis */
+			// 		n->cursor_name = $4;
+			// 		n->cursor_param = 0;
+			// 		$$ = (Node *) n;
+			// 	}
+			// | /*EMPTY*/								{ $$ = NULL; }
+		;
+
+
+
 opt_target_list: target_list						{  $$ = $1 }
 			| /* EMPTY */							{  $$ = nil }
 		;
@@ -3894,6 +3911,30 @@ opt_alias_clause:
     /* nothing */ {
         $$ = ""
     } | alias_clause
+
+
+/*
+ * Given "UPDATE foo set set ...", we have to decide without looking any
+ * further ahead whether the first "set" is an alias or the UPDATE's SET
+ * keyword.  Since "set" is allowed as a column name both interpretations
+ * are feasible.  We resolve the shift/reduce conflict by giving the first
+ * relation_expr_opt_alias production a higher precedence than the SET token
+ * has, causing the parser to prefer to reduce, in effect assuming that the
+ * SET is not an alias.
+ */
+relation_expr_opt_alias: relation_expr					%prec UMINUS
+				{
+					$$ = $1;
+				}
+			| relation_expr ColId
+				{
+					$$ = $1;
+				}
+			| relation_expr AS ColId
+				{
+					$$ = $1;
+				}
+		;
 
 /*
  * As func_expr but does not accept WINDOW functions directly
@@ -5005,13 +5046,22 @@ opt_using:
     | USING delete_comma_separated_using_refs {}
 
 
-DeleteStmt:
-    DELETE FROM opt_only relation_expr opt_using where_clause opt_returning {
-        $$ = &Delete{
-            TableRef: $4,
-            Where: $6,
-        }
-    }
+DeleteStmt: opt_with_clause DELETE FROM relation_expr_opt_alias
+			using_clause where_or_current_clause returning_clause
+				{
+					$$ = &Delete{
+						TableRef: $4,
+						Where: $6,
+					}
+
+				}
+		;
+
+using_clause:
+				USING from_list						{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
 
 opt_binary:
 			BINARY
