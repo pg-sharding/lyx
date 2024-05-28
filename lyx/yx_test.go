@@ -1735,7 +1735,6 @@ AND (shard_id, namespace_id, workflow_id, run_id, type, id, name) IN (
 		assert.NoError(err, "query %s", tt.query)
 
 		assert.Equal(tt.exp, tmp)
-		break
 	}
 }
 
