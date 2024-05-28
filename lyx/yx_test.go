@@ -1637,6 +1637,39 @@ func TestDelete(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+
+		{
+			query: `
+DELETE FROM rel_rel
+USING condition
+WHERE condition.some = 0 
+AND (shard_id, namespace_id, workflow_id, run_id, type, id, name) IN (
+($12::int, $13::bytea, $14, $15::bytea, $16::int, $17::bigint, $18))
+			`,
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "rel_rel",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							ColName:    "some",
+							TableAlias: "condition",
+						},
+						Right: &lyx.AExprIConst{Value: 0},
+						Op:    "=",
+					},
+					Right: &lyx.AExprOp{
+						Op: "IN",
+					},
+					Op: "AND",
+				},
+			},
+			err: nil,
+		},
+
 		/* delete without where */
 		{
 			query: "DELETE FROM films;",
