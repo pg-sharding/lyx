@@ -3477,3 +3477,35 @@ func TestSetSessionStmt(t *testing.T) {
 		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
+
+func TestStmtWithCast(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			select cast(now() as timestamp);`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "now",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
