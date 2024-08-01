@@ -96,7 +96,7 @@ func NewLyxParser() LyxParser {
 
 %type<node> func_arg_expr
 %type<bool> opt_ordinality copy_from
-%type<nodeList> func_arg_list
+%type<nodeList> func_arg_list func_arg_list_opt
 %type<node> func_alias_clause
 
 %type<node> a_expr c_expr b_expr in_expr case_expr case_default case_arg
@@ -284,6 +284,7 @@ Operator:
 %type<str> opt_collate_clause
 
 %type<node> func_application
+%type<node> func_expr_common_subexpr
 %type<node> func_table
 %type<node> func_expr_windowless
 %type<node> func_expr
@@ -327,7 +328,7 @@ Operator:
 
 %type<node> ColRef qualColRef relAllCols
 
-%type<nodeList> expr_list
+%type<nodeList> expr_list trim_list substr_list
 
 %type<str> opt_with_data
 
@@ -1919,7 +1920,7 @@ opt_varying:
  */
 
 ConstDatetime:
-			TIMESTAMP TOPENBR SCONST /* Iconst */ TCLOSEBR opt_timezone
+			TIMESTAMP TOPENBR SCONST /* ICONST */ TCLOSEBR opt_timezone
 				{
 
 				}
@@ -1927,7 +1928,7 @@ ConstDatetime:
 				{
 
 				}
-			| TIME TOPENBR SCONST /* Iconst */ TCLOSEBR opt_timezone
+			| TIME TOPENBR SCONST /* ICONST */ TCLOSEBR opt_timezone
 				{
 
 				}
@@ -2000,7 +2001,7 @@ interval_second:
 			SECOND_P
 				{
 				}
-			| SECOND_P TOPENBR SCONST /* Iconst */ TCLOSEBR
+			| SECOND_P TOPENBR SCONST /* ICONST */ TCLOSEBR
 				{
 				}
 		;
@@ -2248,7 +2249,11 @@ AexprConst:
 		;
 
 
-func_expr: func_application
+func_expr: 
+	func_application { $$ = $1; }		
+	| func_expr_common_subexpr
+				{ $$ = $1; }
+		;
 
 expr_list:	a_expr
 				{
@@ -2263,6 +2268,12 @@ expr_list:	a_expr
 opt_asymmetric: ASYMMETRIC
 			| /*EMPTY*/
 		;
+
+
+func_arg_list_opt:	func_arg_list					{ $$ = $1; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
 
 type_list:	Typename								{ }
 			| type_list TCOMMA Typename				{ }
@@ -2335,6 +2346,72 @@ opt_indirection:
 
 
 
+
+/*
+ * SUBSTRING() arguments
+ *
+ * Note that SQL:1999 has both
+ *     text FROM int FOR int
+ * and
+ *     text FROM pattern FOR escape
+ *
+ * In the parser we map them both to a call to the substring() function and
+ * rely on type resolution to pick the right one.
+ *
+ * In SQL:2003, the second variant was changed to
+ *     text SIMILAR pattern ESCAPE escape
+ * We could in theory map that to a different function internally, but
+ * since we still support the SQL:1999 version, we don't.  However,
+ * ruleutils.c will reverse-list the call in the newer style.
+ */
+substr_list:
+			a_expr FROM a_expr FOR a_expr
+				{
+					$$ = []Node{$1, $3, $5};
+				}
+			| a_expr FOR a_expr FROM a_expr
+				{
+					/* not legal per SQL, but might as well allow it */
+					$$ = []Node{$1, $3, $5};
+				}
+			| a_expr FROM a_expr
+				{
+					/*
+					 * Because we aren't restricting data types here, this
+					 * syntax can end up resolving to textregexsubstr().
+					 * We've historically allowed that to happen, so continue
+					 * to accept it.  However, ruleutils.c will reverse-list
+					 * such a call in regular function call syntax.
+					 */
+					$$ = []Node{$1, $3};
+				}
+			| a_expr FOR a_expr
+				{
+					/* not legal per SQL */
+
+					/*
+					 * Since there are no cases where this syntax allows
+					 * a textual FOR value, we forcibly cast the argument
+					 * to int4.  The possible matches in pg_proc are
+					 * substring(text,int4) and substring(text,text),
+					 * and we don't want the parser to choose the latter,
+					 * which it is likely to do if the second argument
+					 * is unknown or doesn't have an implicit cast to int4.
+					 */
+
+
+					$$ = nil;
+				}
+			| a_expr SIMILAR a_expr ESCAPE a_expr
+				{
+					$$ = []Node{$1, $3, $5};
+				}
+		;
+
+trim_list:	a_expr FROM expr_list					{ $$ = append($3, $1); }
+			| FROM expr_list						{ $$ = $2; }
+			| expr_list								{ $$ = $1; }
+		;
 
 in_expr:	select_with_parens
 				{
@@ -2928,6 +3005,8 @@ columnref:	ColId
 b_expr:
 			c_expr
 				{ $$ = $1; }
+			| b_expr TYPECAST Typename
+				{ $$ = $1 }
 			| TPLUS b_expr					//%prec UMINUS
 				{ $$ = $2; }
 			| TMINUS b_expr					//%prec UMINUS
@@ -3944,9 +4023,286 @@ relation_expr_opt_alias: relation_expr					%prec UMINUS
  */
 func_expr_windowless:
 			func_application						{ $$ = $1; }
-			// | func_expr_common_subexpr				{ $$ = $1; }
+			| func_expr_common_subexpr				{ $$ = $1; }
 			// | json_aggregate_func					{ $$ = $1; }
 		;
+
+
+/*
+ * Special expressions that are considered to be functions.
+ */
+func_expr_common_subexpr:
+			COLLATION FOR TOPENBR a_expr TCLOSEBR
+				{
+					$$ = $4;
+				}
+			| CURRENT_DATE
+				{
+				}
+			| CURRENT_TIME
+				{
+				}
+			| CURRENT_TIME TOPENBR ICONST TCLOSEBR
+				{
+				}
+			| CURRENT_TIMESTAMP
+				{
+				}
+			| CURRENT_TIMESTAMP TOPENBR ICONST TCLOSEBR
+				{
+				}
+			| LOCALTIME
+				{
+				}
+			| LOCALTIME TOPENBR ICONST TCLOSEBR
+				{
+				}
+			| LOCALTIMESTAMP
+				{
+				}
+			| LOCALTIMESTAMP TOPENBR ICONST TCLOSEBR
+				{
+				}
+			| CURRENT_ROLE
+				{
+				}
+			| CURRENT_USER
+				{
+				}
+			| SESSION_USER
+				{
+				}
+			| SYSTEM_USER
+				{
+				}
+			| USER
+				{
+				}
+			| CURRENT_CATALOG
+				{
+				}
+			| CURRENT_SCHEMA
+				{
+				}
+			| CAST TOPENBR a_expr AS Typename TCLOSEBR
+				{  $$ = $3; }
+			// | EXTRACT TOPENBR extract_list TCLOSEBR
+			// 	{
+			// 	}
+			| NORMALIZE TOPENBR a_expr TCLOSEBR
+				{
+				}
+			// | NORMALIZE TOPENBR a_expr TCOMMA unicode_normal_form TCLOSEBR
+			// 	{
+			// 	}
+			// | OVERLAY TOPENBR overlay_list TCLOSEBR
+			// 	{
+			// 	}
+			| OVERLAY TOPENBR func_arg_list_opt TCLOSEBR
+				{
+					/*
+					 * allow functions named overlay() to be called without
+					 * special syntax
+					 */
+				}
+			// | POSITION TOPENBR position_list TCLOSEBR
+			// 	{
+			// 		/*
+			// 		 * position(A in B) is converted to position(B, A)
+			// 		 *
+			// 		 * We deliberately don't offer a "plain syntax" option
+			// 		 * for position(), because the reversal of the arguments
+			// 		 * creates too much risk of confusion.
+			// 		 */
+			// 	}
+			| SUBSTRING TOPENBR substr_list TCLOSEBR
+				{
+					/* substring(A from B for C) is converted to
+					 * substring(A, B, C) - thomas 2000-11-28
+					 */
+
+				}
+			| SUBSTRING TOPENBR func_arg_list_opt TCLOSEBR
+				{
+					/*
+					 * allow functions named substring() to be called without
+					 * special syntax
+					 */
+
+				}
+			| TREAT TOPENBR a_expr AS Typename TCLOSEBR
+				{
+					/* TREAT(expr AS target) converts expr of a particular type to target,
+					 * which is defined to be a subtype of the original expression.
+					 * In SQL99, this is intended for use with structured UDTs,
+					 * but let's make this a generally useful form allowing stronger
+					 * coercions than are handled by implicit casting.
+					 *
+					 * Convert SystemTypeName() to SystemFuncName() even though
+					 * at the moment they result in the same thing.
+					 */
+
+				}
+			| TRIM TOPENBR BOTH trim_list TCLOSEBR
+				{
+				}
+			| TRIM TOPENBR LEADING trim_list TCLOSEBR
+				{
+				}
+			| TRIM TOPENBR TRAILING trim_list TCLOSEBR
+				{
+				}
+			| TRIM TOPENBR trim_list TCLOSEBR
+				{
+				}
+			| NULLIF TOPENBR a_expr ',' a_expr TCLOSEBR
+				{
+				}
+			| COALESCE TOPENBR expr_list TCLOSEBR
+				{
+				}
+			| GREATEST TOPENBR expr_list TCLOSEBR
+				{
+				}
+			| LEAST TOPENBR expr_list TCLOSEBR
+				{
+				}
+			// | XMLCONCAT '(' expr_list ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLCONCAT, NULL, NIL, $3, @1);
+			// 	}
+			// | XMLELEMENT '(' NAME_P ColLabel ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, NIL, NIL, @1);
+			// 	}
+			// | XMLELEMENT '(' NAME_P ColLabel ',' xml_attributes ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, $6, NIL, @1);
+			// 	}
+			// | XMLELEMENT '(' NAME_P ColLabel ',' expr_list ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, NIL, $6, @1);
+			// 	}
+			// | XMLELEMENT '(' NAME_P ColLabel ',' xml_attributes ',' expr_list ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, $6, $8, @1);
+			// 	}
+			// | XMLEXISTS '(' c_expr xmlexists_argument ')'
+			// 	{
+			// 		/* xmlexists(A PASSING [BY REF] B [BY REF]) is
+			// 		 * converted to xmlexists(A, B)*/
+			// 		$$ = (Node *) makeFuncCall(SystemFuncName("xmlexists"),
+			// 								   list_make2($3, $4),
+			// 								   COERCE_SQL_SYNTAX,
+			// 								   @1);
+			// 	}
+			// | XMLFOREST '(' xml_attribute_list ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLFOREST, NULL, $3, NIL, @1);
+			// 	}
+			// | XMLPARSE '(' document_or_content a_expr xml_whitespace_option ')'
+			// 	{
+			// 		XmlExpr *x = (XmlExpr *)
+			// 			makeXmlExpr(IS_XMLPARSE, NULL, NIL,
+			// 						list_make2($4, makeBoolAConst($5, -1)),
+			// 						@1);
+
+			// 		x->xmloption = $3;
+			// 		$$ = (Node *) x;
+			// 	}
+			// | XMLPI '(' NAME_P ColLabel ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLPI, $4, NULL, NIL, @1);
+			// 	}
+			// | XMLPI '(' NAME_P ColLabel ',' a_expr ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLPI, $4, NULL, list_make1($6), @1);
+			// 	}
+			// | XMLROOT '(' a_expr ',' xml_root_version opt_xml_root_standalone ')'
+			// 	{
+			// 		$$ = makeXmlExpr(IS_XMLROOT, NULL, NIL,
+			// 						 list_make3($3, $5, $6), @1);
+			// 	}
+			// | XMLSERIALIZE '(' document_or_content a_expr AS SimpleTypename xml_indent_option ')'
+			// 	{
+
+			// 	}
+			// | JSON_OBJECT '(' func_arg_list ')'
+			// 	{
+
+			// 	}
+			// | JSON_OBJECT '(' json_name_and_value_list
+			// 	json_object_constructor_null_clause_opt
+			// 	json_key_uniqueness_constraint_opt
+			// 	json_returning_clause_opt ')'
+			// 	{
+
+			// 	}
+			// | JSON_OBJECT '(' json_returning_clause_opt ')'
+			// 	{
+
+			// 	}
+			// | JSON_ARRAY '('
+			// 	json_value_expr_list
+			// 	json_array_constructor_null_clause_opt
+			// 	json_returning_clause_opt
+			// ')'
+			// 	{
+
+			// 	}
+			// | JSON_ARRAY '('
+
+			// ')'
+			// 	{
+
+			// 	}
+			// | JSON_ARRAY '('
+			// 	json_returning_clause_opt
+			// ')'
+			// 	{
+			// 	}
+			// | JSON '(' json_value_expr json_key_uniqueness_constraint_opt ')'
+			// 	{
+
+			// 	}
+			// | JSON_SCALAR '(' a_expr ')'
+			// 	{
+			// 	}
+			// | JSON_SERIALIZE '(' json_value_expr json_returning_clause_opt ')'
+			// 	{
+
+			// 	}
+			// | MERGE_ACTION TOPENBR TCLOSEBR
+			// 	{
+			// 	}
+			// | JSON_QUERY '('
+			// 	json_value_expr ',' a_expr json_passing_clause_opt
+			// 	json_returning_clause_opt
+			// 	json_wrapper_behavior
+			// 	json_quotes_clause_opt
+			// 	json_behavior_clause_opt
+			// ')'
+			// 	{
+
+			// 	}
+			// | JSON_EXISTS '('
+			// 	json_value_expr ',' a_expr json_passing_clause_opt
+			// 	json_on_error_clause_opt
+			// ')'
+			// 	{
+
+			// 	}
+			// | JSON_VALUE '('
+			// 	json_value_expr ',' a_expr json_passing_clause_opt
+			// 	json_returning_clause_opt
+			// 	json_behavior_clause_opt
+			// ')'
+			// 	{
+
+			// 	}
+			;
+
+
 
 opt_ordinality: WITH ORDINALITY					{ $$ = true; }
 			| /*EMPTY*/								{ $$ = false; }
