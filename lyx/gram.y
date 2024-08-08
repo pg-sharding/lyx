@@ -1928,7 +1928,7 @@ ConstDatetime:
 				{
 
 				}
-			| TIME TOPENBR SCONST /* ICONST */ TCLOSEBR opt_timezone
+			| TIME TOPENBR ICONST TCLOSEBR opt_timezone
 				{
 
 				}

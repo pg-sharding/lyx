@@ -3489,6 +3489,16 @@ func TestStmtWithCast(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `select cast(time '18:00:00' as time(6));`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					nil,
+				},
+			},
+			err: nil,
+		},
+		{
 			query: `
 			select cast(now() as timestamp);`,
 			exp: &lyx.Select{
