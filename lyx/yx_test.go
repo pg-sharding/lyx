@@ -3509,3 +3509,52 @@ func TestStmtWithCast(t *testing.T) {
 		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
+
+func TestUpdateFrom(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			UPDATE 
+				xx 
+			set 
+				ii = oi.ii, 
+				ii_upd = current_timestamp 
+			from (values (1, 1)) as oi (ii, id)
+			where xx.id = oi.id;
+			`,
+
+			exp: &lyx.Update{
+				TableRef: &lyx.RangeVar{
+					SchemaName:   "",
+					RelationName: "xx",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						TableAlias: "xx",
+						ColName:    "id",
+					},
+					Right: &lyx.ColumnRef{
+						TableAlias: "oi",
+						ColName:    "id",
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}

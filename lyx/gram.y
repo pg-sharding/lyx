@@ -3976,14 +3976,34 @@ relation_expr_list:
 		;
 
 
+
+// /*
+//  * TABLESAMPLE decoration in a FROM item
+//  */
+// tablesample_clause:
+// 			TABLESAMPLE func_name '(' expr_list ')' opt_repeatable_clause
+// 				{
+
+// 				}
+// 		;
 alias_clause:
-    AS any_id {
-        $$ = $2
-    }
-    | 
-     any_id {
-        $$ = $1
-    }
+			AS ColId TOPENBR name_list TCLOSEBR
+				{
+					$$ = $2
+				}
+			| AS ColId
+				{
+					$$ = $2
+				}
+			| ColId TOPENBR name_list TCLOSEBR
+				{
+					$$ = $1
+				}
+			| ColId
+				{
+					$$ = $1
+				}
+		;
 
 
 opt_alias_clause:
@@ -4362,6 +4382,14 @@ table_ref:	relation_expr opt_alias_clause
 					$1.SetAlias($2)
 					$$ = $1;
 				}
+			// | relation_expr opt_alias_clause tablesample_clause
+			// 	{
+			// 		RangeTableSample *n = (RangeTableSample *) $3;
+			// 		$1->alias = $2;
+			// 		/* relation_expr goes inside the RangeTableSample node */
+			// 		n->relation = (Node *) $1;
+			// 		$$ = (Node *) n;
+			// 	}
 			| func_table func_alias_clause
 				{
 
@@ -4370,8 +4398,25 @@ table_ref:	relation_expr opt_alias_clause
 				{
 
 				}
-		    | select_with_parens opt_alias_clause
+			// | xmltable opt_alias_clause
+			// 	{
+			// 		RangeTableFunc *n = (RangeTableFunc *) $1;
+			// 		n->alias = $2;
+			// 		$$ = (Node *) n;
+			// 	}
+			// | LATERAL_P xmltable opt_alias_clause
+			// 	{
+			// 		RangeTableFunc *n = (RangeTableFunc *) $2;
+			// 		n->lateral = true;
+			// 		n->alias = $3;
+			// 		$$ = (Node *) n;
+			// 	}
+			| select_with_parens opt_alias_clause
 				{
+				}
+			| LATERAL_P select_with_parens opt_alias_clause
+				{
+
 				}
 			| joined_table
 				{
@@ -4383,7 +4428,6 @@ table_ref:	relation_expr opt_alias_clause
 					$$ = $2;
 				}
 		;
-
 
 /* OUTER is just noise... */
 opt_outer: OUTER_P {}
