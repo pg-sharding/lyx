@@ -57,7 +57,8 @@ func NewLyxParser() LyxParser {
 
 
 // CMDS
-%type <node> command
+%type <nodeList> multiStmt
+%type <node> command any_command
 %type <node> routable_statement
 
 // same for terminals
@@ -446,10 +447,16 @@ Operator:
 /* unroutable query parts */
 %type<str> opt_window_clause sort_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 
-%start any_command
+%start multiStmt
 
 %%
 
+
+
+multiStmt: command { } | 
+			multiStmt TSEMICOLON command {}
+
+	;
 
 any_command:
     command semicolon_opt
@@ -477,46 +484,46 @@ semicolon_opt:
 /* "Unreserved" keywords --- available for use as any kind of name.
  */
 unreserved_keyword:
-			  ABORT_P
-			| ABSENT
-			| ABSOLUTE_P
-			| ACCESS
-			| ACTION
-			| ADD_P
-			| ADMIN
-			| AFTER
-			| AGGREGATE
-			| ALSO
-			| ALTER
-			| ALWAYS
-			| ASENSITIVE
-			| ASSERTION
-			| ASSIGNMENT
-			| AT
-			| ATOMIC
-			| ATTACH
-			| ATTRIBUTE
-			| BACKWARD
-			| BEFORE
-			| BEGIN_P
-			| BREADTH
-			| BY
-			| CACHE
-			| CALL
-			| CALLED
-			| CASCADE
-			| CASCADED
-			| CATALOG_P
-			| CHAIN
-			| CHARACTERISTICS
-			| CHECKPOINT
-			| CLASS
-			| CLOSE
-			| CLUSTER
-			| COLUMNS
-			| COMMENT
-			| COMMENTS
-			| COMMIT
+			  ABORT_P {$$=$1}
+			| ABSENT {$$=$1}
+			| ABSOLUTE_P {$$=$1}
+			| ACCESS {$$=$1}
+			| ACTION {$$=$1}
+			| ADD_P {$$=$1}
+			| ADMIN {$$=$1}
+			| AFTER {$$=$1}
+			| AGGREGATE {$$=$1}
+			| ALSO {$$=$1}
+			| ALTER {$$=$1} 
+			| ALWAYS {$$=$1} 
+			| ASENSITIVE {$$=$1}
+			| ASSERTION {$$=$1}
+			| ASSIGNMENT {$$=$1}
+			| AT {$$=$1} 
+			| ATOMIC {$$=$1}
+			| ATTACH {$$=$1} 
+			| ATTRIBUTE {$$=$1} 
+			| BACKWARD {$$=$1}
+			| BEFORE {$$=$1}
+			| BEGIN_P {$$=$1}
+			| BREADTH {$$=$1}
+			| BY {$$=$1} 
+			| CACHE {$$=$1}
+			| CALL {$$=$1} 
+			| CALLED {$$=$1}
+			| CASCADE {$$=$1}
+			| CASCADED {$$=$1}
+			| CATALOG_P {$$=$1}
+			| CHAIN {$$=$1}
+			| CHARACTERISTICS {$$=$1}
+			| CHECKPOINT {$$=$1}
+			| CLASS {$$=$1}
+			| CLOSE {$$=$1} 
+			| CLUSTER {$$=$1}
+			| COLUMNS {$$=$1}
+			| COMMENT {$$=$1}
+			| COMMENTS {$$=$1}
+			| COMMIT {$$=$1}
 			| COMMITTED
 			| COMPRESSION
 			| CONFIGURATION
@@ -3525,15 +3532,15 @@ opt_transaction_chain:
 
 
 routable_statement:
-    SelectStmt  semicolon_opt {
+    SelectStmt  {
         $$ = $1
-    } | InsertStmt semicolon_opt {
+    } | InsertStmt {
         $$ = $1
-    } | UpdateStmt semicolon_opt {
+    } | UpdateStmt {
         $$ = $1
-    } | DeleteStmt semicolon_opt {
+    } | DeleteStmt {
         $$ = $1
-    } | copy_stmt semicolon_opt {
+    } | copy_stmt {
         $$ = $1
     } | EXPLAIN routable_statement {
         $$ = &Explain{

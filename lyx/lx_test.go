@@ -180,6 +180,17 @@ func TestSimple(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `select 1; select 2;`,
+			exp: []int{
+				lyx.SELECT,
+				lyx.ICONST,
+				lyx.TSEMICOLON,
+				lyx.SELECT,
+				lyx.ICONST,
+				lyx.TSEMICOLON,
+			},
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
