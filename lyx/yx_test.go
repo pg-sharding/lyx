@@ -3520,6 +3520,38 @@ func TestStmtWithCast(t *testing.T) {
 	}
 }
 
+func TestMultiStmt(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `select 1; select 2`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 2,
+					},
+				},
+
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
 func TestUpdateFrom(t *testing.T) {
 	assert := assert.New(t)
 
