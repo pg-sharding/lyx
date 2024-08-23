@@ -341,11 +341,21 @@ type EmptyQuery struct{}
 
 func (*EmptyQuery) iNode() {}
 
+type Option struct {
+	Name string
+	Arg  Node
+}
+
+func (*Option) iNode() {
+}
+
 type Copy struct {
 	TableRef FromClauseNode
 	Where    Node
 	IsFrom   bool
 	SubStmt  Node
+	Columns  []string
+	Options  []Node
 }
 
 func (*Copy) iNode() {}

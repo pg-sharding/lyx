@@ -1799,8 +1799,34 @@ func TestCopy(t *testing.T) {
 				TableRef: &lyx.RangeVar{
 					RelationName: "pgbench_accounts",
 				},
-				Where:  &lyx.AExprEmpty{},
-				IsFrom: true,
+				Where:   &lyx.AExprEmpty{},
+				IsFrom:  true,
+				Options: []lyx.Node{&lyx.Option{Name: "freeze", Arg: &lyx.AExprSConst{Value: "true"}}},
+			},
+			err: nil,
+		},
+		{
+			query: `copy copy_test from stdin using delimiters ';'`,
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "copy_test",
+				},
+				Where:   &lyx.AExprEmpty{},
+				IsFrom:  true,
+				Options: []lyx.Node{&lyx.Option{Name: "delimiter", Arg: &lyx.AExprSConst{Value: ";"}}},
+			},
+			err: nil,
+		},
+		{
+			query: `copy copy_test(id,name) from stdin with (delimiter ';')`,
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "copy_test",
+				},
+				Columns: []string{"id", "name"},
+				Where:   &lyx.AExprEmpty{},
+				IsFrom:  true,
+				Options: []lyx.Node{&lyx.Option{Name: "delimiter", Arg: &lyx.AExprSConst{Value: ";"}}},
 			},
 			err: nil,
 		},

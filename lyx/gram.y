@@ -174,6 +174,7 @@ func NewLyxParser() LyxParser {
 
 /* copy */
 %token<str> DELIMITERS PROGRAM STDIN
+%type<str> copy_delimiter
 
 %token<str> FALSE_P TRUE_P 
 
@@ -345,12 +346,13 @@ Operator:
 
 %type<nodeList> insert_comma_separated_tuples insert_tuples
 
-%type<strlist> opt_insert_col_refs columnList opt_column_list copy_gengeneric_opt_list copy_generic_opt_arg_list copy_opt_list
-%type<str> any_tok  columnElem copy_gengeneric_opt_elem copy_generic_opt_arg_list_item copy_opt_item
+%type<strlist> opt_insert_col_refs columnList opt_column_list
+%type<str> any_tok  columnElem
 
 %type<str> OptTemp
 
-%type<strlist> copy_options
+%type<node> copy_opt_item copy_gengeneric_opt_elem copy_generic_opt_arg_list_item copy_generic_opt_arg
+%type<nodeList> copy_opt_list copy_options copy_gengeneric_opt_list copy_generic_opt_arg_list
 
 %type<str> attr_name ColLabel file_name
 %type<from> qualified_name
@@ -5451,6 +5453,7 @@ delete_comma_separated_using_refs:
 opt_using:
     /* nothing */ {}
     | USING delete_comma_separated_using_refs {}
+	| USING {}
 
 
 DeleteStmt: opt_with_clause DELETE FROM relation_expr_opt_alias
@@ -5481,7 +5484,7 @@ opt_binary:
 copy_gengeneric_opt_list:
 			copy_gengeneric_opt_elem
 				{
-					$$ = []string{$1};
+					$$ = []Node{$1};
 				}
 			| copy_gengeneric_opt_list TCOMMA copy_gengeneric_opt_elem
 				{
@@ -5492,22 +5495,25 @@ copy_gengeneric_opt_list:
 copy_gengeneric_opt_elem:
 			ColLabel copy_generic_opt_arg
 				{
-
+					$$ = &Option{
+						Name: $1,
+						Arg: $2,
+					}
 				}
 		;
 
 copy_generic_opt_arg:
-			opt_boolean_or_string			{  }
-			// | NumericOnly					{  }
+			opt_boolean_or_string			{ $$ = &AExprSConst{Value: $1} }
+			// | NumericOnly					{ $$ = &AExprIConst{Value: $1} }
 			| TMUL							{  }
-			| TOPENBR copy_generic_opt_arg_list TCLOSEBR		{ }
+			| TOPENBR copy_generic_opt_arg_list TCLOSEBR		{ $$ = &AExprList{List: $2} }
 			| /* EMPTY */					{  }
 		;
 
 copy_generic_opt_arg_list:
 			  copy_generic_opt_arg_list_item
 				{
-					$$ = []string{$1};
+					$$ = []Node{$1};
 				}
 			| copy_generic_opt_arg_list TCOMMA copy_generic_opt_arg_list_item
 				{
@@ -5543,6 +5549,12 @@ copy_opt_item:
 				}
 			| DELIMITER opt_as SCONST
 				{
+					$$ = &Option{
+						Name: $1,
+						Arg: &AExprSConst{
+							Value: $3,
+						},
+					}
 				}
 			| NULL_P opt_as SCONST
 				{
@@ -5704,6 +5716,7 @@ copy_file_name:
 copy_delimiter:
 			opt_using DELIMITERS SCONST
 				{
+					$$ = $3
 				}
 			| /*EMPTY*/								{ }
 		;
@@ -5714,11 +5727,22 @@ copy_stmt:
 	COPY opt_binary qualified_name opt_column_list
 			copy_from opt_program copy_file_name copy_delimiter opt_with
 			copy_options where_clause {
-				$$ = &Copy {
+				c := &Copy {
 					TableRef: $3,
 					Where: $11,
 					IsFrom: $5,
-				}   
+					Columns: $4,
+					Options: $10,
+				}
+				if ($8 != "") {
+					c.Options = append(c.Options, &Option{
+						Name: "delimiter",
+						Arg: &AExprSConst{
+							Value: $8,
+						},
+					})
+				}
+				$$ = c
 		}
 		| COPY TOPENBR PreparableStmt TCLOSEBR TO opt_program copy_file_name opt_with copy_options
 				{
