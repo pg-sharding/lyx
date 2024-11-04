@@ -214,7 +214,7 @@ type TableElt struct {
 
 type CreateTable struct {
 	TableName string
-	TableElts []TableElt
+	TableElts []Node
 }
 
 type Alter struct {
@@ -301,6 +301,7 @@ func (*VariableSetStmt) iNode()  {}
 func (*VariableShowStmt) iNode() {}
 func (*SubLink) iNode()          {}
 func (*CommonTableExpr) iNode()  {}
+func (*TableElt) iNode()         {}
 
 type TransactionStmtType int
 
