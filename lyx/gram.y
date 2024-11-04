@@ -65,9 +65,14 @@ func NewLyxParser() LyxParser {
 %token <str> SCONST IDENT
 %token <int> ICONST
 
-%type<str> any_id any_val table_name func_name
+%type<str> any_id any_val table_name func_name any_name
 
 %type<bool> opt_program
+
+%type <bool> opt_unique_null_treatment  opt_without_overlaps
+
+%type<node> key_update key_action key_actions key_delete opt_c_include
+%type<node> optionalPeriodName opt_column_and_period_list
 
 %type<node> where_clause where_or_current_clause
 %type<node> returning_clause opt_on_conflict opt_conf_expr
@@ -276,7 +281,7 @@ Operator:
 %type<node> DeleteStmt
 %type<node> PrepareStmt
 %type<node> VariableSetStmt
-%type<node> create_stmt alter_stmt
+%type<node> CreateStmt alter_stmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> truncate_stmt drop_stmt
 %type<str> semicolon_opt
@@ -305,6 +310,10 @@ Operator:
 %type<str> var_name var_value
 
 %type<strlist> var_list
+
+%type<node> TableConstraint ConstraintElem TableElement columnDef  ConstraintAttributeSpec TypedTableElement  
+// %type<node> TableLikeClause
+%type<nodeList> OptTypedTableElementList TypedTableElementList columnOptions OptTableElementList TableElementList
 
 %type<node> zone_value iso_level generic_set set_rest set_rest_more 
 %type<node> reset_rest generic_reset SetResetClause VariableResetStmt VariableSetStmt VariableShowStmt
@@ -362,8 +371,6 @@ Operator:
 %type<strlist> opt_using delete_comma_separated_using_refs
 %type<strlist> set_clause_list
 
-%type<tableelt> create_stmt_coldefs
-
 %type<str> opt_only opt_alias_clause alias_clause
 
 %type<str> anything set_clause
@@ -372,6 +379,10 @@ Operator:
 
 %type<str> TableFuncElement
 %type<strlist> TableFuncElementList OptTableFuncElementList
+
+%type<node> OptInherit OptPartitionSpec PartitionSpec key_match
+
+%type<str> table_access_method_clause opt_qualified_name
 
 %type<txMode> transaction_mode_item
 %type<txModeList> transaction_mode_list_or_empty transaction_mode_list
@@ -1548,7 +1559,7 @@ command:
 		setParseTree(yylex, $1)
     } | drop_stmt {
 		setParseTree(yylex, $1)
-    } | create_stmt {
+    } | CreateStmt {
 		setParseTree(yylex, $1)
     } | alter_stmt {
 		setParseTree(yylex, $1)
@@ -2530,22 +2541,12 @@ a_expr:
             c_expr									{ $$ = $1; }
 			| a_expr TYPECAST Typename
 					{  }
-			// | a_expr COLLATE any_name
-			// 	{
-			// 		CollateClause *n = makeNode(CollateClause);
-
-			// 		n->arg = $1;
-			// 		n->collname = $3;
-			// 		n->location = @2;
-			// 		$$ = (Node *) n;
-			// 	}
-			// | a_expr AT TIME ZONE a_expr			%prec AT
-			// 	{
-			// 		$$ = (Node *) makeFuncCall(SystemFuncName("timezone"),
-			// 								   list_make2($5, $1),
-			// 								   COERCE_SQL_SYNTAX,
-			// 								   @2);
-			// 	}
+			| a_expr COLLATE any_name
+				{
+				}
+			| a_expr AT TIME ZONE a_expr			%prec AT
+				{
+				}
 		/*
 		 * These operators must be called out explicitly in order to make use
 		 * of bison's automatic operator-precedence handling.  All other
@@ -2925,22 +2926,19 @@ a_expr:
 			// 		else
 			// 			$$ = (Node *) makeA_Expr(AEXPR_OP_ALL, $2, $1, $5, @2);
 			// 	}
-			// | UNIQUE opt_unique_null_treatment select_with_parens
-			// 	{
-			// 		/* Not sure how to get rid of the parentheses
-			// 		 * but there are lots of shift/reduce errors without them.
-			// 		 *
-			// 		 * Should be able to implement this by plopping the entire
-			// 		 * select into a node, then transforming the target expressions
-			// 		 * from whatever they are into count(*), and testing the
-			// 		 * entire result equal to one.
-			// 		 * But, will probably implement a separate node in the executor.
-			// 		 */
-			// 		ereport(ERROR,
-			// 				(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
-			// 				 errmsg("UNIQUE predicate is not yet implemented"),
-			// 				 parser_errposition(@1)));
-			// 	}
+			| UNIQUE opt_unique_null_treatment select_with_parens
+				{
+					/* Not sure how to get rid of the parentheses
+					 * but there are lots of shift/reduce errors without them.
+					 *
+					 * Should be able to implement this by plopping the entire
+					 * select into a node, then transforming the target expressions
+					 * from whatever they are into count(*), and testing the
+					 * entire result equal to one.
+					 * But, will probably implement a separate node in the executor.
+					 */
+
+				}
 			| a_expr IS DOCUMENT_P					%prec IS
 				    { $$ = $1 }
 			| a_expr IS NOT DOCUMENT_P				%prec IS
@@ -3609,10 +3607,10 @@ ColConstraintElem:
 				{
 
 				}
-			// | UNIQUE opt_unique_null_treatment opt_definition OptConsTableSpace
-			// 	{
+			| UNIQUE opt_unique_null_treatment opt_definition OptConsTableSpace
+				{
 
-			// 	}
+				}
 			| PRIMARY KEY opt_definition OptConsTableSpace
 				{
 
@@ -3629,16 +3627,204 @@ ColConstraintElem:
 			// 	{
 
 			// 	}
-			// | GENERATED generated_when AS TOPENBR a_expr TCLOSEBR STORED
-			// 	{
+			| GENERATED generated_when AS TOPENBR a_expr TCLOSEBR STORED
+				{
 
-			// 	}
-			// | REFERENCES qualified_name opt_column_list key_match key_actions
-			// 	{
+				}
+			| REFERENCES qualified_name opt_column_list key_match key_actions
+				{
 
-			// 	}
+				}
 		;
 
+
+columnDef:	ColId Typename opt_column_storage opt_column_compression create_generic_options ColQualList
+				{
+					$$ = &TableElt{
+						ColName: $1,
+						ColType: $2,
+					}
+				}
+		;
+
+columnOptions:	ColId ColQualList
+				{
+
+				}
+				| ColId WITH OPTIONS ColQualList
+				{
+
+				}
+		;
+
+column_compression:
+			COMPRESSION ColId						{  }
+			| COMPRESSION DEFAULT					{  }
+		;
+
+opt_column_compression:
+			column_compression						{  }
+			| /*EMPTY*/								{ }
+		;
+
+column_storage:
+			STORAGE ColId							{  }
+			| STORAGE DEFAULT						{  }
+		;
+
+opt_column_storage:
+			column_storage							{  }
+			| /*EMPTY*/								{}
+		;
+
+ColQualList:
+			ColQualList ColConstraint				{  }
+			| /*EMPTY*/								{ }
+		;
+
+
+/* ConstraintElem specifies constraint syntax which is not embedded into
+ *	a column definition. ColConstraintElem specifies the embedded form.
+ * - thomas 1997-12-03
+ */
+TableConstraint:
+			CONSTRAINT name ConstraintElem
+				{
+				}
+			| ConstraintElem						{ $$ = $1; }
+		;
+
+ConstraintAttributeSpec: 
+		/*EMPTY*/ {}
+		;
+
+
+opt_without_overlaps:
+			WITHOUT OVERLAPS						{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+	;
+
+
+opt_c_include:	INCLUDE TOPENBR columnList TCLOSEBR			{ $$ = nil; }
+			 |		/* EMPTY */						{ $$ = nil; }
+		;
+
+optionalPeriodName:
+			// ',' PERIOD columnElem { $$ = $3; }
+			// |
+			/*EMPTY*/               { $$ = nil; }
+	;
+
+
+
+opt_column_and_period_list:
+			TOPENBR columnList optionalPeriodName TCLOSEBR			{  }
+			| 
+			/*EMPTY*/								{ }
+		;
+
+
+ConstraintElem:
+			CHECK TOPENBR a_expr TCLOSEBR ConstraintAttributeSpec
+				{
+				}
+			| UNIQUE opt_unique_null_treatment TOPENBR columnList opt_without_overlaps TCLOSEBR opt_c_include opt_definition OptConsTableSpace
+				ConstraintAttributeSpec
+				{
+				}
+			| UNIQUE ExistingIndex ConstraintAttributeSpec
+				{
+				}
+			| PRIMARY KEY TOPENBR columnList opt_without_overlaps TCLOSEBR opt_c_include opt_definition OptConsTableSpace
+				ConstraintAttributeSpec
+				{
+				}
+			| PRIMARY KEY ExistingIndex ConstraintAttributeSpec
+				{
+				}
+			// | EXCLUDE access_method_clause TOPENBR ExclusionConstraintList TCLOSEBR
+			// 	opt_c_include opt_definition OptConsTableSpace OptWhereClause
+			// 	ConstraintAttributeSpec
+			// 	{
+			// 	}
+			| FOREIGN KEY TOPENBR columnList optionalPeriodName TCLOSEBR REFERENCES qualified_name
+				opt_column_and_period_list key_match key_actions ConstraintAttributeSpec
+				{
+			
+				}
+		;
+
+
+OptTypedTableElementList:
+			TOPENBR TypedTableElementList TCLOSEBR		{ $$ = $2; }
+			| /*EMPTY*/							{ $$ = nil; }
+		;
+
+OptTableElementList:
+			TableElementList					{ $$ = $1; }
+			| /*EMPTY*/							{ $$ = nil; }
+		;
+
+TableElementList:
+			TableElement
+				{
+					$$ = []Node{$1}
+				}
+			| TableElementList TCOMMA TableElement
+				{
+					$$ = append($1, $3)
+				}
+		;
+
+TypedTableElementList:
+			TypedTableElement
+				{
+					$$ = []Node{$1}
+				}
+			| TypedTableElementList TCOMMA TypedTableElement
+				{
+					$$ = append($1, $3)
+				}
+		;
+
+TableElement:
+			columnDef							{ $$ = $1; }
+			// | TableLikeClause					{ $$ = $1; }
+			| TableConstraint					{ $$ = $1; }
+		;
+
+
+TypedTableElement:
+			columnOptions						{ $$ = nil; }
+			| TableConstraint					{ $$ = $1; }
+		;
+
+
+opt_unique_null_treatment:
+			NULLS_P DISTINCT		{ $$ = true; }
+			| NULLS_P NOT DISTINCT	{ $$ = false; }
+			| /*EMPTY*/				{ $$ = true; }
+		;
+
+generated_when:
+			ALWAYS			{  ; }
+			| BY DEFAULT	{ ; }
+		;
+
+
+key_match:  MATCH FULL
+			{
+			}
+		| MATCH PARTIAL
+			{
+			}
+		| MATCH SIMPLE
+			{
+			}
+		| /*EMPTY*/
+			{
+			}
+		;
 
 
 /*
@@ -3676,7 +3862,6 @@ ConstraintAttr:
 		;
 
 
-
 ColQualList:
 			ColQualList ColConstraint				{  }
 			| /*EMPTY*/								{ $$ = nil; }
@@ -3689,11 +3874,11 @@ ColConstraint:
 				}
 			| ColConstraintElem						{ $$ = $1; }
 			| ConstraintAttr						{ $$ = $1; }
-		// 	| COLLATE any_name
-		// 		{
+			| COLLATE any_name
+				{
 
-		// 		}
-		// ;
+				}
+		;
 
 column_compression:
 			COMPRESSION ColId						{  }
@@ -3737,31 +3922,11 @@ generic_option_list:
 		;
 
 
-create_stmt_coldefs:
-	ColId Typename opt_column_compression create_generic_options ColQualList
-	{
-        $$ = []TableElt {
-			{
-                ColName: $1,
-                ColType: $2,
-            },
-        }
-    }
-    | FOREIGN KEY TOPENBR any_id TCLOSEBR opt_ref {
-        $$ = nil
-    }
-    | PRIMARY KEY TOPENBR comma_separated_col_refs TCLOSEBR opt_ref {
-        $$ = nil
-    }
-    | create_stmt_coldefs TCOMMA create_stmt_coldefs {
-        $$ = append($1, $3...)
-    }
-
 optifne:
 	IF_P NOT EXISTS {} | /* empty*/ {}
 
-create_stmt: 
-    CREATE TABLE optifne table_name TOPENBR create_stmt_coldefs TCLOSEBR OptWith anything {
+CreateStmt:
+    CREATE TABLE optifne table_name TOPENBR OptTableElementList TCLOSEBR OptWith anything {
         $$ = &CreateTable {
             TableName: $4,
             TableElts: $6,
@@ -5678,6 +5843,94 @@ opt_hold: /* EMPTY */						{ }
 			| WITHOUT HOLD					{  }
 		;
 
+key_actions:
+			key_update
+				{
+				}
+			| key_delete
+				{
+				}
+			| key_update key_delete
+				{
+				}
+			| key_delete key_update
+				{
+				}
+			| /*EMPTY*/
+				{
+				}
+		;
+
+key_update: ON UPDATE key_action
+				{
+					$$ = $3;
+				}
+		;
+
+key_delete: ON DELETE_P key_action
+				{
+					$$ = $3;
+				}
+		;
+
+key_action:
+			NO ACTION
+				{
+				}
+			| RESTRICT
+				{
+
+				}
+			| CASCADE
+				{
+				}
+			| SET NULL_P opt_column_list
+				{
+				}
+			| SET DEFAULT opt_column_list
+				{
+				}
+		;
+
+OptInherit: INHERITS TOPENBR qualified_name_list TCLOSEBR	{ $$ = $3; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+/* Optional partition key specification */
+OptPartitionSpec: PartitionSpec	{ $$ = $1; }
+			| /*EMPTY*/			{ $$ = nil; }
+		;
+
+PartitionSpec: PARTITION BY ColId TOPENBR part_params TCLOSEBR
+				{
+				}
+		;
+
+part_params:	part_elem						{  }
+			| part_params TCOMMA part_elem			{  }
+		;
+
+part_elem: ColId opt_collate opt_qualified_name
+				{
+				}
+			| func_expr_windowless opt_collate opt_qualified_name
+				{
+				}
+			| TOPENBR a_expr TCLOSEBR opt_collate opt_qualified_name
+				{
+				}
+		;
+
+table_access_method_clause:
+			USING name							{ $$ = $2; }
+			| /*EMPTY*/							{ $$ = ""; }
+		;
+
+
+opt_qualified_name:
+			any_name						{ $$ = $1; }
+			| /*EMPTY*/						{ $$ = ""; }
+		;
 
 
 /* WITH (options) is preferred, WITH OIDS and WITHOUT OIDS are legacy forms */

@@ -951,8 +951,8 @@ func TestCreate(t *testing.T) {
 			query: "create table xx ( i int )",
 			exp: &lyx.CreateTable{
 				TableName: "xx",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "i",
 						ColType: "int",
 					},
@@ -965,8 +965,38 @@ func TestCreate(t *testing.T) {
 			query: "create table xx(i int)",
 			exp: &lyx.CreateTable{
 				TableName: "xx",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+
+		/* PRIMARY KEY feature */
+		{
+			query: "create table xx(i int primary key)",
+			exp: &lyx.CreateTable{
+				TableName: "xx",
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+
+		/* FOREIGN KEY feature */
+		{
+			query: "create table ott (i int REFERENCES  tt(i))",
+			exp: &lyx.CreateTable{
+				TableName: "ott",
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "i",
 						ColType: "int",
 					},
@@ -980,8 +1010,8 @@ func TestCreate(t *testing.T) {
 			query: "create table tt(i int);",
 			exp: &lyx.CreateTable{
 				TableName: "tt",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "i",
 						ColType: "int",
 					},
@@ -994,12 +1024,12 @@ func TestCreate(t *testing.T) {
 			query: "CREATE TABLE sshjt1(i int, j int);",
 			exp: &lyx.CreateTable{
 				TableName: "sshjt1",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "i",
 						ColType: "int",
 					},
-					{
+					&lyx.TableElt{
 						ColName: "j",
 						ColType: "int",
 					},
@@ -1012,8 +1042,8 @@ func TestCreate(t *testing.T) {
 			query: "CREATE TABLE orders(id INT PRIMARY KEY);",
 			exp: &lyx.CreateTable{
 				TableName: "orders",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "id",
 						ColType: "INT",
 					},
@@ -1026,15 +1056,14 @@ func TestCreate(t *testing.T) {
 			query: "CREATE TABLE delivery(id INT PRIMARY KEY, order_id INT, FOREIGN KEY(order_id) REFERENCES orders(id));",
 			exp: &lyx.CreateTable{
 				TableName: "delivery",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "id",
 						ColType: "INT",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "order_id",
 						ColType: "INT",
-					},
+					}, nil,
 				},
 			},
 			err: nil,
@@ -2621,20 +2650,20 @@ func TestCreateTableWith(t *testing.T) {
 			`,
 			exp: &lyx.CreateTable{
 				TableName: "pgbench_tellers",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "tid",
 						ColType: "int",
 					},
-					{
+					&lyx.TableElt{
 						ColName: "bid",
 						ColType: "int",
 					},
-					{
+					&lyx.TableElt{
+
 						ColName: "tbalance",
 						ColType: "int",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "filler",
 						ColType: "char",
 					},
@@ -2665,20 +2694,17 @@ func TestCreateSuccess(t *testing.T) {
 			query: "create table xx ( ADMIN int, ATOMIC int, CLASS int, LIKE int )",
 			exp: &lyx.CreateTable{
 				TableName: "xx",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "ADMIN",
 						ColType: "int",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "ATOMIC",
 						ColType: "int",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "CLASS",
 						ColType: "int",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "LIKE",
 						ColType: "int",
 					},
@@ -2690,28 +2716,23 @@ func TestCreateSuccess(t *testing.T) {
 			query: "create table xx ( i0 BINARY, i1 CURRENT_SCHEMA, i2 IS, i3 JOIN, i4 NOTNULL, i5 TABLESAMPLE)",
 			exp: &lyx.CreateTable{
 				TableName: "xx",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "i0",
 						ColType: "BINARY",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "i1",
 						ColType: "CURRENT_SCHEMA",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "i2",
 						ColType: "IS",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "i3",
 						ColType: "JOIN",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "i4",
 						ColType: "NOTNULL",
-					},
-					{
+					}, &lyx.TableElt{
 						ColName: "i5",
 						ColType: "TABLESAMPLE",
 					},
@@ -2723,8 +2744,8 @@ func TestCreateSuccess(t *testing.T) {
 			query: "create table JSON_ARRAYAGG ( i int )",
 			exp: &lyx.CreateTable{
 				TableName: "JSON_ARRAYAGG",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "i",
 						ColType: "int",
 					},
@@ -2736,8 +2757,8 @@ func TestCreateSuccess(t *testing.T) {
 			query: "create table XMLTABLE ( i int )",
 			exp: &lyx.CreateTable{
 				TableName: "XMLTABLE",
-				TableElts: []lyx.TableElt{
-					{
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
 						ColName: "i",
 						ColType: "int",
 					},
