@@ -65,7 +65,7 @@ func NewLyxParser() LyxParser {
 %token <str> SCONST IDENT
 %token <int> ICONST
 
-%type<str> any_id any_val table_name func_name any_name
+%type<str> any_id any_val func_name any_name
 
 %type<bool> opt_program
 
@@ -281,7 +281,7 @@ Operator:
 %type<node> DeleteStmt
 %type<node> PrepareStmt
 %type<node> VariableSetStmt
-%type<node> CreateStmt alter_stmt
+%type<node> CreateStmt alter_stmt CreateSchemaStmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> truncate_stmt drop_stmt
 %type<str> semicolon_opt
@@ -364,7 +364,7 @@ Operator:
 %type<nodeList> copy_opt_list copy_options copy_gengeneric_opt_list copy_generic_opt_arg_list
 
 %type<str> attr_name ColLabel file_name
-%type<from> qualified_name
+%type<from> qualified_name table_name
 
 %type<node> qualified_name_list 
 
@@ -382,7 +382,9 @@ Operator:
 
 %type<node> OptInherit OptPartitionSpec PartitionSpec key_match
 
-%type<str> table_access_method_clause opt_qualified_name
+%type<str> table_access_method_clause opt_qualified_name opt_single_name
+%type<str> opt_drop_behavior
+%type<bool> opt_concurrently
 
 %type<txMode> transaction_mode_item
 %type<txModeList> transaction_mode_list_or_empty transaction_mode_list
@@ -1561,7 +1563,9 @@ command:
 		setParseTree(yylex, $1)
     } | CreateStmt {
 		setParseTree(yylex, $1)
-    } | alter_stmt {
+    } | CreateSchemaStmt {
+		setParseTree(yylex, $1)
+	} | alter_stmt {
 		setParseTree(yylex, $1)
     }
 
@@ -1586,9 +1590,17 @@ any_val:
 	}
 
 table_name:
-	IDENT
+	type_function_name
 	{
-		$$ = string($1)
+		$$ = &RangeVar{
+			RelationName: $1,
+		}
+	} | type_function_name TDOT type_function_name {
+
+		$$ = &RangeVar{
+			SchemaName: $1,
+			RelationName: $3,
+		}
 	}
 
 operator:
@@ -1714,6 +1726,10 @@ type_function_name:	IDENT							{
  * constants for them.
  */
 GenericType:
+			type_function_name TDOT type_function_name {
+				/* very ugly hack, remove it */
+					$$ = $3
+			} |
 			type_function_name opt_type_modifiers
 				{
 
@@ -3928,7 +3944,7 @@ optifne:
 CreateStmt:
     CREATE TABLE optifne table_name TOPENBR OptTableElementList TCLOSEBR OptWith anything {
         $$ = &CreateTable {
-            TableName: $4,
+            TableRv: $4,
             TableElts: $6,
         }
     } | CREATE INDEX anything {
@@ -3944,6 +3960,37 @@ CreateStmt:
 
         }
     }
+
+OptSchemaEltList:
+	/* Empty */;
+
+RoleSpec:
+	/* Empty */;
+
+/*****************************************************************************
+ *
+ * Manipulate a schema
+ *
+ *****************************************************************************/
+
+CreateSchemaStmt:
+			CREATE SCHEMA opt_single_name AUTHORIZATION RoleSpec OptSchemaEltList
+				{
+				}
+			| CREATE SCHEMA ColId OptSchemaEltList
+				{
+				}
+			| CREATE SCHEMA IF_P NOT EXISTS opt_single_name AUTHORIZATION RoleSpec OptSchemaEltList
+				{
+
+				}
+			| CREATE SCHEMA IF_P NOT EXISTS ColId OptSchemaEltList
+				{
+
+				}
+		;
+
+
 
 alter_stmt: 
     ALTER anything {
@@ -4099,6 +4146,14 @@ qualified_name_list:
  * which may contain subscripts, and reject that case in the C code.
  */
 qualified_name:
+			ColId  TDOT ColId {
+					$$ = &RangeVar {
+						SchemaName: $1,
+						RelationName: $3,
+						Alias: "",
+					}
+			}
+			|
 			ColId {
 				$$ = &RangeVar {
 						SchemaName: "",
@@ -4108,11 +4163,6 @@ qualified_name:
 				}
 			| ColId TDOT attr_name
 				{
-					$$ = &RangeVar {
-						SchemaName: $1,
-						RelationName: $3,
-						Alias: "",
-					}
 				}
 			// | ColId indirection
 			// 	{
@@ -4363,19 +4413,19 @@ func_expr_common_subexpr:
 				}
 			// | XMLCONCAT '(' expr_list ')'
 			// 	{
-			// 		$$ = makeXmlExpr(IS_XMLCONCAT, NULL, NIL, $3, @1);
+			// 		$$ = makeXmlExpr(IS_XMLCONCAT, NULL, nil, $3, @1);
 			// 	}
 			// | XMLELEMENT '(' NAME_P ColLabel ')'
 			// 	{
-			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, NIL, NIL, @1);
+			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, nil, nil, @1);
 			// 	}
 			// | XMLELEMENT '(' NAME_P ColLabel ',' xml_attributes ')'
 			// 	{
-			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, $6, NIL, @1);
+			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, $6, nil, @1);
 			// 	}
 			// | XMLELEMENT '(' NAME_P ColLabel ',' expr_list ')'
 			// 	{
-			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, NIL, $6, @1);
+			// 		$$ = makeXmlExpr(IS_XMLELEMENT, $4, nil, $6, @1);
 			// 	}
 			// | XMLELEMENT '(' NAME_P ColLabel ',' xml_attributes ',' expr_list ')'
 			// 	{
@@ -4392,12 +4442,12 @@ func_expr_common_subexpr:
 			// 	}
 			// | XMLFOREST '(' xml_attribute_list ')'
 			// 	{
-			// 		$$ = makeXmlExpr(IS_XMLFOREST, NULL, $3, NIL, @1);
+			// 		$$ = makeXmlExpr(IS_XMLFOREST, NULL, $3, nil, @1);
 			// 	}
 			// | XMLPARSE '(' document_or_content a_expr xml_whitespace_option ')'
 			// 	{
 			// 		XmlExpr *x = (XmlExpr *)
-			// 			makeXmlExpr(IS_XMLPARSE, NULL, NIL,
+			// 			makeXmlExpr(IS_XMLPARSE, NULL, nil,
 			// 						list_make2($4, makeBoolAConst($5, -1)),
 			// 						@1);
 
@@ -4406,7 +4456,7 @@ func_expr_common_subexpr:
 			// 	}
 			// | XMLPI '(' NAME_P ColLabel ')'
 			// 	{
-			// 		$$ = makeXmlExpr(IS_XMLPI, $4, NULL, NIL, @1);
+			// 		$$ = makeXmlExpr(IS_XMLPI, $4, NULL, nil, @1);
 			// 	}
 			// | XMLPI '(' NAME_P ColLabel ',' a_expr ')'
 			// 	{
@@ -4414,7 +4464,7 @@ func_expr_common_subexpr:
 			// 	}
 			// | XMLROOT '(' a_expr ',' xml_root_version opt_xml_root_standalone ')'
 			// 	{
-			// 		$$ = makeXmlExpr(IS_XMLROOT, NULL, NIL,
+			// 		$$ = makeXmlExpr(IS_XMLROOT, NULL, nil,
 			// 						 list_make3($3, $5, $6), @1);
 			// 	}
 			// | XMLSERIALIZE '(' document_or_content a_expr AS SimpleTypename xml_indent_option ')'
@@ -4839,7 +4889,7 @@ simple_select:
 //		 ;
 
 
-/* We use (NIL) as a placeholder to indicate that all target expressions
+/* We use (nil) as a placeholder to indicate that all target expressions
  * should be placed in the DISTINCT list during parsetree analysis.
  */
 distinct_clause:
@@ -5927,9 +5977,28 @@ table_access_method_clause:
 		;
 
 
+/*
+ * Generic supporting productions for DDL
+ */
+opt_single_name:
+			ColId							{ $$ = $1; }
+			| /* EMPTY */					{ $$ = ""; }
+		;
+
 opt_qualified_name:
 			any_name						{ $$ = $1; }
 			| /*EMPTY*/						{ $$ = ""; }
+		;
+
+opt_concurrently:
+			CONCURRENTLY					{ $$ = true; }
+			| /*EMPTY*/						{ $$ = false; }
+		;
+
+opt_drop_behavior:
+			CASCADE							{ }
+			| RESTRICT						{ }
+			| /* EMPTY */					{  }
 		;
 
 

@@ -948,9 +948,33 @@ func TestCreate(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: "create schema sh1",
+			exp:   nil,
+			err:   nil,
+		},
+		{
 			query: "create table xx ( i int )",
 			exp: &lyx.CreateTable{
-				TableName: "xx",
+				TableRv: &lyx.RangeVar{
+					RelationName: "xx",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: "create table sh1.xx ( i int )",
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					SchemaName:   "sh1",
+					RelationName: "xx",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -964,7 +988,9 @@ func TestCreate(t *testing.T) {
 		{
 			query: "create table xx(i int)",
 			exp: &lyx.CreateTable{
-				TableName: "xx",
+				TableRv: &lyx.RangeVar{
+					RelationName: "xx",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -979,7 +1005,9 @@ func TestCreate(t *testing.T) {
 		{
 			query: "create table xx(i int primary key)",
 			exp: &lyx.CreateTable{
-				TableName: "xx",
+				TableRv: &lyx.RangeVar{
+					RelationName: "xx",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -994,7 +1022,9 @@ func TestCreate(t *testing.T) {
 		{
 			query: "create table ott (i int REFERENCES  tt(i))",
 			exp: &lyx.CreateTable{
-				TableName: "ott",
+				TableRv: &lyx.RangeVar{
+					RelationName: "ott",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -1009,7 +1039,9 @@ func TestCreate(t *testing.T) {
 		{
 			query: "create table tt(i int);",
 			exp: &lyx.CreateTable{
-				TableName: "tt",
+				TableRv: &lyx.RangeVar{
+					RelationName: "tt",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -1023,7 +1055,9 @@ func TestCreate(t *testing.T) {
 		{
 			query: "CREATE TABLE sshjt1(i int, j int);",
 			exp: &lyx.CreateTable{
-				TableName: "sshjt1",
+				TableRv: &lyx.RangeVar{
+					RelationName: "sshjt1",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -1041,7 +1075,9 @@ func TestCreate(t *testing.T) {
 		{
 			query: "CREATE TABLE orders(id INT PRIMARY KEY);",
 			exp: &lyx.CreateTable{
-				TableName: "orders",
+				TableRv: &lyx.RangeVar{
+					RelationName: "orders",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "id",
@@ -1055,7 +1091,9 @@ func TestCreate(t *testing.T) {
 		{
 			query: "CREATE TABLE delivery(id INT PRIMARY KEY, order_id INT, FOREIGN KEY(order_id) REFERENCES orders(id));",
 			exp: &lyx.CreateTable{
-				TableName: "delivery",
+				TableRv: &lyx.RangeVar{
+					RelationName: "delivery",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "id",
@@ -2649,7 +2687,9 @@ func TestCreateTableWith(t *testing.T) {
 				pgbench_tellers(tid int not null,bid int,tbalance int,filler char(84)) with (fillfactor=100)
 			`,
 			exp: &lyx.CreateTable{
-				TableName: "pgbench_tellers",
+				TableRv: &lyx.RangeVar{
+					RelationName: "pgbench_tellers",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "tid",
@@ -2693,7 +2733,9 @@ func TestCreateSuccess(t *testing.T) {
 		{
 			query: "create table xx ( ADMIN int, ATOMIC int, CLASS int, LIKE int )",
 			exp: &lyx.CreateTable{
-				TableName: "xx",
+				TableRv: &lyx.RangeVar{
+					RelationName: "xx",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "ADMIN",
@@ -2715,7 +2757,9 @@ func TestCreateSuccess(t *testing.T) {
 		{
 			query: "create table xx ( i0 BINARY, i1 CURRENT_SCHEMA, i2 IS, i3 JOIN, i4 NOTNULL, i5 TABLESAMPLE)",
 			exp: &lyx.CreateTable{
-				TableName: "xx",
+				TableRv: &lyx.RangeVar{
+					RelationName: "xx",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i0",
@@ -2743,7 +2787,9 @@ func TestCreateSuccess(t *testing.T) {
 		{
 			query: "create table JSON_ARRAYAGG ( i int )",
 			exp: &lyx.CreateTable{
-				TableName: "JSON_ARRAYAGG",
+				TableRv: &lyx.RangeVar{
+					RelationName: "JSON_ARRAYAGG",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -2756,7 +2802,9 @@ func TestCreateSuccess(t *testing.T) {
 		{
 			query: "create table XMLTABLE ( i int )",
 			exp: &lyx.CreateTable{
-				TableName: "XMLTABLE",
+				TableRv: &lyx.RangeVar{
+					RelationName: "XMLTABLE",
+				},
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "i",
@@ -3588,6 +3636,38 @@ func TestMultiStmt(t *testing.T) {
 
 				Where: &lyx.AExprEmpty{},
 			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
+func TestTypeCast(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `SELECT NULL::pg_cataloh.text;`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.AExprNConst{
+						Value: false,
+					},
+				},
+			},
+
 			err: nil,
 		},
 	} {

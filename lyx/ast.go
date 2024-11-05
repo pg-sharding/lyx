@@ -213,7 +213,7 @@ type TableElt struct {
 }
 
 type CreateTable struct {
-	TableName string
+	TableRv   FromClauseNode
 	TableElts []Node
 }
 
