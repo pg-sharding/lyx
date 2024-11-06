@@ -948,11 +948,6 @@ func TestCreate(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
-			query: "create schema sh1",
-			exp:   nil,
-			err:   nil,
-		},
-		{
 			query: "create table xx ( i int )",
 			exp: &lyx.CreateTable{
 				TableRv: &lyx.RangeVar{
@@ -1116,6 +1111,29 @@ func TestCreate(t *testing.T) {
 		{
 			query: "create role reg",
 			exp:   &lyx.CreateRole{},
+			err:   nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}
+
+func TestCreateSchema(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+	for _, tt := range []tcase{
+		{
+			query: "create schema sh1",
+			exp:   &lyx.CreateSchema{},
 			err:   nil,
 		},
 	} {

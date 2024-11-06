@@ -3976,17 +3976,27 @@ RoleSpec:
 CreateSchemaStmt:
 			CREATE SCHEMA opt_single_name AUTHORIZATION RoleSpec OptSchemaEltList
 				{
+					$$ = &CreateSchema{
+
+					}
 				}
 			| CREATE SCHEMA ColId OptSchemaEltList
 				{
+					$$ = &CreateSchema{
+						
+					}
 				}
 			| CREATE SCHEMA IF_P NOT EXISTS opt_single_name AUTHORIZATION RoleSpec OptSchemaEltList
 				{
-
+					$$ = &CreateSchema{
+						
+					}
 				}
 			| CREATE SCHEMA IF_P NOT EXISTS ColId OptSchemaEltList
 				{
-
+					$$ = &CreateSchema{
+						
+					}
 				}
 		;
 

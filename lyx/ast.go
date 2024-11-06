@@ -217,6 +217,9 @@ type CreateTable struct {
 	TableElts []Node
 }
 
+type CreateSchema struct {
+}
+
 type Alter struct {
 }
 
@@ -302,6 +305,7 @@ func (*VariableShowStmt) iNode() {}
 func (*SubLink) iNode()          {}
 func (*CommonTableExpr) iNode()  {}
 func (*TableElt) iNode()         {}
+func (*CreateSchema) iNode()     {}
 
 type TransactionStmtType int
 
