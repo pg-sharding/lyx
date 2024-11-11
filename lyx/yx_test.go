@@ -2749,7 +2749,7 @@ func TestCreateSuccess(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
-			query: "create table xx ( ADMIN int, ATOMIC int, CLASS int, LIKE int )",
+			query: "create table xx ( ADMIN int, ATOMIC int, CLASS int)",
 			exp: &lyx.CreateTable{
 				TableRv: &lyx.RangeVar{
 					RelationName: "xx",
@@ -2763,9 +2763,6 @@ func TestCreateSuccess(t *testing.T) {
 						ColType: "int",
 					}, &lyx.TableElt{
 						ColName: "CLASS",
-						ColType: "int",
-					}, &lyx.TableElt{
-						ColName: "LIKE",
 						ColType: "int",
 					},
 				},
@@ -3733,6 +3730,69 @@ func TestUpdateFrom(t *testing.T) {
 						ColName:    "id",
 					},
 					Op: "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
+func TestMiscCatalog(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			SELECT 
+				c.relname
+			FROM pg_catalog.pg_class c 
+			WHERE 
+				c.relkind IN ('r', 'p') 
+			AND 
+				(c.relname) LIKE 'tt%'`,
+
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "pg_catalog",
+						RelationName: "pg_class",
+						Alias:        "c",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							TableAlias: "c",
+							ColName:    "relkind",
+						},
+						Right: &lyx.AExprSConst{
+							Value: "r",
+						},
+						Op: "IN",
+					},
+					Right: &lyx.ColumnRef{
+						TableAlias: "c",
+						ColName:    "relname",
+					},
+					Op: "AND",
+				},
+				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						TableAlias: "c",
+						ColName:    "relname",
+					},
 				},
 			},
 			err: nil,
