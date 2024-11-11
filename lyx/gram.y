@@ -2710,11 +2710,9 @@ a_expr:
 			// | NOT_LA a_expr						%prec NOT
 			// 	{ $$ = makeNotExpr($2, @1); }
 
-			// | a_expr LIKE a_expr
-			// 	{
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_LIKE, "~~",
-			// 									   $1, $3, @2);
-			// 	}
+			| a_expr LIKE a_expr
+				{
+				}
 			// | a_expr LIKE a_expr ESCAPE a_expr					%prec LIKE
 			// 	{
 			// 		FuncCall   *n = makeFuncCall(SystemFuncName("like_escape"),
