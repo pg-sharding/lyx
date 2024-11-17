@@ -1915,6 +1915,20 @@ func TestCopy(t *testing.T) {
 			},
 			err: nil,
 		},
+
+		{
+			query: `copy copy_test (j) from stdin  with (allow_multishard true);`,
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "copy_test",
+				},
+				Columns: []string{"j"},
+				Where:   &lyx.AExprEmpty{},
+				IsFrom:  true,
+				Options: []lyx.Node{&lyx.Option{Name: "allow_multishard", Arg: &lyx.AExprSConst{Value: "true"}}},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
@@ -3753,6 +3767,28 @@ func TestMiscCatalog(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+		{
+			query: `
+			SELECT 
+				c.relname, NULL::pg_catalog.text 
+			FROM 
+				pg_catalog.pg_class c 
+			WHERE 
+				c.relkind IN ('r', 'f', 'p')
+			AND (c.relname) LIKE 'jop%' 
+			AND pg_catalog.pg_table_is_visible(c.oid) 
+			AND c.relnamespace <> (
+				SELECT oid 
+				FROM pg_catalog.pg_namespace 
+				WHERE nspname = 'pg_catalog')
+			UNION ALL
+				SELECT 
+					NULL::pg_catalog.text, n.nspname
+				FROM pg_catalog.pg_namespace n
+				WHERE n.nspname LIKE 'jop%'
+				AND n.nspname NOT LIKE E'pg\\\\_%'
+				LIMIT 1000`,
+		},
 		{
 			query: `
 			SELECT 
