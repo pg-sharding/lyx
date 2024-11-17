@@ -337,13 +337,13 @@ Operator:
 %type<nodeList> opt_target_list
 %type<nodeList> target_list
 
-%type<node> ColRef qualColRef relAllCols
+%type<node> ColRef qualColRef relAllCols columnref
 
 %type<nodeList> expr_list trim_list substr_list
 
 %type<str> opt_with_data
 
-%type<str> ColId columnref set_target
+%type<str> ColId set_target
 
 %type<str> NonReservedWord name database_name access_method index_name
 
@@ -2116,7 +2116,7 @@ opt_collate_clause:
 		;
 
 
-func_name: ColId { $$ = $1 } |  ColId TDOT attr_name { $$ = $1 }
+func_name: ColId { $$ = $1 } |  ColId indirection { $$ = $2 }
 
 
 OptTableFuncElementList:
@@ -2351,6 +2351,7 @@ subquery_Op:
 indirection_el:
 			TDOT attr_name
 				{
+					$$ = $2
 				}
 			| TDOT TMUL
 				{
@@ -2371,8 +2372,8 @@ opt_slice_bound:
 		;
 
 indirection:
-			indirection_el							{ }
-			| indirection indirection_el			{  }
+			indirection_el							{ $$ = $1 }
+			| indirection indirection_el			{ $$ = $1 }
 		;
 
 opt_indirection:
@@ -2510,16 +2511,9 @@ case_arg:	a_expr									{ $$ = $1; }
  * ambiguity to the b_expr syntax.
  */
 c_expr:	
-
-	// columnref								
-	// 			{ 
-	// 				$$ = &AExprConst{
-	// 					Value: $1,
-	// 				}
-	// 			}
 			AexprConst
 				{ $$ = $1; }
-			| ColRef {
+			| columnref {
 					$$ = $1
 			}
 			| PARAM opt_indirection
@@ -2713,20 +2707,13 @@ a_expr:
 			| a_expr LIKE a_expr
 				{
 				}
-			// | a_expr LIKE a_expr ESCAPE a_expr					%prec LIKE
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("like_escape"),
-			// 									 list_make2($3, $5),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_LIKE, "~~",
-			// 									   $1, (Node *) n, @2);
-			// 	}
-			// | a_expr NOT_LA LIKE a_expr							%prec NOT_LA
-			// 	{
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_LIKE, "!~~",
-			// 									   $1, $4, @2);
-			// 	}
+			| a_expr LIKE a_expr ESCAPE a_expr					%prec LIKE
+				{
+					$$ = $1
+				}
+			| a_expr NOT LIKE a_expr							%prec NOT_LA
+				{
+				}
 			// | a_expr NOT_LA LIKE a_expr ESCAPE a_expr			%prec NOT_LA
 			// 	{
 			// 		FuncCall   *n = makeFuncCall(SystemFuncName("like_escape"),
@@ -3012,14 +2999,19 @@ ColRef:
     }
 
 columnref:	ColId
-				{
-					$$ = $1
+			{
+				$$ = &ColumnRef{
+					ColName: $1,
 				}
+			}
 			// TODO: support
-			// | ColId indirection
-			// 	{
-			// 		$$ = $1
-			// 	}
+			| ColId indirection
+			{
+				$$ = &ColumnRef{
+					TableAlias: $1,
+					ColName: $2,
+				}
+			}
 		;
 
 
@@ -4869,6 +4861,10 @@ simple_select:
 				{
 					/* same as SELECT * FROM relation_expr */
 
+					$$ = &Select{
+						FromClause: []FromClauseNode{$2},
+						Where: &AExprEmpty{},
+					}
 				}
 		 	| select_clause UNION set_quantifier select_clause
 		 		{
@@ -4894,7 +4890,7 @@ simple_select:
 		 				RArg: $4,
 		 			}
 		 		}
-//		 ;
+		 ;
 
 
 /* We use (nil) as a placeholder to indicate that all target expressions

@@ -285,7 +285,10 @@ func TestSelectComplex(t *testing.T) {
 						ColName:    "second",
 						TableAlias: "a",
 					},
-					&lyx.AExprEmpty{},
+					&lyx.ColumnRef{
+						ColName:    "*",
+						TableAlias: "c",
+					},
 				},
 				Where: &lyx.AExprEmpty{},
 			},
@@ -1948,6 +1951,63 @@ func TestFuncApplication(t *testing.T) {
 	}
 	for _, tt := range []tcase{
 		{
+			query: `SELECT f(12)`,
+			exp: &lyx.Select{
+				FromClause: nil,
+				Where:      &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "f",
+						Args: []lyx.Node{
+							&lyx.AExprIConst{
+								Value: 12,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			query: `SELECT sh.f(12)`,
+			exp: &lyx.Select{
+				FromClause: nil,
+				Where:      &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "f",
+						Args: []lyx.Node{
+							&lyx.AExprIConst{
+								Value: 12,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			query: `SELECT f(c.oid) from c`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "c",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+
+						Name: "f",
+						Args: []lyx.Node{
+							&lyx.ColumnRef{
+								TableAlias: "c",
+								ColName:    "oid",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			query: "INSERT INTO xxtt1 (j, w_id) SELECT a, 20 from unnest(ARRAY[10]) a;",
 			exp: &lyx.Insert{
 				TableRef: &lyx.RangeVar{RelationName: "xxtt1"},
@@ -1969,9 +2029,9 @@ func TestFuncApplication(t *testing.T) {
 		},
 
 		{
-			query: ` UPDATE xxtt1 
-				set i=a.i, j=a.j 
-			from unnest(ARRAY[(1,10)]) as a(i int, j int) 
+			query: ` UPDATE xxtt1
+				set i=a.i, j=a.j
+			from unnest(ARRAY[(1,10)]) as a(i int, j int)
 			where w_id=20 and xxtt1.j=a.j;`,
 			exp: &lyx.Update{
 				TableRef: &lyx.RangeVar{RelationName: "xxtt1"},
@@ -3786,17 +3846,23 @@ func TestMiscCatalog(t *testing.T) {
 					NULL::pg_catalog.text, n.nspname
 				FROM pg_catalog.pg_namespace n
 				WHERE n.nspname LIKE 'jop%'
-				AND n.nspname NOT LIKE E'pg\\\\_%'
+				AND n.nspname NOT LIKE E'pg\\_%'
 				LIMIT 1000`,
+			exp: &lyx.Select{
+				Op:   "UNION",
+				LArg: &lyx.Select{},
+
+				RArg: &lyx.Select{},
+			},
 		},
 		{
 			query: `
-			SELECT 
+			SELECT
 				c.relname
-			FROM pg_catalog.pg_class c 
-			WHERE 
-				c.relkind IN ('r', 'p') 
-			AND 
+			FROM pg_catalog.pg_class c
+			WHERE
+				c.relkind IN ('r', 'p')
+			AND
 				(c.relname) LIKE 'tt%'`,
 
 			exp: &lyx.Select{
