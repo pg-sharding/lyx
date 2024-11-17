@@ -3849,10 +3849,117 @@ func TestMiscCatalog(t *testing.T) {
 				AND n.nspname NOT LIKE E'pg\\_%'
 				LIMIT 1000`,
 			exp: &lyx.Select{
-				Op:   "UNION",
-				LArg: &lyx.Select{},
+				Op: "UNION",
+				LArg: &lyx.Select{
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							SchemaName:   "pg_catalog",
+							RelationName: "pg_class",
+							Alias:        "c",
+						},
+					},
+					Where: &lyx.AExprOp{
+						Op: "AND",
+						Left: &lyx.AExprOp{
 
-				RArg: &lyx.Select{},
+							Left: &lyx.AExprOp{
+								Left: &lyx.AExprOp{
+									Left:  &lyx.ColumnRef{
+										TableAlias: "c",
+										ColName: "relkind",
+									},
+									Right: &lyx.AExprSConst{
+										Value: "r",
+									},
+									Op: "IN",
+								},
+								Right: &lyx.ColumnRef{
+									TableAlias: "c",
+									ColName: "relname",
+								},
+								Op: "AND",
+							},
+							Right: &lyx.FuncApplication{
+								Name: "pg_table_is_visible",
+								Args: []lyx.Node{
+									&lyx.ColumnRef{
+										TableAlias: "c",
+										ColName: "oid",
+									},
+								},
+							},
+							Op: "AND",
+						},
+						Right: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								TableAlias: "c",
+								ColName:    "relnamespace",
+							},
+							Right: &lyx.Select{
+								FromClause: []lyx.FromClauseNode{
+									&lyx.RangeVar{
+										SchemaName:   "pg_catalog",
+										RelationName: "pg_namespace",
+									},
+								},
+								Where: &lyx.AExprOp{
+									Left: &lyx.ColumnRef{
+										ColName: "nspname",
+									},
+									Right: &lyx.AExprSConst{
+										Value: "pg_catalog",
+									},
+									Op: "=",
+								},
+								TargetList: []lyx.Node{
+									&lyx.ColumnRef{
+										ColName: "oid",
+									},
+								},
+							},
+							Op: "<>",
+						},
+					},
+
+					TargetList: []lyx.Node{
+						&lyx.ColumnRef{
+							TableAlias: "c",
+							ColName:    "relname",
+						},
+
+						&lyx.AExprNConst{},
+					},
+				},
+
+				RArg: &lyx.Select{
+
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							SchemaName:   "pg_catalog",
+							RelationName: "pg_namespace",
+							Alias:        "n",
+						},
+					},
+
+					Where: &lyx.AExprOp{
+						Op: "AND",
+						Left: &lyx.ColumnRef{
+							TableAlias: "n",
+							ColName:    "nspname"},
+						Right: &lyx.ColumnRef{
+
+							TableAlias: "n",
+							ColName:    "nspname",
+						},
+					},
+					TargetList: []lyx.Node{
+						&lyx.AExprNConst{},
+						&lyx.ColumnRef{
+							TableAlias: "n",
+							ColName:    "nspname",
+						},
+					},
+				},
 			},
 		},
 		{
