@@ -285,7 +285,10 @@ func TestSelectComplex(t *testing.T) {
 						ColName:    "second",
 						TableAlias: "a",
 					},
-					&lyx.AExprEmpty{},
+					&lyx.ColumnRef{
+						ColName:    "*",
+						TableAlias: "c",
+					},
 				},
 				Where: &lyx.AExprEmpty{},
 			},
@@ -1915,6 +1918,20 @@ func TestCopy(t *testing.T) {
 			},
 			err: nil,
 		},
+
+		{
+			query: `copy copy_test (j) from stdin  with (allow_multishard true);`,
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "copy_test",
+				},
+				Columns: []string{"j"},
+				Where:   &lyx.AExprEmpty{},
+				IsFrom:  true,
+				Options: []lyx.Node{&lyx.Option{Name: "allow_multishard", Arg: &lyx.AExprSConst{Value: "true"}}},
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
@@ -1933,6 +1950,63 @@ func TestFuncApplication(t *testing.T) {
 		err   error
 	}
 	for _, tt := range []tcase{
+		{
+			query: `SELECT f(12)`,
+			exp: &lyx.Select{
+				FromClause: nil,
+				Where:      &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "f",
+						Args: []lyx.Node{
+							&lyx.AExprIConst{
+								Value: 12,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			query: `SELECT sh.f(12)`,
+			exp: &lyx.Select{
+				FromClause: nil,
+				Where:      &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "f",
+						Args: []lyx.Node{
+							&lyx.AExprIConst{
+								Value: 12,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			query: `SELECT f(c.oid) from c`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "c",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+
+						Name: "f",
+						Args: []lyx.Node{
+							&lyx.ColumnRef{
+								TableAlias: "c",
+								ColName:    "oid",
+							},
+						},
+					},
+				},
+			},
+		},
 		{
 			query: "INSERT INTO xxtt1 (j, w_id) SELECT a, 20 from unnest(ARRAY[10]) a;",
 			exp: &lyx.Insert{
@@ -1955,9 +2029,9 @@ func TestFuncApplication(t *testing.T) {
 		},
 
 		{
-			query: ` UPDATE xxtt1 
-				set i=a.i, j=a.j 
-			from unnest(ARRAY[(1,10)]) as a(i int, j int) 
+			query: ` UPDATE xxtt1
+				set i=a.i, j=a.j
+			from unnest(ARRAY[(1,10)]) as a(i int, j int)
 			where w_id=20 and xxtt1.j=a.j;`,
 			exp: &lyx.Update{
 				TableRef: &lyx.RangeVar{RelationName: "xxtt1"},
@@ -3756,11 +3830,146 @@ func TestMiscCatalog(t *testing.T) {
 		{
 			query: `
 			SELECT 
-				c.relname
-			FROM pg_catalog.pg_class c 
+				c.relname, NULL::pg_catalog.text 
+			FROM 
+				pg_catalog.pg_class c 
 			WHERE 
-				c.relkind IN ('r', 'p') 
-			AND 
+				c.relkind IN ('r', 'f', 'p')
+			AND (c.relname) LIKE 'jop%' 
+			AND pg_catalog.pg_table_is_visible(c.oid) 
+			AND c.relnamespace <> (
+				SELECT oid 
+				FROM pg_catalog.pg_namespace 
+				WHERE nspname = 'pg_catalog')
+			UNION ALL
+				SELECT 
+					NULL::pg_catalog.text, n.nspname
+				FROM pg_catalog.pg_namespace n
+				WHERE n.nspname LIKE 'jop%'
+				AND n.nspname NOT LIKE E'pg\\_%'
+				LIMIT 1000`,
+			exp: &lyx.Select{
+				Op: "UNION",
+				LArg: &lyx.Select{
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							SchemaName:   "pg_catalog",
+							RelationName: "pg_class",
+							Alias:        "c",
+						},
+					},
+					Where: &lyx.AExprOp{
+						Op: "AND",
+						Left: &lyx.AExprOp{
+
+							Left: &lyx.AExprOp{
+								Left: &lyx.AExprOp{
+									Left:  &lyx.ColumnRef{
+										TableAlias: "c",
+										ColName: "relkind",
+									},
+									Right: &lyx.AExprSConst{
+										Value: "r",
+									},
+									Op: "IN",
+								},
+								Right: &lyx.ColumnRef{
+									TableAlias: "c",
+									ColName: "relname",
+								},
+								Op: "AND",
+							},
+							Right: &lyx.FuncApplication{
+								Name: "pg_table_is_visible",
+								Args: []lyx.Node{
+									&lyx.ColumnRef{
+										TableAlias: "c",
+										ColName: "oid",
+									},
+								},
+							},
+							Op: "AND",
+						},
+						Right: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								TableAlias: "c",
+								ColName:    "relnamespace",
+							},
+							Right: &lyx.Select{
+								FromClause: []lyx.FromClauseNode{
+									&lyx.RangeVar{
+										SchemaName:   "pg_catalog",
+										RelationName: "pg_namespace",
+									},
+								},
+								Where: &lyx.AExprOp{
+									Left: &lyx.ColumnRef{
+										ColName: "nspname",
+									},
+									Right: &lyx.AExprSConst{
+										Value: "pg_catalog",
+									},
+									Op: "=",
+								},
+								TargetList: []lyx.Node{
+									&lyx.ColumnRef{
+										ColName: "oid",
+									},
+								},
+							},
+							Op: "<>",
+						},
+					},
+
+					TargetList: []lyx.Node{
+						&lyx.ColumnRef{
+							TableAlias: "c",
+							ColName:    "relname",
+						},
+
+						&lyx.AExprNConst{},
+					},
+				},
+
+				RArg: &lyx.Select{
+
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							SchemaName:   "pg_catalog",
+							RelationName: "pg_namespace",
+							Alias:        "n",
+						},
+					},
+
+					Where: &lyx.AExprOp{
+						Op: "AND",
+						Left: &lyx.ColumnRef{
+							TableAlias: "n",
+							ColName:    "nspname"},
+						Right: &lyx.ColumnRef{
+
+							TableAlias: "n",
+							ColName:    "nspname",
+						},
+					},
+					TargetList: []lyx.Node{
+						&lyx.AExprNConst{},
+						&lyx.ColumnRef{
+							TableAlias: "n",
+							ColName:    "nspname",
+						},
+					},
+				},
+			},
+		},
+		{
+			query: `
+			SELECT
+				c.relname
+			FROM pg_catalog.pg_class c
+			WHERE
+				c.relkind IN ('r', 'p')
+			AND
 				(c.relname) LIKE 'tt%'`,
 
 			exp: &lyx.Select{
