@@ -56,6 +56,14 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         ninteger = '-' integer;
         param = '$' integer;
         
+
+#        space		=	[ \t\n\r\f];
+        horiz_space	= [ \t\f];
+        newline		=	[\n\r];
+        non_newline	=	[^\n\r];
+        dquote      =   ["];
+
+
         decimal	= ((digit*'.'digit+)|(digit+'.'digit*));
         real = (decimal)|('-'decimal);
 
@@ -64,13 +72,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
         identifier	=	ident_start ident_cont*;
 
-        qidentifier	=	'"' ident_start ident_cont* '"' ;
+        qidentifier	=	dquote (any - newline - dquote)* dquote ;
 
-
-#        space		=	[ \t\n\r\f];
-        horiz_space	= [ \t\f];
-        newline		=	[\n\r];
-        non_newline	=	[^\n\r];
 
         sql_comment = '-''-' non_newline*;
         c_style_comment = '/''*' (any - '*''/')* '*''/';
