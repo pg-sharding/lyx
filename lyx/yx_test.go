@@ -951,6 +951,21 @@ func TestCreate(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `create table "xx-x" ( i int )`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "xx-x",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
 			query: "create table xx ( i int )",
 			exp: &lyx.CreateTable{
 				TableRv: &lyx.RangeVar{
@@ -3864,9 +3879,9 @@ func TestMiscCatalog(t *testing.T) {
 
 							Left: &lyx.AExprOp{
 								Left: &lyx.AExprOp{
-									Left:  &lyx.ColumnRef{
+									Left: &lyx.ColumnRef{
 										TableAlias: "c",
-										ColName: "relkind",
+										ColName:    "relkind",
 									},
 									Right: &lyx.AExprSConst{
 										Value: "r",
@@ -3875,7 +3890,7 @@ func TestMiscCatalog(t *testing.T) {
 								},
 								Right: &lyx.ColumnRef{
 									TableAlias: "c",
-									ColName: "relname",
+									ColName:    "relname",
 								},
 								Op: "AND",
 							},
@@ -3884,7 +3899,7 @@ func TestMiscCatalog(t *testing.T) {
 								Args: []lyx.Node{
 									&lyx.ColumnRef{
 										TableAlias: "c",
-										ColName: "oid",
+										ColName:    "oid",
 									},
 								},
 							},

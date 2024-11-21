@@ -191,6 +191,30 @@ func TestSimple(t *testing.T) {
 				lyx.TSEMICOLON,
 			},
 		},
+		{
+			query: `create table "xxx" ( i int )`,
+			exp: []int{
+				lyx.CREATE,
+				lyx.TABLE,
+				lyx.IDENT,
+				lyx.TOPENBR,
+				lyx.IDENT,
+				lyx.INT_P,
+				lyx.TCLOSEBR,
+			},
+		},
+		{
+			query: `create table "xx-x" ( i int )`,
+			exp: []int{
+				lyx.CREATE,
+				lyx.TABLE,
+				lyx.IDENT,
+				lyx.TOPENBR,
+				lyx.IDENT,
+				lyx.INT_P,
+				lyx.TCLOSEBR,
+			},
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
