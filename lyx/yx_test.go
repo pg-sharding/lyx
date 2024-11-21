@@ -2936,7 +2936,6 @@ func TestCte(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
-
 		{
 			query: `
 with cte (i) as (values (12), (13))
@@ -3194,6 +3193,27 @@ func TestMiscQ(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+		{
+			query: `
+			insert into a.b
+			TABLE dd
+			on conflict do nothing
+			returning *`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					SchemaName:   "a",
+					RelationName: "b",
+				},
+				SubSelect: &lyx.Select{
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							RelationName: "dd",
+						},
+					},
+					Where: &lyx.AExprEmpty{},
+				},
+			},
+		},
 		{
 			query: `
 			SELECT * from X where id in ( select 1 );
