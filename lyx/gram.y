@@ -28,27 +28,27 @@ func NewLyxParser() LyxParser {
 // fields inside this union end up as the fields in a structure known
 // as ${PREFIX}SymType, of which a reference is passed to the lexer.
 %union {
-	str                    string
-    strlist                []string
-	byte                   byte
-	bytes                  []byte
-	int                    int
-	bool                   bool
-	empty                  struct{}
+	str			string
+	strlist			[]string
+	byte			byte
+	bytes			[]byte
+	int			int
+	bool			bool
+	empty			struct{}
 
-	node				   Node
-    from_list              []FromClauseNode
-    from                   FromClauseNode
-    tableelt               []TableElt
-    tableref               FromClauseNode
+	node			Node
+	from_list		[]FromClauseNode
+	from			FromClauseNode
+	tableelt		[]TableElt
+	tableref		FromClauseNode
 
-    nodeList              []Node
+	nodeList		[]Node
 
-	txMode                TransactionModeItem
-	txModeList            []TransactionModeItem
+	txMode			TransactionModeItem
+	txModeList		[]TransactionModeItem
 
-	cte                   *CommonTableExpr
-	cteList               []*CommonTableExpr
+	cte			*CommonTableExpr
+	cteList			[]*CommonTableExpr
 }
 
 // any non-terminal which returns a value needs a type, which is
