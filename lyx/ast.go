@@ -213,8 +213,9 @@ type TableElt struct {
 }
 
 type CreateTable struct {
-	TableRv   FromClauseNode
-	TableElts []Node
+	TableRv     FromClauseNode
+	TableElts   []Node
+	PartitionOf FromClauseNode
 }
 
 type CreateSchema struct {
