@@ -146,6 +146,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /zone/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; fbreak;};
 
             /if/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = IF_P; fbreak;};
+            /OF/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = OF; fbreak;};
 
             /prepare/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = PREPARE; fbreak;};
             /deallocate/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEALLOCATE; fbreak;};
@@ -307,6 +308,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /EXCEPT/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCEPT; fbreak;};
             /INTERSECT/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INTERSECT; fbreak;};
             /ALL/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ALL; fbreak;};
+
+            /PARTITION/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = PARTITION; fbreak;};
 
             qidentifier      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; fbreak;};
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};

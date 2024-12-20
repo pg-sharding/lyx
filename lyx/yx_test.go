@@ -2713,7 +2713,14 @@ func TestCreateTablePart(t *testing.T) {
 			query: `
 create table xxhash_part_1 partition of xxhash_part for values from ('2024-12-01') to ('2024-12-31');
 `,
-			exp: &lyx.CreateTable{},
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "xxhash_part_1",
+				},
+				PartitionOf: &lyx.RangeVar{
+					RelationName: "xxhash_part",
+				},
+			},
 		},
 	} {
 		_, err := lyx.Parse(tt.query)
