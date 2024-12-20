@@ -3932,10 +3932,14 @@ optifne:
 	IF_P NOT EXISTS {} | /* empty*/ {}
 
 CreateStmt:
-    CREATE TABLE optifne table_name TOPENBR OptTableElementList TCLOSEBR OptWith anything {
+    CREATE TABLE optifne table_name TOPENBR OptTableElementList TCLOSEBR OptPartitionSpec OptWith anything {
         $$ = &CreateTable {
             TableRv: $4,
             TableElts: $6,
+        }
+    } | CREATE TABLE optifne table_name OptPartitionSpec OptWith anything {
+        $$ = &CreateTable {
+            TableRv: $4,
         }
     } | CREATE INDEX anything {
         $$ = &Index{
@@ -6003,6 +6007,43 @@ opt_drop_behavior:
 			CASCADE							{ }
 			| RESTRICT						{ }
 			| /* EMPTY */					{  }
+		;
+
+
+
+OptInherit: INHERITS TOPENBR qualified_name_list TCLOSEBR	{ $$ = $3; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+/* Optional partition key specification */
+OptPartitionSpec: PartitionSpec	{ $$ = $1; }
+			| /*EMPTY*/			{ $$ = nil; }
+		;
+
+PartitionSpec: PARTITION BY ColId TOPENBR part_params TCLOSEBR
+				{
+					$$ = nil
+				}
+		;
+
+part_params:	part_elem						{  }
+			| part_params TCOMMA part_elem			{  }
+		;
+
+part_elem: ColId opt_collate opt_qualified_name
+				{
+				}
+			| func_expr_windowless opt_collate opt_qualified_name
+				{
+				}
+			| TOPENBR a_expr TCLOSEBR opt_collate opt_qualified_name
+				{
+				}
+		;
+
+table_access_method_clause:
+			USING name							{ $$ = $2; }
+			| /*EMPTY*/							{ $$ = ""; }
 		;
 
 

@@ -2700,6 +2700,28 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 	}
 }
 
+func TestCreateTablePart(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+create table xxhash_part_1 partition of xxhash_part for values from ('2024-12-01') to ('2024-12-31');
+`,
+			exp: &lyx.CreateTable{},
+		},
+	} {
+		_, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+	}
+}
+
 func TestDrop(t *testing.T) {
 	assert := assert.New(t)
 
