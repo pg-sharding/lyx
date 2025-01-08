@@ -1921,6 +1921,40 @@ func TestCopy(t *testing.T) {
 			err: nil,
 		},
 		{
+			query: `copy copy_test from stdin with (ON_ERROR ignore, force_null true)`,
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "copy_test",
+				},
+				Where:  &lyx.AExprEmpty{},
+				IsFrom: true,
+				Options: []lyx.Node{
+					&lyx.Option{Name: "ON_ERROR", Arg: &lyx.AExprSConst{Value: "ignore"}},
+					&lyx.Option{Name: "force_null", Arg: &lyx.AExprSConst{Value: "true"}},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `COPY "eed78c80-dcd0-4556-96fd-0e9cf091c175_2025-01-01_xxx" ( uid, data ) FROM STDIN  WITH (DELIMITER '|', ON_ERROR ignore) /* __spqr__allow_multishard: true */;`,
+			exp: &lyx.Copy{
+				TableRef: &lyx.RangeVar{
+					RelationName: "eed78c80-dcd0-4556-96fd-0e9cf091c175_2025-01-01_xxx",
+				},
+				Columns: []string{
+					"uid",
+					"data",
+				},
+				Where:  &lyx.AExprEmpty{},
+				IsFrom: true,
+				Options: []lyx.Node{
+					&lyx.Option{Name: "DELIMITER", Arg: &lyx.AExprSConst{Value: "|"}},
+					&lyx.Option{Name: "ON_ERROR", Arg: &lyx.AExprSConst{Value: "ignore"}},
+				},
+			},
+			err: nil,
+		},
+		{
 			query: `copy copy_test(id,name) from stdin with (delimiter ';')`,
 			exp: &lyx.Copy{
 				TableRef: &lyx.RangeVar{
@@ -1935,7 +1969,7 @@ func TestCopy(t *testing.T) {
 		},
 
 		{
-			query: `copy copy_test (j) from stdin  with (allow_multishard true);`,
+			query: `copy copy_test (j) from stdin with (allow_multishard true);`,
 			exp: &lyx.Copy{
 				TableRef: &lyx.RangeVar{
 					RelationName: "copy_test",
