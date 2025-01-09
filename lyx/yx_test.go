@@ -3684,6 +3684,26 @@ func TestSetStmt(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `
+			reset __spqr_lol;`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Name:    "__spqr_lol",
+				Kind:    lyx.VarTypeReset,
+			},
+			err: nil,
+		},
+		{
+			query: `
+			reset ALL;`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Name:    "ALL",
+				Kind:    lyx.VarTypeResetAll,
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
