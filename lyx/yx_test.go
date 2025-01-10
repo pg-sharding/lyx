@@ -3657,6 +3657,37 @@ func TestSetStmt(t *testing.T) {
 			},
 			err: nil,
 		},
+
+		{
+			query: `
+			SET LOCAL extra_float_digits = 3
+`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				IsLocal: true,
+				Name:    "extra_float_digits",
+				Kind:    lyx.VarTypeSet,
+				Value: []string{
+					"3",
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: `
+			SET SESSION extra_float_digits = 3
+`,
+			exp: &lyx.VariableSetStmt{
+				Session: true,
+				Name:    "extra_float_digits",
+				Kind:    lyx.VarTypeSet,
+				Value: []string{
+					"3",
+				},
+			},
+			err: nil,
+		},
 		{
 			query: `
 			SET search_path = 'test'
