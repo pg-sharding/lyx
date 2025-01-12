@@ -1183,7 +1183,11 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"id"},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{&lyx.AExprIConst{Value: 1}},
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{Value: 1},
+						},
+					},
 				},
 			},
 			err: nil,
@@ -1245,12 +1249,14 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"code", "title", "did", "date_prod", "kind"},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprSConst{Value: "T_601"},
-						&lyx.AExprSConst{Value: "Yojimbo"},
-						&lyx.AExprIConst{Value: 106},
-						&lyx.AExprSConst{Value: "1961-06-16"},
-						&lyx.AExprSConst{Value: "Drama"},
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprSConst{Value: "T_601"},
+							&lyx.AExprSConst{Value: "Yojimbo"},
+							&lyx.AExprIConst{Value: 106},
+							&lyx.AExprSConst{Value: "1961-06-16"},
+							&lyx.AExprSConst{Value: "Drama"},
+						},
 					},
 				},
 			},
@@ -1301,9 +1307,11 @@ func TestInsert(t *testing.T) {
 					"id2",
 				},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprIConst{Value: 1},
-						&lyx.AExprIConst{Value: 2},
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{Value: 1},
+							&lyx.AExprIConst{Value: 2},
+						},
 					},
 				},
 			},
@@ -1319,10 +1327,12 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"j", "i", "w_id"},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprIConst{Value: 2121221},
-						&lyx.AExprIConst{Value: -211212},
-						&lyx.AExprIConst{Value: 21},
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{Value: 2121221},
+							&lyx.AExprIConst{Value: -211212},
+							&lyx.AExprIConst{Value: 21},
+						},
 					},
 				},
 			},
@@ -1343,9 +1353,19 @@ func TestInsert(t *testing.T) {
 					"id2",
 				},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprIConst{Value: 1},
-						&lyx.AExprIConst{Value: 2},
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{Value: 1},
+							&lyx.AExprIConst{Value: 2},
+						},
+						{
+							&lyx.AExprIConst{Value: 2},
+							&lyx.AExprIConst{Value: 3},
+						},
+						{
+							&lyx.AExprIConst{Value: 4},
+							&lyx.AExprIConst{Value: 5},
+						},
 					},
 				},
 			},
@@ -1401,11 +1421,13 @@ VALUES(2822, ROW('none', '0'));
 
 				Columns: []string{"id", "info"},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprIConst{
-							Value: 2822,
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{
+								Value: 2822,
+							},
+							nil,
 						},
-						nil,
 					},
 				},
 			},
@@ -1429,13 +1451,15 @@ VALUES(2822, ROW('none', '0'), ''::bytea);
 				},
 				Columns: []string{"id", "info", "bytes"},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprIConst{
-							Value: 2822,
-						},
-						nil,
-						&lyx.AExprSConst{
-							Value: "",
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{
+								Value: 2822,
+							},
+							nil,
+							&lyx.AExprSConst{
+								Value: "",
+							},
 						},
 					},
 				},
@@ -1487,30 +1511,32 @@ func TestInsertComplex(t *testing.T) {
 					"record_expiry",
 				},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprSConst{
-							Value: "0",
-						},
-						&lyx.AExprSConst{
-							Value: "\\x0d1e9794bac311ee8a19ea2e156ae3d8",
-						},
-						&lyx.AExprSConst{
-							Value: "2a02:6b8:c08:6819:0:5c2f:8548:0",
-						},
-						&lyx.AExprSConst{
-							Value: "6934",
-						},
-						&lyx.AExprSConst{
-							Value: "2",
-						},
-						&lyx.AExprSConst{
-							Value: "2024-01-24 14:15:39.699192Z",
-						},
-						&lyx.AExprSConst{
-							Value: "2024-01-24 14:15:39.750655Z",
-						},
-						&lyx.AExprSConst{
-							Value: "2024-01-26 14:15:39.750655Z",
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprSConst{
+								Value: "0",
+							},
+							&lyx.AExprSConst{
+								Value: "\\x0d1e9794bac311ee8a19ea2e156ae3d8",
+							},
+							&lyx.AExprSConst{
+								Value: "2a02:6b8:c08:6819:0:5c2f:8548:0",
+							},
+							&lyx.AExprSConst{
+								Value: "6934",
+							},
+							&lyx.AExprSConst{
+								Value: "2",
+							},
+							&lyx.AExprSConst{
+								Value: "2024-01-24 14:15:39.699192Z",
+							},
+							&lyx.AExprSConst{
+								Value: "2024-01-24 14:15:39.750655Z",
+							},
+							&lyx.AExprSConst{
+								Value: "2024-01-26 14:15:39.750655Z",
+							},
 						},
 					},
 				},
@@ -1531,15 +1557,17 @@ func TestInsertComplex(t *testing.T) {
 					"id",
 				},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprSConst{
-							Value: "John",
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprSConst{
+								Value: "John",
+							},
+							&lyx.AExprSConst{
+								Value: "Smith",
+							},
+							&lyx.AExprSConst{Value: ""},
+							&lyx.AExprSConst{Value: "1"},
 						},
-						&lyx.AExprSConst{
-							Value: "Smith",
-						},
-						&lyx.AExprSConst{Value: ""},
-						&lyx.AExprSConst{Value: "1"},
 					},
 				},
 			},
@@ -1563,25 +1591,27 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 					Alias:        "",
 				},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprSConst{Value: "1970-01-01 12:00:00.5"},
-						&lyx.AExprIConst{Value: 111111},
-						&lyx.AExprNConst{},
-						&lyx.AExprNConst{},
-						&lyx.AExprSConst{Value: "9223372036854775807"},
-						&lyx.AExprSConst{Value: "2"},
-						&lyx.AExprSConst{Value: "some"},
-						&lyx.AExprSConst{Value: "thing"},
-						&lyx.AExprSConst{Value: "*()*()Q*D()beiwe"},
-						&lyx.AExprSConst{Value: "0"},
-						&lyx.AExprSConst{Value: "trunk"},
-						&lyx.AExprBConst{Value: true},
-						&lyx.AExprSConst{Value: "{280,fb8,909,e6,ffc}"},
-						&lyx.AExprSConst{Value: "{9223372036854775806}"},
-						&lyx.AExprSConst{Value: "31337"},
-						&lyx.AExprSConst{Value: "bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././"},
-						&lyx.AExprSConst{Value: "0"},
-						&lyx.AExprIConst{Value: 0},
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprSConst{Value: "1970-01-01 12:00:00.5"},
+							&lyx.AExprIConst{Value: 111111},
+							&lyx.AExprNConst{},
+							&lyx.AExprNConst{},
+							&lyx.AExprSConst{Value: "9223372036854775807"},
+							&lyx.AExprSConst{Value: "2"},
+							&lyx.AExprSConst{Value: "some"},
+							&lyx.AExprSConst{Value: "thing"},
+							&lyx.AExprSConst{Value: "*()*()Q*D()beiwe"},
+							&lyx.AExprSConst{Value: "0"},
+							&lyx.AExprSConst{Value: "trunk"},
+							&lyx.AExprBConst{Value: true},
+							&lyx.AExprSConst{Value: "{280,fb8,909,e6,ffc}"},
+							&lyx.AExprSConst{Value: "{9223372036854775806}"},
+							&lyx.AExprSConst{Value: "31337"},
+							&lyx.AExprSConst{Value: "bfuiqwefbIUGEIUWhgui..012-2-03849012381==-=-~~~?!@$#@#%%^&*^*(*)../././"},
+							&lyx.AExprSConst{Value: "0"},
+							&lyx.AExprIConst{Value: 0},
+						},
 					},
 				},
 				Columns: []string{
@@ -3008,9 +3038,14 @@ select * from tbl inner join cte on tbl.i = cte.i;
 				WithClause: []*lyx.CommonTableExpr{
 					{
 						SubQuery: &lyx.ValueClause{
-							Values: []lyx.Node{
-								&lyx.AExprIConst{
-									Value: 12,
+							Values: [][]lyx.Node{
+								{
+									&lyx.AExprIConst{
+										Value: 12,
+									},
+									&lyx.AExprIConst{
+										Value: 13,
+									},
 								},
 							},
 						},
@@ -3456,33 +3491,35 @@ func TestMiscQ(t *testing.T) {
 					"w_ytd",
 				},
 				SubSelect: &lyx.ValueClause{
-					Values: []lyx.Node{
-						&lyx.AExprIConst{
-							Value: 1,
-						},
-						&lyx.AExprSConst{
-							Value: "name-vjxqu",
-						},
-						&lyx.AExprSConst{
-							Value: "street1-qkfzdggwut",
-						},
-						&lyx.AExprSConst{
-							Value: "street2-jxuhvhtqct",
-						},
-						&lyx.AExprSConst{
-							Value: "city-irchbmwruo",
-						},
-						&lyx.AExprSConst{
-							Value: "er",
-						},
-						&lyx.AExprSConst{
-							"zip-26599",
-						},
-						&lyx.AExprSConst{
-							"0.017264",
-						},
-						&lyx.AExprIConst{
-							300000,
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{
+								Value: 1,
+							},
+							&lyx.AExprSConst{
+								Value: "name-vjxqu",
+							},
+							&lyx.AExprSConst{
+								Value: "street1-qkfzdggwut",
+							},
+							&lyx.AExprSConst{
+								Value: "street2-jxuhvhtqct",
+							},
+							&lyx.AExprSConst{
+								Value: "city-irchbmwruo",
+							},
+							&lyx.AExprSConst{
+								Value: "er",
+							},
+							&lyx.AExprSConst{
+								"zip-26599",
+							},
+							&lyx.AExprSConst{
+								"0.017264",
+							},
+							&lyx.AExprIConst{
+								300000,
+							},
 						},
 					},
 				},

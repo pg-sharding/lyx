@@ -5148,12 +5148,13 @@ values_clause:
 			VALUES TOPENBR expr_list TCLOSEBR
 				{
 					$$ = &ValueClause{
-						Values: $3,
+						Values: [][]Node{$3},
 					}
 				}
 			| values_clause TCOMMA TOPENBR expr_list TCLOSEBR
 				{
 					$$ = $1
+					$$.(*ValueClause).Values = append($$.(*ValueClause).Values, $4)
 				}
 		;
 
