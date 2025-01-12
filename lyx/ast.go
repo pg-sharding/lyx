@@ -175,7 +175,7 @@ type Select struct {
 }
 
 type ValueClause struct {
-	Values []Node
+	Values [][]Node
 }
 
 type Insert struct {
