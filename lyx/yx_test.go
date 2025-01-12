@@ -3043,6 +3043,8 @@ select * from tbl inner join cte on tbl.i = cte.i;
 									&lyx.AExprIConst{
 										Value: 12,
 									},
+								},
+								{
 									&lyx.AExprIConst{
 										Value: 13,
 									},
