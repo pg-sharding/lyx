@@ -3031,6 +3031,69 @@ func TestCte(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
+			insert into tt
+with c1 as (values(1,2,3), (2,3,4), (3,4,5)) select * from c1;	
+			`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "tt",
+				},
+				SubSelect: &lyx.Select{
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{RelationName: "c1"},
+					},
+					WithClause: []*lyx.CommonTableExpr{
+						{
+							Name: "c1",
+							SubQuery: &lyx.ValueClause{
+								Values: [][]lyx.Node{
+									{
+										&lyx.AExprIConst{
+											Value: 1,
+										},
+										&lyx.AExprIConst{
+											Value: 2,
+										},
+										&lyx.AExprIConst{
+											Value: 3,
+										},
+									},
+									{
+										&lyx.AExprIConst{
+											Value: 2,
+										},
+										&lyx.AExprIConst{
+											Value: 3,
+										},
+										&lyx.AExprIConst{
+											Value: 4,
+										},
+									},
+									{
+										&lyx.AExprIConst{
+											Value: 3,
+										},
+										&lyx.AExprIConst{
+											Value: 4,
+										},
+										&lyx.AExprIConst{
+											Value: 5,
+										},
+									},
+								},
+							},
+						},
+					},
+					Where: &lyx.AExprEmpty{},
+					TargetList: []lyx.Node{
+						&lyx.AExprEmpty{},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
 with cte (i) as (values (12), (13))
 select * from tbl inner join cte on tbl.i = cte.i;
 			`,
