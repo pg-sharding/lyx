@@ -150,6 +150,12 @@ type AExprOp struct {
 	Op string
 }
 
+type AExprIn struct {
+	Expr    Node
+	SubLink Node
+	List    []Node
+}
+
 func (*AExprOp) iNode() {
 }
 
@@ -307,6 +313,7 @@ func (*SubLink) iNode()          {}
 func (*CommonTableExpr) iNode()  {}
 func (*TableElt) iNode()         {}
 func (*CreateSchema) iNode()     {}
+func (*AExprIn) iNode()          {}
 
 type TransactionStmtType int
 
