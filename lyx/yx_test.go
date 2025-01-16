@@ -2563,6 +2563,74 @@ func TestMisc(t *testing.T) {
 	}
 }
 
+func TestInConditions(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "UPDATE rel SET i = i + 1 WHERE i IN (1,2,3,4+5)",
+			exp: &lyx.Update{
+				TableRef: &lyx.RangeVar{
+					RelationName: "rel",
+				},
+				Where: &lyx.AExprIn{
+					Expr: &lyx.ColumnRef{
+						ColName: "i",
+					},
+					List: []lyx.Node{
+						&lyx.AExprIConst{Value: 1},
+						&lyx.AExprIConst{Value: 2},
+						&lyx.AExprIConst{Value: 3},
+
+						&lyx.AExprOp{
+							Left:  &lyx.AExprIConst{Value: 4},
+							Right: &lyx.AExprIConst{Value: 5},
+							Op:    "+",
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
+			query: "DELETE FROM rel WHERE i IN (1,2,3,4+5)",
+			exp: &lyx.Delete{
+				TableRef: &lyx.RangeVar{
+					RelationName: "rel",
+				},
+				Where: &lyx.AExprIn{
+					Expr: &lyx.ColumnRef{
+						ColName: "i",
+					},
+					List: []lyx.Node{
+						&lyx.AExprIConst{Value: 1},
+						&lyx.AExprIConst{Value: 2},
+						&lyx.AExprIConst{Value: 3},
+
+						&lyx.AExprOp{
+							Left:  &lyx.AExprIConst{Value: 4},
+							Right: &lyx.AExprIConst{Value: 5},
+							Op:    "+",
+						},
+					},
+				},
+			},
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
 func TestErrors(t *testing.T) {
 	assert := assert.New(t)
 
