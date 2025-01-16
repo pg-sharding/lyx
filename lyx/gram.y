@@ -2451,14 +2451,14 @@ trim_list:	a_expr FROM expr_list					{ $$ = append($3, $1); }
 in_expr:	select_with_parens
 				{
 					/* other fields will be filled later */
-					$$ = $1
+					$$ = &AExprIn{
+						SubLink: $1,
+					}
 				}
 			| TOPENBR expr_list TCLOSEBR						
 			{
-				if len($2) > 0 {
-					$$ = $2[0] 
-				} else {
-					$$ = nil
+				$$ = &AExprIn{
+					List: $2,
 				}
 			}
 		;
@@ -2902,11 +2902,8 @@ a_expr:
 			// 	}
 			| a_expr IN_P in_expr
 				{
-					$$ = &AExprOp{
-						Left: $1,
-						Right: $3,
-						Op: "IN",
-					}
+					$$ = $3
+					$$.(*AExprIn).Expr = $1
 				}
 			| a_expr NOT_LA IN_P in_expr						%prec NOT_LA
 				{
