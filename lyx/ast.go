@@ -153,7 +153,6 @@ type AExprOp struct {
 type AExprIn struct {
 	Expr    Node
 	SubLink Node
-	List    []Node
 }
 
 func (*AExprOp) iNode() {

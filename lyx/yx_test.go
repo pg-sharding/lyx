@@ -1795,8 +1795,8 @@ AND (shard_id, namespace_id, workflow_id, run_id, type, id, name) IN (
 						Op:    "=",
 					},
 					Right: &lyx.AExprIn{
-						Expr: nil,
-						List: []lyx.Node{nil},
+						Expr:    nil,
+						SubLink: &lyx.AExprList{List: []lyx.Node{nil}},
 					},
 					Op: "AND",
 				},
@@ -2583,15 +2583,18 @@ func TestInConditions(t *testing.T) {
 					Expr: &lyx.ColumnRef{
 						ColName: "i",
 					},
-					List: []lyx.Node{
-						&lyx.AExprIConst{Value: 1},
-						&lyx.AExprIConst{Value: 2},
-						&lyx.AExprIConst{Value: 3},
 
-						&lyx.AExprOp{
-							Left:  &lyx.AExprIConst{Value: 4},
-							Right: &lyx.AExprIConst{Value: 5},
-							Op:    "+",
+					SubLink: &lyx.AExprList{
+						List: []lyx.Node{
+							&lyx.AExprIConst{Value: 1},
+							&lyx.AExprIConst{Value: 2},
+							&lyx.AExprIConst{Value: 3},
+
+							&lyx.AExprOp{
+								Left:  &lyx.AExprIConst{Value: 4},
+								Right: &lyx.AExprIConst{Value: 5},
+								Op:    "+",
+							},
 						},
 					},
 				},
@@ -2608,7 +2611,8 @@ func TestInConditions(t *testing.T) {
 					Expr: &lyx.ColumnRef{
 						ColName: "i",
 					},
-					List: []lyx.Node{
+
+					SubLink: &lyx.AExprList{[]lyx.Node{
 						&lyx.AExprIConst{Value: 1},
 						&lyx.AExprIConst{Value: 2},
 						&lyx.AExprIConst{Value: 3},
@@ -2618,6 +2622,7 @@ func TestInConditions(t *testing.T) {
 							Right: &lyx.AExprIConst{Value: 5},
 							Op:    "+",
 						},
+					},
 					},
 				},
 			},
@@ -4186,10 +4191,13 @@ func TestMiscCatalog(t *testing.T) {
 										TableAlias: "c",
 										ColName:    "relkind",
 									},
-									List: []lyx.Node{
-										&lyx.AExprSConst{Value: "r"},
-										&lyx.AExprSConst{Value: "f"},
-										&lyx.AExprSConst{Value: "p"},
+
+									SubLink: &lyx.AExprList{
+										List: []lyx.Node{
+											&lyx.AExprSConst{Value: "r"},
+											&lyx.AExprSConst{Value: "f"},
+											&lyx.AExprSConst{Value: "p"},
+										},
 									},
 								},
 								Right: &lyx.ColumnRef{
@@ -4305,9 +4313,12 @@ func TestMiscCatalog(t *testing.T) {
 							TableAlias: "c",
 							ColName:    "relkind",
 						},
-						List: []lyx.Node{
-							&lyx.AExprSConst{Value: "r"},
-							&lyx.AExprSConst{Value: "p"},
+
+						SubLink: &lyx.AExprList{
+							List: []lyx.Node{
+								&lyx.AExprSConst{Value: "r"},
+								&lyx.AExprSConst{Value: "p"},
+							},
 						},
 					},
 					Right: &lyx.ColumnRef{

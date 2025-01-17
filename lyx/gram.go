@@ -12304,7 +12304,7 @@ yydefault:
 //line lyx/gram.y:2459
 		{
 			yyVAL.node = &AExprIn{
-				List: yyDollar[2].nodeList,
+				SubLink: &AExprList{List: yyDollar[2].nodeList},
 			}
 		}
 	case 1194:

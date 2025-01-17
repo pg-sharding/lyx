@@ -2458,7 +2458,7 @@ in_expr:	select_with_parens
 			| TOPENBR expr_list TCLOSEBR						
 			{
 				$$ = &AExprIn{
-					List: $2,
+					SubLink: &AExprList{List:$2},
 				}
 			}
 		;
