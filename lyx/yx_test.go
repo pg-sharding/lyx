@@ -2936,6 +2936,13 @@ func TestTruncateTable(t *testing.T) {
 			exp: &lyx.Truncate{},
 			err: nil,
 		},
+		{
+			query: `
+			TRUNCATE TABLE cashback.daily_check_scan_stat, cashback.checks, cashback.transactions_locks CASCADE
+			`,
+			exp: &lyx.Truncate{},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
