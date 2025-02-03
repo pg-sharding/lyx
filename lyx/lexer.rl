@@ -221,6 +221,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
             /COMMITTED/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMITTED; fbreak;};
 
+            /CASCADE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CASCADE; fbreak;};
+            /RESTRICT/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = RESTRICT; fbreak;};
 
             /array/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ARRAY; fbreak;};
             # explicit row for c_expr 

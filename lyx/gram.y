@@ -281,7 +281,7 @@ Operator:
 %type<node> VariableSetStmt
 %type<node> CreateStmt alter_stmt CreateSchemaStmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
-%type<node> truncate_stmt drop_stmt
+%type<node> TruncateStmt drop_stmt
 %type<str> semicolon_opt
 
 %type<node> PreparableStmt
@@ -381,7 +381,7 @@ Operator:
 %type<node> OptInherit OptPartitionSpec PartitionSpec key_match
 
 %type<str> table_access_method_clause opt_qualified_name opt_single_name
-%type<str> opt_drop_behavior
+%type<str> opt_drop_behavior opt_restart_seqs
 %type<bool> opt_concurrently
 
 %type<txMode> transaction_mode_item
@@ -1555,7 +1555,7 @@ command:
 		setParseTree(yylex, $1)
     } | analyze_stmt {
 		setParseTree(yylex, $1)
-    } | truncate_stmt {
+    } | TruncateStmt {
 		setParseTree(yylex, $1)
     } | drop_stmt {
 		setParseTree(yylex, $1)
@@ -4031,12 +4031,26 @@ drop_stmt:
     }
 
 
-truncate_stmt:
-    TRUNCATE anything {
-        $$ = &Truncate {
-            
-        }
-    }
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				truncate table relname1, relname2, ...
+ *
+ *****************************************************************************/
+
+TruncateStmt:
+			TRUNCATE opt_table relation_expr_list opt_restart_seqs opt_drop_behavior
+				{
+					$$ = &Truncate{}
+				}
+		;
+
+opt_restart_seqs:
+			CONTINUE_P IDENTITY_P		{ $$ = "false"; }
+			| RESTART IDENTITY_P		{ $$ = "true"; }
+			| /* EMPTY */				{ $$ = "false"; }
+		;
+
 
 
 
