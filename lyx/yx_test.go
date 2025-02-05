@@ -1826,6 +1826,7 @@ AND (shard_id, namespace_id, workflow_id, run_id, type, id, name) IN (
 					Right: &lyx.AExprIn{
 						Expr:    nil,
 						SubLink: &lyx.AExprList{List: []lyx.Node{nil}},
+						Op:      "IN",
 					},
 					Op: "AND",
 				},
@@ -2603,6 +2604,87 @@ func TestInConditions(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `select 1 from sh1.tt where i not in (select 2);`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "sh1",
+						RelationName: "tt",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{Value: 1},
+				},
+				Where: &lyx.AExprIn{
+					Expr: &lyx.ColumnRef{
+						ColName: "i",
+					},
+					Op: "NOTIN",
+					SubLink: &lyx.Select{
+						TargetList: []lyx.Node{
+							&lyx.AExprIConst{Value: 2},
+						},
+						Where: &lyx.AExprEmpty{},
+					},
+				},
+			},
+		},
+		{
+			query: `select 1 from sh1.tt where tt.i not in (select 2);`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "sh1",
+						RelationName: "tt",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{Value: 1},
+				},
+				Where: &lyx.AExprIn{
+					Expr: &lyx.ColumnRef{
+						TableAlias: "tt",
+						ColName:    "i",
+					},
+					Op: "NOTIN",
+					SubLink: &lyx.Select{
+						TargetList: []lyx.Node{
+							&lyx.AExprIConst{Value: 2},
+						},
+						Where: &lyx.AExprEmpty{},
+					},
+				},
+			},
+		},
+
+		{
+			query: `select 1 from sh1.tt where sh1.tt.i not in (select 2);`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "sh1",
+						RelationName: "tt",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{Value: 1},
+				},
+				Where: &lyx.AExprIn{
+					Expr: &lyx.ColumnRef{
+						TableAlias: "tt",
+						ColName:    "i",
+					},
+					Op: "NOTIN",
+					SubLink: &lyx.Select{
+						TargetList: []lyx.Node{
+							&lyx.AExprIConst{Value: 2},
+						},
+						Where: &lyx.AExprEmpty{},
+					},
+				},
+			},
+		},
+		{
 			query: "UPDATE rel SET i = i + 1 WHERE i IN (1,2,3,4+5)",
 			exp: &lyx.Update{
 				TableRef: &lyx.RangeVar{
@@ -2626,6 +2708,7 @@ func TestInConditions(t *testing.T) {
 							},
 						},
 					},
+					Op: "IN",
 				},
 			},
 			err: nil,
@@ -2641,18 +2724,20 @@ func TestInConditions(t *testing.T) {
 						ColName: "i",
 					},
 
-					SubLink: &lyx.AExprList{[]lyx.Node{
-						&lyx.AExprIConst{Value: 1},
-						&lyx.AExprIConst{Value: 2},
-						&lyx.AExprIConst{Value: 3},
+					SubLink: &lyx.AExprList{
+						[]lyx.Node{
+							&lyx.AExprIConst{Value: 1},
+							&lyx.AExprIConst{Value: 2},
+							&lyx.AExprIConst{Value: 3},
 
-						&lyx.AExprOp{
-							Left:  &lyx.AExprIConst{Value: 4},
-							Right: &lyx.AExprIConst{Value: 5},
-							Op:    "+",
+							&lyx.AExprOp{
+								Left:  &lyx.AExprIConst{Value: 4},
+								Right: &lyx.AExprIConst{Value: 5},
+								Op:    "+",
+							},
 						},
 					},
-					},
+					Op: "IN",
 				},
 			},
 		},
@@ -3511,6 +3596,7 @@ func TestMiscQ(t *testing.T) {
 							&lyx.AExprIConst{Value: 1},
 						},
 					},
+					Op: "IN",
 				},
 			},
 			err: nil,
@@ -3544,6 +3630,7 @@ func TestMiscQ(t *testing.T) {
 							},
 							TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
 						},
+						Op: "IN",
 					},
 					Right: &lyx.AExprOp{
 						Left: &lyx.ColumnRef{
@@ -4235,6 +4322,7 @@ func TestMiscCatalog(t *testing.T) {
 											&lyx.AExprSConst{Value: "p"},
 										},
 									},
+									Op: "IN",
 								},
 								Right: &lyx.ColumnRef{
 									TableAlias: "c",
@@ -4356,6 +4444,7 @@ func TestMiscCatalog(t *testing.T) {
 								&lyx.AExprSConst{Value: "p"},
 							},
 						},
+						Op: "IN",
 					},
 					Right: &lyx.ColumnRef{
 						TableAlias: "c",

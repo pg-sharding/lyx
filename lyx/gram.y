@@ -2905,10 +2905,13 @@ a_expr:
 				{
 					$$ = $3
 					$$.(*AExprIn).Expr = $1
+					$$.(*AExprIn).Op = "IN"
 				}
-			| a_expr NOT_LA IN_P in_expr						%prec NOT_LA
+			| a_expr NOT IN_P in_expr						%prec NOT_LA
 				{
-					
+					$$ = $4
+					$$.(*AExprIn).Expr = $1
+					$$.(*AExprIn).Op = "NOTIN"
 				}
 			| a_expr subquery_Op sub_type select_with_parens	%prec Op
 				{
