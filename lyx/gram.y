@@ -394,7 +394,8 @@ Operator:
 
 %type<str> type_list prep_type_clause
 
-%type<str> opt_indirection indirection opt_slice_bound indirection_el 
+%type<str> opt_indirection opt_slice_bound indirection_el 
+%type<strlist> indirection
 
 /* Precedence: lowest to highest */
 %nonassoc	SET				/* see relation_expr_opt_alias */
@@ -2114,7 +2115,7 @@ opt_collate_clause:
 		;
 
 
-func_name: ColId { $$ = $1 } |  ColId indirection { $$ = $2 }
+func_name: ColId { $$ = $1 } |  ColId indirection { $$ = $2[0] }
 
 
 OptTableFuncElementList:
@@ -2370,8 +2371,8 @@ opt_slice_bound:
 		;
 
 indirection:
-			indirection_el							{ $$ = $1 }
-			| indirection indirection_el			{ $$ = $1 }
+			indirection_el							{ $$ = []string{$1} }
+			| indirection indirection_el			{ $$ = append($1, $2) }
 		;
 
 opt_indirection:
@@ -2996,15 +2997,23 @@ ColRef:
 columnref:	ColId
 			{
 				$$ = &ColumnRef{
+					TableAlias: "",
 					ColName: $1,
 				}
 			}
 			// TODO: support
 			| ColId indirection
 			{
-				$$ = &ColumnRef{
-					TableAlias: $1,
-					ColName: $2,
+				if len($2) > 1 {
+					$$ = &ColumnRef {
+						TableAlias: $2[0],
+						ColName: $2[1],
+					}
+				} else {
+					$$ = &ColumnRef {
+						TableAlias: $1,
+						ColName: $2[0],
+					}
 				}
 			}
 		;
