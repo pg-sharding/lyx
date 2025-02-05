@@ -153,6 +153,8 @@ type AExprOp struct {
 type AExprIn struct {
 	Expr    Node
 	SubLink Node
+
+	Op string
 }
 
 func (*AExprOp) iNode() {
