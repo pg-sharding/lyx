@@ -2921,13 +2921,65 @@ func TestCreateTableWithPrimaryKey(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
-			create table IF NOT EXISTS item (i_id int not null, i_im_id int, i_name varchar(24), i_price decimal(5,2), i_data varchar(50),PRIMARY KEY(i_id) )`,
-			exp: &lyx.Drop{},
+			create table IF NOT EXISTS item (
+				i_id int not null,
+				i_im_id int,
+				i_name varchar(24),
+				i_price decimal(5,2),
+				i_data varchar(50), PRIMARY KEY(i_id) )`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "item",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i_id",
+						ColType: "int",
+					},
+
+					&lyx.TableElt{
+						ColName: "i_im_id",
+						ColType: "int",
+					},
+
+					&lyx.TableElt{
+						ColName: "i_name",
+						ColType: "varchar",
+					},
+
+					&lyx.TableElt{
+						ColName: "i_price",
+						ColType: "decimal",
+					},
+
+					&lyx.TableElt{
+						ColName: "i_data",
+						ColType: "varchar",
+					},
+					nil,
+				},
+			},
+		},
+		{
+			query: `create table tt(i int unique);`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "tt",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
 		},
 	} {
-		_, err := lyx.Parse(tt.query)
+		stmt, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, stmt, tt.query)
 	}
 }
 
@@ -2942,13 +2994,137 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
-			create table IF NOT EXISTS customer (c_id int not null, c_d_id int not null, c_w_id int not null, c_first varchar(16), c_middle char(2), c_last varchar(16), c_street_1 varchar(20), c_street_2 varchar(20), c_city varchar(20), c_state char(2), c_zip char(9), c_phone char(16), c_credit char(2), c_credit_lim bigint, c_discount decimal(4,2), c_balance decimal(12,2), c_ytd_payment decimal(12,2), c_payment_cnt int, c_delivery_cnt int, c_data text, PRIMARY KEY(c_w_id, c_d_id, c_id) )`,
-			exp: &lyx.Drop{},
+			create table IF NOT EXISTS customer (
+				c_id int not null,
+				c_d_id int not null,
+				c_w_id int not null,
+				c_first varchar(16),
+				c_middle char(2),
+				c_last varchar(16),
+				c_street_1 varchar(20),
+				c_street_2 varchar(20),
+				c_city varchar(20),
+				c_state char(2),
+				c_zip char(9),
+				c_phone char(16),
+				c_credit char(2),
+				c_credit_lim bigint,
+				c_discount decimal(4,2),
+				c_balance decimal(12,2),
+				c_ytd_payment decimal(12,2),
+				c_payment_cnt int,
+				c_delivery_cnt int,c_data text, PRIMARY KEY(c_w_id, c_d_id, c_id) )`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "customer",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "c_id",
+						ColType: "int",
+					},
+					&lyx.TableElt{
+						ColName: "c_d_id",
+						ColType: "int",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_w_id",
+						ColType: "int",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_first",
+						ColType: "varchar",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_middle",
+						ColType: "char",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_last",
+						ColType: "varchar",
+					},
+					&lyx.TableElt{
+						ColName: "c_street_1",
+						ColType: "varchar",
+					},
+					&lyx.TableElt{
+						ColName: "c_street_2",
+						ColType: "varchar",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_city",
+						ColType: "varchar",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_state",
+						ColType: "char",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_zip",
+						ColType: "char",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_phone",
+						ColType: "char",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_credit",
+						ColType: "char",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_credit_lim",
+						ColType: "bigint",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_discount",
+						ColType: "decimal",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_balance",
+						ColType: "decimal",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_ytd_payment",
+						ColType: "decimal",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_payment_cnt",
+						ColType: "int",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_delivery_cnt",
+						ColType: "int",
+					},
+
+					&lyx.TableElt{
+						ColName: "c_data",
+						ColType: "text",
+					},
+					nil,
+				},
+			},
 		},
 	} {
-		_, err := lyx.Parse(tt.query)
+		stmt, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, stmt, tt.query)
 	}
 }
 
