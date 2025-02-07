@@ -165,6 +165,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /database/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DATABASE; fbreak;};
             /role/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLE; fbreak;};
             /primary/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = PRIMARY; fbreak;};
+            /unique/i  => { lval.str = string(lex.data[lex.ts:lex.te]); tok = UNIQUE; fbreak;};
             /foreign/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FOREIGN; fbreak;};
             /references/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = REFERENCES; fbreak;};
             /key/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = KEY; fbreak;};
