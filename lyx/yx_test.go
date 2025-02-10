@@ -377,6 +377,32 @@ func TestSelectDistinct(t *testing.T) {
 	}
 }
 
+func TestAclGrantRevoke(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			GRANT SELECT ON TABLE pp.'tt' TO pp2;
+			`,
+			exp: &lyx.Grant{},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
 func TestSelect(t *testing.T) {
 	assert := assert.New(t)
 
