@@ -181,6 +181,9 @@ type Select struct {
 	RArg Node
 }
 
+type Grant struct {
+}
+
 type ValueClause struct {
 	Values [][]Node
 }
@@ -315,6 +318,7 @@ func (*CommonTableExpr) iNode()  {}
 func (*TableElt) iNode()         {}
 func (*CreateSchema) iNode()     {}
 func (*AExprIn) iNode()          {}
+func (*Grant) iNode()            {}
 
 type TransactionStmtType int
 

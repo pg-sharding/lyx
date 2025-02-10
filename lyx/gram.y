@@ -65,9 +65,13 @@ func NewLyxParser() LyxParser {
 %token <str> SCONST IDENT
 %token <int> ICONST
 
+%token<str> NumericOnly
+
 %type<str> any_id any_val func_name any_name
 
-%type<bool> opt_program
+%type<str> RoleSpec grantee
+
+%type<bool> opt_program opt_grant_grant_option
 
 %type <bool> opt_unique_null_treatment  opt_without_overlaps
 
@@ -106,6 +110,11 @@ func NewLyxParser() LyxParser {
 %type<node> func_alias_clause
 
 %type<node> a_expr c_expr b_expr in_expr case_expr case_default case_arg
+
+%type<node> GrantStmt RevokeStmt RevokeRoleStmt GrantRoleStmt
+
+%type<node> opt_granted_by DefACLAction
+%type<nodeList> role_list
 
 /* CIUD */
 %token<str> CREATE ALTER
@@ -1574,6 +1583,14 @@ any_id:
 		$$ = string($1)
 	}
 
+
+
+any_name_list:
+			any_name								{  }
+			| any_name_list TCOMMA any_name			{ }
+		;
+
+
 any_name:	ColId						{ }
 			// | ColId attrs				{ }
 		;
@@ -1881,12 +1898,29 @@ def_arg:
 	// func_type						{ $$ = (Node *)$1; }
 			reserved_keyword				{} 
 			// | qual_all_Op					{ $$ = (Node *)$1; }
-			// NumericOnly					{ }
-			| ICONST {} 
+			| NumericOnly					{ }
+			| ICONST						{} 
 			| SCONST						{  }
 			// | NONE							{ $$ = (Node *)makeString(pstrdup($1)); }
 		;
 
+
+
+// FCONST								{}
+// | TPLUS FCONST						{ }
+// | TMINUS FCONST
+// 	{
+// 	}
+//  TODO: support fconst 
+// NumericOnly: SCONST {} 
+// 			| TPLUS SCONST {}
+// 			| TMINUS SCONST {}
+// 			| SignedIconst						{}
+// 		;
+
+// NumericOnly_list:	NumericOnly						{}
+// 				| NumericOnly_list TCOMMA NumericOnly	{}
+// 		;
 
 
 /*
@@ -3555,7 +3589,15 @@ routable_statement:
         $$ = $1
     } | copy_stmt {
         $$ = $1
-    } | EXPLAIN routable_statement {
+    } | GrantStmt {
+		$$ = $1
+	} | RevokeStmt {
+		$$ = $1
+	} | GrantRoleStmt {
+		$$ = $1
+	} | RevokeStmt {
+		$$ = $1
+	} | EXPLAIN routable_statement {
         $$ = &Explain{
             Stmt: $2,
         }
@@ -3969,7 +4011,27 @@ OptSchemaEltList:
 	/* Empty */;
 
 RoleSpec:
-	/* Empty */;
+			NonReservedWord
+				{
+				}
+			| CURRENT_ROLE
+				{
+				}
+			| CURRENT_USER
+				{
+				}
+			| SESSION_USER
+				{
+				}
+		;
+
+
+
+role_list:	RoleSpec
+				{ }
+			| role_list TCOMMA RoleSpec
+				{ }
+		;
 
 /*****************************************************************************
  *
@@ -4125,6 +4187,7 @@ opt_for_clause:  /*empty*/ {} |FOR anything {}
 /* Column identifier --- names that can be column, table, etc names.
  */
 ColId:		IDENT									{ $$ = $1; }
+			| SCONST									{ $$ = $1; }
 			| unreserved_keyword					{ $$ = $1; }
 			| col_name_keyword						{ $$ = $1; }
 		;
@@ -4174,7 +4237,7 @@ qualified_name_list:
  * which may contain subscripts, and reject that case in the C code.
  */
 qualified_name:
-			ColId  TDOT ColId {
+			ColId TDOT ColId {
 					$$ = &RangeVar {
 						SchemaName: $1,
 						RelationName: $3,
@@ -6050,6 +6113,295 @@ hash_partbound:
 			{
 			}
 		;
+
+
+/*****************************************************************************
+ *
+ * GRANT and REVOKE statements
+ *
+ *****************************************************************************/
+
+GrantStmt:	GRANT privileges ON privilege_target TO grantee_list
+			opt_grant_grant_option opt_granted_by
+				{
+					$$ = &Grant{}
+				}
+		;
+
+RevokeStmt:
+			REVOKE privileges ON privilege_target
+			FROM grantee_list opt_granted_by opt_drop_behavior
+				{
+					$$ = &Grant{}
+				}
+			| REVOKE GRANT OPTION FOR privileges ON privilege_target
+			FROM grantee_list opt_granted_by opt_drop_behavior
+				{
+					$$ = &Grant{}
+				}
+		;
+
+
+/*
+ * Privilege names are represented as strings; the validity of the privilege
+ * names gets checked at execution.  This is a bit annoying but we have little
+ * choice because of the syntactic conflict with lists of role names in
+ * GRANT/REVOKE.  What's more, we have to call out in the "privilege"
+ * production any reserved keywords that need to be usable as privilege names.
+ */
+
+/* either ALL [PRIVILEGES] or a list of individual privileges */
+privileges: privilege_list
+				{  }
+			| ALL
+				{ }
+			| ALL PRIVILEGES
+				{  }
+			| ALL TOPENBR columnList TCLOSEBR
+				{
+				}
+			| ALL PRIVILEGES TOPENBR columnList TCLOSEBR
+				{
+				}
+		;
+
+privilege_list:	privilege							{ }
+			| privilege_list TCOMMA privilege			{ }
+		;
+
+privilege:	SELECT opt_column_list
+			{
+			}
+		| REFERENCES opt_column_list
+			{
+			}
+		| CREATE opt_column_list
+			{
+			}
+		| ALTER SYSTEM_P
+			{
+			}
+		| ColId opt_column_list
+			{
+			}
+		;
+
+parameter_name_list:
+		parameter_name
+			{
+			}
+		| parameter_name_list TCOMMA parameter_name
+			{
+			}
+		;
+
+parameter_name:
+		ColId
+			{
+			
+			}
+		| parameter_name '.' ColId
+			{
+			}
+		;
+
+
+/* Don't bother trying to fold the first two rules into one using
+ * opt_table.  You're going to get conflicts.
+ */
+privilege_target:
+			qualified_name_list
+				{
+				}
+			| TABLE qualified_name_list
+				{
+				}
+			| SEQUENCE qualified_name_list
+				{
+				}
+			| FOREIGN DATA_P WRAPPER name_list
+				{
+				}
+			| FOREIGN SERVER name_list
+				{
+				}
+			// | FUNCTION function_with_argtypes_list
+			// 	{
+			// 	}
+			// | PROCEDURE function_with_argtypes_list
+			// 	{
+			// 	}
+			// | ROUTINE function_with_argtypes_list
+			// 	{
+			// 	}
+			| DATABASE name_list
+				{
+				}
+			| DOMAIN_P any_name_list
+				{
+				}
+			| LANGUAGE name_list
+				{
+				}
+			// | LARGE_P OBJECT_P NumericOnly_list
+			// 	{
+			// 	}
+			| PARAMETER parameter_name_list
+				{
+				}
+			| SCHEMA name_list
+				{
+				}
+			| TABLESPACE name_list
+				{
+				}
+			| TYPE_P any_name_list
+				{
+				}
+			| ALL TABLES IN_P SCHEMA name_list
+				{
+				}
+			| ALL SEQUENCES IN_P SCHEMA name_list
+				{
+				}
+			| ALL FUNCTIONS IN_P SCHEMA name_list
+				{
+				}
+			| ALL PROCEDURES IN_P SCHEMA name_list
+				{
+				}
+			| ALL ROUTINES IN_P SCHEMA name_list
+				{
+
+				}
+		;
+
+
+grantee_list:
+			grantee									{  }
+			| grantee_list TCOMMA grantee				{ }
+		;
+
+grantee:
+			RoleSpec								{ $$ = $1; }
+			| GROUP_P RoleSpec						{ $$ = $2; }
+		;
+
+
+opt_grant_grant_option:
+			WITH GRANT OPTION { $$ = true; }
+			| /*EMPTY*/ { $$ = false; }
+		;
+
+/*****************************************************************************
+ *
+ * GRANT and REVOKE ROLE statements
+ *
+ *****************************************************************************/
+
+GrantRoleStmt:
+			GRANT privilege_list TO role_list opt_granted_by
+				{
+					$$ = &Grant{}
+				}
+		  | GRANT privilege_list TO role_list WITH grant_role_opt_list opt_granted_by
+				{
+					$$ = &Grant{}
+				}
+		;
+
+RevokeRoleStmt:
+			REVOKE privilege_list FROM role_list opt_granted_by opt_drop_behavior
+				{
+					$$ = &Grant{}
+				}
+			| REVOKE ColId OPTION FOR privilege_list FROM role_list opt_granted_by opt_drop_behavior
+				{
+					$$ = &Grant{}
+				}
+		;
+
+grant_role_opt_list:
+			grant_role_opt_list ',' grant_role_opt	{ }
+			| grant_role_opt						{ }
+		;
+
+grant_role_opt:
+		ColLabel grant_role_opt_value
+			{
+			}
+		;
+
+grant_role_opt_value:
+		OPTION			{ }
+		| TRUE_P		{ }
+		| FALSE_P		{  }
+		;
+
+opt_granted_by: GRANTED BY RoleSpec						{ $$ = nil; }
+			| /*EMPTY*/									{ $$ = nil; }
+		;
+
+/*****************************************************************************
+ *
+ * ALTER DEFAULT PRIVILEGES statement
+ *
+ *****************************************************************************/
+
+AlterDefaultPrivilegesStmt:
+			ALTER DEFAULT PRIVILEGES DefACLOptionList DefACLAction
+				{
+				}
+		;
+
+DefACLOptionList:
+			DefACLOptionList DefACLOption			{ }
+			| /* EMPTY */							{ }
+		;
+
+DefACLOption:
+			IN_P SCHEMA name_list
+				{
+				}
+			| FOR ROLE role_list
+				{
+				}
+			| FOR USER role_list
+				{
+				}
+		;
+
+/*
+ * This should match GRANT/REVOKE, except that individual target objects
+ * are not mentioned and we only allow a subset of object types.
+ */
+DefACLAction:
+			GRANT privileges ON defacl_privilege_target TO grantee_list
+			opt_grant_grant_option
+				{
+					$$ = &Grant{}
+				}
+			| REVOKE privileges ON defacl_privilege_target
+			FROM grantee_list opt_drop_behavior
+				{
+					$$ = &Grant{}
+				}
+			| REVOKE GRANT OPTION FOR privileges ON defacl_privilege_target
+			FROM grantee_list opt_drop_behavior
+				{
+					$$ = &Grant{}
+				}
+		;
+
+defacl_privilege_target:
+			TABLES			{  }
+			| FUNCTIONS		{  }
+			| ROUTINES		{  }
+			| SEQUENCES		{  }
+			| TYPES_P		{  }
+			| SCHEMAS		{  }
+		;
+
 
 
 /*

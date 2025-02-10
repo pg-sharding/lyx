@@ -215,6 +215,20 @@ func TestSimple(t *testing.T) {
 				lyx.TCLOSEBR,
 			},
 		},
+		{
+			query: `create table sh.'xx-x' ( i int )`,
+			exp: []int{
+				lyx.CREATE,
+				lyx.TABLE,
+				lyx.IDENT,
+				lyx.TDOT,
+				lyx.SCONST,
+				lyx.TOPENBR,
+				lyx.IDENT,
+				lyx.INT_P,
+				lyx.TCLOSEBR,
+			},
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
