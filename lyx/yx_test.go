@@ -690,6 +690,26 @@ func TestSelect(t *testing.T) {
 			err: nil,
 		},
 		{
+			query: `
+			select id from tbl where i = 12 for update skip locked limit 1 offset 0
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "tbl",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left:  &lyx.ColumnRef{ColName: "i"},
+					Right: &lyx.AExprIConst{Value: 12},
+					Op:    "=",
+				},
+				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
+			},
+			err: nil,
+		},
+
+		{
 			query: `SELECT * FROM (SELECT * FROM tt)`,
 			exp: &lyx.Select{
 				FromClause: []lyx.FromClauseNode{
