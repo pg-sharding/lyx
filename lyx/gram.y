@@ -4728,10 +4728,17 @@ table_ref:	relation_expr opt_alias_clause
 			// 	}
 			| select_with_parens opt_alias_clause
 				{
+					$$ = &SubSelect{
+						Arg: $1,
+					}
+					$$.SetAlias($2)
 				}
 			| LATERAL_P select_with_parens opt_alias_clause
 				{
-
+					$$ = &SubSelect{
+						Arg: $2,
+					}
+					$$.SetAlias($3)
 				}
 			| joined_table
 				{
