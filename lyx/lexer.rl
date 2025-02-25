@@ -195,6 +195,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /stdout/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = STDOUT; fbreak;};
 
             /limit/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LIMIT; fbreak;};
+            /offset/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = OFFSET; fbreak;};
             /distinct/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DISTINCT; fbreak;};
             /like/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LIKE; fbreak;};
             
