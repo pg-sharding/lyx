@@ -102,6 +102,11 @@ type JoinExpr struct {
 	Alias string
 }
 
+type SubSelect struct {
+	Arg   Node
+	Alias string
+}
+
 type AExprEmpty struct {
 }
 
@@ -161,6 +166,10 @@ func (*AExprOp) iNode() {
 }
 
 func (r *JoinExpr) SetAlias(s string) {
+	r.Alias = s
+}
+
+func (r *SubSelect) SetAlias(s string) {
 	r.Alias = s
 }
 

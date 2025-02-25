@@ -258,6 +258,20 @@ func TestSelectComplex(t *testing.T) {
 					Larg: &lyx.RangeVar{
 						RelationName: "a",
 					},
+					Rarg: &lyx.SubSelect{
+						Arg: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "b",
+								},
+							},
+							Where: &lyx.AExprEmpty{},
+							TargetList: []lyx.Node{
+								&lyx.AExprEmpty{},
+							},
+						},
+						Alias: "c",
+					},
 				}},
 				TargetList: []lyx.Node{
 					&lyx.AExprEmpty{},
@@ -274,6 +288,20 @@ func TestSelectComplex(t *testing.T) {
 				FromClause: []lyx.FromClauseNode{&lyx.JoinExpr{
 					Larg: &lyx.RangeVar{
 						RelationName: "a",
+					},
+					Rarg: &lyx.SubSelect{
+						Arg: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "b",
+								},
+							},
+							Where: &lyx.AExprEmpty{},
+							TargetList: []lyx.Node{
+								&lyx.AExprEmpty{},
+							},
+						},
+						Alias: "c",
 					},
 				}},
 				TargetList: []lyx.Node{
@@ -328,7 +356,7 @@ func TestSelectComplex(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
@@ -658,6 +686,28 @@ func TestSelect(t *testing.T) {
 					Op:    "=",
 				},
 				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
+			},
+			err: nil,
+		},
+		{
+			query: `SELECT * FROM (SELECT * FROM tt)`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.SubSelect{
+						Arg: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{
+									RelationName: "tt",
+								},
+							},
+
+							Where:      &lyx.AExprEmpty{},
+							TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+						},
+					},
+				},
+				Where:      &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 			},
 			err: nil,
 		},
