@@ -2739,88 +2739,101 @@ a_expr:
 
 			| a_expr LIKE a_expr
 				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $3,
+						Op: "ILIKE",
+					}
 				}
 			| a_expr LIKE a_expr ESCAPE a_expr					%prec LIKE
 				{
-					$$ = $1
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $3,
+						Op: "ILIKE",
+					}
 				}
 			| a_expr NOT LIKE a_expr							%prec NOT_LA
 				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $4,
+						Op: "NOT LIKE",
+					}
 				}
-			// | a_expr NOT_LA LIKE a_expr ESCAPE a_expr			%prec NOT_LA
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("like_escape"),
-			// 									 list_make2($4, $6),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_LIKE, "!~~",
-			// 									   $1, (Node *) n, @2);
-			// 	}
-			// | a_expr ILIKE a_expr
-			// 	{
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_ILIKE, "~~*",
-			// 									   $1, $3, @2);
-			// 	}
-			// | a_expr ILIKE a_expr ESCAPE a_expr					%prec ILIKE
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("like_escape"),
-			// 									 list_make2($3, $5),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_ILIKE, "~~*",
-			// 									   $1, (Node *) n, @2);
-			// 	}
-			// | a_expr NOT_LA ILIKE a_expr						%prec NOT_LA
-			// 	{
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_ILIKE, "!~~*",
-			// 									   $1, $4, @2);
-			// 	}
-			// | a_expr NOT_LA ILIKE a_expr ESCAPE a_expr			%prec NOT_LA
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("like_escape"),
-			// 									 list_make2($4, $6),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_ILIKE, "!~~*",
-			// 									   $1, (Node *) n, @2);
-			// 	}
+			| a_expr NOT LIKE a_expr ESCAPE a_expr			%prec NOT_LA
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $4,
+						Op: "NOT LIKE",
+					}
+				}
+			| a_expr ILIKE a_expr
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $3,
+						Op: "ILIKE",
+					}
+				}
+			| a_expr ILIKE a_expr ESCAPE a_expr					%prec ILIKE
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $3,
+						Op: "ILIKE",
+					}
+				}
+			| a_expr NOT ILIKE a_expr						%prec NOT_LA
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $4,
+						Op: "NOT ILIKE",
+					}
+				}
+			| a_expr NOT ILIKE a_expr ESCAPE a_expr			%prec NOT_LA
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $4,
+						Op: "NOT ILIKE",
+					}
+				}
 
-			// | a_expr SIMILAR TO a_expr							%prec SIMILAR
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("similar_to_escape"),
-			// 									 list_make1($4),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_SIMILAR, "~",
-			// 									   $1, (Node *) n, @2);
-			// 	}
-			// | a_expr SIMILAR TO a_expr ESCAPE a_expr			%prec SIMILAR
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("similar_to_escape"),
-			// 									 list_make2($4, $6),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_SIMILAR, "~",
-			// 									   $1, (Node *) n, @2);
-			// 	}
-			// | a_expr NOT_LA SIMILAR TO a_expr					%prec NOT_LA
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("similar_to_escape"),
-			// 									 list_make1($5),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_SIMILAR, "!~",
-			// 									   $1, (Node *) n, @2);
-			// 	}
-			// | a_expr NOT_LA SIMILAR TO a_expr ESCAPE a_expr		%prec NOT_LA
-			// 	{
-			// 		FuncCall   *n = makeFuncCall(SystemFuncName("similar_to_escape"),
-			// 									 list_make2($5, $7),
-			// 									 COERCE_EXPLICIT_CALL,
-			// 									 @2);
-			// 		$$ = (Node *) makeSimpleA_Expr(AEXPR_SIMILAR, "!~",
-			// 									   $1, (Node *) n, @2);
-			// 	}
+			| a_expr SIMILAR TO a_expr							%prec SIMILAR
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $4,
+						Op: "SIMILAR TO",
+					}
+				}
+			| a_expr SIMILAR TO a_expr ESCAPE a_expr			%prec SIMILAR
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $4,
+						Op: "SIMILAR TO",
+					}
+				}
+			| a_expr NOT SIMILAR TO a_expr					%prec NOT_LA
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $5,
+						Op: "NOT SIMILAR TO",
+					}
+				}
+			| a_expr NOT SIMILAR TO a_expr ESCAPE a_expr		%prec NOT_LA
+				{
+					$$ = &AExprOp{
+						Left: $1,
+						Right: $5,
+						Op: "NOT SIMILAR TO",
+					}
+				}
 
 			/* NullTest clause
 			 * Define SQL-style Null test clause.
