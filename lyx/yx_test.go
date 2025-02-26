@@ -441,7 +441,43 @@ func TestSelect(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
-
+		{
+			query: `SELECT 
+			c.a.id, 
+			c.a.uuid
+		   FROM c.a 
+		   WHERE c.a.title ILIKE '%zvo%' 
+		   ORDER BY c.a.id DESC 
+		   LIMIT 5 OFFSET 0`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "c",
+						RelationName: "a",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						TableAlias: "a",
+						ColName:    "title",
+					},
+					Right: &lyx.AExprSConst{
+						Value: "%zvo%",
+					},
+					Op: "ILIKE",
+				},
+				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						TableAlias: "a",
+						ColName:    "id",
+					},
+					&lyx.ColumnRef{
+						TableAlias: "a",
+						ColName:    "uuid",
+					},
+				},
+			},
+		},
 		{
 			query: `SELECT rid FROM sh1.t1 WHERE sh1.t1.col1 = '1122'`,
 			exp: &lyx.Select{
@@ -4596,9 +4632,15 @@ func TestMiscCatalog(t *testing.T) {
 									},
 									Op: "IN",
 								},
-								Right: &lyx.ColumnRef{
-									TableAlias: "c",
-									ColName:    "relname",
+								Right: &lyx.AExprOp{
+									Left: &lyx.ColumnRef{
+										TableAlias: "c",
+										ColName:    "relname",
+									},
+									Right: &lyx.AExprSConst{
+										Value: "jop%",
+									},
+									Op: "ILIKE",
 								},
 								Op: "AND",
 							},
@@ -4666,13 +4708,21 @@ func TestMiscCatalog(t *testing.T) {
 
 					Where: &lyx.AExprOp{
 						Op: "AND",
-						Left: &lyx.ColumnRef{
-							TableAlias: "n",
-							ColName:    "nspname"},
-						Right: &lyx.ColumnRef{
+						Left: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								TableAlias: "n",
+								ColName:    "nspname"},
+							Right: &lyx.AExprSConst{
+								Value: "jop%",
+							},
+							Op: "ILIKE",
+						},
+						Right: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								TableAlias: "n",
+								ColName:    "nspname"},
 
-							TableAlias: "n",
-							ColName:    "nspname",
+							Op: "NOT ILIKE",
 						},
 					},
 					TargetList: []lyx.Node{
@@ -4718,9 +4768,15 @@ func TestMiscCatalog(t *testing.T) {
 						},
 						Op: "IN",
 					},
-					Right: &lyx.ColumnRef{
-						TableAlias: "c",
-						ColName:    "relname",
+					Right: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							TableAlias: "c",
+							ColName:    "relname",
+						},
+						Right: &lyx.AExprSConst{
+							Value: "tt%",
+						},
+						Op: "ILIKE",
 					},
 					Op: "AND",
 				},
