@@ -290,7 +290,7 @@ Operator:
 %type<node> VariableSetStmt
 %type<node> CreateStmt alter_stmt CreateSchemaStmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
-%type<node> TruncateStmt drop_stmt
+%type<node> TruncateStmt DropStmt
 %type<str> semicolon_opt
 
 %type<node> PreparableStmt
@@ -1567,7 +1567,7 @@ command:
 		setParseTree(yylex, $1)
     } | TruncateStmt {
 		setParseTree(yylex, $1)
-    } | drop_stmt {
+    } | DropStmt {
 		setParseTree(yylex, $1)
     } | CreateStmt {
 		setParseTree(yylex, $1)
@@ -1592,7 +1592,7 @@ any_name_list:
 
 
 any_name:	ColId						{ }
-			// | ColId attrs				{ }
+			| ColId attrs				{ }
 		;
 
 
@@ -1730,8 +1730,14 @@ ConstTypename:
 		;
 
 
-type_function_name:	IDENT							{ 
-					$$ = $1}
+type_function_name:	IDENT
+					{ 
+						$$ = $1
+					} |
+					SCONST
+					{ 
+						$$ = $1
+					}
 
 
 /*
@@ -4110,13 +4116,128 @@ analyze_stmt:
         }
     }
 
-drop_stmt:
-    DROP anything {
-        $$ = &Drop {
-            
-        }
-    }
+DropStmt:	DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP object_type_any_name any_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP drop_type_name IF_P EXISTS name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP drop_type_name name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP object_type_name_on_any_name name ON any_name opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP object_type_name_on_any_name IF_P EXISTS name ON any_name opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP TYPE_P type_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP TYPE_P IF_P EXISTS type_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP DOMAIN_P type_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP DOMAIN_P IF_P EXISTS type_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP INDEX CONCURRENTLY any_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+			| DROP INDEX CONCURRENTLY IF_P EXISTS any_name_list opt_drop_behavior
+				{
+					$$ = &Drop {}
+				}
+		;
 
+
+/* object types taking any_name/any_name_list */
+object_type_any_name:
+			TABLE									{  }
+			| SEQUENCE								{  }
+			| VIEW									{  }
+			| MATERIALIZED VIEW						{  }
+			| INDEX									{  }
+			| FOREIGN TABLE							{  }
+			| COLLATION								{  }
+			// | CONVERSION							{  }
+			| STATISTICS							{  }
+			// | TEXT SEARCH PARSER					{  }
+			// | TEXT SEARCH DICTIONARY				{  }
+			// | TEXT SEARCH TEMPLATE				{  }
+			// | TEXT SEARCH CONFIGURATION			{  }
+		;
+
+
+
+/*
+ * object types taking name/name_list
+ *
+ * DROP handles some of them separately
+ */
+
+object_type_name:
+			drop_type_name							{  }
+			| DATABASE								{  }
+			| ROLE									{  }
+			| SUBSCRIPTION							{  }
+			| TABLESPACE							{  }
+		;
+
+drop_type_name:
+			ACCESS METHOD							{  }
+			| EVENT TRIGGER							{  }
+			| EXTENSION								{  }
+			| FOREIGN DATA_P WRAPPER				{  }
+			// | opt_procedural LANGUAGE				{  }
+			| PUBLICATION							{  }
+			| SCHEMA								{  }
+			| SERVER								{  }
+		;
+
+
+/* object types attached to a table */
+object_type_name_on_any_name:
+			POLICY									{  }
+			| RULE									{  }
+			| TRIGGER								{  }
+		;
+
+any_name_list:
+			any_name								{  }
+			| any_name_list TCOMMA any_name			{  }
+		;
+
+any_name:	ColId						{  }
+			| ColId attrs				{  }
+		;
+
+attrs:		TDOT attr_name
+					{  }
+			| attrs TDOT attr_name
+					{}
+		;
+
+type_name_list:
+			Typename								{}
+			| type_name_list TCOMMA Typename			{  }
+		;
 
 /*****************************************************************************
  *
@@ -4224,6 +4345,7 @@ NonReservedWord:	IDENT							{ $$ = $1; }
  * This presently includes *all* Postgres keywords.
  */
 ColLabel:	IDENT									{ $$ = $1; }
+			| SCONST								{ $$ = $1; }
 			| unreserved_keyword					{ $$ = $1; }
 			| col_name_keyword						{ $$ = $1; }
 			| type_func_name_keyword				{ $$ = $1; }

@@ -229,6 +229,16 @@ func TestSimple(t *testing.T) {
 				lyx.TCLOSEBR,
 			},
 		},
+		{
+			query: `DROP table sh.'xxx'`,
+			exp: []int{
+				lyx.DROP,
+				lyx.TABLE,
+				lyx.IDENT,
+				lyx.TDOT,
+				lyx.SCONST,
+			},
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
