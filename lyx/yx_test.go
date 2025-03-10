@@ -1158,6 +1158,23 @@ func TestCreate(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: "create table sh1.'xx' ( i int )",
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					SchemaName:   "sh1",
+					RelationName: "xx",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+
 		/* same test, no spaces between tokens */
 		{
 			query: "create table xx(i int)",
@@ -2578,6 +2595,11 @@ func TestMisc(t *testing.T) {
 		},
 		{
 			query: "drop table xx;",
+			exp:   &lyx.Drop{},
+			err:   nil,
+		},
+		{
+			query: "drop table sh.'xx';",
 			exp:   &lyx.Drop{},
 			err:   nil,
 		},
@@ -4722,7 +4744,7 @@ func TestMiscCatalog(t *testing.T) {
 								TableAlias: "n",
 								ColName:    "nspname"},
 
-							Op: "NOT ILIKE",
+							Op: "NOT LIKE",
 						},
 					},
 					TargetList: []lyx.Node{
