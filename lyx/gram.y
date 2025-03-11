@@ -4407,6 +4407,31 @@ from_list:
 			| from_list TCOMMA table_ref				{ $$ = append($1, $3); }
 		;
 
+
+
+/*
+ * Given "UPDATE foo set set ...", we have to decide without looking any
+ * further ahead whether the first "set" is an alias or the UPDATE's SET
+ * keyword.  Since "set" is allowed as a column name both interpretations
+ * are feasible.  We resolve the shift/reduce conflict by giving the first
+ * relation_expr_opt_alias production a higher precedence than the SET token
+ * has, causing the parser to prefer to reduce, in effect assuming that the
+ * SET is not an alias.
+ */
+relation_expr_opt_alias: relation_expr					%prec UMINUS
+				{
+					$$ = $1;
+				}
+			| relation_expr ColId
+				{
+					$$ = $1;
+				}
+			| relation_expr AS ColId
+				{
+					$$ = $1;
+				}
+		;
+
 relation_expr:
 			qualified_name
 				{
@@ -5887,7 +5912,7 @@ set_clause:
 		
 
 UpdateStmt:
-    UPDATE opt_only relation_expr SET set_clause_list from_clause where_clause opt_returning {
+    UPDATE opt_only relation_expr_opt_alias SET set_clause_list from_clause where_clause opt_returning {
         $$ = &Update {
             TableRef: $3,
             Where: $7,

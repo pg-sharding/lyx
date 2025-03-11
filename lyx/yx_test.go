@@ -1854,6 +1854,25 @@ func TestUpdate(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: "UPDATE films as f SET kind = 'Dramatic' WHERE kind = 'Drama';",
+			exp: &lyx.Update{
+				TableRef: &lyx.RangeVar{
+					RelationName: "films",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						TableAlias: "",
+						ColName:    "kind",
+					},
+					Right: &lyx.AExprSConst{Value: "Drama"},
+					Op:    "=",
+				},
+			},
+			err: nil,
+		},
 
 		/* another simple update */
 		{
