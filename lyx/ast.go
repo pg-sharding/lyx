@@ -271,6 +271,10 @@ type VarValue struct {
 	Value string
 }
 
+type DiscardStmt struct {
+	Kind string
+}
+
 type VarType string
 
 const (
@@ -328,6 +332,7 @@ func (*TableElt) iNode()         {}
 func (*CreateSchema) iNode()     {}
 func (*AExprIn) iNode()          {}
 func (*Grant) iNode()            {}
+func (*DiscardStmt) iNode()      {}
 
 type TransactionStmtType int
 

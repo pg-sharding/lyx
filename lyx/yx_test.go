@@ -2219,6 +2219,38 @@ func TestCopy(t *testing.T) {
 	}
 }
 
+func TestDiscard(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+	for _, tt := range []tcase{
+		{
+			query: "DISCARD ALL",
+			exp: &lyx.DiscardStmt{
+				Kind: "ALL",
+			},
+			err: nil,
+		},
+		{
+			query: "DISCARD PLANS",
+			exp: &lyx.DiscardStmt{
+				Kind: "PLANS",
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+	}
+}
+
 func TestFuncApplication(t *testing.T) {
 	assert := assert.New(t)
 

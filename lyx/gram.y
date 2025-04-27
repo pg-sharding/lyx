@@ -291,6 +291,7 @@ Operator:
 %type<node> CreateStmt alter_stmt CreateSchemaStmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> TruncateStmt DropStmt
+%type<node> DiscardStmt
 %type<str> semicolon_opt
 
 %type<node> PreparableStmt
@@ -1574,6 +1575,8 @@ command:
     } | CreateSchemaStmt {
 		setParseTree(yylex, $1)
 	} | alter_stmt {
+		setParseTree(yylex, $1)
+    } | DiscardStmt {
 		setParseTree(yylex, $1)
     }
 
@@ -3828,6 +3831,41 @@ ConstraintElem:
 				}
 		;
 
+
+
+DiscardStmt:
+			DISCARD ALL
+				{
+					$$ = &DiscardStmt{
+						Kind: "ALL",
+					}
+				}
+			| DISCARD TEMP
+				{
+					$$ = &DiscardStmt{
+						Kind: "TEMP",
+					}
+				}
+			| DISCARD TEMPORARY
+				{
+					$$ = &DiscardStmt{
+						Kind: "TEMPORARY",
+					}
+				}
+			| DISCARD PLANS
+				{
+					$$ = &DiscardStmt{
+						Kind: "PLANS",
+					}
+				}
+			| DISCARD SEQUENCES
+				{
+					$$ = &DiscardStmt{
+						Kind: "SEQUENCES",
+					}
+				}
+
+		;
 
 OptTypedTableElementList:
 			TOPENBR TypedTableElementList TCLOSEBR		{ $$ = $2; }
