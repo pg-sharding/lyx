@@ -2242,6 +2242,13 @@ func TestDiscard(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: "DISCARD SEQUENCES",
+			exp: &lyx.DiscardStmt{
+				Kind: "SEQUENCES",
+			},
+			err: nil,
+		},
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
