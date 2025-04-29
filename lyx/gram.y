@@ -111,6 +111,7 @@ func NewLyxParser() LyxParser {
 
 %type<node> a_expr c_expr b_expr in_expr case_expr case_default case_arg
 
+%type<node> OptWhereClause
 %type<node> GrantStmt RevokeStmt RevokeRoleStmt GrantRoleStmt
 
 %type<node> opt_granted_by DefACLAction
@@ -390,7 +391,7 @@ Operator:
 
 %type<node> OptInherit OptPartitionSpec PartitionSpec key_match
 
-%type<str> table_access_method_clause opt_qualified_name opt_single_name
+%type<str> table_access_method_clause access_method_clause opt_qualified_name opt_single_name
 %type<str> opt_drop_behavior opt_restart_seqs
 %type<bool> opt_concurrently
 
@@ -3676,7 +3677,7 @@ opt_definition:
  * or be part of a_expr NOT LIKE or similar constructs).
  */
 ColConstraintElem:
-			NOT NULL_P
+			NOT NULL_P opt_no_inherit
 				{
 
 				}
@@ -3686,7 +3687,7 @@ ColConstraintElem:
 				}
 			| UNIQUE opt_unique_null_treatment opt_definition OptConsTableSpace
 				{
-
+	
 				}
 			| PRIMARY KEY opt_definition OptConsTableSpace
 				{
@@ -3700,11 +3701,11 @@ ColConstraintElem:
 				{
 
 				}
-			// | GENERATED generated_when AS IDENTITY_P OptParenthesizedSeqOptList
-			// 	{
+			| GENERATED generated_when AS IDENTITY_P // OptParenthesizedSeqOptList
+				{
 
-			// 	}
-			| GENERATED generated_when AS TOPENBR a_expr TCLOSEBR STORED
+				}
+			| GENERATED generated_when AS TOPENBR a_expr TCLOSEBR // opt_virtual_or_stored
 				{
 
 				}
@@ -3804,10 +3805,15 @@ opt_column_and_period_list:
 ConstraintElem:
 			CHECK TOPENBR a_expr TCLOSEBR ConstraintAttributeSpec
 				{
+
+				}
+			| NOT NULL_P ColId ConstraintAttributeSpec
+				{
 				}
 			| UNIQUE opt_unique_null_treatment TOPENBR columnList opt_without_overlaps TCLOSEBR opt_c_include opt_definition OptConsTableSpace
 				ConstraintAttributeSpec
 				{
+
 				}
 			| UNIQUE ExistingIndex ConstraintAttributeSpec
 				{
@@ -3819,18 +3825,16 @@ ConstraintElem:
 			| PRIMARY KEY ExistingIndex ConstraintAttributeSpec
 				{
 				}
-			// | EXCLUDE access_method_clause TOPENBR ExclusionConstraintList TCLOSEBR
-			// 	opt_c_include opt_definition OptConsTableSpace OptWhereClause
-			// 	ConstraintAttributeSpec
-			// 	{
-			// 	}
+			| EXCLUDE access_method_clause TOPENBR ExclusionConstraintList TCLOSEBR
+				opt_c_include opt_definition OptConsTableSpace OptWhereClause
+				ConstraintAttributeSpec
+				{
+				}
 			| FOREIGN KEY TOPENBR columnList optionalPeriodName TCLOSEBR REFERENCES qualified_name
 				opt_column_and_period_list key_match key_actions ConstraintAttributeSpec
 				{
-			
 				}
 		;
-
 
 
 DiscardStmt:
@@ -6194,6 +6198,15 @@ opt_hold: /* EMPTY */						{ }
 			| WITHOUT HOLD					{  }
 		;
 
+ExclusionConstraintList:
+		/*empty*/{}
+
+
+OptWhereClause:
+			WHERE TOPENBR a_expr TCLOSEBR					{ $$ = $3; }
+			| /*EMPTY*/								{ $$ = &AExprEmpty{}; }
+		;
+
 key_actions:
 			key_update
 				{
@@ -6277,6 +6290,10 @@ table_access_method_clause:
 			| /*EMPTY*/							{ $$ = ""; }
 		;
 
+access_method_clause:
+			USING name								{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = ""; }
+		;
 
 
 

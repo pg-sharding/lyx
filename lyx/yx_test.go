@@ -1299,6 +1299,26 @@ func TestCreate(t *testing.T) {
 		},
 
 		{
+			query: `create table tt(i int, j int check(j != 11));`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "tt",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "i",
+						ColType: "int",
+					},
+					&lyx.TableElt{
+						ColName: "j",
+						ColType: "int",
+					},
+				},
+			},
+			err: nil,
+		},
+
+		{
 			query: "create database reg",
 			exp:   &lyx.CreateDatabase{},
 			err:   nil,
