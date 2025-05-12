@@ -1054,14 +1054,18 @@ func TestSelectAlias(t *testing.T) {
 			query: "SELECT kind, sum(len) AS total FROM films GROUP BY kind;",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"},
-					&lyx.FuncApplication{
-						Name: "sum",
-						Args: []lyx.Node{
-							&lyx.ColumnRef{
-								ColName: "len",
+					&lyx.ResTarget{
+						Name: "total",
+						Value: &lyx.FuncApplication{
+							Name: "sum",
+							Args: []lyx.Node{
+								&lyx.ColumnRef{
+									ColName: "len",
+								},
 							},
 						},
-					}},
+					},
+				},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
 				},
@@ -1075,14 +1079,18 @@ func TestSelectAlias(t *testing.T) {
 			query: "SELECT kind, sum(len) AS total FROM films AS f GROUP BY kind;",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.ColumnRef{ColName: "kind"},
-					&lyx.FuncApplication{
-						Name: "sum",
-						Args: []lyx.Node{
-							&lyx.ColumnRef{
-								ColName: "len",
+					&lyx.ResTarget{
+						Name: "total",
+						Value: &lyx.FuncApplication{
+							Name: "sum",
+							Args: []lyx.Node{
+								&lyx.ColumnRef{
+									ColName: "len",
+								},
 							},
 						},
-					}},
+					},
+				},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "films",
 					Alias:        "f",
@@ -2425,7 +2433,9 @@ func TestSelectTargetLists(t *testing.T) {
 
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{
-					nil,
+					&lyx.ResTarget{
+						Name: "invalid",
+					},
 				},
 				Where: &lyx.AExprEmpty{},
 			},
@@ -3959,6 +3969,21 @@ func TestMiscQ(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+		{
+			query: `SELECT 1 AS kek`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "kek",
+						Value: &lyx.AExprIConst{
+							Value: 1,
+						},
+					},
+				},
+			},
+			err: nil,
+		},
 		{
 			query: `
 			select extract(epoch from TIMESTAMP '2024-12-09T21:05:00' AT TIME ZONE 'UTC-8')::integer;

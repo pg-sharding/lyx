@@ -3181,11 +3181,17 @@ target_list:
 
 target_el:	a_expr AS IDENT
 				{
-					$$ = $1
+					$$ = &ResTarget{
+						Name: $3,
+						Value: $1,
+					}
 				}
 			| a_expr IDENT
 				{
-					$$ = $1
+					$$ = &ResTarget{
+						Name: $2,
+						Value: $1,
+					}
 				}
 			| a_expr
 				{

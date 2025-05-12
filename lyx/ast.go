@@ -299,6 +299,11 @@ type VariableShowStmt struct {
 
 type SetOperation string
 
+type ResTarget struct {
+	Name  string
+	Value Node
+}
+
 const (
 	SetOpUnion     = SetOperation("UNION")
 	SetOpIntersect = SetOperation("INTERSECT")
@@ -423,3 +428,4 @@ type FuncApplication struct {
 }
 
 func (*FuncApplication) iNode() {}
+func (*ResTarget) iNode()       {}
