@@ -109,6 +109,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             '::' =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPECAST; fbreak;};
 
             /cast/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CAST; fbreak;};
+            /at/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = AT; fbreak;};
             
             /setof/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SETOF; fbreak;};
             /int/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INT_P; fbreak;};
@@ -146,7 +147,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /zone/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; fbreak;};
 
             /if/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = IF_P; fbreak;};
-            /OF/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = OF; fbreak;};
+            /of/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = OF; fbreak;};
 
             /prepare/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = PREPARE; fbreak;};
             /deallocate/i =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEALLOCATE; fbreak;};
@@ -192,6 +193,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /default/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFAULT; fbreak;};
             
             /copy/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = COPY; fbreak;};
+            /extract/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = EXTRACT; fbreak;};
             /to/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TO; fbreak;};
             /stdout/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = STDOUT; fbreak;};
 
@@ -206,6 +208,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /null/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NULL_P; fbreak;};
             /nulls/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NULLS_LA; fbreak;};
             /not/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NOT; fbreak;};
+            /normalize/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NORMALIZE; fbreak;};
             /notnull/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTNULL; fbreak;};
             /lateral/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LATERAL_P; fbreak;};
             /ordinality/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ORDINALITY; fbreak;};

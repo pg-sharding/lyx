@@ -3961,6 +3961,18 @@ func TestMiscQ(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
+			select extract(epoch from TIMESTAMP '2024-12-09T21:05:00' AT TIME ZONE 'UTC-8')::integer;
+			`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					nil,
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+		{
+			query: `
 			insert into a.b
 			TABLE dd
 			on conflict do nothing
@@ -4057,11 +4069,11 @@ func TestMiscQ(t *testing.T) {
 		{
 			query: `
 		 DELETE FROM
-		 	cl_m 
-			 WHERE s_id = 
-			 ANY(ARRAY(SELECT s_id 
-				FROM cl_m 
-				WHERE mem_par = '0' 
+		 	cl_m
+			 WHERE s_id =
+			 ANY(ARRAY(SELECT s_id
+				FROM cl_m
+				WHERE mem_par = '0'
 				AND r_e < '2024-01-23 10:18:52.937505Z'))
 		 `,
 			exp: &lyx.Delete{

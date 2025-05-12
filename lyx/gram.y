@@ -47,7 +47,7 @@ func NewLyxParser() LyxParser {
 	txMode			TransactionModeItem
 	txModeList		[]TransactionModeItem
 
-	cte			*CommonTableExpr
+	cte			    *CommonTableExpr
 	cteList			[]*CommonTableExpr
 }
 
@@ -98,6 +98,8 @@ func NewLyxParser() LyxParser {
 %type<cte> common_table_expr
 %type<cteList> cte_list with_clause opt_with_clause
 
+%type<node> extract_arg
+%type<nodeList> extract_list
 
 %type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
 
@@ -2372,6 +2374,29 @@ array_expr: TSQOPENBR expr_list TSQCLOSEBR
 				}
 		;
 
+
+extract_list:
+			extract_arg FROM a_expr
+				{
+					$$ = []Node{$1, $3};
+				}
+		;
+
+/* Allow delimited string Sconst in extract_arg as an SQL extension.
+ * - thomas 2001-04-12
+ */
+extract_arg:
+			IDENT									{ $$ = &AExprSConst{Value: $1}; }
+			| YEAR_P								{ $$ = &AExprSConst{Value: "year"}; }
+			| MONTH_P								{ $$ = &AExprSConst{Value: "month"}; }
+			| DAY_P									{ $$ = &AExprSConst{Value: "day"};}
+			| HOUR_P								{ $$ = &AExprSConst{Value: "hour"}; }
+			| MINUTE_P								{ $$ = &AExprSConst{Value: "minute"}; }
+			| SECOND_P								{ $$ = &AExprSConst{Value: "second"}; }
+			| SCONST								{ $$ = &AExprSConst{Value: $1}; }
+		;
+
+
 explicit_row:	ROW TOPENBR expr_list TCLOSEBR				{  }
 			| ROW TOPENBR TCLOSEBR							{  }
 		;
@@ -4623,9 +4648,9 @@ func_expr_common_subexpr:
 				}
 			| CAST TOPENBR a_expr AS Typename TCLOSEBR
 				{  $$ = $3; }
-			// | EXTRACT TOPENBR extract_list TCLOSEBR
-			// 	{
-			// 	}
+			| EXTRACT TOPENBR extract_list TCLOSEBR
+				{
+				}
 			| NORMALIZE TOPENBR a_expr TCLOSEBR
 				{
 				}
