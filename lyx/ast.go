@@ -338,6 +338,7 @@ func (*CreateSchema) iNode()     {}
 func (*AExprIn) iNode()          {}
 func (*Grant) iNode()            {}
 func (*DiscardStmt) iNode()      {}
+func (*SubSelect) iNode()        {}
 
 type TransactionStmtType int
 
