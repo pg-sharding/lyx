@@ -13647,7 +13647,7 @@ yydefault:
 		yyDollar = yyS[yypt-2 : yypt+1]
 //line lyx/gram.y:2769
 		{
-			yyVAL.node = yyDollar[2].node
+			yyVAL.node = &AExprNot{Arg: yyDollar[2].node}
 		}
 	case 1250:
 		yyDollar = yyS[yypt-3 : yypt+1]

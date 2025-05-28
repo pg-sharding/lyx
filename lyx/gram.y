@@ -2767,7 +2767,7 @@ a_expr:
                 }
 			| NOT a_expr
 				{
-                     $$ = $2
+                     $$ = &AExprNot{Arg:$2}
                 }
 			// | NOT_LA a_expr						%prec NOT
 			// 	{ $$ = makeNotExpr($2, @1); }

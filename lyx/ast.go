@@ -113,6 +113,13 @@ type AExprEmpty struct {
 func (*AExprEmpty) iNode() {
 }
 
+type AExprNot struct {
+	Arg Node
+}
+
+func (*AExprNot) iNode() {
+}
+
 type AExprList struct {
 	List []Node
 }
