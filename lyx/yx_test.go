@@ -2434,7 +2434,8 @@ func TestSelectTargetLists(t *testing.T) {
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{
 					&lyx.ResTarget{
-						Name: "invalid",
+						Name:  "invalid",
+						Value: &lyx.AExprNot{},
 					},
 				},
 				Where: &lyx.AExprEmpty{},
@@ -2478,6 +2479,22 @@ func TestSelectTargetLists(t *testing.T) {
 					},
 					Op: "=",
 				},
+			},
+			err: nil,
+		},
+		{
+			query: "SELECT NOT pg_is_in_recovery()",
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{
+					&lyx.AExprNot{
+						Arg: &lyx.FuncApplication{
+							Name: "pg_is_in_recovery",
+						},
+					},
+				},
+				FromClause: nil,
+				Where:      &lyx.AExprEmpty{},
 			},
 			err: nil,
 		},
