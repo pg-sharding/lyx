@@ -5946,6 +5946,12 @@ InsertStmt:
             Columns: $4,
             SubSelect: $5,
         }
+    } | INSERT INTO relation_expr DEFAULT VALUES {
+        $$ = &Insert{
+            TableRef: $3,
+            Columns: nil,
+            SubSelect: nil,
+        }
     }
 
 opt_only:
