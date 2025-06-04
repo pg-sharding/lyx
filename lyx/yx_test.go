@@ -1380,6 +1380,19 @@ func TestInsert(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: "insert into xx default values",
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "xx",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Columns:   nil,
+				SubSelect: nil,
+			},
+			err: nil,
+		},
+		{
 			query: "insert into xx (id) values(1)",
 			exp: &lyx.Insert{
 				TableRef: &lyx.RangeVar{
