@@ -291,7 +291,7 @@ Operator:
 %type<node> DeleteStmt
 %type<node> PrepareStmt
 %type<node> VariableSetStmt
-%type<node> CreateStmt alter_stmt CreateSchemaStmt
+%type<node> CreateStmt alter_stmt CreateSchemaStmt CreateExtensionStmt
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> TruncateStmt DropStmt
 %type<node> DiscardStmt
@@ -1576,6 +1576,8 @@ command:
     } | CreateStmt {
 		setParseTree(yylex, $1)
     } | CreateSchemaStmt {
+		setParseTree(yylex, $1)
+	} | CreateExtensionStmt {
 		setParseTree(yylex, $1)
 	} | alter_stmt {
 		setParseTree(yylex, $1)
@@ -6371,6 +6373,55 @@ hash_partbound:
 		| hash_partbound TCOMMA hash_partbound_elem
 			{
 			}
+		;
+
+
+/*****************************************************************************
+ *
+ *		QUERY:
+ *             CREATE EXTENSION extension
+ *             [ WITH ] [ SCHEMA schema ] [ VERSION version ]
+ *
+ *****************************************************************************/
+
+CreateExtensionStmt: CREATE EXTENSION name opt_with create_extension_opt_list
+				{
+					$$ = &CreateExtension{
+						Extname: $3,
+					}
+				}
+				| CREATE EXTENSION IF_P NOT EXISTS name opt_with create_extension_opt_list
+				{
+					$$ = &CreateExtension{
+						Extname: $6,
+					}
+				}
+		;
+
+
+create_extension_opt_list:
+			create_extension_opt_list create_extension_opt_item
+				{  }
+			| /* EMPTY */
+				{ }
+		;
+
+create_extension_opt_item:
+			SCHEMA name
+				{
+					
+				}
+			| VERSION_P NonReservedWord_or_SCONST
+				{
+					
+				}
+			| FROM NonReservedWord_or_SCONST
+				{
+					
+				}
+			| CASCADE
+				{
+				}
 		;
 
 

@@ -1369,6 +1369,31 @@ func TestCreateSchema(t *testing.T) {
 	}
 }
 
+func TestCreateExtension(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+	for _, tt := range []tcase{
+		{
+			query: "create extension e1",
+			exp: &lyx.CreateExtension{
+				Extname: "e1",
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp)
+	}
+}
+
 func TestInsert(t *testing.T) {
 	assert := assert.New(t)
 
