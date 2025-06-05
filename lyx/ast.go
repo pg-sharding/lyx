@@ -247,6 +247,10 @@ type CreateTable struct {
 type CreateSchema struct {
 }
 
+type CreateExtension struct {
+	Extname string
+}
+
 type Alter struct {
 }
 
@@ -342,6 +346,7 @@ func (*SubLink) iNode()          {}
 func (*CommonTableExpr) iNode()  {}
 func (*TableElt) iNode()         {}
 func (*CreateSchema) iNode()     {}
+func (*CreateExtension) iNode()  {}
 func (*AExprIn) iNode()          {}
 func (*Grant) iNode()            {}
 func (*DiscardStmt) iNode()      {}
