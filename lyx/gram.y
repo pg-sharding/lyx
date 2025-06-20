@@ -64,6 +64,7 @@ func NewLyxParser() LyxParser {
 // same for terminals
 %token <str> SCONST IDENT
 %token <int> ICONST
+%token <int> INVALID_ICONST
 
 %token<str> NumericOnly
 

@@ -1,6 +1,7 @@
 package lyx_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/pg-sharding/lyx/lyx"
@@ -426,6 +427,235 @@ func TestAclGrantRevoke(t *testing.T) {
 		tmp, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp, tt.query)
+	}
+}
+
+func TestIntegerBoundaries(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			select * from table1 where aCol=1;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: 1,
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			select * from table1 where aCol=98765432123456789876543210;
+			`,
+			exp: nil,
+			err: fmt.Errorf("syntax error"),
+		},
+		{
+			query: `
+			select * from table1 where aCol=-98765432123456789876543212;
+			`,
+			exp: nil,
+			err: fmt.Errorf("syntax error"),
+		},
+		{
+			query: `
+			select * from table1 where aCol=9223372036854775807;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: 9223372036854775807,
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			select * from table1 where aCol=-2;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: -2,
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			select * from table1 where aCol= -2;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: -2,
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			select * from table1 where aCol>= -2;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: -2,
+					},
+					Op: ">=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			select * from table1 where aCol>=-5;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: -5,
+					},
+					Op: ">=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			select * from table1 where aCol<=5;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: 5,
+					},
+					Op: "<=",
+				},
+			},
+			err: nil,
+		},
+		{
+			query: `
+			select * from table1 where aCol=-9223372036854775808;
+			`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
+					RelationName: "table1",
+				},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName:    "aCol",
+						TableAlias: "",
+					},
+					Right: &lyx.AExprIConst{
+						Value: -9223372036854775808,
+					},
+					Op: "=",
+				},
+			},
+			err: nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		if tt.err == nil {
+			assert.NoError(err, "query %s", tt.query)
+		} else {
+			assert.Error(err, "query %s", tt.query)
+		}
 
 		assert.Equal(tt.exp, tmp, tt.query)
 	}
@@ -3204,6 +3434,29 @@ func TestParams(t *testing.T) {
 		assert.NoError(err, "query %s", tt.query)
 
 		assert.Equal(tt.exp, tmp)
+	}
+}
+
+func TestParamsFail(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: "SELECT * FROM x WHERE i > $19999999988998998888999888",
+			exp:   nil,
+			err:   fmt.Errorf("syntax error"),
+		},
+	} {
+		_, err := lyx.Parse(tt.query)
+
+		assert.Error(err, "query %s", tt.query)
+
 	}
 }
 
