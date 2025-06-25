@@ -85,7 +85,11 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
 
         op_chars	=	( '~' | '!' | '@' | '#' | '^' | '&' | '|' | '`' | '?' | '+' | '-' | '*' | '\\' | '%' | '<' | '>' | '=' ) ;
-        operator	=	op_chars+;
+        operator	=	op_chars;
+        #https://github.com/postgres/postgres/blob/master/src/backend/parser/scan.l
+        # ...For SQL compatibility, '+' and '-' cannot be the last char of a multi-char operator...
+        #... The idea is to lex '=-' as two operators,..
+        operator_multi	= op_chars+ (op_chars - ( '+' | '-' ));
 
 
         sconst = '\'' (any-'\'')* '\'';
@@ -97,12 +101,27 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             
             # skip dollar, get only param number
             param =>  {
-                i, _ := strconv.Atoi(string(lex.data[lex.ts+1:lex.te]))
-                lval.int = int(i); tok = PARAM; fbreak;
+                if i, err := strconv.Atoi(string(lex.data[lex.ts+1:lex.te]));  err != nil {
+                    lval.int = 0; tok = INVALID_ICONST; fbreak;
+                } else {
+                    lval.int = int(i); tok = PARAM; fbreak;
+                }
             };
 
-            integer =>  { lval.int, _ = strconv.Atoi(string(lex.data[lex.ts:lex.te])); tok = ICONST; fbreak;};
-            ninteger => { lval.int, _ = strconv.Atoi(string(lex.data[lex.ts:lex.te])); tok = ICONST; fbreak;};
+            integer =>  { 
+                if v, err := strconv.Atoi(string(lex.data[lex.ts:lex.te]));  err != nil {
+                   lval.int = 0; tok = INVALID_ICONST; fbreak;
+                } else {
+                   lval.int = v; tok = ICONST; fbreak;
+                }
+            };
+            ninteger => { 
+                if v, err := strconv.Atoi(string(lex.data[lex.ts:lex.te]));  err != nil {
+                   lval.int = 0; tok = INVALID_ICONST; fbreak;
+                } else {
+                   lval.int = v; tok = ICONST; fbreak;
+                }
+            };
 
             real =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
@@ -364,6 +383,10 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
 
             operator => {
+                lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
+                fbreak;
+            };
+            operator_multi => {
                 lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
                 fbreak;
             };
