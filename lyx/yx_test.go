@@ -4278,6 +4278,36 @@ func TestMiscQ(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `
+			SELECT
+				1
+			FROM a lc
+			LEFT JOIN b irhc USING (reservation_id);
+			`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							RelationName: "a",
+							Alias:        "lc",
+						},
+						Rarg: &lyx.RangeVar{
+							RelationName: "b",
+							Alias:        "irhc",
+						},
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+
+		{
 			query: `SELECT 1 AS kek`,
 			exp: &lyx.Select{
 				Where: &lyx.AExprEmpty{},

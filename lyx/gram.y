@@ -5001,15 +5001,29 @@ join_type:	FULL opt_outer							{  }
 
 
 join_qual: 
-            // USING TOPENBR name_list TCLOSEBR opt_alias_clause_for_join_using
-			// 	{
+            USING TOPENBR name_list TCLOSEBR opt_alias_clause_for_join_using
+				{
 					
-			// 	}
-			// |
+				}
+			|
              ON a_expr
 				{
                     
 				}
+		;
+
+/*
+ * The alias clause after JOIN ... USING only accepts the AS ColId spelling,
+ * per SQL standard.  (The grammar could parse the other variants, but they
+ * don't seem to be useful, and it might lead to parser problems in the
+ * future.)
+ */
+opt_alias_clause_for_join_using:
+			AS ColId
+				{
+					/* the column name list will be inserted later */
+				}
+			| /*EMPTY*/								{ }
 		;
 
 
