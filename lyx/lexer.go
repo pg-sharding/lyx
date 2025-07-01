@@ -7,7 +7,7 @@ import (
 )
 
 
-//line lyx/lexer.go:9
+//line lyx/lexer.go:11
 const lexer_start int = 9
 const lexer_first_final int = 9
 const lexer_error int = 0
@@ -32,7 +32,7 @@ func NewLexer(data []byte) *Lexer {
         pe: len(data),
     }
     
-//line lyx/lexer.go:32
+//line lyx/lexer.go:36
 	{
 	 lex.cs = lexer_start
 	 lex.ts = 0
@@ -48,7 +48,7 @@ func ResetLexer(lex *Lexer, data []byte) {
     lex.pe = len(data)
     lex.data = data
     
-//line lyx/lexer.go:46
+//line lyx/lexer.go:52
 	{
 	 lex.cs = lexer_start
 	 lex.ts = 0
@@ -69,7 +69,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
     var tok int
 
     
-//line lyx/lexer.go:65
+//line lyx/lexer.go:73
 	{
 	if ( lex.p) == ( lex.pe) {
 		goto _test_eof
@@ -2009,7 +2009,7 @@ tr762:
 //line NONE:1
  lex.ts = ( lex.p)
 
-//line lyx/lexer.go:2005
+//line lyx/lexer.go:2013
 		switch  lex.data[( lex.p)] {
 		case 32:
 			goto st10
@@ -2219,7 +2219,7 @@ tr15:
 			goto _test_eof11
 		}
 	st_case_11:
-//line lyx/lexer.go:2215
+//line lyx/lexer.go:2223
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2335,7 +2335,7 @@ tr81:
 			goto _test_eof12
 		}
 	st_case_12:
-//line lyx/lexer.go:2331
+//line lyx/lexer.go:2339
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2456,7 +2456,7 @@ tr24:
 			goto _test_eof14
 		}
 	st_case_14:
-//line lyx/lexer.go:2452
+//line lyx/lexer.go:2460
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2574,7 +2574,7 @@ tr25:
 			goto _test_eof17
 		}
 	st_case_17:
-//line lyx/lexer.go:2570
+//line lyx/lexer.go:2578
 		if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 			goto tr10
 		}
@@ -2633,7 +2633,7 @@ tr13:
 			goto _test_eof19
 		}
 	st_case_19:
-//line lyx/lexer.go:2629
+//line lyx/lexer.go:2637
 		if  lex.data[( lex.p)] == 42 {
 			goto st8
 		}
@@ -3761,7 +3761,7 @@ tr774:
 			goto _test_eof21
 		}
 	st_case_21:
-//line lyx/lexer.go:3757
+//line lyx/lexer.go:3765
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr57
@@ -3814,7 +3814,7 @@ tr31:
 			goto _test_eof24
 		}
 	st_case_24:
-//line lyx/lexer.go:3810
+//line lyx/lexer.go:3818
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -3862,7 +3862,7 @@ tr33:
 			goto _test_eof25
 		}
 	st_case_25:
-//line lyx/lexer.go:3858
+//line lyx/lexer.go:3866
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
