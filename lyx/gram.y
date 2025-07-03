@@ -28,11 +28,11 @@ func NewLyxParser() LyxParser {
 // fields inside this union end up as the fields in a structure known
 // as ${PREFIX}SymType, of which a reference is passed to the lexer.
 %union {
-	str			string
+	str				string
 	strlist			[]string
 	byte			byte
 	bytes			[]byte
-	int			int
+	int				int
 	bool			bool
 	empty			struct{}
 
@@ -321,7 +321,7 @@ Operator:
 
 %type<str> var_name var_value
 
-%type<strlist> var_list
+%type<strlist> var_list any_name_list opt_name_list name_list
 
 %type<node> TableConstraint ConstraintElem TableElement columnDef  ConstraintAttributeSpec TypedTableElement  
 // %type<node> TableLikeClause
@@ -1595,8 +1595,8 @@ any_id:
 
 
 any_name_list:
-			any_name								{  }
-			| any_name_list TCOMMA any_name			{ }
+			any_name								{ $$ = []string{$1} }
+			| any_name_list TCOMMA any_name			{ $$ = append($1, $3) }
 		;
 
 
@@ -5675,6 +5675,7 @@ common_table_expr:  name opt_name_list AS opt_materialized TOPENBR PreparableStm
 			{
 				$$ = &CommonTableExpr{
 					Name: $1,
+					NameList: $2,
 					SubQuery:$6,
 				}
 			}
@@ -6896,9 +6897,9 @@ opt_freeze: FREEZE									{  }
 
 
 name_list:	name
-					{  }
+					{ $$ = []string{$1} }
 			| name_list TCOMMA name
-					{  }
+					{ $$ = append($1, $3) }
 		;
 
 

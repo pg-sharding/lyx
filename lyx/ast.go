@@ -182,6 +182,7 @@ func (r *SubSelect) SetAlias(s string) {
 
 type CommonTableExpr struct {
 	Name     string
+	NameList []string
 	SubQuery Node
 }
 
