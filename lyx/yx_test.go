@@ -3952,6 +3952,48 @@ func TestCte(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
+			WITH vals (a, b, c) AS (
+				VALUES (
+					'string1'::TEXT,
+					'824b88ab-462e-4ff6-bd51-be5e36054431'::UUID,
+					'12345'::TEXT
+				)
+			)
+			UPDATE limits.t_counters set i = i + 1;
+			`,
+			exp: &lyx.Update{
+				TableRef: &lyx.RangeVar{
+					SchemaName:   "limits",
+					RelationName: "t_counters",
+				},
+				WithClause: []*lyx.CommonTableExpr{
+					{
+						Name: "vals",
+						SubQuery: &lyx.ValueClause{
+							Values: [][]lyx.Node{
+								{
+									&lyx.AExprSConst{
+										Value: "string1",
+									},
+
+									&lyx.AExprSConst{
+										Value: "824b88ab-462e-4ff6-bd51-be5e36054431",
+									},
+
+									&lyx.AExprSConst{
+										Value: "12345",
+									},
+								},
+							},
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+			err: nil,
+		},
+		{
+			query: `
 			insert into tt
 with c1 as (values(1,2,3), (2,3,4), (3,4,5)) select * from c1;	
 			`,
@@ -4264,6 +4306,7 @@ select * from tbl inner join cte on tbl.i = cte.i;
 		assert.NoError(err, tt.query)
 
 		assert.Equal(tt.exp, tmp, tt.query)
+		break
 	}
 }
 

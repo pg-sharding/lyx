@@ -208,17 +208,22 @@ type Insert struct {
 	TableRef FromClauseNode
 	Columns  []string
 
-	SubSelect Node
+	WithClause []*CommonTableExpr
+	SubSelect  Node
 }
 
 type Delete struct {
 	TableRef FromClauseNode
 	Where    Node
+
+	WithClause []*CommonTableExpr
 }
 
 type Update struct {
 	TableRef FromClauseNode
 	Where    Node
+
+	WithClause []*CommonTableExpr
 }
 
 type Explain struct {

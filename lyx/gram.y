@@ -5957,15 +5957,17 @@ returning_clause:
 /* https://www.postgresql.org/docs/current/sql-insert.html */
 InsertStmt: 
     /* consider only first tuple from values */
-	INSERT INTO relation_expr opt_insert_col_refs SelectStmt opt_on_conflict returning_clause {
+	opt_with_clause INSERT INTO relation_expr opt_insert_col_refs SelectStmt opt_on_conflict returning_clause {
         $$ = &Insert{
-            TableRef: $3,
-            Columns: $4,
-            SubSelect: $5,
+			WithClause: $1,
+            TableRef: $4,
+            Columns: $5,
+            SubSelect: $6,
         }
-    } | INSERT INTO relation_expr DEFAULT VALUES {
+    } | opt_with_clause INSERT INTO relation_expr DEFAULT VALUES {
         $$ = &Insert{
-            TableRef: $3,
+			WithClause: $1,
+            TableRef: $4,
             Columns: nil,
             SubSelect: nil,
         }
@@ -6008,10 +6010,11 @@ set_clause:
 		
 
 UpdateStmt:
-    UPDATE opt_only relation_expr_opt_alias SET set_clause_list from_clause where_clause opt_returning {
+    opt_with_clause UPDATE opt_only relation_expr_opt_alias SET set_clause_list from_clause where_clause opt_returning {
         $$ = &Update {
-            TableRef: $3,
-            Where: $7,
+			WithClause: $1,
+            TableRef: $4,
+            Where: $8,
         }
     }
 
@@ -6034,10 +6037,10 @@ DeleteStmt: opt_with_clause DELETE FROM relation_expr_opt_alias
 			using_clause where_or_current_clause returning_clause
 				{
 					$$ = &Delete{
+						WithClause: $1,
 						TableRef: $4,
 						Where: $6,
 					}
-
 				}
 		;
 
