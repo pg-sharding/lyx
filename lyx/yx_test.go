@@ -3968,7 +3968,8 @@ func TestCte(t *testing.T) {
 				},
 				WithClause: []*lyx.CommonTableExpr{
 					{
-						Name: "vals",
+						Name:     "vals",
+						NameList: []string{"a", "b", "c"},
 						SubQuery: &lyx.ValueClause{
 							Values: [][]lyx.Node{
 								{
