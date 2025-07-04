@@ -273,6 +273,17 @@ func TestSelectComplex(t *testing.T) {
 						},
 						Alias: "c",
 					},
+					JoinQual: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							TableAlias: "a",
+							ColName:    "id",
+						},
+						Right: &lyx.ColumnRef{
+							TableAlias: "c",
+							ColName:    "id",
+						},
+						Op: "=",
+					},
 				}},
 				TargetList: []lyx.Node{
 					&lyx.AExprEmpty{},
@@ -303,6 +314,18 @@ func TestSelectComplex(t *testing.T) {
 							},
 						},
 						Alias: "c",
+					},
+
+					JoinQual: &lyx.AExprOp{
+						Left: &lyx.ColumnRef{
+							TableAlias: "a",
+							ColName:    "id",
+						},
+						Right: &lyx.ColumnRef{
+							TableAlias: "c",
+							ColName:    "id",
+						},
+						Op: "=",
 					},
 				}},
 				TargetList: []lyx.Node{
@@ -2872,6 +2895,18 @@ func TestJoins(t *testing.T) {
 						},
 						Rarg: &lyx.RangeVar{
 							RelationName: "orders",
+						},
+
+						JoinQual: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								TableAlias: "",
+								ColName:    "order_id",
+							},
+							Right: &lyx.ColumnRef{
+								TableAlias: "",
+								ColName:    "id",
+							},
+							Op: "=",
 						},
 					},
 				},

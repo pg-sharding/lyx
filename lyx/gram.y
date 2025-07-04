@@ -93,6 +93,7 @@ func NewLyxParser() LyxParser {
 
 %type<from_list> from_clause from_list using_clause
 
+%type<node> join_qual
 
 %type<node> opt_search_clause opt_cycle_clause
 
@@ -5003,12 +5004,12 @@ join_type:	FULL opt_outer							{  }
 join_qual: 
             USING TOPENBR name_list TCLOSEBR opt_alias_clause_for_join_using
 				{
-					
+					$$ = nil
 				}
 			|
              ON a_expr
 				{
-                    
+					$$ = $2
 				}
 		;
 
@@ -5045,6 +5046,7 @@ joined_table:
                     $$ = &JoinExpr{
                         Larg: $1,
                         Rarg: $4,
+						JoinQual: $5, 
                     };
 				}
 			| table_ref JOIN table_ref join_qual

@@ -96,8 +96,9 @@ func (r *RangeVar) iNode() {}
 //  } JoinExpr;
 
 type JoinExpr struct {
-	Larg FromClauseNode
-	Rarg FromClauseNode
+	Larg     FromClauseNode
+	Rarg     FromClauseNode
+	JoinQual Node
 
 	Alias string
 }
