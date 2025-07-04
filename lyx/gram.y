@@ -5055,6 +5055,7 @@ joined_table:
                     $$ = &JoinExpr{
                         Larg: $1,
                         Rarg: $3,
+						JoinQual: $4,
                     };
 				}
 			| table_ref NATURAL join_type JOIN table_ref

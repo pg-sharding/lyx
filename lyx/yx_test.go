@@ -2878,6 +2878,15 @@ func TestJoins(t *testing.T) {
 						Rarg: &lyx.RangeVar{
 							RelationName: "orders",
 						},
+						JoinQual: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "order_id",
+							},
+							Right: &lyx.ColumnRef{
+								ColName: "id",
+							},
+							Op: "=",
+						},
 					},
 				},
 				Where: &lyx.AExprEmpty{},
@@ -2927,6 +2936,16 @@ func TestJoins(t *testing.T) {
 						Rarg: &lyx.RangeVar{
 							RelationName: "orders",
 						},
+
+						JoinQual: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "order_id",
+							},
+							Right: &lyx.ColumnRef{
+								ColName: "id",
+							},
+							Op: "=",
+						},
 					},
 				},
 				Where: &lyx.AExprEmpty{},
@@ -2947,6 +2966,10 @@ func TestJoins(t *testing.T) {
 						Rarg: &lyx.RangeVar{
 							RelationName: "sshjt1",
 							Alias:        "b",
+						},
+
+						JoinQual: &lyx.AExprBConst{
+							Value: true,
 						},
 					},
 				},
@@ -3072,6 +3095,16 @@ func TestMisc(t *testing.T) {
 						Rarg: &lyx.RangeVar{
 							RelationName: "orders",
 						},
+
+						JoinQual: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "order_id",
+							},
+							Right: &lyx.ColumnRef{
+								ColName: "id",
+							},
+							Op: "=",
+						},
 					},
 				},
 				Where: &lyx.AExprEmpty{},
@@ -3091,6 +3124,15 @@ func TestMisc(t *testing.T) {
 						Rarg: &lyx.RangeVar{
 							RelationName: "orders",
 						},
+						JoinQual: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "order_id",
+							},
+							Right: &lyx.ColumnRef{
+								ColName: "id",
+							},
+							Op: "=",
+						},
 					},
 				},
 				Where: &lyx.AExprEmpty{},
@@ -3108,6 +3150,16 @@ func TestMisc(t *testing.T) {
 						},
 						Rarg: &lyx.RangeVar{
 							RelationName: "orders",
+						},
+
+						JoinQual: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "order_id",
+							},
+							Right: &lyx.ColumnRef{
+								ColName: "id",
+							},
+							Op: "=",
 						},
 					},
 				},
@@ -3151,7 +3203,7 @@ func TestMisc(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
