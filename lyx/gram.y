@@ -376,7 +376,7 @@ Operator:
 %type<node> copy_opt_item copy_gengeneric_opt_elem copy_generic_opt_arg_list_item copy_generic_opt_arg
 %type<nodeList> copy_opt_list copy_options copy_gengeneric_opt_list copy_generic_opt_arg_list
 
-%type<str> attr_name ColLabel file_name
+%type<str> attr_name ColLabel file_name BareColLabel
 %type<from> qualified_name table_name
 
 %type<node> qualified_name_list 
@@ -3183,14 +3183,14 @@ target_list:
 			| target_list TCOMMA target_el				{  $$ = append($1, $3) }
 		;
 
-target_el:	a_expr AS IDENT
+target_el:	a_expr AS ColLabel
 				{
 					$$ = &ResTarget{
 						Name: $3,
 						Value: $1,
 					}
 				}
-			| a_expr IDENT
+			| a_expr BareColLabel
 				{
 					$$ = &ResTarget{
 						Name: $2,
@@ -4428,6 +4428,15 @@ ColLabel:	IDENT									{ $$ = $1; }
 			| type_func_name_keyword				{ $$ = $1; }
 			| reserved_keyword						{ $$ = $1; }
 		;
+
+
+/* Bare column label --- names that can be column labels without writing "AS".
+ * This classification is orthogonal to the other keyword categories.
+ */
+BareColLabel:	IDENT								{ $$ = $1; }
+			| bare_label_keyword					{ $$ = $1; }
+		;
+
 
 
 /*****************************************************************************
