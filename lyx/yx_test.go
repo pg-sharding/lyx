@@ -3019,6 +3019,19 @@ func TestMisc(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+
+		{
+			query: `
+			select 1 as exists
+			`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{&lyx.ResTarget{
+					Name:  "exists",
+					Value: &lyx.AExprIConst{Value: 1},
+				}},
+			},
+		},
 		{
 			query: "vacuum xx;",
 			exp:   &lyx.Vacuum{},
