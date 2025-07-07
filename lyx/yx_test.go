@@ -2604,6 +2604,33 @@ func TestFuncApplication(t *testing.T) {
 			},
 		},
 		{
+			query: `
+				SELECT SUM(r.cd) FILTER (WHERE r.rs = 'applied') 
+				FROM ll.ts r
+				`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						Alias:        "r",
+						SchemaName:   "ll",
+						RelationName: "ts",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "SUM",
+						Args: []lyx.Node{
+							&lyx.ColumnRef{
+								ColName:    "cd",
+								TableAlias: "r",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			query: `SELECT sh.f(12)`,
 			exp: &lyx.Select{
 				FromClause: nil,

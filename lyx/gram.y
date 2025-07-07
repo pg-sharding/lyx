@@ -303,12 +303,14 @@ Operator:
 
 %type<str> opt_collate_clause
 
-%type<node> func_application
+%type<node> func_application within_group_clause filter_clause over_clause
 %type<node> func_expr_common_subexpr
 %type<node> func_table
 %type<node> func_expr_windowless
 %type<node> func_expr
 %type<node> AexprConst
+
+%type<node> frame_bound
 
 %type<node> select_clause select_no_parens select_with_parens SelectStmt values_clause locked_rels_list 
 %type<node> for_locking_strength for_locking_item for_locking_items opt_for_locking_clause having_clause
@@ -317,6 +319,15 @@ Operator:
 %type<node> first_or_next row_or_rows I_or_F_const select_fetch_first_value
 %type<node> select_offset_value select_limit_value offset_clause limit_clause opt_select_limit select_limit
 %type<node> opt_distinct_clause opt_all_clause distinct_clause simple_select window_clause window_definition_list
+
+%type<node> window_specification opt_frame_clause
+
+%type<nodeList> opt_partition_clause
+
+%type<nodeList> sortby_list sort_clause opt_sort_clause
+%type<node> sortby
+
+%type<str> opt_existing_window_name
 
 %type<node> ExplainStmt ExplainableStmt DeclareCursorStmt
 
@@ -474,7 +485,7 @@ Operator:
 
 
 /* unroutable query parts */
-%type<str> opt_window_clause sort_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
+%type<str> opt_window_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 
 %start multiStmt
 
@@ -2334,11 +2345,34 @@ AexprConst:
 		;
 
 
-func_expr: 
-	func_application { $$ = $1; }		
-	| func_expr_common_subexpr
+/*
+ * func_expr and its cousin func_expr_windowless are split out from c_expr just
+ * so that we have classifications for "everything that is a function call or
+ * looks like one".  This isn't very important, but it saves us having to
+ * document which variants are legal in places like "FROM function()" or the
+ * backwards-compatible functional-index syntax for CREATE INDEX.
+ * (Note that many of the special SQL functions wouldn't actually make any
+ * sense as functional index entries, but we ignore that consideration here.)
+ */
+func_expr: func_application within_group_clause filter_clause over_clause
+				{ $$ = $1;
+					/*
+					 * The order clause for WITHIN GROUP and the one for
+					 * plain-aggregate ORDER BY share a field, so we have to
+					 * check here that at most one is present.  We also check
+					 * for DISTINCT and VARIADIC here to give a better error
+					 * location.  Other consistency checks are deferred to
+					 * parse analysis.
+					 */
+				}
+			// | json_aggregate_func filter_clause over_clause
+			// 	{
+			// 		$$ = $1;
+			// 	}
+			| func_expr_common_subexpr
 				{ $$ = $1; }
 		;
+
 
 expr_list:	a_expr
 				{
@@ -4358,11 +4392,11 @@ opt_sort_clause:
 		;
 
 sort_clause:
-			ORDER BY sortby_list					{  }
+			ORDER BY sortby_list					{  $$ = $3 }
 		;
 
 sortby_list:
-			sortby									{ }
+			sortby									{  }
 			| sortby_list TCOMMA sortby				{ }
 		;
 
@@ -4374,6 +4408,7 @@ sortby:
 			 a_expr opt_asc_desc opt_nulls_order
 				{
 				/* no operator */
+					$$ = $1
 				}
 		;
 
@@ -5086,6 +5121,20 @@ joined_table:
 
 
 /*
+ * Aggregate decoration clauses
+ */
+within_group_clause:
+			WITHIN GROUP_P TOPENBR sort_clause TCLOSEBR	{  }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+filter_clause:
+			FILTER TOPENBR WHERE a_expr TCLOSEBR	{ $$ = $4; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+
+/*
  * Window Definitions
  */
 window_clause:
@@ -5110,6 +5159,112 @@ into_clause:
 	| /*EMPTY*/
 		{ }
 ;
+
+
+
+over_clause: OVER window_specification
+				{ $$ = $2; }
+			| OVER ColId
+				{
+				}
+			| /*EMPTY*/
+				{ $$ = nil; }
+		;
+
+
+window_specification: TOPENBR opt_existing_window_name opt_partition_clause
+						opt_sort_clause opt_frame_clause TCLOSEBR
+				{
+				}
+		;
+/*
+ * If we see PARTITION, RANGE, ROWS or GROUPS as the first token after the '('
+ * of a window_specification, we want the assumption to be that there is
+ * no existing_window_name; but those keywords are unreserved and so could
+ * be ColIds.  We fix this by making them have the same precedence as IDENT
+ * and giving the empty production here a slightly higher precedence, so
+ * that the shift/reduce conflict is resolved in favor of reducing the rule.
+ * These keywords are thus precluded from being an existing_window_name but
+ * are not reserved for any other purpose.
+ */
+opt_existing_window_name: ColId						{ $$ = $1; }
+			| /*EMPTY*/				%prec Op		{ $$ = ""; }
+		;
+
+opt_partition_clause: PARTITION BY expr_list		{ $$ = $3; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+
+/*
+ * For frame clauses, we return a WindowDef, but only some fields are used:
+ * frameOptions, startOffset, and endOffset.
+ */
+opt_frame_clause:
+			RANGE frame_extent opt_window_exclusion_clause
+				{
+
+				}
+			| ROWS frame_extent opt_window_exclusion_clause
+				{
+
+				}
+			| GROUPS frame_extent opt_window_exclusion_clause
+				{
+
+				}
+			| /*EMPTY*/
+				{
+
+				}
+		;
+
+frame_extent: frame_bound
+				{
+
+				}
+			| BETWEEN frame_bound AND frame_bound
+				{
+
+				}
+		;
+
+/*
+ * This is used for both frame start and frame end, with output set up on
+ * the assumption it's frame start; the frame_extent productions must reject
+ * invalid cases.
+ */
+frame_bound:
+			UNBOUNDED PRECEDING
+				{
+
+				}
+			| UNBOUNDED FOLLOWING
+				{
+
+				}
+			| CURRENT_P ROW
+				{
+
+				}
+			| a_expr PRECEDING
+				{
+					$$ = $1
+				}
+			| a_expr FOLLOWING
+				{
+					$$ = $1
+				}
+		;
+
+opt_window_exclusion_clause:
+			EXCLUDE CURRENT_P ROW	{ ; }
+			| EXCLUDE GROUP_P		{ ; }
+			| EXCLUDE TIES			{ ; }
+			| EXCLUDE NO OTHERS		{ ; }
+			| /*EMPTY*/				{ ; }
+		;
+
 
 
 /*
