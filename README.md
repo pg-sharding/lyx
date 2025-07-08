@@ -14,4 +14,4 @@ util.go    util commands
 yx_test.go test SQL queries parse
 ```
 
-See also [SPQR](github.com/pg-sharding/spqr).
+See also [SPQR](https://github.com/pg-sharding/spqr).
