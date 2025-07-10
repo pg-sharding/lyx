@@ -80,7 +80,9 @@ func NewLyxParser() LyxParser {
 %type<node> optionalPeriodName opt_column_and_period_list
 
 %type<node> where_clause where_or_current_clause
-%type<node> returning_clause opt_on_conflict opt_conf_expr
+%type<node> opt_on_conflict opt_conf_expr
+
+%type<nodeList> returning_clause
 
 %type<node> ColQualList opt_column_compression ColConstraintElem
 %type<node> create_generic_options ColConstraint ConstraintAttr 
@@ -5953,11 +5955,6 @@ insert_tuples:
     }
 
 
-opt_returning:
-    /* nothing */ {}
-    | returning_clause {}
-
-
 opt_on_conflict:
 			ON CONFLICT opt_conf_expr DO UPDATE SET set_clause_list	where_clause
 				{
@@ -6117,12 +6114,13 @@ DeallocateStmt: DEALLOCATE name
 
 
 returning_clause:
-			RETURNING target_list		{ }
-			| /* EMPTY */				{  }
+			RETURNING target_list		{ $$ = $2 }
+			| /* EMPTY */				{ $$ = nil }
 		;
 
 
 /* https://www.postgresql.org/docs/current/sql-insert.html */
+/* XXX: todo - use insert_rest */
 InsertStmt: 
     /* consider only first tuple from values */
 	opt_with_clause INSERT INTO relation_expr opt_insert_col_refs SelectStmt opt_on_conflict returning_clause {
@@ -6131,6 +6129,7 @@ InsertStmt:
             TableRef: $4,
             Columns: $5,
             SubSelect: $6,
+			Returning: $8,
         }
     } | opt_with_clause INSERT INTO relation_expr DEFAULT VALUES {
         $$ = &Insert{
@@ -6178,11 +6177,12 @@ set_clause:
 		
 
 UpdateStmt:
-    opt_with_clause UPDATE opt_only relation_expr_opt_alias SET set_clause_list from_clause where_clause opt_returning {
+    opt_with_clause UPDATE opt_only relation_expr_opt_alias SET set_clause_list from_clause where_clause returning_clause {
         $$ = &Update {
 			WithClause: $1,
             TableRef: $4,
             Where: $8,
+			Returning: $9,
         }
     }
 
@@ -6208,6 +6208,7 @@ DeleteStmt: opt_with_clause DELETE FROM relation_expr_opt_alias
 						WithClause: $1,
 						TableRef: $4,
 						Where: $6,
+						Returning: $7,
 					}
 				}
 		;

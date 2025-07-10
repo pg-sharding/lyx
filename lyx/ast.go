@@ -212,6 +212,8 @@ type Insert struct {
 
 	WithClause []*CommonTableExpr
 	SubSelect  Node
+
+	Returning []Node
 }
 
 type Delete struct {
@@ -219,6 +221,8 @@ type Delete struct {
 	Where    Node
 
 	WithClause []*CommonTableExpr
+
+	Returning []Node
 }
 
 type Update struct {
@@ -226,6 +230,8 @@ type Update struct {
 	Where    Node
 
 	WithClause []*CommonTableExpr
+
+	Returning []Node
 }
 
 type Explain struct {

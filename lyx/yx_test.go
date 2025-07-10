@@ -2044,6 +2044,11 @@ func TestInsertComplex(t *testing.T) {
 			query: `INSERT INTO "people" ("first_name","last_name","email","id") VALUES ('John','Smith','','1') RETURNING "i"`,
 			err:   nil,
 			exp: &lyx.Insert{
+				Returning: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "i",
+					},
+				},
 				TableRef: &lyx.RangeVar{
 					RelationName: "people",
 				},
@@ -2139,7 +2144,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
@@ -2236,6 +2241,17 @@ func TestUpdate(t *testing.T) {
 			WHERE city = 'San Francisco' AND date = '2003-07-03'
 			RETURNING temp_lo, temp_hi, prcp;`,
 			exp: &lyx.Update{
+				Returning: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "temp_lo",
+					},
+					&lyx.ColumnRef{
+						ColName: "temp_hi",
+					},
+					&lyx.ColumnRef{
+						ColName: "prcp",
+					},
+				},
 				TableRef: &lyx.RangeVar{
 					RelationName: "weather",
 					SchemaName:   "",
@@ -2272,7 +2288,7 @@ func TestUpdate(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
@@ -2362,6 +2378,9 @@ AND (shard_id, namespace_id, workflow_id, run_id, type, id, name) IN (
 		{
 			query: "DELETE FROM tasks WHERE status = 'DONE' RETURNING *;",
 			exp: &lyx.Delete{
+				Returning: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
 				TableRef: &lyx.RangeVar{
 					RelationName: "tasks",
 					SchemaName:   "",
@@ -4512,6 +4531,9 @@ func TestMiscQ(t *testing.T) {
 			on conflict do nothing
 			returning *`,
 			exp: &lyx.Insert{
+				Returning: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
 				TableRef: &lyx.RangeVar{
 					SchemaName:   "a",
 					RelationName: "b",
@@ -4562,6 +4584,9 @@ func TestMiscQ(t *testing.T) {
 			and i = 12 returning *;
 			`,
 			exp: &lyx.Delete{
+				Returning: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
 				TableRef: &lyx.RangeVar{
 					RelationName: "tbl",
 				},
