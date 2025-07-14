@@ -455,3 +455,9 @@ type FuncApplication struct {
 
 func (*FuncApplication) iNode() {}
 func (*ResTarget) iNode()       {}
+
+type SVFOP_CURRENT_USER struct{}
+type SVFOP_CURRENT_ROLE struct{}
+
+func (*SVFOP_CURRENT_USER) iNode() {}
+func (*SVFOP_CURRENT_ROLE) iNode() {}
