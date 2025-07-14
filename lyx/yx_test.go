@@ -2703,8 +2703,14 @@ func TestFuncApplication(t *testing.T) {
 							Value: 20,
 						},
 					},
-					FromClause: []lyx.FromClauseNode{nil},
-					Where:      &lyx.AExprEmpty{},
+					FromClause: []lyx.FromClauseNode{&lyx.SubSelect{
+						Arg: &lyx.FuncApplication{
+							Name: "unnest",
+							Args: []lyx.Node{nil},
+						},
+						Alias: "a",
+					}},
+					Where: &lyx.AExprEmpty{},
 				},
 			},
 			err: nil,
@@ -4467,6 +4473,15 @@ func TestMiscQ(t *testing.T) {
 	}
 
 	for _, tt := range []tcase{
+		{
+			query: `SELECT CURRENT_USER`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.SVFOP_CURRENT_USER{},
+				},
+			},
+		},
 		{
 			query: `
 			SELECT

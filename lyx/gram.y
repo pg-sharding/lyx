@@ -113,7 +113,6 @@ func NewLyxParser() LyxParser {
 %type<node> func_arg_expr
 %type<bool> opt_ordinality copy_from
 %type<nodeList> func_arg_list func_arg_list_opt
-%type<node> func_alias_clause
 
 %type<node> a_expr c_expr b_expr in_expr case_expr case_default case_arg
 
@@ -309,6 +308,8 @@ Operator:
 %type<node> func_expr_common_subexpr
 %type<node> func_table
 %type<node> func_expr_windowless
+%type<node> part_elem
+%type<nodeList> part_params
 %type<node> func_expr
 %type<node> AexprConst
 
@@ -397,7 +398,7 @@ Operator:
 %type<strlist> opt_using delete_comma_separated_using_refs
 %type<strlist> set_clause_list
 
-%type<str> opt_only opt_alias_clause alias_clause
+%type<str> opt_only opt_alias_clause alias_clause func_alias_clause
 
 %type<str> anything set_clause
 
@@ -4683,9 +4684,12 @@ func_expr_common_subexpr:
 				}
 			| CURRENT_ROLE
 				{
+					$$ = &SVFOP_CURRENT_ROLE{}
 				}
 			| CURRENT_USER
 				{
+					/* XXX: support more */
+					$$ = &SVFOP_CURRENT_USER{}
 				}
 			| SESSION_USER
 				{
@@ -4935,11 +4939,11 @@ opt_ordinality: WITH ORDINALITY					{ $$ = true; }
 func_alias_clause:
 			alias_clause
 				{
-					$$ = nil
+					$$ = $1
 				}
 			| AS TOPENBR TableFuncElementList TCLOSEBR
 				{
-					$$ = nil
+					$$ = $4
 				}
 			| AS ColId TOPENBR TableFuncElementList TCLOSEBR
 				{
@@ -4951,7 +4955,7 @@ func_alias_clause:
 				}
 			| /*EMPTY*/
 				{
-					$$ = nil
+					$$ = ""
 				}
 		;
 
@@ -4990,11 +4994,17 @@ table_ref:	relation_expr opt_alias_clause
 			// 	}
 			| func_table func_alias_clause
 				{
-
+					$$ = &SubSelect{
+						Arg: $1,
+					}
+					$$.SetAlias($2)
 				}
 			| LATERAL_P func_table func_alias_clause
 				{
-
+					$$ = &SubSelect{
+						Arg: $2,
+					}
+					$$.SetAlias($3)
 				}
 			// | xmltable opt_alias_clause
 			// 	{
@@ -6496,8 +6506,8 @@ PartitionSpec: PARTITION BY ColId TOPENBR part_params TCLOSEBR
 				}
 		;
 
-part_params:	part_elem						{  }
-			| part_params TCOMMA part_elem			{  }
+part_params:	part_elem						{  $$ = []Node {$1} }
+			| part_params TCOMMA part_elem			{ $$ = append($1, $3) }
 		;
 
 part_elem: ColId opt_collate opt_qualified_name
@@ -6505,9 +6515,11 @@ part_elem: ColId opt_collate opt_qualified_name
 				}
 			| func_expr_windowless opt_collate opt_qualified_name
 				{
+					$$ = $1
 				}
 			| TOPENBR a_expr TCLOSEBR opt_collate opt_qualified_name
 				{
+					$$ = $2
 				}
 		;
 
@@ -6936,26 +6948,6 @@ OptPartitionSpec: PartitionSpec	{ $$ = $1; }
 			| /*EMPTY*/			{ $$ = nil; }
 		;
 
-PartitionSpec: PARTITION BY ColId TOPENBR part_params TCLOSEBR
-				{
-					$$ = nil
-				}
-		;
-
-part_params:	part_elem						{  }
-			| part_params TCOMMA part_elem			{  }
-		;
-
-part_elem: ColId opt_collate opt_qualified_name
-				{
-				}
-			| func_expr_windowless opt_collate opt_qualified_name
-				{
-				}
-			| TOPENBR a_expr TCLOSEBR opt_collate opt_qualified_name
-				{
-				}
-		;
 
 table_access_method_clause:
 			USING name							{ $$ = $2; }
