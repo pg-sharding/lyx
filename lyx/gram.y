@@ -57,8 +57,8 @@ func NewLyxParser() LyxParser {
 
 
 // CMDS
-%type <nodeList> multiStmt
-%type <node> command any_command
+%type <nodeList> multiStmt root
+%type <node> command
 %type <node> routable_statement
 
 // same for terminals
@@ -490,26 +490,26 @@ Operator:
 /* unroutable query parts */
 %type<str> opt_window_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
 
-%start multiStmt
+%start root
 
 %%
 
-
-
-multiStmt: command { } | 
-			multiStmt TSEMICOLON command {}
-
-	;
-
-any_command:
-    command semicolon_opt
-
-semicolon_opt:
-/*empty*/ {}
-| TSEMICOLON {
-    
+root: multiStmt semicolon_opt {
+	setParseTree(yylex, $1)
 }
 
+multiStmt: 
+			command {
+				$$ = []Node{$1}
+			} | 
+			multiStmt TSEMICOLON command {
+				$$ = append($1, $3)
+			}
+	;
+
+semicolon_opt:
+	/*empty*/ {}
+	| TSEMICOLON {}
 
 /*
  * Keyword category lists.  Generally, every keyword present in
@@ -1562,43 +1562,43 @@ command:
     /* noting */ { $$ = nil } | 
 	routable_statement
 	{
-		setParseTree(yylex, $1)
+		$$ = $1
 	} | TransactionStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
 	} | TransactionStmtLegacy {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | ExecuteStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | VariableSetStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | VariableResetStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | VariableShowStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
 	}| PrepareStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
 	} | DeallocateStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | vacuum_stmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | cluster_stmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | analyze_stmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | TruncateStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | DropStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | CreateStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | CreateSchemaStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
 	} | CreateExtensionStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
 	} | alter_stmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     } | DiscardStmt {
-		setParseTree(yylex, $1)
+		$$ = $1
     }
 
 any_id:
