@@ -380,7 +380,7 @@ func TestSelectComplex(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -425,7 +425,7 @@ func TestSelectDistinct(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -451,7 +451,7 @@ func TestAclGrantRevoke(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -676,11 +676,11 @@ func TestIntegerBoundaries(t *testing.T) {
 
 		if tt.err == nil {
 			assert.NoError(err, "query %s", tt.query)
+			assert.Equal(tt.exp, tmp[0], tt.query)
 		} else {
 			assert.Error(err, "query %s", tt.query)
 		}
 
-		assert.Equal(tt.exp, tmp, tt.query)
 	}
 }
 
@@ -1025,7 +1025,7 @@ func TestSelect(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -1184,7 +1184,7 @@ func TestSetOp(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -1242,7 +1242,7 @@ func TestSelectMultipleRelations(t *testing.T) {
 
 		assert.NoError(err)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -1288,7 +1288,7 @@ func TestSelectBetween(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
 	}
 }
 
@@ -1358,7 +1358,7 @@ func TestSelectAlias(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -1595,7 +1595,7 @@ func TestCreate(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -1618,7 +1618,7 @@ func TestCreateSchema(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -1643,7 +1643,7 @@ func TestCreateExtension(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -1968,7 +1968,7 @@ VALUES(2822, ROW('none', '0'), ''::bytea);
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
 	}
 }
 
@@ -2144,7 +2144,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -2288,7 +2288,7 @@ func TestUpdate(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -2404,7 +2404,7 @@ AND (shard_id, namespace_id, workflow_id, run_id, type, id, name) IN (
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -2553,7 +2553,7 @@ func TestCopy(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -2592,7 +2592,7 @@ func TestDiscard(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
 	}
 }
 
@@ -2754,7 +2754,7 @@ func TestFuncApplication(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
 	}
 }
 
@@ -2863,7 +2863,7 @@ func TestSelectTargetLists(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
 	}
 }
 
@@ -2904,7 +2904,7 @@ func TestWithComments(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
 	}
 }
 
@@ -3057,7 +3057,7 @@ func TestJoins(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, "query %s", tt.query)
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
 	}
 }
 
@@ -3268,7 +3268,7 @@ func TestMisc(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -3425,7 +3425,7 @@ func TestInConditions(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -3536,7 +3536,7 @@ func TestOperators(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -3585,7 +3585,7 @@ func TestParams(t *testing.T) {
 
 		assert.NoError(err, "query %s", tt.query)
 
-		assert.Equal(tt.exp, tmp)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -3681,7 +3681,7 @@ func TestCreateTableWithPrimaryKey(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, stmt, tt.query)
+		assert.Equal(tt.exp, stmt[0], tt.query)
 	}
 }
 
@@ -3826,7 +3826,7 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, stmt, tt.query)
+		assert.Equal(tt.exp, stmt[0], tt.query)
 	}
 }
 
@@ -3940,7 +3940,7 @@ func TestTruncateTable(t *testing.T) {
 
 		assert.NoError(err)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -3989,7 +3989,7 @@ func TestCreateTableWith(t *testing.T) {
 
 		assert.NoError(err)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -4088,7 +4088,7 @@ func TestCreateSuccess(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -4458,7 +4458,7 @@ select * from tbl inner join cte on tbl.i = cte.i;
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 		break
 	}
 }
@@ -4871,7 +4871,7 @@ func TestMiscQ(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -4906,7 +4906,7 @@ func TestExplain(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -5031,7 +5031,7 @@ func TestSetStmt(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -5068,7 +5068,7 @@ func TestShowStmt(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -5098,7 +5098,7 @@ func TestSetSessionStmt(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -5140,7 +5140,7 @@ func TestStmtWithCast(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -5149,21 +5149,34 @@ func TestMultiStmt(t *testing.T) {
 
 	type tcase struct {
 		query string
-		exp   lyx.Node
+		exp   []lyx.Node
 		err   error
 	}
 
 	for _, tt := range []tcase{
 		{
+
 			query: `select 1; select 2`,
-			exp: &lyx.Select{
-				TargetList: []lyx.Node{
-					&lyx.AExprIConst{
-						Value: 2,
+			exp: []lyx.Node{
+				&lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{
+							Value: 1,
+						},
 					},
+
+					Where: &lyx.AExprEmpty{},
 				},
 
-				Where: &lyx.AExprEmpty{},
+				&lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.AExprIConst{
+							Value: 2,
+						},
+					},
+
+					Where: &lyx.AExprEmpty{},
+				},
 			},
 			err: nil,
 		},
@@ -5204,7 +5217,7 @@ func TestTypeCast(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -5253,7 +5266,7 @@ func TestUpdateFrom(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
 
@@ -5480,6 +5493,6 @@ func TestMiscCatalog(t *testing.T) {
 
 		assert.NoError(err, tt.query)
 
-		assert.Equal(tt.exp, tmp, tt.query)
+		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
