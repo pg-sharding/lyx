@@ -2878,6 +2878,17 @@ func TestWithComments(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `SELECT /* dfd */ 1 /* njdfjjfd*/`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+		},
+		{
 			query: "SELECT * /* o lo lo l ol **** *!*&*(&!89**/ FROM  tsa_test WHERE id = 22;",
 			exp: &lyx.Select{
 
