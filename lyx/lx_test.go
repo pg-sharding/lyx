@@ -17,7 +17,7 @@ func TestSimple(t *testing.T) {
 		err   error
 	}
 
-	for _, tt := range []tcase{
+	for i, tt := range []tcase{
 		{
 			query: `
 			select 1
@@ -44,6 +44,20 @@ func TestSimple(t *testing.T) {
 			'$14'
 			`,
 			exp: []int{lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			select /*jjiewjow*/ 1
+			`,
+			exp: []int{lyx.SELECT, lyx.ICONST},
+			err: nil,
+		},
+		{
+			query: `
+			select /*jjiewjow*/ 1 /* joidwejiwe */ + 2
+			`,
+			exp: []int{lyx.SELECT, lyx.ICONST, lyx.TPLUS, lyx.ICONST},
 			err: nil,
 		},
 		{
@@ -250,6 +264,6 @@ func TestSimple(t *testing.T) {
 			res = append(res, v)
 		}
 
-		assert.Equal(tt.exp, res, tt.query)
+		assert.Equal(tt.exp, res, "test %d: %+v,", i, tt.query)
 	}
 }

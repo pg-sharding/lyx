@@ -76,7 +76,8 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
 
         sql_comment = '-''-' non_newline*;
-        c_style_comment = '/''*' (any - '*' - '/')* '*''/';
+        # https://www.colm.net/files/ragel/ragel-guide-6.6.pdf
+        c_style_comment = '/''*' (any* - (any* '*/' any* )) '*''/';
         comment		= sql_comment | c_style_comment;
 
 
