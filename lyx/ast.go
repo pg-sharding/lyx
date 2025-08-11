@@ -282,6 +282,11 @@ type Truncate struct {
 type Drop struct {
 }
 
+type DropTable struct {
+	TableRv  []FromClauseNode
+	IfExists bool
+}
+
 type Index struct {
 }
 
@@ -345,6 +350,7 @@ func (*Analyze) iNode()          {}
 func (*Cluster) iNode()          {}
 func (*Vacuum) iNode()           {}
 func (*Drop) iNode()             {}
+func (*DropTable) iNode()        {}
 func (*Truncate) iNode()         {}
 func (*Index) iNode()            {}
 func (*CreateRole) iNode()       {}

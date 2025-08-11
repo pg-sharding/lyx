@@ -3102,13 +3102,28 @@ func TestMisc(t *testing.T) {
 		},
 		{
 			query: "drop table xx;",
-			exp:   &lyx.Drop{},
-			err:   nil,
+			exp: &lyx.DropTable{
+				IfExists: false,
+				TableRv: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xx",
+					},
+				},
+			},
+			err: nil,
 		},
 		{
 			query: "drop table sh.'xx';",
-			exp:   &lyx.Drop{},
-			err:   nil,
+			exp: &lyx.DropTable{
+				IfExists: false,
+				TableRv: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "sh",
+						RelationName: "xx",
+					},
+				},
+			},
+			err: nil,
 		},
 		{
 			query: "analyze xx;",
@@ -3882,7 +3897,23 @@ func TestDrop(t *testing.T) {
 		{
 			query: `
 			drop table if exists pgbench_accounts, pgbench_branches, pgbench_history, pgbench_tellers`,
-			exp: &lyx.Drop{},
+			exp: &lyx.DropTable{
+				IfExists: true,
+				TableRv: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "pgbench_accounts",
+					},
+					&lyx.RangeVar{
+						RelationName: "pgbench_branches",
+					},
+					&lyx.RangeVar{
+						RelationName: "pgbench_history",
+					},
+					&lyx.RangeVar{
+						RelationName: "pgbench_tellers",
+					},
+				},
+			},
 		},
 	} {
 		_, err := lyx.Parse(tt.query)

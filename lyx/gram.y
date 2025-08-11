@@ -149,7 +149,7 @@ func NewLyxParser() LyxParser {
 /* JOINS */
 %token<str> OUTER_P FULL RIGHT LEFT INNER_P
 
-/* drop/trtuncate stmts */
+/* drop/truncate stmts */
 %token<str> DROP TRUNCATE
 
 %token<str> FETCH FOR ORDER GROUP BY OFFSET LIMIT WINDOW
@@ -4230,7 +4230,21 @@ analyze_stmt:
         }
     }
 
-DropStmt:	DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
+DropStmt:	DROP TABLE IF_P EXISTS any_name_list
+                {
+                    $$ = &DropTable {
+                        IfExists: true,
+                        TableRv: make([]FromClause)$5,
+                    }
+                }
+            | DROP TABLE any_name_list
+                {
+                    $$ = &DropTable {
+                        IfExists: false,
+                        TableRv: $3,
+                    }
+                }
+            | DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
 				{
 					$$ = &Drop {}
 				}
