@@ -280,6 +280,9 @@ type Truncate struct {
 }
 
 type Drop struct {
+	RemoveType string
+	MissingOk  bool
+	Objects    []string
 }
 
 type Index struct {

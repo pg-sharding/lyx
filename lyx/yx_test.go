@@ -3102,13 +3102,21 @@ func TestMisc(t *testing.T) {
 		},
 		{
 			query: "drop table xx;",
-			exp:   &lyx.Drop{},
-			err:   nil,
+			exp: &lyx.Drop{
+				RemoveType: "table",
+				MissingOk:  false,
+				Objects:    []string{"xx"},
+			},
+			err: nil,
 		},
 		{
 			query: "drop table sh.'xx';",
-			exp:   &lyx.Drop{},
-			err:   nil,
+			exp: &lyx.Drop{
+				RemoveType: "table",
+				MissingOk:  false,
+				Objects:    []string{"sh"},
+			},
+			err: nil,
 		},
 		{
 			query: "analyze xx;",
@@ -3882,12 +3890,23 @@ func TestDrop(t *testing.T) {
 		{
 			query: `
 			drop table if exists pgbench_accounts, pgbench_branches, pgbench_history, pgbench_tellers`,
-			exp: &lyx.Drop{},
+			exp: &lyx.Drop{
+				RemoveType: "table",
+				MissingOk:  true,
+				Objects: []string{
+					"pgbench_accounts",
+					"pgbench_branches",
+					"pgbench_history",
+					"pgbench_tellers",
+				},
+			},
 		},
 	} {
-		_, err := lyx.Parse(tt.query)
+		res, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, res[0], tt.query)
 	}
 }
 
