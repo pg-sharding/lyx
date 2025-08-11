@@ -334,7 +334,7 @@ Operator:
 
 %type<node> ExplainStmt ExplainableStmt DeclareCursorStmt
 
-%type<str> var_name var_value
+%type<str> var_name var_value object_type_any_name
 
 %type<strlist> var_list any_name_list opt_name_list name_list
 
@@ -4230,27 +4230,22 @@ analyze_stmt:
         }
     }
 
-DropStmt:	DROP TABLE IF_P EXISTS any_name_list
-                {
-                    $$ = &DropTable {
-                        IfExists: true,
-                        TableRv: make([]FromClause)$5,
-                    }
-                }
-            | DROP TABLE any_name_list
-                {
-                    $$ = &DropTable {
-                        IfExists: false,
-                        TableRv: $3,
-                    }
-                }
-            | DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
+DropStmt:
+            DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
 				{
-					$$ = &Drop {}
+					$$ = &Drop {
+						RemoveType: $2,
+						MissingOk: true,
+						Objects: $5,
+					}
 				}
 			| DROP object_type_any_name any_name_list opt_drop_behavior
 				{
-					$$ = &Drop {}
+					$$ = &Drop {
+						RemoveType: $2,
+						MissingOk: false,
+						Objects: $3,
+					}
 				}
 			| DROP drop_type_name IF_P EXISTS name_list opt_drop_behavior
 				{
@@ -4297,19 +4292,19 @@ DropStmt:	DROP TABLE IF_P EXISTS any_name_list
 
 /* object types taking any_name/any_name_list */
 object_type_any_name:
-			TABLE									{  }
-			| SEQUENCE								{  }
-			| VIEW									{  }
-			| MATERIALIZED VIEW						{  }
-			| INDEX									{  }
-			| FOREIGN TABLE							{  }
-			| COLLATION								{  }
-			// | CONVERSION							{  }
-			| STATISTICS							{  }
-			// | TEXT SEARCH PARSER					{  }
-			// | TEXT SEARCH DICTIONARY				{  }
-			// | TEXT SEARCH TEMPLATE				{  }
-			// | TEXT SEARCH CONFIGURATION			{  }
+			TABLE									{ $$ = $1 }
+			| SEQUENCE								{ $$ = $1 }
+			| VIEW									{ $$ = $1 }
+			| MATERIALIZED VIEW						{ $$ = $1 }
+			| INDEX									{ $$ = $1 }
+			| FOREIGN TABLE							{ $$ = $1 }
+			| COLLATION								{ $$ = $1 }
+			| CONVERSION_P							{ $$ = $1 }
+			| STATISTICS							{ $$ = $1 }
+			// | TEXT SEARCH PARSER					{ $$ = $1 }
+			// | TEXT SEARCH DICTIONARY				{ $$ = $1 }
+			// | TEXT SEARCH TEMPLATE				{ $$ = $1 }
+			// | TEXT SEARCH CONFIGURATION			{ $$ = $1 }
 		;
 
 
@@ -4348,8 +4343,8 @@ object_type_name_on_any_name:
 		;
 
 any_name_list:
-			any_name								{  }
-			| any_name_list TCOMMA any_name			{  }
+			any_name								{ $$ = []string{$1} }
+			| any_name_list TCOMMA any_name			{ $$ = append($1, $3) }
 		;
 
 any_name:	ColId						{  }
