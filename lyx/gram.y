@@ -4117,6 +4117,7 @@ CreateStmt:
         }
     } | CREATE OptTemp TABLE IF_P NOT EXISTS table_name TOPENBR OptTableElementList TCLOSEBR OptPartitionSpec OptWith anything {
         $$ = &CreateTable {
+            IfNotExists: true,
             TableRv: $7,
             TableElts: $9,
         }
