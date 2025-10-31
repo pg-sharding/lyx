@@ -4230,8 +4230,7 @@ analyze_stmt:
         }
     }
 
-DropStmt:
-            DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
+DropStmt:	DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
 				{
 					$$ = &Drop {
 						RemoveType: $2,
