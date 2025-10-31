@@ -1622,6 +1622,29 @@ func TestCreateSchema(t *testing.T) {
 	}
 }
 
+func TestCreateEnum(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+	for _, tt := range []tcase{
+		{
+			query: "CREATE TYPE status AS ENUM ('new', 'in_progress', 'done', 'archived');",
+			exp:   &lyx.DefineStmt{},
+			err:   nil,
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp[0], tt.query)
+	}
+}
+
 func TestCreateExtension(t *testing.T) {
 	assert := assert.New(t)
 
@@ -4017,7 +4040,7 @@ func TestCreateTableWith(t *testing.T) {
 	} {
 		tmp, err := lyx.Parse(tt.query)
 
-		assert.NoError(err)
+		assert.NoError(err, tt.query)
 
 		assert.Equal(tt.exp, tmp[0], tt.query)
 	}

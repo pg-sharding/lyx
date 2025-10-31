@@ -288,6 +288,15 @@ type Drop struct {
 type Index struct {
 }
 
+type DefineStmt struct {
+}
+
+type CreateFunctionStmt struct {
+}
+
+type CreateType struct {
+}
+
 type CreateRole struct {
 }
 
@@ -337,36 +346,39 @@ const (
 	SetOpExcept    = SetOperation("EXCEPT")
 )
 
-func (*Explain) iNode()          {}
-func (*Select) iNode()           {}
-func (*ValueClause) iNode()      {}
-func (*Execute) iNode()          {}
-func (*Prepare) iNode()          {}
-func (*CreateTable) iNode()      {}
-func (*Alter) iNode()            {}
-func (*Analyze) iNode()          {}
-func (*Cluster) iNode()          {}
-func (*Vacuum) iNode()           {}
-func (*Drop) iNode()             {}
-func (*Truncate) iNode()         {}
-func (*Index) iNode()            {}
-func (*CreateRole) iNode()       {}
-func (*CreateDatabase) iNode()   {}
-func (*Insert) iNode()           {}
-func (*Delete) iNode()           {}
-func (*Update) iNode()           {}
-func (*VarValue) iNode()         {}
-func (*VariableSetStmt) iNode()  {}
-func (*VariableShowStmt) iNode() {}
-func (*SubLink) iNode()          {}
-func (*CommonTableExpr) iNode()  {}
-func (*TableElt) iNode()         {}
-func (*CreateSchema) iNode()     {}
-func (*CreateExtension) iNode()  {}
-func (*AExprIn) iNode()          {}
-func (*Grant) iNode()            {}
-func (*DiscardStmt) iNode()      {}
-func (*SubSelect) iNode()        {}
+func (*Explain) iNode()            {}
+func (*Select) iNode()             {}
+func (*ValueClause) iNode()        {}
+func (*Execute) iNode()            {}
+func (*Prepare) iNode()            {}
+func (*CreateTable) iNode()        {}
+func (*Alter) iNode()              {}
+func (*Analyze) iNode()            {}
+func (*Cluster) iNode()            {}
+func (*Vacuum) iNode()             {}
+func (*Drop) iNode()               {}
+func (*Truncate) iNode()           {}
+func (*Index) iNode()              {}
+func (*CreateRole) iNode()         {}
+func (*CreateDatabase) iNode()     {}
+func (*Insert) iNode()             {}
+func (*Delete) iNode()             {}
+func (*Update) iNode()             {}
+func (*VarValue) iNode()           {}
+func (*VariableSetStmt) iNode()    {}
+func (*VariableShowStmt) iNode()   {}
+func (*SubLink) iNode()            {}
+func (*CommonTableExpr) iNode()    {}
+func (*TableElt) iNode()           {}
+func (*CreateSchema) iNode()       {}
+func (*CreateExtension) iNode()    {}
+func (*AExprIn) iNode()            {}
+func (*Grant) iNode()              {}
+func (*DiscardStmt) iNode()        {}
+func (*SubSelect) iNode()          {}
+func (*DefineStmt) iNode()         {}
+func (*CreateFunctionStmt) iNode() {}
+func (*CreateType) iNode()         {}
 
 type TransactionStmtType int
 

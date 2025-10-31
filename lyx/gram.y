@@ -66,7 +66,7 @@ func NewLyxParser() LyxParser {
 %token <int> ICONST
 %token <int> INVALID_ICONST
 
-%token<str> NumericOnly
+// %token<str> NumericOnly
 
 %type<str> any_id any_val func_name any_name
 
@@ -74,7 +74,7 @@ func NewLyxParser() LyxParser {
 
 %type<bool> opt_program opt_grant_grant_option
 
-%type <bool> opt_unique_null_treatment  opt_without_overlaps
+%type <bool> opt_unique_null_treatment  opt_without_overlaps opt_or_replace
 
 %type<node> key_update key_action key_actions key_delete opt_c_include
 %type<node> optionalPeriodName opt_column_and_period_list
@@ -88,7 +88,7 @@ func NewLyxParser() LyxParser {
 %type<node> create_generic_options ColConstraint ConstraintAttr 
 %type<node> generic_option_list opt_definition
 
-%type<node> def_elem def_list definition
+%type<node> def_elem def_list definition def_arg
 %type<node> opt_no_inherit
 
 %type<node> generic_option_name generic_option_arg generic_option_elem
@@ -102,8 +102,13 @@ func NewLyxParser() LyxParser {
 %type<cte> common_table_expr
 %type<cteList> cte_list with_clause opt_with_clause
 
+%type<node> func_return
+
 %type<node> extract_arg
-%type<nodeList> extract_list
+%type<nodeList> extract_list func_args func_args_with_defaults func_args_with_defaults_list func_args_list
+%type<nodeList> opt_createfunc_opt_list
+
+%type<node> func_arg_with_default func_arg aggr_arg 
 
 %type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
 
@@ -298,6 +303,10 @@ Operator:
 %type<node> vacuum_stmt cluster_stmt analyze_stmt
 %type<node> TruncateStmt DropStmt
 %type<node> DiscardStmt
+%type<node> DefineStmt
+%type<node> CreateFunctionStmt
+%type<node> ReturnStmt
+
 %type<str> semicolon_opt
 
 %type<node> PreparableStmt
@@ -343,7 +352,7 @@ Operator:
 %type<nodeList> OptTypedTableElementList TypedTableElementList columnOptions OptTableElementList TableElementList
 
 %type<node> zone_value iso_level generic_set set_rest set_rest_more 
-%type<node> reset_rest generic_reset SetResetClause VariableResetStmt VariableSetStmt VariableShowStmt
+%type<node> reset_rest generic_reset SetResetClause VariableResetStmt VariableSetStmt VariableShowStmt FunctionSetResetClause
 %type<node> opt_encoding 
 
 %type<str> NonReservedWord_or_SCONST opt_boolean_or_string
@@ -366,12 +375,16 @@ Operator:
 
 %type<node> ColRef qualColRef relAllCols columnref
 
-%type<nodeList> expr_list trim_list substr_list
+%type<node> routine_body_stmt
+
+%type<nodeList> expr_list trim_list substr_list routine_body_stmt_list old_aggr_definition old_aggr_list
 
 %type<str> opt_with_data
 
 %type<str> ColId set_target
 
+%type<str> all_Op MathOp qual_Op any_operator qual_all_Op subquery_Op
+ 
 %type<str> NonReservedWord name database_name access_method index_name
 
 %type<strlist> name_list opt_name_list
@@ -393,7 +406,8 @@ Operator:
 %type<str> attr_name ColLabel file_name BareColLabel
 %type<from> qualified_name table_name
 
-%type<node> qualified_name_list 
+%type<nodeList> qualified_name_list opt_enum_val_list enum_val_list
+
 
 %type<strlist> opt_using delete_comma_separated_using_refs
 %type<strlist> set_clause_list
@@ -419,7 +433,9 @@ Operator:
 /*  TYPES */
 %type<str>  interval_second opt_interval opt_timezone ConstInterval ConstDatetime opt_varying character CharacterWithoutLength CharacterWithLength ConstCharacter Character
 %type<str>  BitWithoutLength BitWithLength ConstBit Bit opt_float Numeric opt_type_modifiers  GenericType ConstTypename SimpleTypename opt_array_bounds Typename
-%type<str> type_function_name
+%type<str> type_function_name func_type createfunc_opt_item common_func_opt_item 
+
+%type<node> opt_routine_body
 
 %type<str> type_list prep_type_clause
 
@@ -1599,6 +1615,8 @@ command:
 		$$ = $1
     } | DiscardStmt {
 		$$ = $1
+    } | DefineStmt {
+		$$ = $1
     }
 
 any_id:
@@ -1923,30 +1941,18 @@ reloption_elem:
 		;
 
 
-/* Note: any simple identifier will be returned as a type name! */
-def_arg:
-	// func_type						{ $$ = (Node *)$1; }
-			reserved_keyword				{} 
-			// | qual_all_Op					{ $$ = (Node *)$1; }
-			| NumericOnly					{ }
-			| ICONST						{} 
-			| SCONST						{  }
-			// | NONE							{ $$ = (Node *)makeString(pstrdup($1)); }
-		;
-
-
-
 // FCONST								{}
 // | TPLUS FCONST						{ }
 // | TMINUS FCONST
 // 	{
 // 	}
 //  TODO: support fconst 
-// NumericOnly: SCONST {} 
-// 			| TPLUS SCONST {}
-// 			| TMINUS SCONST {}
-// 			| SignedIconst						{}
-// 		;
+
+NumericOnly: SCONST {} 
+			// | TPLUS SCONST {}
+			// | TMINUS SCONST {}
+			| ICONST						{}
+		;
 
 // NumericOnly_list:	NumericOnly						{}
 // 				| NumericOnly_list TCOMMA NumericOnly	{}
@@ -2423,7 +2429,7 @@ extract_list:
 				}
 		;
 
-/* Allow delimited string Sconst in extract_arg as an SQL extension.
+/* Allow delimited string SCONST in extract_arg as an SQL extension.
  * - thomas 2001-04-12
  */
 extract_arg:
@@ -2453,9 +2459,67 @@ sub_type:	ANY										{  }
 
 
 
-subquery_Op:
-			OP
+all_Op:		OP										{ $$ = $1; }
+			| MathOp								{ $$ = $1; }
+		;
+
+MathOp:		 TPLUS									{ $$ = "+"; }
+			| TMINUS									{ $$ = "-"; }
+			| TMUL									{ $$ = "*"; }
+			| TDIV									{ $$ = "/"; }
+			| TMOD									{ $$ = "%"; }
+			// | '^'									{ $$ = "^"; }
+			| TLESS									{ $$ = "<"; }
+			| TGREATER									{ $$ = ">"; }
+			| TEQ									{ $$ = "="; }
+			| TLESS_EQUALS							{ $$ = "<="; }
+			| TGREATER_EQUALS						{ $$ = ">="; }
+			| TNOT_EQUALS							{ $$ = "<>"; }
+		;
+
+qual_Op:	OP
 					{  }
+			| OPERATOR TOPENBR any_operator TCLOSEBR
+					{ $$ = $3; }
+		;
+
+qual_all_Op:
+			all_Op
+					{ $$ = $1; }
+			| OPERATOR TOPENBR any_operator TCLOSEBR
+					{ $$ = $3; }
+		;
+
+subquery_Op:
+			all_Op
+					{ }
+			| OPERATOR TOPENBR any_operator TCLOSEBR
+					{ $$ = $3; }
+			| LIKE
+					{  }
+			| NOT_LA LIKE
+					{  }
+			| ILIKE
+					{ }
+			| NOT_LA ILIKE
+					{ }
+/* cannot put SIMILAR TO here, because SIMILAR TO is a hack.
+ * the regular expression is preprocessed by a function (similar_to_escape),
+ * and the ~ operator for posix regular expressions is used.
+ *        x SIMILAR TO y     ->    x ~ similar_to_escape(y)
+ * this transformation is made on the fly by the parser upwards.
+ * however the SubLink structure which handles any/some/all stuff
+ * is not ready for such a thing.
+ */
+			;
+
+any_operator:
+			all_Op
+					{ }
+			| ColId TDOT any_operator
+					{ }
+		;
+
 
 indirection_el:
 			TDOT attr_name
@@ -3259,6 +3323,397 @@ NonReservedWord_or_SCONST:
 
 /*****************************************************************************
  *
+ *		QUERY:
+ *				create [or replace] function <fname>
+ *						[(<type-1> { , <type-n>})]
+ *						returns <type-r>
+ *						as <filename or code in language as appropriate>
+ *						language <lang> [with parameters]
+ *
+ *****************************************************************************/
+
+CreateFunctionStmt:
+			CREATE opt_or_replace FUNCTION func_name func_args_with_defaults
+			RETURNS func_return opt_createfunc_opt_list opt_routine_body
+				{
+					$$ = &CreateFunctionStmt{}
+				}
+			| CREATE opt_or_replace FUNCTION func_name func_args_with_defaults
+			  RETURNS TABLE TOPENBR table_func_column_list TCLOSEBR opt_createfunc_opt_list opt_routine_body
+				{
+					$$ = &CreateFunctionStmt{}
+				}
+			| CREATE opt_or_replace FUNCTION func_name func_args_with_defaults
+			  opt_createfunc_opt_list opt_routine_body
+				{
+					$$ = &CreateFunctionStmt{}
+				}
+			| CREATE opt_or_replace PROCEDURE func_name func_args_with_defaults
+			  opt_createfunc_opt_list opt_routine_body
+				{
+					$$ = &CreateFunctionStmt{}
+				}
+		;
+
+opt_or_replace:
+			OR REPLACE								{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+		;
+
+func_args:	TOPENBR func_args_list TCLOSEBR					{ $$ = $2; }
+			| TOPENBR TCLOSEBR								{ $$ = nil; }
+		;
+
+func_args_list:
+			func_arg								{}
+			| func_args_list TCOMMA func_arg			{  }
+		;
+
+function_with_argtypes_list:
+			function_with_argtypes					{  }
+			| function_with_argtypes_list TCOMMA function_with_argtypes
+													{  }
+		;
+
+function_with_argtypes:
+			func_name func_args
+				{
+				}
+			/*
+			 * Because of reduce/reduce conflicts, we can't use func_name
+			 * below, but we can write it out the long way, which actually
+			 * allows more cases.
+			 */
+			| type_func_name_keyword
+				{
+				}
+			| ColId
+				{
+				}
+			| ColId indirection
+				{
+				}
+		;
+
+/*
+ * func_args_with_defaults is separate because we only want to accept
+ * defaults in CREATE FUNCTION, not in ALTER etc.
+ */
+func_args_with_defaults:
+		TOPENBR func_args_with_defaults_list TCLOSEBR		{ $$ = $2; }
+		| TOPENBR TCLOSEBR								{ $$ = nil; }
+		;
+
+func_args_with_defaults_list:
+		func_arg_with_default						{ }
+		| func_args_with_defaults_list TCOMMA func_arg_with_default
+													{ }
+		;
+
+/*
+ * The style with arg_class first is SQL99 standard, but Oracle puts
+ * param_name first; accept both since it's likely people will try both
+ * anyway.  Don't bother trying to save productions by letting arg_class
+ * have an empty alternative ... you'll get shift/reduce conflicts.
+ *
+ * We can catch over-specified arguments here if we want to,
+ * but for now better to silently swallow typmod, etc.
+ * - thomas 2000-03-22
+ */
+func_arg:
+			arg_class param_name func_type
+				{
+				}
+			| param_name arg_class func_type
+				{
+				}
+			| param_name func_type
+				{
+				}
+			| arg_class func_type
+				{
+				}
+			| func_type
+				{
+				}
+		;
+
+/* INOUT is SQL99 standard, IN OUT is for Oracle compatibility */
+arg_class:	IN_P								{ }
+			| OUT_P								{ }
+			| INOUT								{ }
+			| IN_P OUT_P						{ }
+			| VARIADIC							{ }
+		;
+
+/*
+ * Ideally param_name should be ColId, but that causes too many conflicts.
+ */
+param_name:	type_function_name
+		;
+
+func_return:
+			func_type
+				{
+					/* We can catch over-specified results here if we want to,
+					 * but for now better to silently swallow typmod, etc.
+					 * - thomas 2000-03-22
+					 */
+					// $$ = $1;
+				}
+		;
+
+/*
+ * We would like to make the %TYPE productions here be ColId attrs etc,
+ * but that causes reduce/reduce conflicts.  type_function_name
+ * is next best choice.
+ */
+func_type:	Typename								{ $$ = $1; }
+			| type_function_name attrs TMOD TYPE_P
+				{
+				}
+			| SETOF type_function_name attrs TMOD TYPE_P
+				{
+				}
+		;
+
+func_arg_with_default:
+		func_arg
+				{
+					$$ = $1;
+				}
+		| func_arg DEFAULT a_expr
+				{
+				}
+		| func_arg TEQ a_expr
+				{
+					$$ = $1;
+					// $$->defexpr = $3;
+				}
+		;
+
+/* Aggregate args can be most things that function args can be */
+aggr_arg:	func_arg
+				{
+					$$ = $1;
+				}
+		;
+
+/*
+ * The SQL standard offers no guidance on how to declare aggregate argument
+ * lists, since it doesn't have CREATE AGGREGATE etc.  We accept these cases:
+ *
+ * (*)									- normal agg with no args
+ * (aggr_arg,...)						- normal agg with args
+ * (ORDER BY aggr_arg,...)				- ordered-set agg with no direct args
+ * (aggr_arg,... ORDER BY aggr_arg,...)	- ordered-set agg with direct args
+ *
+ * The zero-argument case is spelled with '*' for consistency with COUNT(*).
+ *
+ * An additional restriction is that if the direct-args list ends in a
+ * VARIADIC item, the ordered-args list must contain exactly one item that
+ * is also VARIADIC with the same type.  This allows us to collapse the two
+ * VARIADIC items into one, which is necessary to represent the aggregate in
+ * pg_proc.  We check this at the grammar stage so that we can return a list
+ * in which the second VARIADIC item is already discarded, avoiding extra work
+ * in cases such as DROP AGGREGATE.
+ *
+ * The return value of this production is a two-element list, in which the
+ * first item is a sublist of FunctionParameter nodes (with any duplicate
+ * VARIADIC item already dropped, as per above) and the second is an Integer
+ * node, containing -1 if there was no ORDER BY and otherwise the number
+ * of argument declarations before the ORDER BY.  (If this number is equal
+ * to the first sublist's length, then we dropped a duplicate VARIADIC item.)
+ * This representation is passed as-is to CREATE AGGREGATE; for operations
+ * on existing aggregates, we can just apply extractArgTypes to the first
+ * sublist.
+ */
+aggr_args:	TOPENBR TMUL TCLOSEBR
+				{
+				}
+			| TOPENBR aggr_args_list TCLOSEBR
+				{
+				}
+			| TOPENBR ORDER BY aggr_args_list TCLOSEBR
+				{
+				}
+			| TOPENBR aggr_args_list ORDER BY aggr_args_list TCLOSEBR
+				{
+				}
+		;
+
+aggr_args_list:
+			aggr_arg								{  }
+			| aggr_args_list TCOMMA aggr_arg			{  }
+		;
+
+aggregate_with_argtypes:
+			func_name aggr_args
+				{
+				}
+		;
+
+aggregate_with_argtypes_list:
+			aggregate_with_argtypes					{  }
+			| aggregate_with_argtypes_list TCOMMA aggregate_with_argtypes
+													{}
+		;
+
+opt_createfunc_opt_list:
+			createfunc_opt_list {}
+			| /*EMPTY*/ { $$ = nil; }
+	;
+
+createfunc_opt_list:
+			/* Must be at least one to prevent conflict */
+			createfunc_opt_item						{ }
+			| createfunc_opt_list createfunc_opt_item { }
+	;
+
+/*
+ * Options common to both CREATE FUNCTION and ALTER FUNCTION
+ */
+common_func_opt_item:
+			CALLED ON NULL_P INPUT_P
+				{
+				}
+			| RETURNS NULL_P ON NULL_P INPUT_P
+				{
+				}
+			| STRICT_P
+				{
+				}
+			| IMMUTABLE
+				{
+				}
+			| STABLE
+				{
+				}
+			| VOLATILE
+				{
+				}
+			| EXTERNAL SECURITY DEFINER
+				{
+				}
+			| EXTERNAL SECURITY INVOKER
+				{
+				}
+			| SECURITY DEFINER
+				{
+				}
+			| SECURITY INVOKER
+				{
+				}
+			| LEAKPROOF
+				{
+				}
+			| NOT LEAKPROOF
+				{
+				}
+			| COST NumericOnly
+				{
+				}
+			| ROWS NumericOnly
+				{
+				}
+			| SUPPORT any_name
+				{
+				}
+			| FunctionSetResetClause
+				{
+				}
+			| PARALLEL ColId
+				{
+				}
+		;
+
+createfunc_opt_item:
+			AS func_as
+				{
+				}
+			| LANGUAGE NonReservedWord_or_SCONST
+				{
+				}
+			| TRANSFORM transform_type_list
+				{
+				}
+			| WINDOW
+				{
+				}
+			| common_func_opt_item
+				{
+					$$ = $1;
+				}
+		;
+
+func_as:	SCONST						{  }
+			| SCONST TCOMMA SCONST
+				{
+				}
+		;
+
+ReturnStmt:	RETURN a_expr
+				{
+				}
+		;
+
+opt_routine_body:
+			ReturnStmt
+				{
+					$$ = $1;
+				}
+			| BEGIN_P ATOMIC routine_body_stmt_list END_P
+				{
+				}
+			| /*EMPTY*/
+				{
+					$$ = nil;
+				}
+		;
+
+routine_body_stmt_list:
+			routine_body_stmt_list routine_body_stmt TSEMICOLON
+				{
+				}
+			| /*EMPTY*/
+				{
+					$$ = nil;
+				}
+		;
+
+routine_body_stmt:
+			routable_statement { $$ = $1 }
+			| ReturnStmt { $$ = $1 }
+		;
+
+transform_type_list:
+			FOR TYPE_P Typename { }
+			| transform_type_list TCOMMA FOR TYPE_P Typename { }
+		;
+
+opt_definition:
+			WITH definition							{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+table_func_column:	param_name func_type
+				{
+				}
+		;
+
+table_func_column_list:
+			table_func_column
+				{
+				}
+			| table_func_column_list TCOMMA table_func_column
+				{
+				}
+		;
+
+
+
+/*****************************************************************************
+ *
  * Set PG internal variable
  *	  SET name TO 'var_value'
  * Include SQL syntax (thomas 1997-10-22):
@@ -3487,6 +3942,12 @@ SetResetClause:
 		;
 
 
+/* SetResetClause allows SET or RESET without LOCAL */
+FunctionSetResetClause:
+			SET set_rest_more				{ $$ = $2; }
+			| VariableResetStmt				{  }
+		;
+
 
 VariableShowStmt:
 			SHOW var_name
@@ -3710,21 +4171,6 @@ opt_ref:
 
 opt_no_inherit:	NO INHERIT							{   }
 			| /* EMPTY */							{   }
-		;
-
-definition: TOPENBR def_list TCLOSEBR						{ $$ = $2; }
-		;
-
-def_list:	def_elem								{  }
-			| def_list TCOMMA def_elem					{ }
-		;
-
-def_elem:	ColLabel TEQ def_arg
-				{
-				}
-			| ColLabel
-				{
-				}
 		;
 
 
@@ -4361,6 +4807,130 @@ type_name_list:
 			Typename								{}
 			| type_name_list TCOMMA Typename			{  }
 		;
+
+
+DefineStmt:
+			CREATE opt_or_replace AGGREGATE func_name aggr_args definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE opt_or_replace AGGREGATE func_name old_aggr_definition
+				{
+					/* old-style (pre-8.2) syntax for CREATE AGGREGATE */
+					$$ = &DefineStmt{};
+				}
+			| CREATE OPERATOR any_operator definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TYPE_P any_name definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TYPE_P any_name
+				{
+					/* Shell type (identified by lack of definition) */
+					$$ = &DefineStmt{};
+				}
+			| CREATE TYPE_P any_name AS TOPENBR OptTableFuncElementList TCLOSEBR
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TYPE_P any_name AS ENUM_P TOPENBR opt_enum_val_list TCLOSEBR
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TYPE_P any_name AS RANGE definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TEXT_P SEARCH PARSER any_name definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TEXT_P SEARCH DICTIONARY any_name definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TEXT_P SEARCH TEMPLATE any_name definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE TEXT_P SEARCH CONFIGURATION any_name definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE COLLATION any_name definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE COLLATION IF_P NOT EXISTS any_name definition
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE COLLATION any_name FROM any_name
+				{
+					$$ = &DefineStmt{};
+				}
+			| CREATE COLLATION IF_P NOT EXISTS any_name FROM any_name
+				{
+					$$ = &DefineStmt{};
+				}
+		;
+
+definition: TOPENBR def_list TCLOSEBR						{ $$ = $2; }
+		;
+
+def_list:	def_elem								{  }
+			| def_list TCOMMA def_elem					{ }
+		;
+
+def_elem:	ColLabel TEQ def_arg
+				{
+				}
+			| ColLabel
+				{
+				}
+		;
+
+/* Note: any simple identifier will be returned as a type name! */
+def_arg:	func_type						{  }
+			| reserved_keyword				{ }
+			| qual_all_Op					{  }
+			| NumericOnly					{ }
+			| SCONST						{  }
+			| NONE							{  }
+		;
+
+old_aggr_definition: TOPENBR old_aggr_list TCLOSEBR			{ $$ = $2; }
+		;
+
+old_aggr_list: old_aggr_elem						{  }
+			| old_aggr_list TCOMMA old_aggr_elem		{  }
+		;
+
+
+/*
+ * Must use IDENT here to avoid reduce/reduce conflicts; fortunately none of
+ * the item names needed in old aggregate definitions are likely to become
+ * SQL keywords.
+ */
+old_aggr_elem:  IDENT TEQ def_arg
+				{
+				}
+		;
+
+opt_enum_val_list:
+		enum_val_list							{ $$ = $1; }
+		| /*EMPTY*/								{ $$ = nil; }
+		;
+
+enum_val_list:	SCONST
+				{ }
+			| enum_val_list TCOMMA SCONST
+				{  }
+		;
+
 
 /*****************************************************************************
  *
@@ -5666,7 +6236,7 @@ for_locking_strength:
 
 
 locked_rels_list:
-			OF qualified_name_list					{ $$ = $2; }
+			OF qualified_name_list					{  }
 			| /* EMPTY */							{ }
 		;
 
@@ -6501,8 +7071,8 @@ key_action:
 				}
 		;
 
-OptInherit: INHERITS TOPENBR qualified_name_list TCLOSEBR	{ $$ = $3; }
-			| /*EMPTY*/								{ $$ = nil; }
+OptInherit: INHERITS TOPENBR qualified_name_list TCLOSEBR	{  }
+			| /*EMPTY*/								{  }
 		;
 
 /* Optional partition key specification */
@@ -6948,8 +7518,8 @@ opt_drop_behavior:
 
 
 
-OptInherit: INHERITS TOPENBR qualified_name_list TCLOSEBR	{ $$ = $3; }
-			| /*EMPTY*/								{ $$ = nil; }
+OptInherit: INHERITS TOPENBR qualified_name_list TCLOSEBR	{ }
+			| /*EMPTY*/								{ }
 		;
 
 /* Optional partition key specification */
