@@ -3123,6 +3123,18 @@ func TestMisc(t *testing.T) {
 			exp:   &lyx.Vacuum{},
 			err:   nil,
 		},
+
+		{
+			query: "vacuum sh.xx;",
+			exp:   &lyx.Vacuum{},
+			err:   nil,
+		},
+
+		{
+			query: "truncate sh.xx;",
+			exp:   &lyx.Truncate{},
+			err:   nil,
+		},
 		{
 			query: "drop table xx;",
 			exp: &lyx.Drop{

@@ -4655,14 +4655,14 @@ alter_stmt:
     }
 
 vacuum_stmt:
-    VACUUM anything {
+    VACUUM qualified_name {
         $$ = &Vacuum {
 
         }
     }
 
 cluster_stmt:
-    CLUSTER anything {
+    CLUSTER qualified_name {
         $$ = &Cluster {
             
         }
