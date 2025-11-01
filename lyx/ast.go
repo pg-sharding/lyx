@@ -267,13 +267,15 @@ type CreateExtension struct {
 type Alter struct {
 }
 
-type Analyze struct {
-}
-
 type Cluster struct {
 }
 
-type Vacuum struct {
+type VacuumStmt struct {
+	IsVacuumcmd bool
+}
+
+type ExplainStmt struct {
+	Query Node
 }
 
 type Truncate struct {
@@ -353,9 +355,8 @@ func (*Execute) iNode()            {}
 func (*Prepare) iNode()            {}
 func (*CreateTable) iNode()        {}
 func (*Alter) iNode()              {}
-func (*Analyze) iNode()            {}
 func (*Cluster) iNode()            {}
-func (*Vacuum) iNode()             {}
+func (*VacuumStmt) iNode()         {}
 func (*Drop) iNode()               {}
 func (*Truncate) iNode()           {}
 func (*Index) iNode()              {}
@@ -379,6 +380,7 @@ func (*SubSelect) iNode()          {}
 func (*DefineStmt) iNode()         {}
 func (*CreateFunctionStmt) iNode() {}
 func (*CreateType) iNode()         {}
+func (*ExplainStmt) iNode()        {}
 
 type TransactionStmtType int
 

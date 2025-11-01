@@ -3120,14 +3120,18 @@ func TestMisc(t *testing.T) {
 		},
 		{
 			query: "vacuum xx;",
-			exp:   &lyx.Vacuum{},
-			err:   nil,
+			exp: &lyx.VacuumStmt{
+				IsVacuumcmd: true,
+			},
+			err: nil,
 		},
 
 		{
 			query: "vacuum sh.xx;",
-			exp:   &lyx.Vacuum{},
-			err:   nil,
+			exp: &lyx.VacuumStmt{
+				IsVacuumcmd: true,
+			},
+			err: nil,
 		},
 
 		{
@@ -3155,7 +3159,7 @@ func TestMisc(t *testing.T) {
 		},
 		{
 			query: "analyze xx;",
-			exp:   &lyx.Analyze{},
+			exp:   &lyx.VacuumStmt{},
 			err:   nil,
 		},
 		{
