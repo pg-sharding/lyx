@@ -113,13 +113,17 @@ func NewLyxParser() LyxParser {
 %type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
 
 %type<from> table_ref 
-%type<tableref> relation_expr joined_table relation_expr_opt_alias
+%type<tableref> relation_expr joined_table relation_expr_opt_alias vacuum_relation
 
 %type<node> func_arg_expr
 %type<bool> opt_ordinality copy_from
-%type<nodeList> func_arg_list func_arg_list_opt
+%type<nodeList> func_arg_list func_arg_list_opt 
+
+%type<nodeList> opt_vacuum_relation_list vacuum_relation_list opt_utility_option_list utility_option_list
 
 %type<node> a_expr c_expr b_expr in_expr case_expr case_default case_arg
+
+%type<node> utility_option_arg
 
 %type<node> OptWhereClause
 %type<node> GrantStmt RevokeStmt RevokeRoleStmt GrantRoleStmt
@@ -289,6 +293,7 @@ Operator:
 
 %type<str> reserved_keyword col_name_keyword type_func_name_keyword bare_label_keyword unreserved_keyword
 
+%type<str> utility_option_name
 
 /**/
 
@@ -300,7 +305,7 @@ Operator:
 %type<node> PrepareStmt
 %type<node> VariableSetStmt
 %type<node> CreateStmt alter_stmt CreateSchemaStmt CreateExtensionStmt
-%type<node> vacuum_stmt cluster_stmt analyze_stmt
+%type<node> VacuumStmt cluster_stmt AnalyzeStmt ExplainStmt
 %type<node> TruncateStmt DropStmt
 %type<node> DiscardStmt
 %type<node> DefineStmt
@@ -1595,11 +1600,11 @@ command:
 		$$ = $1
 	} | DeallocateStmt {
 		$$ = $1
-    } | vacuum_stmt {
+    } | VacuumStmt {
 		$$ = $1
     } | cluster_stmt {
 		$$ = $1
-    } | analyze_stmt {
+    } | AnalyzeStmt {
 		$$ = $1
     } | TruncateStmt {
 		$$ = $1
@@ -1617,7 +1622,9 @@ command:
 		$$ = $1
     } | DefineStmt {
 		$$ = $1
-    }
+    } | ExplainStmt {
+		$$ = $1
+	}
 
 any_id:
 	IDENT
@@ -4647,19 +4654,133 @@ CreateSchemaStmt:
 
 
 
-alter_stmt: 
-    ALTER anything {
-        $$ = &Alter{
-            
-        }
-    }
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				VACUUM
+ *				ANALYZE
+ *
+ *****************************************************************************/
 
-vacuum_stmt:
-    VACUUM qualified_name {
-        $$ = &Vacuum {
+VacuumStmt: VACUUM opt_full opt_freeze opt_verbose opt_analyze opt_vacuum_relation_list
+				{
+					$$ = &VacuumStmt{
+						IsVacuumcmd: true,
+					}
+				}
+			| VACUUM TOPENBR utility_option_list TCLOSEBR opt_vacuum_relation_list
+				{
+					$$ = &VacuumStmt{
+						IsVacuumcmd: true,
+					}
+				}
+		;
 
-        }
-    }
+AnalyzeStmt: analyze_keyword opt_utility_option_list opt_vacuum_relation_list
+				{
+					$$ = &VacuumStmt{}
+				}
+			| analyze_keyword VERBOSE opt_vacuum_relation_list
+				{
+					$$ = &VacuumStmt{}
+				}
+		;
+
+analyze_keyword:
+			ANALYZE { }
+			| ANALYSE /* British */  { }
+		;
+
+opt_analyze:
+			analyze_keyword							{  }
+			| /*EMPTY*/								{  }
+		;
+
+opt_verbose:
+			VERBOSE									{  }
+			| /*EMPTY*/								{  }
+		;
+
+opt_full:	FULL									{  }
+			| /*EMPTY*/								{  }
+		;
+
+opt_freeze: FREEZE									{  }
+			| /*EMPTY*/								{  }
+		;
+
+opt_name_list:
+			TOPENBR name_list TCLOSEBR						{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+vacuum_relation:
+			relation_expr opt_name_list
+				{
+					$$ = $1
+				}
+		;
+
+vacuum_relation_list:
+			vacuum_relation
+					{  }
+			| vacuum_relation_list TCOMMA vacuum_relation
+					{ ; }
+		;
+
+opt_vacuum_relation_list:
+			vacuum_relation_list					{ $$ = $1; }
+			| /*EMPTY*/								{ $$ = nil; }
+		;
+
+
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				EXPLAIN [ANALYZE] [VERBOSE] query
+ *				EXPLAIN ( options ) query
+ *
+ *****************************************************************************/
+
+ExplainStmt:
+		EXPLAIN ExplainableStmt
+				{
+					$$ = &ExplainStmt{
+						Query: $2,
+					}
+				}
+		| EXPLAIN analyze_keyword opt_verbose ExplainableStmt
+				{
+					$$ = &ExplainStmt{
+						Query: $4,
+					}
+				}
+		| EXPLAIN VERBOSE ExplainableStmt
+				{
+					$$ = &ExplainStmt{
+						Query: $3,
+					}
+				}
+		| EXPLAIN TOPENBR utility_option_list TCLOSEBR ExplainableStmt
+				{
+					$$ = &ExplainStmt{
+						Query: $5,
+					}
+				}
+		;
+
+ExplainableStmt:
+			SelectStmt { $$=$1 }
+			| InsertStmt { $$=$1 }
+			| UpdateStmt { $$=$1 }
+			| DeleteStmt { $$=$1 }
+			// | MergeStmt { $$=$1 }
+			// | DeclareCursorStmt { $$=$1 }
+			// | CreateAsStmt { $$=$1 }
+			// | CreateMatViewStmt { $$=$1 }
+			// | RefreshMatViewStmt { $$=$1 }
+			| ExecuteStmt	 { $$=$1 }				/* by default all are $$=$1 */
+		;
 
 cluster_stmt:
     CLUSTER qualified_name {
@@ -4668,11 +4789,10 @@ cluster_stmt:
         }
     }
 
+alter_stmt:
+    ALTER anything {
+        $$ = &Alter{
 
-analyze_stmt:
-    ANALYZE anything {
-        $$ = &Analyze {
-            
         }
     }
 
@@ -7515,6 +7635,40 @@ opt_drop_behavior:
 			| RESTRICT						{ }
 			| /* EMPTY */					{  }
 		;
+
+
+opt_utility_option_list:
+			TOPENBR utility_option_list TCLOSEBR	{ $$ = $2; }
+			| /* EMPTY */					{ $$ = nil; }
+		;
+
+utility_option_list:
+			utility_option_elem
+				{
+				}
+			| utility_option_list TCOMMA utility_option_elem
+				{
+				}
+		;
+
+utility_option_elem:
+			utility_option_name utility_option_arg
+				{
+				}
+		;
+
+utility_option_name:
+			NonReservedWord					{ $$ = $1; }
+			| analyze_keyword				{ }
+			// | FORMAT_LA						{ }
+		;
+
+utility_option_arg:
+			opt_boolean_or_string			{ }
+			| NumericOnly					{  }
+			| /* EMPTY */					{ $$ = nil; }
+		;
+
 
 
 
