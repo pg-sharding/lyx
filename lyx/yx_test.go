@@ -4958,13 +4958,31 @@ func TestExplain(t *testing.T) {
 			query: `
 			EXPLAIN select 1
 `,
-			exp: &lyx.Explain{
-				Stmt: &lyx.Select{
+			exp: &lyx.ExplainStmt{
+				Query: &lyx.Select{
 					Where: &lyx.AExprEmpty{},
 					TargetList: []lyx.Node{
 						&lyx.AExprIConst{
 							Value: 1,
 						},
+					},
+				},
+			},
+			err: nil,
+		}, {
+			query: `
+			EXPLAIN ANALYZE select * from xx;
+`,
+			exp: &lyx.ExplainStmt{
+				Query: &lyx.Select{
+					Where: &lyx.AExprEmpty{},
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{
+							RelationName: "xx",
+						},
+					},
+					TargetList: []lyx.Node{
+						&lyx.AExprEmpty{},
 					},
 				},
 			},

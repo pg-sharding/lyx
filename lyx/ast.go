@@ -234,10 +234,6 @@ type Update struct {
 	Returning []Node
 }
 
-type Explain struct {
-	Stmt Node
-}
-
 type Execute struct {
 	Id string
 }
@@ -348,7 +344,6 @@ const (
 	SetOpExcept    = SetOperation("EXCEPT")
 )
 
-func (*Explain) iNode()            {}
 func (*Select) iNode()             {}
 func (*ValueClause) iNode()        {}
 func (*Execute) iNode()            {}

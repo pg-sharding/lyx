@@ -4160,11 +4160,9 @@ routable_statement:
 		$$ = $1
 	} | RevokeStmt {
 		$$ = $1
-	} | EXPLAIN routable_statement {
-        $$ = &Explain{
-            Stmt: $2,
-        }
-    } 
+	} | ExplainStmt {
+		$$ = $1
+	}
 
 opt_pk:
     /* nothing */ {} |
