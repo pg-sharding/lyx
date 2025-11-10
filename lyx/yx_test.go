@@ -2703,6 +2703,28 @@ func TestFuncApplication(t *testing.T) {
 			},
 		},
 		{
+			query: `select * from __spqr__show('obj')`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.SubSelect{
+						Alias: "",
+						Arg: &lyx.FuncApplication{
+							Name: "__spqr__show",
+							Args: []lyx.Node{
+								&lyx.AExprSConst{
+									Value: "obj",
+								},
+							},
+						},
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+			},
+		},
+		{
 			query: `
 				SELECT SUM(r.cd) FILTER (WHERE r.rs = 'applied') 
 				FROM ll.ts r
