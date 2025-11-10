@@ -194,6 +194,8 @@ type Select struct {
 	GroupBy    Node
 	TargetList []Node
 
+	SortClause []Node
+
 	// Used in set operations
 	Op   SetOperation
 	LArg Node

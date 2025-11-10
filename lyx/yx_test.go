@@ -125,6 +125,11 @@ func TestSelectComplex(t *testing.T) {
 					},
 					Op: "AND",
 				},
+				SortClause: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "entity_id",
+					},
+				},
 			},
 
 			err: nil,
@@ -244,6 +249,12 @@ func TestSelectComplex(t *testing.T) {
 						Op: "=",
 					},
 					Op: "AND",
+				},
+
+				SortClause: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "entity_id",
+					},
 				},
 			},
 			err: nil,
@@ -729,6 +740,12 @@ func TestSelect(t *testing.T) {
 						ColName:    "uuid",
 					},
 				},
+				SortClause: []lyx.Node{
+					&lyx.ColumnRef{
+						TableAlias: "a",
+						ColName:    "id",
+					},
+				},
 			},
 		},
 		{
@@ -833,6 +850,11 @@ func TestSelect(t *testing.T) {
 					},
 					Op: "=",
 				},
+				SortClause: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "i",
+					},
+				},
 			},
 			err: nil,
 		},
@@ -935,6 +957,11 @@ func TestSelect(t *testing.T) {
 						Value: 1,
 					},
 					Op: "=",
+				},
+				SortClause: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "i",
+					},
 				},
 			},
 			err: nil,
@@ -1293,6 +1320,12 @@ func TestSelectBetween(t *testing.T) {
 						},
 					},
 					Op: "BETWEEN",
+				},
+
+				SortClause: []lyx.Node{
+					&lyx.ColumnRef{
+						ColName: "id",
+					},
 				},
 			},
 			err: nil,

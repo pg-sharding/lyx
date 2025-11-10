@@ -5087,8 +5087,8 @@ opt_nulls_order: NULLS_LA FIRST_P			{}
 
 
 opt_sort_clause:
-			sort_clause								{  }
-			| /*EMPTY*/								{  }
+			sort_clause								{ $$ = $1 }
+			| /*EMPTY*/								{ $$ = nil }
 		;
 
 sort_clause:
@@ -5096,8 +5096,8 @@ sort_clause:
 		;
 
 sortby_list:
-			sortby									{  }
-			| sortby_list TCOMMA sortby				{ }
+			sortby									{ $$ = []Node {$1} }
+			| sortby_list TCOMMA sortby				{ $$ = append($1, $3) }
 		;
 
 sortby:
@@ -6492,14 +6492,17 @@ select_no_parens:
 			simple_select						{ $$ = $1; }
 			| select_clause sort_clause
 				{
+					$1.(*Select).SortClause = $2
 					$$ = $1;
 				}
 			| select_clause opt_sort_clause for_locking_clause opt_select_limit
 				{
+					$1.(*Select).SortClause = $2
 					$$ = $1;
 				}
 			| select_clause opt_sort_clause select_limit opt_for_locking_clause
 				{
+					$1.(*Select).SortClause = $2
 					$$ = $1;
 				}
 			| with_clause select_clause
@@ -6509,16 +6512,19 @@ select_no_parens:
 				}
 			| with_clause select_clause sort_clause
 				{
+					$2.(*Select).SortClause = $3;
 					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
 			| with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
 				{
+					$2.(*Select).SortClause = $3;
 					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
 			| with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
 				{
+					$2.(*Select).SortClause = $3;
 					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
