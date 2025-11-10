@@ -877,6 +877,13 @@ func TestSelect(t *testing.T) {
 					},
 					Op: "=",
 				},
+				GroupBy: &lyx.GroupBy{
+					GroupByList: []lyx.Node{
+						&lyx.ColumnRef{
+							ColName: "i",
+						},
+					},
+				},
 			},
 			err: nil,
 		},
@@ -898,6 +905,13 @@ func TestSelect(t *testing.T) {
 						Value: 1,
 					},
 					Op: "=",
+				},
+				GroupBy: &lyx.GroupBy{
+					GroupByList: []lyx.Node{
+						&lyx.ColumnRef{
+							ColName: "i",
+						},
+					},
 				},
 			},
 			err: nil,
@@ -1324,6 +1338,11 @@ func TestSelectAlias(t *testing.T) {
 				},
 				},
 				Where: &lyx.AExprEmpty{},
+				GroupBy: &lyx.GroupBy{
+					GroupByList: []lyx.Node{
+						&lyx.ColumnRef{ColName: "kind"},
+					},
+				},
 			},
 			err: nil,
 		},
@@ -1350,6 +1369,11 @@ func TestSelectAlias(t *testing.T) {
 				},
 				},
 				Where: &lyx.AExprEmpty{},
+				GroupBy: &lyx.GroupBy{
+					GroupByList: []lyx.Node{
+						&lyx.ColumnRef{ColName: "kind"},
+					},
+				},
 			},
 			err: nil,
 		},

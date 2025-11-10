@@ -332,7 +332,7 @@ Operator:
 %type<node> select_clause select_no_parens select_with_parens SelectStmt values_clause locked_rels_list 
 %type<node> for_locking_strength for_locking_item for_locking_items opt_for_locking_clause having_clause
 %type<node> grouping_sets_clause
-%type<node> cube_clause rollup_clause empty_grouping_set group_by_item group_by_list group_clause
+%type<node> cube_clause rollup_clause empty_grouping_set group_by_item group_clause
 %type<node> first_or_next row_or_rows I_or_F_const select_fetch_first_value
 %type<node> select_offset_value select_limit_value offset_clause limit_clause opt_select_limit select_limit
 %type<node> opt_distinct_clause opt_all_clause distinct_clause simple_select window_clause window_definition_list
@@ -341,7 +341,7 @@ Operator:
 
 %type<nodeList> opt_partition_clause
 
-%type<nodeList> sortby_list sort_clause opt_sort_clause
+%type<nodeList> sortby_list sort_clause opt_sort_clause group_by_list
 %type<node> sortby
 
 %type<str> opt_existing_window_name
@@ -6068,6 +6068,7 @@ simple_select:
 						TargetList: $3,
 						FromClause: $5,
 						Where: $6,
+						GroupBy: $7,
 					}
 				}
 			| SELECT distinct_clause target_list
@@ -6078,6 +6079,7 @@ simple_select:
 						TargetList: $3,
 						FromClause: $5,
 						Where: $6,
+						GroupBy: $7,
 					}
 				}
 			| values_clause							{ $$ = $1; }
@@ -6269,16 +6271,19 @@ first_or_next: FIRST_P								{  }
 group_clause:
 			GROUP BY set_quantifier group_by_list
 				{
-
+					$$ = &GroupBy{
+						GroupByList: $4,
+					} 
 				}
 			| /*EMPTY*/
 				{
+					$$ = nil
 				}
 		;
 
 group_by_list:
-			group_by_item							{ }
-			| group_by_list TCOMMA group_by_item		{ }
+			group_by_item							{ $$ = []Node {$1} }
+			| group_by_list TCOMMA group_by_item		{ $$ = append($1, $3) }
 		;
 
 group_by_item:
