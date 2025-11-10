@@ -191,6 +191,7 @@ type Select struct {
 	FromClause []FromClauseNode
 	WithClause []*CommonTableExpr
 	Where      Node
+	GroupBy    Node
 	TargetList []Node
 
 	// Used in set operations
@@ -338,6 +339,10 @@ type ResTarget struct {
 	Value Node
 }
 
+type GroupBy struct {
+	GroupByList []Node
+}
+
 const (
 	SetOpUnion     = SetOperation("UNION")
 	SetOpIntersect = SetOperation("INTERSECT")
@@ -376,6 +381,7 @@ func (*DefineStmt) iNode()         {}
 func (*CreateFunctionStmt) iNode() {}
 func (*CreateType) iNode()         {}
 func (*ExplainStmt) iNode()        {}
+func (*GroupBy) iNode()            {}
 
 type TransactionStmtType int
 
