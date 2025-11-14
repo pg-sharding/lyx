@@ -2,6 +2,7 @@ package lyx
 
 import (
     "strconv"
+    "strings"
 )
 
 %%{ 
@@ -12,27 +13,79 @@ import (
     variable pe lex.pe;
 }%%
 
-type Lexer struct {
-	data         []byte
-	p, pe, cs    int
-	ts, te, act  int
+const escapedQuotePlaceholder byte = '\a'
 
-	result []string
+type Lexer struct {
+        data         []byte
+        p, pe, cs    int
+        ts, te, act  int
+
+        result []string
+
+        hasEscapedQuotePlaceholder bool
 }
 
 func NewLexer(data []byte) *Lexer {
-    lex := &Lexer{ 
-        data: data,
-        pe: len(data),
+    buf, changed := normalizeEscapedQuotes(data)
+    lex := &Lexer{
+        data: buf,
+        pe: len(buf),
+        hasEscapedQuotePlaceholder: changed,
     }
     %% write init;
     return lex
 }
 
 func ResetLexer(lex *Lexer, data []byte) {
-    lex.pe = len(data)
-    lex.data = data
+    buf, changed := normalizeEscapedQuotes(data)
+    lex.data = buf
+    lex.pe = len(buf)
+    lex.hasEscapedQuotePlaceholder = changed
     %% write init;
+}
+
+func normalizeEscapedQuotes(data []byte) ([]byte, bool) {
+    var normalized []byte
+    inString := false
+
+    for i := 0; i < len(data); {
+        ch := data[i]
+        if ch == '\'' {
+            if inString {
+                if i+1 < len(data) && data[i+1] == '\'' {
+                    if normalized == nil {
+                        normalized = append(normalized, data[:i]...)
+                    }
+                    normalized = append(normalized, escapedQuotePlaceholder)
+                    i += 2
+                    continue
+                }
+                inString = false
+            } else {
+                inString = true
+            }
+        }
+
+        if normalized != nil {
+            normalized = append(normalized, ch)
+        }
+
+        i++
+    }
+
+    if normalized == nil {
+        return data, false
+    }
+
+    return normalized, true
+}
+
+func restoreEscapedQuotes(val string) string {
+    if !strings.ContainsRune(val, rune(escapedQuotePlaceholder)) {
+        return val
+    }
+
+    return strings.ReplaceAll(val, string(escapedQuotePlaceholder), "'")
 }
 
 func (l *Lexer) Error(msg string) {
@@ -361,7 +414,15 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
             qidentifier      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; fbreak;};
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
-            sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = SCONST; fbreak;};
+            sconst      => {
+                val := string(lex.data[lex.ts + 1:lex.te - 1])
+                if lex.hasEscapedQuotePlaceholder {
+                    val = restoreEscapedQuotes(val)
+                }
+                lval.str = val
+                tok = SCONST
+                fbreak
+            };
 
 
 #           self		=	(',' | '(' | ')' | '[' | ']' | '.' | ';'| ':' | '+' | '-' | '*' | '\\' | '%' | '^' | '<' | '>' | '=');
