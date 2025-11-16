@@ -8,6 +8,71 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSimpleInsert(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   []int
+		err   error
+	}
+
+	for i, tt := range []tcase{
+
+		{
+			query: `INSERT INTO lol.kek
+			(
+			 id,
+			 info,
+			 bytes
+			 )
+			VALUES(2822, ROW('none', '0'), ''::bytea);`,
+			exp: []int{
+				lyx.INSERT,
+				lyx.INTO,
+				lyx.IDENT,
+				lyx.TDOT,
+				lyx.IDENT,
+				lyx.TOPENBR,
+				lyx.IDENT,
+				lyx.TCOMMA,
+				lyx.IDENT,
+				lyx.TCOMMA,
+				lyx.IDENT,
+				lyx.TCLOSEBR,
+				lyx.VALUES,
+				lyx.TOPENBR,
+				lyx.ICONST,
+				lyx.TCOMMA,
+				lyx.ROW,
+				lyx.TOPENBR,
+				lyx.SCONST,
+				lyx.TCOMMA,
+				lyx.SCONST,
+				lyx.TCLOSEBR,
+				lyx.TCOMMA,
+				lyx.SCONST,
+				lyx.TYPECAST,
+				lyx.IDENT,
+				lyx.TCLOSEBR,
+				lyx.TSEMICOLON,
+			},
+		},
+	} {
+		t := lyx.NewStringTokenizer(tt.query)
+		var res []int
+		for {
+			v := t.LexT()
+			if v == 0 {
+				break
+			}
+			res = append(res, v)
+		}
+
+		assert.Equal(tt.exp, res, "test %d: %+v,", i, tt.query)
+	}
+}
+
 func TestSimple(t *testing.T) {
 	assert := assert.New(t)
 
@@ -18,6 +83,65 @@ func TestSimple(t *testing.T) {
 	}
 
 	for i, tt := range []tcase{
+		{
+			query: `
+			select 'ziziz' 
+			`,
+			exp: []int{lyx.SELECT, lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			select 'ziziz'`,
+			exp: []int{lyx.SELECT, lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			select 'ziziz'  as 'ziziiz'
+			`,
+			exp: []int{lyx.SELECT, lyx.SCONST, lyx.AS, lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			select ('ziziz')`,
+			exp: []int{lyx.SELECT, lyx.TOPENBR, lyx.SCONST, lyx.TCLOSEBR},
+			err: nil,
+		},
+
+		{
+			query: `
+			select 'z''v'`,
+			exp: []int{lyx.SELECT, lyx.SCONST},
+			err: nil,
+		},
+
+		{
+			query: `
+			select 'ojiew "asa" = ''lala'''`,
+			exp: []int{lyx.SELECT, lyx.SCONST},
+			err: nil,
+		},
+
+		{
+			query: `
+			select 'ojiew "asa" = ''lala'' fdok'`,
+			exp: []int{lyx.SELECT, lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			select 'ziziz "kfkf" ' 'ojiew "ass" = ''lala'''`,
+			exp: []int{lyx.SELECT, lyx.SCONST, lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			select 'ziziz "kfkf" ' 'ojiew "ass" = ''lala''' 'ojiew "asa" = ''lala'''`,
+			exp: []int{lyx.SELECT, lyx.SCONST, lyx.SCONST, lyx.SCONST},
+			err: nil,
+		},
 		{
 			query: `
 			select 1
@@ -168,7 +292,7 @@ func TestSimple(t *testing.T) {
 		{
 			query: `
 			UPDATE customer1
-        	SET c_balance= -4755.000000
+			SET c_balance= -4755.000000
 			`,
 			exp: []int{
 				lyx.UPDATE, lyx.IDENT, lyx.SET,

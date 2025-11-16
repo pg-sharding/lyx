@@ -10,12 +10,19 @@ import (
     access lex.;
     variable p lex.p;
     variable pe lex.pe;
+    
+    variable cs lex.cs;
+    variable top lex.top;
+    variable stack lex.stack;
 }%%
 
 type Lexer struct {
 	data         []byte
 	p, pe, cs    int
 	ts, te, act  int
+
+    top          int
+    stack        []int
 
 	result []string
 }
@@ -24,6 +31,7 @@ func NewLexer(data []byte) *Lexer {
     lex := &Lexer{ 
         data: data,
         pe: len(data),
+        stack: make([]int, 128),
     }
     %% write init;
     return lex
@@ -32,6 +40,8 @@ func NewLexer(data []byte) *Lexer {
 func ResetLexer(lex *Lexer, data []byte) {
     lex.pe = len(data)
     lex.data = data
+    lex.stack = make([]int, 128)
+
     %% write init;
 }
 
@@ -93,12 +103,36 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         operator_multi	= op_chars+ (op_chars - ( '+' | '-' ));
 
 
-        sconst = '\'' (any-'\'')* '\'';
+        singleQuoteString := |*
+            any => {
+                tok = SCONST;
+                if  lex.data[( lex.p)] == '\'' {
+
+                    if lex.p + 1 < lex.pe  && lex.data[( lex.p + 1)] == '\'' {
+                        lex.p++;
+                    } else {
+                        /* XXX: fix this mess */
+                        {
+                            ( lex.top)--; 
+                            ( lex.cs) = ( lex.stack)[( lex.top)];
+                            ( lex.p)++; goto _out
+                        }
+                    }
+                }
+
+                lval.str += string(lex.data[( lex.p)])
+            };
+        *|;
         
         main := |*
             whitespace => { /* do nothing */ };
             # integer const is string const 
             comment => {/* nothing */};
+
+            [']  => { 
+                lval.str = ""
+                fcall singleQuoteString;
+            };
             
             # skip dollar, get only param number
             param =>  {
@@ -361,11 +395,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
             qidentifier      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; fbreak;};
             identifier      => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
-            sconst      => { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = SCONST; fbreak;};
-
-
-#           self		=	(',' | '(' | ')' | '[' | ']' | '.' | ';'| ':' | '+' | '-' | '*' | '\\' | '%' | '^' | '<' | '>' | '=');
-
+ 
             ',' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOMMA; fbreak;};
             '(' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TOPENBR; fbreak;};
             ')' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCLOSEBR; fbreak;};
@@ -399,9 +429,6 @@ func (lex *Lexer) Lex(lval *yySymType) int {
                 fbreak;
             };
 
-#            self => {
-#
-#            }
         *|;
 
         write exec;
