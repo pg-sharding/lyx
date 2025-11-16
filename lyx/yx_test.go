@@ -2860,6 +2860,49 @@ func TestFuncApplication(t *testing.T) {
 	}
 }
 
+func TestQuatedSconts(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `SELECT 'hdfshu ''z = a '''`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.AExprSConst{
+						Value: `hdfshu 'z = a '`,
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+		},
+		{
+			query: `
+			SELECT '{"name": "val ''in quote''"}'
+			`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.AExprSConst{
+						Value: `{"name": "val 'in quote'"}`,
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, "query %s", tt.query)
+
+		assert.Equal(tt.exp, tmp[0], "query %s", tt.query)
+	}
+}
+
 func TestSelectTargetLists(t *testing.T) {
 	assert := assert.New(t)
 
@@ -4874,7 +4917,7 @@ func TestMiscQ(t *testing.T) {
 			query: `
 		INSERT INTO warehouse1
 				(w_id, w_name, w_street_1, w_street_2, w_city, w_state, w_zip, w_tax, w_ytd)
-		VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmwruo', 'er', 'zip-26599', 0.017264,300000);'
+		VALUES (1, 'name-vjxqu','street1-qkfzdggwut','street2-jxuhvhtqct', 'city-irchbmwruo', 'er', 'zip-26599', 0.017264,300000);
 					`,
 			exp: &lyx.Insert{
 				TableRef: &lyx.RangeVar{
