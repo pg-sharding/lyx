@@ -389,6 +389,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /ALL/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ALL; fbreak;};
 
             /PARTITION/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = PARTITION; fbreak;};
+            /OVER/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = OVER; fbreak;};
 
             /CONVERSION/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CONVERSION_P; fbreak;};
             /STATISTICS/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = STATISTICS; fbreak;};
