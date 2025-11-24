@@ -5705,3 +5705,38 @@ func TestMiscCatalog(t *testing.T) {
 		assert.Equal(tt.exp, tmp[0], tt.query)
 	}
 }
+
+func TestWidnowFunc(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `select row_number() OVER (partition by  i) from zzz;`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "zzz",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "row_number",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+		},
+	} {
+		tmp, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp[0], tt.query)
+	}
+}
