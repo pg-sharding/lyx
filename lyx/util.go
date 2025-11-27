@@ -44,20 +44,21 @@ func setParseTree(yylex interface{}, stmt []Node) {
 	yylex.(*Tokenizer).ParseTree = stmt
 }
 
-func Parse(sql string) ([]Node, error) {
+func Parse(sql string) ([]Node, int, error) {
 	tokenizer := NewStringTokenizer(sql)
-	if yyParse(tokenizer) != 0 {
-		return nil, errors.New(tokenizer.LastError + fmt.Sprintf(" on pos %d", tokenizer.l.ts))
+	p := yyNewParser()
+	if p.Parse(tokenizer) != 0 {
+		return nil, tokenizer.l.ts, errors.New(tokenizer.LastError)
 	}
 	ast := tokenizer.ParseTree
-	return ast, nil
+	return ast, 0, nil
 }
 
-func ParseWithLexerParser(l LyxParser, t *Tokenizer, sql string) ([]Node, error) {
+func ParseWithLexerParser(l LyxParser, t *Tokenizer, sql string) ([]Node, int, error) {
 	t.Reset(sql)
 	if l.Parse(t) != 0 {
-		return nil, errors.New(t.LastError + fmt.Sprintf(" on pos %d", t.l.ts))
+		return nil, 0, errors.New(t.LastError + fmt.Sprintf(" at or near %d", t.l.ts))
 	}
 	ast := t.ParseTree
-	return ast, nil
+	return ast, 0, nil
 }

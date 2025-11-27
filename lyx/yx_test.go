@@ -387,7 +387,7 @@ func TestSelectComplex(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -432,7 +432,7 @@ func TestSelectDistinct(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -458,7 +458,7 @@ func TestAclGrantRevoke(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -683,7 +683,7 @@ func TestIntegerBoundaries(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		if tt.err == nil {
 			assert.NoError(err, "query %s", tt.query)
@@ -1062,7 +1062,7 @@ func TestSelect(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -1221,7 +1221,7 @@ func TestSetOp(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -1279,7 +1279,7 @@ func TestSelectMultipleRelations(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err)
 
@@ -1331,7 +1331,7 @@ func TestSelectBetween(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1411,7 +1411,7 @@ func TestSelectAlias(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1648,7 +1648,7 @@ func TestCreate(t *testing.T) {
 			err:   nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1671,7 +1671,7 @@ func TestCreateSchema(t *testing.T) {
 			err:   nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1694,7 +1694,7 @@ func TestCreateEnum(t *testing.T) {
 			err:   nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -1719,7 +1719,7 @@ func TestCreateExtension(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2044,7 +2044,7 @@ VALUES(2822, ROW('none', '0'), ''::bytea);
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2220,7 +2220,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2364,7 +2364,7 @@ func TestUpdate(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2480,7 +2480,7 @@ AND (shard_id, namespace_id, workflow_id, run_id, type, id, name) IN (
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2629,7 +2629,7 @@ func TestCopy(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2668,7 +2668,7 @@ func TestDiscard(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2852,7 +2852,7 @@ func TestFuncApplication(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -2895,7 +2895,7 @@ func TestQuatedSconts(t *testing.T) {
 			},
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3004,7 +3004,7 @@ func TestSelectTargetLists(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3056,7 +3056,7 @@ func TestWithComments(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3209,7 +3209,7 @@ func TestJoins(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3444,7 +3444,7 @@ func TestMisc(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3601,7 +3601,7 @@ func TestInConditions(t *testing.T) {
 			},
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3630,7 +3630,7 @@ func TestErrors(t *testing.T) {
 			err:   nil,
 		},
 	} {
-		_, err := lyx.Parse(tt.query)
+		_, _, err := lyx.Parse(tt.query)
 
 		assert.Error(err, "query %s", tt.query)
 	}
@@ -3712,7 +3712,7 @@ func TestOperators(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3761,7 +3761,7 @@ func TestParams(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, "query %s", tt.query)
 
@@ -3785,7 +3785,7 @@ func TestParamsFail(t *testing.T) {
 			err:   fmt.Errorf("syntax error"),
 		},
 	} {
-		_, err := lyx.Parse(tt.query)
+		_, _, err := lyx.Parse(tt.query)
 
 		assert.Error(err, "query %s", tt.query)
 
@@ -3857,7 +3857,7 @@ func TestCreateTableWithPrimaryKey(t *testing.T) {
 			},
 		},
 	} {
-		stmt, err := lyx.Parse(tt.query)
+		stmt, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -4002,7 +4002,7 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 			},
 		},
 	} {
-		stmt, err := lyx.Parse(tt.query)
+		stmt, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -4033,7 +4033,7 @@ create table xxhash_part_1 partition of xxhash_part for values from ('2024-12-01
 			},
 		},
 	} {
-		_, err := lyx.Parse(tt.query)
+		_, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 	}
@@ -4063,7 +4063,7 @@ func TestDrop(t *testing.T) {
 			},
 		},
 	} {
-		res, err := lyx.Parse(tt.query)
+		res, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -4097,7 +4097,7 @@ func TestCreateFail(t *testing.T) {
 		{
 			query: "create table xx ( i AS )",
 		}} {
-		_, err := lyx.Parse(tt.query)
+		_, _, err := lyx.Parse(tt.query)
 		assert.Error(err, tt.query)
 	}
 }
@@ -4127,7 +4127,7 @@ func TestTruncateTable(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err)
 
@@ -4176,7 +4176,7 @@ func TestCreateTableWith(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -4275,7 +4275,7 @@ func TestCreateSuccess(t *testing.T) {
 			},
 			err: nil,
 		}} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -4645,7 +4645,7 @@ select * from tbl inner join cte on tbl.i = cte.i;
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5058,7 +5058,7 @@ func TestMiscQ(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5111,7 +5111,7 @@ func TestExplain(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5236,7 +5236,7 @@ func TestSetStmt(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5273,7 +5273,7 @@ func TestShowStmt(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5303,7 +5303,7 @@ func TestSetSessionStmt(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5345,7 +5345,7 @@ func TestStmtWithCast(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5390,7 +5390,7 @@ func TestMultiStmt(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5422,7 +5422,7 @@ func TestTypeCast(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5471,7 +5471,7 @@ func TestUpdateFrom(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5698,7 +5698,7 @@ func TestMiscCatalog(t *testing.T) {
 			err: nil,
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
@@ -5706,7 +5706,7 @@ func TestMiscCatalog(t *testing.T) {
 	}
 }
 
-func TestWidnowFunc(t *testing.T) {
+func TestWindowFunc(t *testing.T) {
 	assert := assert.New(t)
 
 	type tcase struct {
@@ -5733,10 +5733,30 @@ func TestWidnowFunc(t *testing.T) {
 			},
 		},
 	} {
-		tmp, err := lyx.Parse(tt.query)
+		tmp, _, err := lyx.Parse(tt.query)
 
 		assert.NoError(err, tt.query)
 
 		assert.Equal(tt.exp, tmp[0], tt.query)
+	}
+}
+
+func TestError(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query  string
+		errpos int
+	}
+
+	for _, tt := range []tcase{
+		{
+			query:  `select table;`,
+			errpos: 7,
+		},
+	} {
+		_, errpos, err := lyx.Parse(tt.query)
+		assert.Error(err, tt.query)
+		assert.Equal(tt.errpos, errpos, tt.query)
 	}
 }
