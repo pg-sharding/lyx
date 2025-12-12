@@ -273,6 +273,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /true/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUE_P; fbreak;};
             /false/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FALSE_P; fbreak;};
 
+            /FETCH/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FETCH; fbreak;};
             /FIRST/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FIRST_P; fbreak;};
             /FILTER/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FILTER; fbreak;};
             /LAST/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LAST_P; fbreak;};
@@ -296,6 +297,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /array/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ARRAY; fbreak;};
             # explicit row for c_expr 
             /row/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROW; fbreak;};
+            /rows/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROWS; fbreak;};
             /exists/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = EXISTS; fbreak;};
 
 

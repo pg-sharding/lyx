@@ -5760,3 +5760,56 @@ func TestError(t *testing.T) {
 		assert.Equal(tt.errpos, errpos, tt.query)
 	}
 }
+
+func TestFetchFirst(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			select 1 from tab  where (sst = 'ACTIVE') order by tab.id asc fetch first 20 rows only`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "tab",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						ColName: "sst",
+					},
+					Right: &lyx.AExprSConst{
+						Value: "ACTIVE",
+					},
+					Op: "=",
+				},
+				SortClause: []lyx.Node{
+					&lyx.ColumnRef{
+						TableAlias: "tab",
+						ColName:    "id",
+					},
+				},
+			},
+		},
+	} {
+		tmp, _, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+		assert.NotNil(tmp, tt.query)
+
+		if len(tmp) > 0 {
+			assert.Equal(tt.exp, tmp[0], tt.query)
+		}
+	}
+}
