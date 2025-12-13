@@ -2702,6 +2702,26 @@ func TestFuncApplication(t *testing.T) {
 				},
 			},
 		},
+
+		{
+			query: `
+				 select 1 from "sh.f" ()`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.SubSelect{
+						Arg: &lyx.FuncApplication{
+							Name: "sh.f",
+						},
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+		},
 		{
 			query: `select * from __spqr__show('obj')`,
 			exp: &lyx.Select{
