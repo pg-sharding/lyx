@@ -386,7 +386,8 @@ Operator:
 
 %type<str> opt_with_data
 
-%type<str> ColId set_target
+%type<str> ColId 
+%type<node> set_target
 
 %type<str> all_Op MathOp qual_Op any_operator qual_all_Op subquery_Op
  
@@ -415,11 +416,12 @@ Operator:
 
 
 %type<strlist> opt_using delete_comma_separated_using_refs
-%type<strlist> set_clause_list
+%type<nodeList> set_clause_list
 
 %type<str> opt_only opt_alias_clause alias_clause func_alias_clause
 
-%type<str> anything set_clause
+%type<str> anything 
+%type<node> set_clause
 
 %type<str> operator
 
@@ -6866,26 +6868,28 @@ opt_only:
 
 
 set_clause_list:
-			set_clause							{ $$ = []string{$1}; }
+			set_clause							{ $$ = []Node{$1}; }
 			| set_clause_list TCOMMA set_clause	{ $$ = append($1, $3); }
-		
-
 
 set_target:
 			ColId opt_indirection
 				{
-					$$ = $1	
+					$$ = &ResTarget{
+						Name: $1,
+					}
 				}
 		;
 
 set_clause:
 			set_target TEQ a_expr
 				{
+					($1).(*ResTarget).Value = $3
 					$$ = $1;
 				}
 			| 
 			set_target TO a_expr
 				{
+					($1).(*ResTarget).Value = $3
 					$$ = $1;
 				}
 			// | TOPENBR set_target_list TCLOSEBR TEQ a_expr
@@ -6899,6 +6903,7 @@ UpdateStmt:
         $$ = &Update {
 			WithClause: $1,
             TableRef: $4,
+			SetClause: $6,
             Where: $8,
 			Returning: $9,
         }
