@@ -2247,6 +2247,14 @@ func TestUpdate(t *testing.T) {
 					SchemaName:   "",
 					Alias:        "",
 				},
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "kind",
+						Value: &lyx.AExprSConst{
+							Value: "Dramatic",
+						},
+					},
+				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.ColumnRef{
 						TableAlias: "",
@@ -2265,6 +2273,15 @@ func TestUpdate(t *testing.T) {
 					RelationName: "films",
 					SchemaName:   "",
 					Alias:        "",
+				},
+
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "kind",
+						Value: &lyx.AExprSConst{
+							Value: "Dramatic",
+						},
+					},
 				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.ColumnRef{
@@ -2287,6 +2304,38 @@ func TestUpdate(t *testing.T) {
 					RelationName: "weather",
 					SchemaName:   "",
 					Alias:        "",
+				},
+
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "temp_lo",
+						Value: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "temp_lo",
+							},
+							Right: &lyx.AExprIConst{
+								Value: 1,
+							},
+							Op: "+",
+						},
+					},
+
+					&lyx.ResTarget{
+						Name: "temp_hi",
+						Value: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "temp_lo",
+							},
+							Right: &lyx.AExprIConst{
+								Value: 15,
+							},
+							Op: "+",
+						},
+					},
+
+					&lyx.ResTarget{
+						Name: "prcp",
+					},
 				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.AExprOp{
@@ -2337,6 +2386,38 @@ func TestUpdate(t *testing.T) {
 					SchemaName:   "",
 					Alias:        "",
 				},
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "temp_lo",
+						Value: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "temp_lo",
+							},
+							Right: &lyx.AExprIConst{
+								Value: 1,
+							},
+							Op: "+",
+						},
+					},
+
+					&lyx.ResTarget{
+						Name: "temp_hi",
+						Value: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "temp_lo",
+							},
+							Right: &lyx.AExprIConst{
+								Value: 15,
+							},
+							Op: "+",
+						},
+					},
+
+					&lyx.ResTarget{
+						Name: "prcp",
+					},
+				},
+
 				Where: &lyx.AExprOp{
 					Left: &lyx.AExprOp{
 						Left: &lyx.ColumnRef{
@@ -2845,6 +2926,22 @@ func TestFuncApplication(t *testing.T) {
 			where w_id=20 and xxtt1.j=a.j;`,
 			exp: &lyx.Update{
 				TableRef: &lyx.RangeVar{RelationName: "xxtt1"},
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "i",
+						Value: &lyx.ColumnRef{
+							TableAlias: "a",
+							ColName:    "i",
+						},
+					},
+					&lyx.ResTarget{
+						Name: "j",
+						Value: &lyx.ColumnRef{
+							TableAlias: "a",
+							ColName:    "j",
+						},
+					},
+				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.AExprOp{
 						Left: &lyx.ColumnRef{
@@ -3568,6 +3665,18 @@ func TestInConditions(t *testing.T) {
 			exp: &lyx.Update{
 				TableRef: &lyx.RangeVar{
 					RelationName: "rel",
+				},
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "i",
+						Value: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "i",
+							},
+							Right: &lyx.AExprIConst{Value: 1},
+							Op:    "+",
+						},
+					},
 				},
 				Where: &lyx.AExprIn{
 					Expr: &lyx.ColumnRef{
@@ -4329,6 +4438,19 @@ func TestCte(t *testing.T) {
 					SchemaName:   "limits",
 					RelationName: "t_counters",
 				},
+
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "i",
+						Value: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+								ColName: "i",
+							},
+							Right: &lyx.AExprIConst{Value: 1},
+							Op:    "+",
+						},
+					},
+				},
 				WithClause: []*lyx.CommonTableExpr{
 					{
 						Name:     "vals",
@@ -5041,6 +5163,17 @@ func TestMiscQ(t *testing.T) {
 				TableRef: &lyx.RangeVar{
 					RelationName: "customer1",
 				},
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name:  "c_balance",
+						Value: &lyx.AExprSConst{Value: "-4755.000000"},
+					},
+
+					&lyx.ResTarget{
+						Name:  "c_ytd_payment",
+						Value: &lyx.AExprSConst{Value: "4755.000000"},
+					},
+				},
 				Where: &lyx.AExprOp{
 					Op: "AND",
 					Left: &lyx.AExprOp{
@@ -5475,6 +5608,22 @@ func TestUpdateFrom(t *testing.T) {
 				TableRef: &lyx.RangeVar{
 					SchemaName:   "",
 					RelationName: "xx",
+				},
+
+				SetClause: []lyx.Node{
+					&lyx.ResTarget{
+						Name: "ii",
+						Value: &lyx.ColumnRef{
+							TableAlias: "oi",
+							ColName:    "ii",
+						},
+					},
+					&lyx.ResTarget{
+						Name: "ii_upd",
+						Value: &lyx.ColumnRef{
+							ColName: "current_timestamp",
+						},
+					},
 				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.ColumnRef{

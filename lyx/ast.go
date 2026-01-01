@@ -232,6 +232,8 @@ type Update struct {
 	TableRef FromClauseNode
 	Where    Node
 
+	SetClause []Node
+
 	WithClause []*CommonTableExpr
 
 	Returning []Node
