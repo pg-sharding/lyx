@@ -74,7 +74,7 @@ func NewLyxParser() LyxParser {
 
 %type<bool> opt_program opt_grant_grant_option
 
-%type <bool> opt_unique_null_treatment  opt_without_overlaps opt_or_replace
+%type <bool> opt_unique_null_treatment opt_unique opt_include opt_without_overlaps opt_or_replace
 
 %type<node> key_update key_action key_actions key_delete opt_c_include
 %type<node> optionalPeriodName opt_column_and_period_list
@@ -114,6 +114,8 @@ func NewLyxParser() LyxParser {
 
 %type<from> table_ref 
 %type<tableref> relation_expr joined_table relation_expr_opt_alias vacuum_relation
+
+%type<node> index_params index_including_params
 
 %type<node> func_arg_expr
 %type<bool> opt_ordinality copy_from
@@ -304,7 +306,7 @@ Operator:
 %type<node> DeleteStmt
 %type<node> PrepareStmt
 %type<node> VariableSetStmt
-%type<node> CreateStmt alter_stmt CreateSchemaStmt CreateExtensionStmt
+%type<node> CreateStmt  IndexStmt alter_stmt CreateSchemaStmt CreateExtensionStmt
 %type<node> VacuumStmt cluster_stmt AnalyzeStmt ExplainStmt
 %type<node> TruncateStmt DropStmt
 %type<node> DiscardStmt
@@ -1613,6 +1615,8 @@ command:
     } | DropStmt {
 		$$ = $1
     } | CreateStmt {
+		$$ = $1
+    } | IndexStmt {
 		$$ = $1
     } | CreateSchemaStmt {
 		$$ = $1
@@ -4562,6 +4566,97 @@ generic_option_list:
 				}
 		;
 
+
+
+
+/*****************************************************************************
+ *
+ *		QUERY: CREATE INDEX
+ *
+ * Note: we cannot put TABLESPACE clause after WHERE clause unless we are
+ * willing to make TABLESPACE a fully reserved word.
+ *****************************************************************************/
+
+IndexStmt:	CREATE opt_unique INDEX opt_concurrently opt_single_name
+			ON relation_expr access_method_clause TOPENBR index_params TCLOSEBR
+			opt_include opt_unique_null_treatment opt_reloptions OptTableSpace where_clause
+				{
+					$$ = &CreateIndex{}
+				}
+			| CREATE opt_unique INDEX opt_concurrently IF_P NOT EXISTS name
+			ON relation_expr access_method_clause TOPENBR index_params TCLOSEBR
+			opt_include opt_unique_null_treatment opt_reloptions OptTableSpace where_clause
+				{
+					$$ = &CreateIndex{}
+				}
+		;
+
+opt_unique:
+			UNIQUE									{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+		;
+
+
+index_params:	index_elem							{ }
+			| index_params TCOMMA index_elem			{ }
+		;
+
+opt_class:	any_name								{}
+			| /*EMPTY*/								{}
+		;
+
+index_elem_options:
+	opt_collate opt_class opt_asc_desc opt_nulls_order
+		{
+		}
+	| opt_collate any_name reloptions opt_asc_desc opt_nulls_order
+		{
+		}
+	;
+
+/*
+ * Index attributes can be either simple column references, or arbitrary
+ * expressions in parens.  For backwards-compatibility reasons, we allow
+ * an expression that's just a function call to be written without parens.
+ */
+index_elem: ColId index_elem_options
+				{
+				}
+			| func_expr_windowless index_elem_options
+				{
+				}
+			| TOPENBR a_expr TCLOSEBR index_elem_options
+				{
+				}
+		;
+
+
+opt_include:		INCLUDE TOPENBR index_including_params TCLOSEBR			{  }
+			 |		/* EMPTY */						{ }
+		;
+
+index_including_params:	index_elem						{ ; }
+			| index_including_params TCOMMA index_elem		{ ; }
+		;
+
+opt_collate: COLLATE any_val						{  }
+			| /*EMPTY*/								{ }
+		;
+
+
+opt_asc_desc: ASC							{  }
+			| DESC							{  }
+			| /*EMPTY*/						{ }
+		;
+
+
+opt_nulls_order: NULLS_LA FIRST_P			{}
+			| NULLS_LA LAST_P				{ }
+			| /*EMPTY*/						{  }
+		;
+
+
+
 CreateStmt:
     CREATE OptTemp TABLE table_name TOPENBR OptTableElementList TCLOSEBR OptPartitionSpec OptWith anything {
         $$ = &CreateTable {
@@ -4578,10 +4673,6 @@ CreateStmt:
         $$ = &CreateTable {
             TableRv: $4,
 			PartitionOf: $7,
-        }
-    } | CREATE INDEX anything {
-        $$ = &Index{
-
         }
     } | CREATE ROLE anything {
         $$ = &CreateRole {
@@ -5071,21 +5162,6 @@ opt_restart_seqs:
 			| RESTART IDENTITY_P		{ $$ = "true"; }
 			| /* EMPTY */				{ $$ = "false"; }
 		;
-
-
-
-
-opt_asc_desc: ASC							{  }
-			| DESC							{  }
-			| /*EMPTY*/						{ }
-		;
-
-
-opt_nulls_order: NULLS_LA FIRST_P			{}
-			| NULLS_LA LAST_P				{ }
-			| /*EMPTY*/						{  }
-		;
-
 
 
 opt_sort_clause:
@@ -6699,44 +6775,6 @@ opt_conf_expr:
 				{
 				}
 			| /*EMPTY*/
-				{
-				}
-		;
-
-
-index_params:	index_elem							{ }
-			| index_params TCOMMA index_elem			{ }
-		;
-
-opt_collate: COLLATE any_val						{  }
-			| /*EMPTY*/								{ }
-		;
-
-opt_class:	any_name								{}
-			| /*EMPTY*/								{}
-		;
-
-index_elem_options:
-	opt_collate opt_class opt_asc_desc opt_nulls_order
-		{
-		}
-	| opt_collate any_name reloptions opt_asc_desc opt_nulls_order
-		{
-		}
-	;
-
-/*
- * Index attributes can be either simple column references, or arbitrary
- * expressions in parens.  For backwards-compatibility reasons, we allow
- * an expression that's just a function call to be written without parens.
- */
-index_elem: ColId index_elem_options
-				{
-				}
-			| func_expr_windowless index_elem_options
-				{
-				}
-			| TOPENBR a_expr TCLOSEBR index_elem_options
 				{
 				}
 		;
