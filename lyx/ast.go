@@ -288,7 +288,7 @@ type Drop struct {
 	Objects    []string
 }
 
-type Index struct {
+type CreateIndex struct {
 }
 
 type DefineStmt struct {
@@ -363,7 +363,7 @@ func (*Cluster) iNode()            {}
 func (*VacuumStmt) iNode()         {}
 func (*Drop) iNode()               {}
 func (*Truncate) iNode()           {}
-func (*Index) iNode()              {}
+func (*CreateIndex) iNode()        {}
 func (*CreateRole) iNode()         {}
 func (*CreateDatabase) iNode()     {}
 func (*Insert) iNode()             {}

@@ -1647,6 +1647,16 @@ func TestCreate(t *testing.T) {
 			exp:   &lyx.CreateRole{},
 			err:   nil,
 		},
+		{
+			query: `create  index on ui  using btree(c1);`,
+			exp:   &lyx.CreateIndex{},
+			err:   nil,
+		},
+		{
+			query: `create unique index on ui  using btree(c1);`,
+			exp:   &lyx.CreateIndex{},
+			err:   nil,
+		},
 	} {
 		tmp, _, err := lyx.Parse(tt.query)
 
