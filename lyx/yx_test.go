@@ -1657,6 +1657,11 @@ func TestCreate(t *testing.T) {
 			exp:   &lyx.CreateIndex{},
 			err:   nil,
 		},
+		{
+			query: `CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS IDX ON DB_TABLE_NAME (uid) /* __spqr__allow_multishard: true */;`,
+			exp:   &lyx.CreateIndex{},
+			err:   nil,
+		},
 	} {
 		tmp, _, err := lyx.Parse(tt.query)
 
