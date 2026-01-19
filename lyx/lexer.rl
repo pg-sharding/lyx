@@ -224,6 +224,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /role/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLE; fbreak;};
             /primary/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = PRIMARY; fbreak;};
             /unique/i  => { lval.str = string(lex.data[lex.ts:lex.te]); tok = UNIQUE; fbreak;};
+            /CONCURRENTLY/i  => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CONCURRENTLY; fbreak;};
             /foreign/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FOREIGN; fbreak;};
             /check/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHECK; fbreak;};
             /references/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = REFERENCES; fbreak;};
