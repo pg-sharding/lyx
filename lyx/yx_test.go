@@ -4020,6 +4020,22 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
+			CREATE TABLE b 
+				(d TIMESTAMP WITHOUT TIME ZONE)`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "b",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "d",
+						ColType: "TIMESTAMP",
+					},
+				},
+			},
+		},
+		{
+			query: `
 			create table IF NOT EXISTS customer (
 				c_id int not null,
 				c_d_id int not null,

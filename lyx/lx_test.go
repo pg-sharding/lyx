@@ -377,6 +377,22 @@ func TestSimple(t *testing.T) {
 				lyx.SCONST,
 			},
 		},
+		{
+			query: `CREATE TABLE a
+			(d TIMESTAMP WITHOUT TIME ZONE)`,
+			exp: []int{
+				lyx.CREATE,
+				lyx.TABLE,
+				lyx.IDENT,
+				lyx.TOPENBR,
+				lyx.IDENT,
+				lyx.TIMESTAMP,
+				lyx.WITHOUT,
+				lyx.TIME,
+				lyx.ZONE,
+				lyx.TCLOSEBR,
+			},
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int

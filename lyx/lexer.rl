@@ -198,6 +198,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
             /without/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITHOUT; fbreak;};
             /time/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TIME; fbreak;};
+            /timestamp/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TIMESTAMP; fbreak;};
             /type/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPE_P; fbreak;};
             /enum/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ENUM_P; fbreak;};
             /zone/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; fbreak;};

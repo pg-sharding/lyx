@@ -12,7 +12,7 @@ const lexer_start int = 8
 const lexer_first_final int = 8
 const lexer_error int = 0
 
-const lexer_en_singleQuoteString int = 610
+const lexer_en_singleQuoteString int = 615
 const lexer_en_main int = 8
 
 
@@ -1306,6 +1306,16 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 		goto st_case_609
 	case 610:
 		goto st_case_610
+	case 611:
+		goto st_case_611
+	case 612:
+		goto st_case_612
+	case 613:
+		goto st_case_613
+	case 614:
+		goto st_case_614
+	case 615:
+		goto st_case_615
 	}
 	goto st_out
 tr0:
@@ -1386,475 +1396,475 @@ tr0:
 	case 37:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = WITHOUT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 38:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TIME; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 39:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TIMESTAMP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 40:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ENUM_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 41:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ENUM_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 42:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IF_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 44:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ZONE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 43:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PREPARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IF_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 45:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEALLOCATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = PREPARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 46:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXECUTE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DEALLOCATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 47:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SELECT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXECUTE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 48:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INSERT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SELECT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 49:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INTO; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = INSERT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 50:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VALUES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = INTO; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 51:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UPDATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = VALUES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 52:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DELETE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = UPDATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 53:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CREATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DELETE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 54:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUNCATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CREATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 55:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUNCATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 56:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXTENSION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 57:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SCHEMA; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXTENSION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 58:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DATABASE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SCHEMA; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 59:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DATABASE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 60:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PRIMARY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 61:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNIQUE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = PRIMARY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 62:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONCURRENTLY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = UNIQUE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 63:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FOREIGN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CONCURRENTLY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 64:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CHECK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = FOREIGN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 65:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REFERENCES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CHECK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 66:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = KEY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 68:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = REFERENCES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 67:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RESET; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = KEY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 69:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SHOW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = RESET; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 70:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FROM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SHOW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 71:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WHERE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = FROM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 72:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ORDER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = WHERE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 73:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GROUP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ORDER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 74:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = GROUP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 75:
 	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 76:
+	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = HAVING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 77:
+	case 78:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = AND; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 79:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GRANT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 80:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REVOKE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = GRANT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 81:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXPLAIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = REVOKE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 82:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RETURNING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXPLAIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 83:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFAULT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = RETURNING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 84:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COPY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFAULT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 85:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXTRACT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = COPY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 86:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TO; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXTRACT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 87:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STDOUT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TO; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 88:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LIMIT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = STDOUT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 89:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OFFSET; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LIMIT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 90:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DISTINCT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = OFFSET; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 91:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LIKE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DISTINCT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 92:
 	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LIKE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 93:
+	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = ILIKE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 94:
+	case 95:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = ISNULL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 96:
+	case 97:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = NULLS_LA; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 98:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NORMALIZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 99:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTNULL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = NORMALIZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 100:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LATERAL_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTNULL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 101:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ORDINALITY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 103:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LATERAL_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 102:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ORDINALITY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 104:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FALSE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 105:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FETCH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = FALSE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 106:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FIRST_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = FETCH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 107:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FILTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = FIRST_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 108:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LAST_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = FILTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 109:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ASC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LAST_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 110:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DESC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ASC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 111:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SESSION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DESC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 112:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCAL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SESSION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 113:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CURRENT_USER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCAL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 114:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CHARACTERISTICS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 116:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CURRENT_USER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 115:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ISOLATION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CHARACTERISTICS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 117:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LEVEL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ISOLATION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 118:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMITTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LEVEL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 119:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CASCADE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMITTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 120:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RESTRICT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CASCADE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 121:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ARRAY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 123:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = RESTRICT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 122:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ROWS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ARRAY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 124:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXISTS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ROWS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 125:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DISCARD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXISTS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 126:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PLANS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DISCARD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 127:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SEQUENCES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = PLANS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 128:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = JOIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SEQUENCES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 129:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CROSS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = JOIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 130:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LEFT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CROSS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 131:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RIGHT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LEFT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 132:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FULL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = RIGHT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 133:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OUTER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = FULL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 134:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INNER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 138:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = OUTER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 135:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCKED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = INNER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 139:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SKIP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCKED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 140:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RECURSIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SKIP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 141:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SEARCH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = RECURSIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 142:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CYCLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SEARCH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 143:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BREADTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CYCLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 144:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEPTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BREADTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 145:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SHARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DEPTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 146:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = USING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SHARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 147:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VACUUM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = USING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 148:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CLUSTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = VACUUM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 149:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CLUSTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 150:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ALTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 151:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INDEX; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ALTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 152:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BINARY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = INDEX; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 153:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITERS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 155:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BINARY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 154:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CSV; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITERS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 156:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = HEADER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CSV; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 157:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = QUOTE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = HEADER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 158:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ESCAPE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = QUOTE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 159:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ENCODING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ESCAPE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 160:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PROGRAM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ENCODING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 161:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STDIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = PROGRAM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 162:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ASYMMETRIC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = STDIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 163:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BETWEEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ASYMMETRIC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 164:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DROP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BETWEEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 165:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BEGIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DROP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 166:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ELSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BEGIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 167:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = END_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ELSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 168:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRANSACTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = END_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 169:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = READ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TRANSACTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 170:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ONLY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = READ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 171:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WRITE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ONLY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 172:
 	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = WRITE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 173:
+	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFERRABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 175:
+	case 176:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = UNCOMMITTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 177:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REPEATABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 178:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SERIALIZABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = REPEATABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 179:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = START; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SERIALIZABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 180:
 	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = START; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 181:
+	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = ABORT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 182:
+	case 183:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLLBACK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 184:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CASE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 185:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WHEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CASE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 186:
 	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = WHEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 187:
+	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = THEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 188:
+	case 189:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = CONFLICT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 190:
+	case 191:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTHING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 192:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 193:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCEPT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = UNION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 194:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INTERSECT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCEPT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 195:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ALL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = INTERSECT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 196:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PARTITION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ALL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 197:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OVER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = PARTITION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 198:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONVERSION_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = OVER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 199:
 	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CONVERSION_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 200:
+	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = STATISTICS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 201:
+	case 202:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 207:
+	case 208:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = TDOT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 210:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TPLUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 211:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TPLUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 212:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TMUL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 213:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TMOD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TMUL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 214:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TPOW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TMOD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 215:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TPOW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 216:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 217:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TEQ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 218:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TEQ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 219:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 220:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 221:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 222:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 223:
 	{( lex.p) = ( lex.te) - 1
 
                 lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
                 {( lex.p)++; ( lex.cs) = 8; goto _out }
             }
-	case 223:
+	case 224:
 	{( lex.p) = ( lex.te) - 1
 
                 lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
@@ -1864,12 +1874,12 @@ tr0:
 	
 	goto st8
 tr5:
-//line lyx/lexer.rl:400
+//line lyx/lexer.rl:401
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr7:
-//line lyx/lexer.rl:412
+//line lyx/lexer.rl:413
 ( lex.p) = ( lex.te) - 1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
@@ -1883,36 +1893,36 @@ tr17:
  lex.te = ( lex.p)+1
 { 
                 lval.str = ""
-                {( lex.stack)[( lex.top)] = 8; ( lex.top)++; goto st610 }
+                {( lex.stack)[( lex.top)] = 8; ( lex.top)++; goto st615 }
             }
 	goto st8
 tr18:
-//line lyx/lexer.rl:404
+//line lyx/lexer.rl:405
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TOPENBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr19:
-//line lyx/lexer.rl:405
+//line lyx/lexer.rl:406
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCLOSEBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr22:
-//line lyx/lexer.rl:403
+//line lyx/lexer.rl:404
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOMMA; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr29:
-//line lyx/lexer.rl:409
+//line lyx/lexer.rl:410
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSEMICOLON; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr59:
-//line lyx/lexer.rl:406
+//line lyx/lexer.rl:407
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQOPENBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr60:
-//line lyx/lexer.rl:407
+//line lyx/lexer.rl:408
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQCLOSEBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
@@ -1923,7 +1933,7 @@ tr62:
 { /* do nothing */ }
 	goto st8
 tr63:
-//line lyx/lexer.rl:427
+//line lyx/lexer.rl:428
  lex.te = ( lex.p)
 ( lex.p)--
 {
@@ -1944,7 +1954,7 @@ tr65:
             }
 	goto st8
 tr66:
-//line lyx/lexer.rl:412
+//line lyx/lexer.rl:413
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -1980,7 +1990,7 @@ tr73:
             }
 	goto st8
 tr74:
-//line lyx/lexer.rl:410
+//line lyx/lexer.rl:411
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOLON; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -1991,25 +2001,25 @@ tr75:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPECAST; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr76:
-//line lyx/lexer.rl:417
+//line lyx/lexer.rl:418
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr79:
-//line lyx/lexer.rl:418
+//line lyx/lexer.rl:419
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr81:
-//line lyx/lexer.rl:401
+//line lyx/lexer.rl:402
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr104:
-//line lyx/lexer.rl:241
+//line lyx/lexer.rl:242
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = AS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -2027,7 +2037,7 @@ tr170:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHARACTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr190:
-//line lyx/lexer.rl:377
+//line lyx/lexer.rl:378
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMIT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -2039,25 +2049,25 @@ tr262:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr287:
-//line lyx/lexer.rl:344
+//line lyx/lexer.rl:345
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr302:
-//line lyx/lexer.rl:387
+//line lyx/lexer.rl:388
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = DO; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr381:
-//line lyx/lexer.rl:318
+//line lyx/lexer.rl:319
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = FOR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr417:
-//line lyx/lexer.rl:317
+//line lyx/lexer.rl:318
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IN_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -2069,55 +2079,61 @@ tr429:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = INT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr443:
-//line lyx/lexer.rl:264
+//line lyx/lexer.rl:265
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr517:
-//line lyx/lexer.rl:268
+//line lyx/lexer.rl:269
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = NOT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr529:
-//line lyx/lexer.rl:266
+//line lyx/lexer.rl:267
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = NULL_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr540:
-//line lyx/lexer.rl:206
+//line lyx/lexer.rl:207
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = OF; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr545:
-//line lyx/lexer.rl:316
+//line lyx/lexer.rl:317
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = ON; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr548:
-//line lyx/lexer.rl:243
+//line lyx/lexer.rl:244
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = OR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr655:
-//line lyx/lexer.rl:300
+//line lyx/lexer.rl:301
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = ROW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr702:
-//line lyx/lexer.rl:232
+//line lyx/lexer.rl:233
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = SET; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
-tr813:
-//line lyx/lexer.rl:273
+tr747:
+//line lyx/lexer.rl:200
+ lex.te = ( lex.p)
+( lex.p)--
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = TIME; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	goto st8
+tr819:
+//line lyx/lexer.rl:274
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -2133,7 +2149,7 @@ tr813:
 //line NONE:1
  lex.ts = ( lex.p)
 
-//line lyx/lexer.go:2137
+//line lyx/lexer.go:2153
 		switch  lex.data[( lex.p)] {
 		case 32:
 			goto st9
@@ -2216,17 +2232,17 @@ tr813:
 		case 84:
 			goto st535
 		case 85:
-			goto st559
+			goto st564
 		case 86:
-			goto st580
+			goto st585
 		case 87:
-			goto st592
+			goto st597
 		case 88:
 			goto tr56
 		case 89:
-			goto st604
+			goto st609
 		case 90:
-			goto st607
+			goto st612
 		case 91:
 			goto tr59
 		case 93:
@@ -2276,17 +2292,17 @@ tr813:
 		case 116:
 			goto st535
 		case 117:
-			goto st559
+			goto st564
 		case 118:
-			goto st580
+			goto st585
 		case 119:
-			goto st592
+			goto st597
 		case 120:
 			goto tr56
 		case 121:
-			goto st604
+			goto st609
 		case 122:
-			goto st607
+			goto st612
 		case 124:
 			goto tr14
 		case 126:
@@ -2335,15 +2351,15 @@ tr13:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:427
- lex.act = 222;
+//line lyx/lexer.rl:428
+ lex.act = 223;
 	goto st10
 	st10:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof10
 		}
 	st_case_10:
-//line lyx/lexer.go:2347
+//line lyx/lexer.go:2363
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2381,85 +2397,85 @@ tr1:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:431
- lex.act = 223;
+//line lyx/lexer.rl:432
+ lex.act = 224;
 	goto st11
 tr14:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:427
- lex.act = 222;
+//line lyx/lexer.rl:428
+ lex.act = 223;
 	goto st11
 tr16:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:415
- lex.act = 213;
-	goto st11
-tr20:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:413
- lex.act = 212;
-	goto st11
-tr21:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:411
- lex.act = 210;
-	goto st11
-tr31:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:419
- lex.act = 217;
-	goto st11
-tr61:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:416
  lex.act = 214;
 	goto st11
+tr20:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:414
+ lex.act = 213;
+	goto st11
+tr21:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:412
+ lex.act = 211;
+	goto st11
+tr31:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:420
+ lex.act = 218;
+	goto st11
+tr61:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:417
+ lex.act = 215;
+	goto st11
 tr64:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:424
- lex.act = 221;
+//line lyx/lexer.rl:425
+ lex.act = 222;
 	goto st11
 tr77:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:422
- lex.act = 219;
-	goto st11
-tr78:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:421
- lex.act = 218;
-	goto st11
-tr80:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:423
  lex.act = 220;
 	goto st11
+tr78:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:422
+ lex.act = 219;
+	goto st11
+tr80:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:424
+ lex.act = 221;
+	goto st11
 	st11:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof11
 		}
 	st_case_11:
-//line lyx/lexer.go:2463
+//line lyx/lexer.go:2479
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2563,15 +2579,15 @@ tr23:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:412
- lex.act = 211;
+//line lyx/lexer.rl:413
+ lex.act = 212;
 	goto st13
 	st13:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof13
 		}
 	st_case_13:
-//line lyx/lexer.go:2575
+//line lyx/lexer.go:2591
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2681,15 +2697,15 @@ tr24:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:408
- lex.act = 207;
+//line lyx/lexer.rl:409
+ lex.act = 208;
 	goto st16
 	st16:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof16
 		}
 	st_case_16:
-//line lyx/lexer.go:2693
+//line lyx/lexer.go:2709
 		if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 			goto tr8
 		}
@@ -2766,8 +2782,8 @@ tr56:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:401
- lex.act = 201;
+//line lyx/lexer.rl:402
+ lex.act = 202;
 	goto st19
 tr87:
 //line NONE:1
@@ -2780,78 +2796,78 @@ tr90:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:374
- lex.act = 180;
+//line lyx/lexer.rl:375
+ lex.act = 181;
 	goto st19
 tr91:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:392
- lex.act = 195;
+//line lyx/lexer.rl:393
+ lex.act = 196;
 	goto st19
 tr94:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:338
- lex.act = 150;
+//line lyx/lexer.rl:339
+ lex.act = 151;
 	goto st19
 tr96:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:242
- lex.act = 77;
+//line lyx/lexer.rl:243
+ lex.act = 78;
 	goto st19
 tr100:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:336
- lex.act = 149;
+//line lyx/lexer.rl:337
+ lex.act = 150;
 	goto st19
 tr103:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:298
- lex.act = 121;
+//line lyx/lexer.rl:299
+ lex.act = 122;
 	goto st19
 tr105:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:281
- lex.act = 109;
+//line lyx/lexer.rl:282
+ lex.act = 110;
 	goto st19
 tr113:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:353
- lex.act = 162;
+//line lyx/lexer.rl:354
+ lex.act = 163;
 	goto st19
 tr118:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:239
- lex.act = 74;
+//line lyx/lexer.rl:240
+ lex.act = 75;
 	goto st19
 tr122:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:358
- lex.act = 165;
+//line lyx/lexer.rl:359
+ lex.act = 166;
 	goto st19
 tr126:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:354
- lex.act = 163;
+//line lyx/lexer.rl:355
+ lex.act = 164;
 	goto st19
 tr129:
 //line NONE:1
@@ -2871,8 +2887,8 @@ tr135:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:342
- lex.act = 152;
+//line lyx/lexer.rl:343
+ lex.act = 153;
 	goto st19
 tr140:
 //line NONE:1
@@ -2885,15 +2901,15 @@ tr145:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:327
- lex.act = 143;
+//line lyx/lexer.rl:328
+ lex.act = 144;
 	goto st19
 tr156:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:379
- lex.act = 184;
+//line lyx/lexer.rl:380
+ lex.act = 185;
 	goto st19
 tr157:
 //line NONE:1
@@ -2906,99 +2922,99 @@ tr160:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:295
- lex.act = 119;
+//line lyx/lexer.rl:296
+ lex.act = 120;
 	goto st19
 tr176:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:288
- lex.act = 114;
+//line lyx/lexer.rl:289
+ lex.act = 115;
 	goto st19
 tr178:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:229
- lex.act = 64;
+//line lyx/lexer.rl:230
+ lex.act = 65;
 	goto st19
 tr183:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:335
- lex.act = 148;
+//line lyx/lexer.rl:336
+ lex.act = 149;
 	goto st19
 tr193:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:293
- lex.act = 118;
+//line lyx/lexer.rl:294
+ lex.act = 119;
 	goto st19
 tr204:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:227
- lex.act = 62;
+//line lyx/lexer.rl:228
+ lex.act = 63;
 	goto st19
 tr208:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:384
- lex.act = 188;
+//line lyx/lexer.rl:385
+ lex.act = 189;
 	goto st19
 tr214:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:397
- lex.act = 198;
+//line lyx/lexer.rl:398
+ lex.act = 199;
 	goto st19
 tr215:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:253
- lex.act = 84;
+//line lyx/lexer.rl:254
+ lex.act = 85;
 	goto st19
 tr220:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:218
- lex.act = 53;
+//line lyx/lexer.rl:219
+ lex.act = 54;
 	goto st19
 tr222:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:310
- lex.act = 129;
+//line lyx/lexer.rl:311
+ lex.act = 130;
 	goto st19
 tr223:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:345
- lex.act = 155;
+//line lyx/lexer.rl:346
+ lex.act = 156;
 	goto st19
 tr233:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:286
- lex.act = 113;
+//line lyx/lexer.rl:287
+ lex.act = 114;
 	goto st19
 tr236:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:326
- lex.act = 142;
+//line lyx/lexer.rl:327
+ lex.act = 143;
 	goto st19
 tr243:
 //line NONE:1
@@ -3011,15 +3027,15 @@ tr248:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:223
- lex.act = 58;
+//line lyx/lexer.rl:224
+ lex.act = 59;
 	goto st19
 tr261:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:209
- lex.act = 45;
+//line lyx/lexer.rl:210
+ lex.act = 46;
 	goto st19
 tr266:
 //line NONE:1
@@ -3032,57 +3048,57 @@ tr271:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:251
- lex.act = 83;
+//line lyx/lexer.rl:252
+ lex.act = 84;
 	goto st19
 tr277:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:365
- lex.act = 172;
+//line lyx/lexer.rl:366
+ lex.act = 173;
 	goto st19
 tr281:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:217
- lex.act = 52;
+//line lyx/lexer.rl:218
+ lex.act = 53;
 	goto st19
 tr288:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:343
- lex.act = 153;
+//line lyx/lexer.rl:344
+ lex.act = 154;
 	goto st19
 tr290:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:328
- lex.act = 144;
+//line lyx/lexer.rl:329
+ lex.act = 145;
 	goto st19
 tr291:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:282
- lex.act = 110;
+//line lyx/lexer.rl:283
+ lex.act = 111;
 	goto st19
 tr297:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:305
- lex.act = 125;
+//line lyx/lexer.rl:306
+ lex.act = 126;
 	goto st19
 tr301:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:260
- lex.act = 90;
+//line lyx/lexer.rl:261
+ lex.act = 91;
 	goto st19
 tr306:
 //line NONE:1
@@ -3095,113 +3111,113 @@ tr308:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:355
- lex.act = 164;
+//line lyx/lexer.rl:356
+ lex.act = 165;
 	goto st19
 tr314:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:359
- lex.act = 166;
-	goto st19
-tr316:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:360
  lex.act = 167;
 	goto st19
+tr316:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:361
+ lex.act = 168;
+	goto st19
 tr322:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:350
+ lex.act = 160;
+	goto st19
+tr323:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:203
+ lex.act = 41;
+	goto st19
+tr327:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:349
  lex.act = 159;
 	goto st19
-tr323:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:202
- lex.act = 40;
-	goto st19
-tr327:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:348
- lex.act = 158;
-	goto st19
 tr335:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:390
- lex.act = 193;
+//line lyx/lexer.rl:391
+ lex.act = 194;
 	goto st19
 tr339:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:210
- lex.act = 46;
+//line lyx/lexer.rl:211
+ lex.act = 47;
 	goto st19
 tr342:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:302
- lex.act = 124;
+//line lyx/lexer.rl:303
+ lex.act = 125;
 	goto st19
 tr346:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:248
- lex.act = 81;
+//line lyx/lexer.rl:249
+ lex.act = 82;
 	goto st19
 tr353:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:221
- lex.act = 56;
+//line lyx/lexer.rl:222
+ lex.act = 57;
 	goto st19
 tr356:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:254
- lex.act = 85;
+//line lyx/lexer.rl:255
+ lex.act = 86;
 	goto st19
 tr366:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:275
- lex.act = 104;
+//line lyx/lexer.rl:276
+ lex.act = 105;
 	goto st19
 tr369:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:277
- lex.act = 105;
+//line lyx/lexer.rl:278
+ lex.act = 106;
 	goto st19
 tr374:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:279
- lex.act = 107;
+//line lyx/lexer.rl:280
+ lex.act = 108;
 	goto st19
 tr376:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:278
- lex.act = 106;
+//line lyx/lexer.rl:279
+ lex.act = 107;
 	goto st19
 tr379:
 //line NONE:1
@@ -3214,50 +3230,50 @@ tr385:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:228
- lex.act = 63;
+//line lyx/lexer.rl:229
+ lex.act = 64;
 	goto st19
 tr387:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:235
- lex.act = 70;
+//line lyx/lexer.rl:236
+ lex.act = 71;
 	goto st19
 tr389:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:313
- lex.act = 132;
+//line lyx/lexer.rl:314
+ lex.act = 133;
 	goto st19
 tr394:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:245
- lex.act = 79;
+//line lyx/lexer.rl:246
+ lex.act = 80;
 	goto st19
 tr396:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:238
- lex.act = 73;
+//line lyx/lexer.rl:239
+ lex.act = 74;
 	goto st19
 tr403:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:240
- lex.act = 75;
+//line lyx/lexer.rl:241
+ lex.act = 76;
 	goto st19
 tr407:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:346
- lex.act = 156;
+//line lyx/lexer.rl:347
+ lex.act = 157;
 	goto st19
 tr409:
 //line NONE:1
@@ -3270,43 +3286,43 @@ tr410:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:205
- lex.act = 42;
+//line lyx/lexer.rl:206
+ lex.act = 43;
 	goto st19
 tr416:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:262
- lex.act = 92;
+//line lyx/lexer.rl:263
+ lex.act = 93;
 	goto st19
 tr423:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:340
- lex.act = 151;
+//line lyx/lexer.rl:341
+ lex.act = 152;
 	goto st19
 tr425:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:315
- lex.act = 134;
+//line lyx/lexer.rl:316
+ lex.act = 135;
 	goto st19
 tr428:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:213
- lex.act = 48;
+//line lyx/lexer.rl:214
+ lex.act = 49;
 	goto st19
 tr431:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:214
- lex.act = 49;
+//line lyx/lexer.rl:215
+ lex.act = 50;
 	goto st19
 tr435:
 //line NONE:1
@@ -3319,8 +3335,8 @@ tr440:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:391
- lex.act = 194;
+//line lyx/lexer.rl:392
+ lex.act = 195;
 	goto st19
 tr442:
 //line NONE:1
@@ -3333,85 +3349,85 @@ tr448:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:265
- lex.act = 94;
+//line lyx/lexer.rl:266
+ lex.act = 95;
 	goto st19
 tr454:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:290
- lex.act = 116;
-	goto st19
-tr457:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:309
- lex.act = 128;
-	goto st19
-tr459:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:231
- lex.act = 66;
-	goto st19
-tr466:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:280
- lex.act = 108;
-	goto st19
-tr470:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:271
- lex.act = 100;
-	goto st19
-tr473:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:311
- lex.act = 130;
-	goto st19
-tr475:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:291
  lex.act = 117;
 	goto st19
+tr457:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:310
+ lex.act = 129;
+	goto st19
+tr459:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:232
+ lex.act = 67;
+	goto st19
+tr466:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:281
+ lex.act = 109;
+	goto st19
+tr470:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:272
+ lex.act = 101;
+	goto st19
+tr473:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:312
+ lex.act = 131;
+	goto st19
+tr475:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:292
+ lex.act = 118;
+	goto st19
 tr478:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:261
- lex.act = 91;
+//line lyx/lexer.rl:262
+ lex.act = 92;
 	goto st19
 tr480:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:258
- lex.act = 88;
+//line lyx/lexer.rl:259
+ lex.act = 89;
 	goto st19
 tr484:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:285
- lex.act = 112;
+//line lyx/lexer.rl:286
+ lex.act = 113;
 	goto st19
 tr486:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:321
- lex.act = 138;
+//line lyx/lexer.rl:322
+ lex.act = 139;
 	goto st19
 tr492:
 //line NONE:1
@@ -3445,29 +3461,29 @@ tr516:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:269
- lex.act = 98;
+//line lyx/lexer.rl:270
+ lex.act = 99;
 	goto st19
 tr522:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:386
- lex.act = 190;
+//line lyx/lexer.rl:387
+ lex.act = 191;
 	goto st19
 tr525:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:270
- lex.act = 99;
+//line lyx/lexer.rl:271
+ lex.act = 100;
 	goto st19
 tr530:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:267
- lex.act = 96;
+//line lyx/lexer.rl:268
+ lex.act = 97;
 	goto st19
 tr534:
 //line NONE:1
@@ -3480,92 +3496,92 @@ tr544:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:259
- lex.act = 89;
+//line lyx/lexer.rl:260
+ lex.act = 90;
 	goto st19
 tr547:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:363
- lex.act = 170;
+//line lyx/lexer.rl:364
+ lex.act = 171;
 	goto st19
 tr552:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:237
- lex.act = 72;
+//line lyx/lexer.rl:238
+ lex.act = 73;
 	goto st19
 tr558:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:272
- lex.act = 101;
+//line lyx/lexer.rl:273
+ lex.act = 102;
 	goto st19
 tr561:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:314
- lex.act = 133;
+//line lyx/lexer.rl:315
+ lex.act = 134;
 	goto st19
 tr563:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:396
+ lex.act = 198;
+	goto st19
+tr573:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:395
  lex.act = 197;
 	goto st19
-tr573:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:394
- lex.act = 196;
-	goto st19
 tr576:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:306
- lex.act = 126;
+//line lyx/lexer.rl:307
+ lex.act = 127;
 	goto st19
 tr583:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:208
- lex.act = 44;
+//line lyx/lexer.rl:209
+ lex.act = 45;
 	goto st19
 tr587:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:225
- lex.act = 60;
+//line lyx/lexer.rl:226
+ lex.act = 61;
 	goto st19
 tr591:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:350
- lex.act = 160;
+//line lyx/lexer.rl:351
+ lex.act = 161;
 	goto st19
 tr595:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:347
- lex.act = 157;
+//line lyx/lexer.rl:348
+ lex.act = 158;
 	goto st19
 tr606:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:362
- lex.act = 169;
+//line lyx/lexer.rl:363
+ lex.act = 170;
 	goto st19
 tr607:
 //line NONE:1
@@ -3578,92 +3594,92 @@ tr613:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:324
- lex.act = 140;
+//line lyx/lexer.rl:325
+ lex.act = 141;
 	goto st19
 tr620:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:230
- lex.act = 65;
+//line lyx/lexer.rl:231
+ lex.act = 66;
 	goto st19
 tr627:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:370
- lex.act = 177;
+//line lyx/lexer.rl:371
+ lex.act = 178;
 	goto st19
 tr630:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:233
- lex.act = 68;
+//line lyx/lexer.rl:234
+ lex.act = 69;
 	goto st19
 tr634:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:296
- lex.act = 120;
+//line lyx/lexer.rl:297
+ lex.act = 121;
 	goto st19
 tr640:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:250
- lex.act = 82;
+//line lyx/lexer.rl:251
+ lex.act = 83;
 	goto st19
 tr643:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:246
- lex.act = 80;
+//line lyx/lexer.rl:247
+ lex.act = 81;
 	goto st19
 tr646:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:312
- lex.act = 131;
+//line lyx/lexer.rl:313
+ lex.act = 132;
 	goto st19
 tr649:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:224
- lex.act = 59;
+//line lyx/lexer.rl:225
+ lex.act = 60;
 	goto st19
 tr654:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:376
- lex.act = 182;
+//line lyx/lexer.rl:377
+ lex.act = 183;
 	goto st19
 tr656:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:301
- lex.act = 123;
+//line lyx/lexer.rl:302
+ lex.act = 124;
 	goto st19
 tr666:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:222
- lex.act = 57;
+//line lyx/lexer.rl:223
+ lex.act = 58;
 	goto st19
 tr676:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:325
- lex.act = 141;
+//line lyx/lexer.rl:326
+ lex.act = 142;
 	goto st19
 tr679:
 //line NONE:1
@@ -3676,29 +3692,29 @@ tr682:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:212
- lex.act = 47;
+//line lyx/lexer.rl:213
+ lex.act = 48;
 	goto st19
 tr688:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:307
- lex.act = 127;
+//line lyx/lexer.rl:308
+ lex.act = 128;
 	goto st19
 tr697:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:371
- lex.act = 178;
+//line lyx/lexer.rl:372
+ lex.act = 179;
 	goto st19
 tr701:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:284
- lex.act = 111;
+//line lyx/lexer.rl:285
+ lex.act = 112;
 	goto st19
 tr704:
 //line NONE:1
@@ -3711,22 +3727,22 @@ tr708:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:330
- lex.act = 145;
+//line lyx/lexer.rl:331
+ lex.act = 146;
 	goto st19
 tr709:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:234
- lex.act = 69;
+//line lyx/lexer.rl:235
+ lex.act = 70;
 	goto st19
 tr711:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:322
- lex.act = 139;
+//line lyx/lexer.rl:323
+ lex.act = 140;
 	goto st19
 tr717:
 //line NONE:1
@@ -3739,190 +3755,190 @@ tr722:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:373
- lex.act = 179;
+//line lyx/lexer.rl:374
+ lex.act = 180;
 	goto st19
 tr728:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:398
- lex.act = 199;
+//line lyx/lexer.rl:399
+ lex.act = 200;
 	goto st19
 tr731:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:351
- lex.act = 161;
+//line lyx/lexer.rl:352
+ lex.act = 162;
 	goto st19
 tr733:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:257
+ lex.act = 88;
+	goto st19
+tr737:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:256
  lex.act = 87;
 	goto st19
-tr737:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:255
- lex.act = 86;
-	goto st19
 tr742:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:220
- lex.act = 55;
+//line lyx/lexer.rl:221
+ lex.act = 56;
 	goto st19
 tr744:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:381
- lex.act = 186;
+//line lyx/lexer.rl:382
+ lex.act = 187;
 	goto st19
-tr746:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:200
- lex.act = 38;
-	goto st19
-tr756:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:361
- lex.act = 168;
-	goto st19
-tr757:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:274
- lex.act = 103;
-	goto st19
-tr762:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:219
- lex.act = 54;
-	goto st19
-tr764:
+tr752:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:201
  lex.act = 39;
 	goto st19
-tr777:
+tr762:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:368
- lex.act = 175;
+//line lyx/lexer.rl:362
+ lex.act = 169;
 	goto st19
-tr780:
+tr763:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:389
- lex.act = 192;
+//line lyx/lexer.rl:275
+ lex.act = 104;
 	goto st19
-tr782:
+tr768:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:226
- lex.act = 61;
+//line lyx/lexer.rl:220
+ lex.act = 55;
+	goto st19
+tr770:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:202
+ lex.act = 40;
+	goto st19
+tr783:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:369
+ lex.act = 176;
 	goto st19
 tr786:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:390
+ lex.act = 193;
+	goto st19
+tr788:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:227
+ lex.act = 62;
+	goto st19
+tr792:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:217
+ lex.act = 52;
+	goto st19
+tr795:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:333
+ lex.act = 147;
+	goto st19
+tr802:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:335
+ lex.act = 148;
+	goto st19
+tr805:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:216
  lex.act = 51;
 	goto st19
-tr789:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:332
- lex.act = 146;
-	goto st19
-tr796:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:334
- lex.act = 147;
-	goto st19
-tr799:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:215
- lex.act = 50;
-	goto st19
-tr803:
+tr809:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:194
  lex.act = 34;
 	goto st19
-tr808:
+tr814:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:380
- lex.act = 185;
-	goto st19
-tr810:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:236
- lex.act = 71;
+//line lyx/lexer.rl:381
+ lex.act = 186;
 	goto st19
 tr816:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:237
+ lex.act = 72;
+	goto st19
+tr822:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:199
  lex.act = 37;
 	goto st19
-tr819:
+tr825:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:364
- lex.act = 171;
+//line lyx/lexer.rl:365
+ lex.act = 172;
 	goto st19
-tr822:
+tr828:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:184
  lex.act = 26;
 	goto st19
-tr825:
+tr831:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:203
- lex.act = 41;
+//line lyx/lexer.rl:204
+ lex.act = 42;
 	goto st19
 	st19:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof19
 		}
 	st_case_19:
-//line lyx/lexer.go:3926
+//line lyx/lexer.go:3942
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
@@ -3967,15 +3983,15 @@ tr30:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:417
- lex.act = 215;
+//line lyx/lexer.rl:418
+ lex.act = 216;
 	goto st22
 	st22:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof22
 		}
 	st_case_22:
-//line lyx/lexer.go:3979
+//line lyx/lexer.go:3995
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -4015,15 +4031,15 @@ tr32:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:418
- lex.act = 216;
+//line lyx/lexer.rl:419
+ lex.act = 217;
 	goto st23
 	st23:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof23
 		}
 	st_case_23:
-//line lyx/lexer.go:4027
+//line lyx/lexer.go:4043
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -18870,9 +18886,9 @@ tr32:
 		case 79:
 			goto tr737
 		case 82:
-			goto st543
+			goto st548
 		case 89:
-			goto st557
+			goto st562
 		case 95:
 			goto tr56
 		case 97:
@@ -18884,9 +18900,9 @@ tr32:
 		case 111:
 			goto tr737
 		case 114:
-			goto st543
+			goto st548
 		case 121:
-			goto st557
+			goto st562
 		}
 		switch {
 		case  lex.data[( lex.p)] < 66:
@@ -19078,11 +19094,11 @@ tr32:
 		case 36:
 			goto tr56
 		case 69:
-			goto tr746
+			goto st543
 		case 95:
 			goto tr56
 		case 101:
-			goto tr746
+			goto st543
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19105,30 +19121,26 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 65:
+		case 83:
 			goto st544
-		case 85:
-			goto st552
 		case 95:
 			goto tr56
-		case 97:
+		case 115:
 			goto st544
-		case 117:
-			goto st552
 		}
 		switch {
-		case  lex.data[( lex.p)] < 66:
+		case  lex.data[( lex.p)] < 65:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
 			goto tr56
 		}
-		goto tr81
+		goto tr747
 	st544:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof544
@@ -19137,11 +19149,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 78:
+		case 84:
 			goto st545
 		case 95:
 			goto tr56
-		case 110:
+		case 116:
 			goto st545
 		}
 		switch {
@@ -19165,40 +19177,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 83:
-			goto st546
-		case 95:
-			goto tr56
-		case 115:
-			goto st546
-		}
-		switch {
-		case  lex.data[( lex.p)] < 65:
-			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
-				goto tr56
-			}
-		case  lex.data[( lex.p)] > 90:
-			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
-				goto tr56
-			}
-		default:
-			goto tr56
-		}
-		goto tr81
-	st546:
-		if ( lex.p)++; ( lex.p) == ( lex.pe) {
-			goto _test_eof546
-		}
-	st_case_546:
-		switch  lex.data[( lex.p)] {
-		case 36:
-			goto tr56
 		case 65:
-			goto st547
+			goto st546
 		case 95:
 			goto tr56
 		case 97:
-			goto st547
+			goto st546
 		}
 		switch {
 		case  lex.data[( lex.p)] < 66:
@@ -19213,6 +19197,34 @@ tr32:
 			goto tr56
 		}
 		goto tr81
+	st546:
+		if ( lex.p)++; ( lex.p) == ( lex.pe) {
+			goto _test_eof546
+		}
+	st_case_546:
+		switch  lex.data[( lex.p)] {
+		case 36:
+			goto tr56
+		case 77:
+			goto st547
+		case 95:
+			goto tr56
+		case 109:
+			goto st547
+		}
+		switch {
+		case  lex.data[( lex.p)] < 65:
+			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
+				goto tr56
+			}
+		case  lex.data[( lex.p)] > 90:
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+				goto tr56
+			}
+		default:
+			goto tr56
+		}
+		goto tr81
 	st547:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof547
@@ -19221,12 +19233,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 67:
-			goto st548
+		case 80:
+			goto tr752
 		case 95:
 			goto tr56
-		case 99:
-			goto st548
+		case 112:
+			goto tr752
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19249,20 +19261,24 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
+		case 65:
 			goto st549
+		case 85:
+			goto st557
 		case 95:
 			goto tr56
-		case 116:
+		case 97:
 			goto st549
+		case 117:
+			goto st557
 		}
 		switch {
-		case  lex.data[( lex.p)] < 65:
+		case  lex.data[( lex.p)] < 66:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -19277,11 +19293,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 73:
+		case 78:
 			goto st550
 		case 95:
 			goto tr56
-		case 105:
+		case 110:
 			goto st550
 		}
 		switch {
@@ -19305,11 +19321,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 79:
+		case 83:
 			goto st551
 		case 95:
 			goto tr56
-		case 111:
+		case 115:
 			goto st551
 		}
 		switch {
@@ -19333,20 +19349,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 78:
-			goto tr756
+		case 65:
+			goto st552
 		case 95:
 			goto tr56
-		case 110:
-			goto tr756
+		case 97:
+			goto st552
 		}
 		switch {
-		case  lex.data[( lex.p)] < 65:
+		case  lex.data[( lex.p)] < 66:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -19361,15 +19377,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
-			goto tr757
-		case 78:
+		case 67:
 			goto st553
 		case 95:
 			goto tr56
-		case 101:
-			goto tr757
-		case 110:
+		case 99:
 			goto st553
 		}
 		switch {
@@ -19393,11 +19405,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 67:
+		case 84:
 			goto st554
 		case 95:
 			goto tr56
-		case 99:
+		case 116:
 			goto st554
 		}
 		switch {
@@ -19421,20 +19433,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 65:
+		case 73:
 			goto st555
 		case 95:
 			goto tr56
-		case 97:
+		case 105:
 			goto st555
 		}
 		switch {
-		case  lex.data[( lex.p)] < 66:
+		case  lex.data[( lex.p)] < 65:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -19449,11 +19461,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
+		case 79:
 			goto st556
 		case 95:
 			goto tr56
-		case 116:
+		case 111:
 			goto st556
 		}
 		switch {
@@ -19477,11 +19489,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
+		case 78:
 			goto tr762
 		case 95:
 			goto tr56
-		case 101:
+		case 110:
 			goto tr762
 		}
 		switch {
@@ -19505,11 +19517,15 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 80:
+		case 69:
+			goto tr763
+		case 78:
 			goto st558
 		case 95:
 			goto tr56
-		case 112:
+		case 101:
+			goto tr763
+		case 110:
 			goto st558
 		}
 		switch {
@@ -19533,12 +19549,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
-			goto tr764
+		case 67:
+			goto st559
 		case 95:
 			goto tr56
-		case 101:
-			goto tr764
+		case 99:
+			goto st559
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19561,28 +19577,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 78:
+		case 65:
 			goto st560
-		case 80:
-			goto st573
-		case 83:
-			goto st577
 		case 95:
 			goto tr56
-		case 110:
+		case 97:
 			goto st560
-		case 112:
-			goto st573
-		case 115:
-			goto st577
 		}
 		switch {
-		case  lex.data[( lex.p)] < 65:
+		case  lex.data[( lex.p)] < 66:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -19597,16 +19605,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 67:
+		case 84:
 			goto st561
-		case 73:
-			goto st569
 		case 95:
 			goto tr56
-		case 99:
+		case 116:
 			goto st561
-		case 105:
-			goto st569
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19629,12 +19633,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 79:
-			goto st562
+		case 69:
+			goto tr768
 		case 95:
 			goto tr56
-		case 111:
-			goto st562
+		case 101:
+			goto tr768
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19657,11 +19661,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 77:
+		case 80:
 			goto st563
 		case 95:
 			goto tr56
-		case 109:
+		case 112:
 			goto st563
 		}
 		switch {
@@ -19685,12 +19689,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 77:
-			goto st564
+		case 69:
+			goto tr770
 		case 95:
 			goto tr56
-		case 109:
-			goto st564
+		case 101:
+			goto tr770
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19713,12 +19717,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 73:
+		case 78:
 			goto st565
+		case 80:
+			goto st578
+		case 83:
+			goto st582
 		case 95:
 			goto tr56
-		case 105:
+		case 110:
 			goto st565
+		case 112:
+			goto st578
+		case 115:
+			goto st582
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19741,12 +19753,16 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
+		case 67:
 			goto st566
+		case 73:
+			goto st574
 		case 95:
 			goto tr56
-		case 116:
+		case 99:
 			goto st566
+		case 105:
+			goto st574
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19769,11 +19785,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
+		case 79:
 			goto st567
 		case 95:
 			goto tr56
-		case 116:
+		case 111:
 			goto st567
 		}
 		switch {
@@ -19797,11 +19813,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
+		case 77:
 			goto st568
 		case 95:
 			goto tr56
-		case 101:
+		case 109:
 			goto st568
 		}
 		switch {
@@ -19825,12 +19841,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 68:
-			goto tr777
+		case 77:
+			goto st569
 		case 95:
 			goto tr56
-		case 100:
-			goto tr777
+		case 109:
+			goto st569
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19853,16 +19869,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 79:
+		case 73:
 			goto st570
-		case 81:
-			goto st571
 		case 95:
 			goto tr56
-		case 111:
+		case 105:
 			goto st570
-		case 113:
-			goto st571
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19885,12 +19897,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 78:
-			goto tr780
+		case 84:
+			goto st571
 		case 95:
 			goto tr56
-		case 110:
-			goto tr780
+		case 116:
+			goto st571
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19913,11 +19925,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 85:
+		case 84:
 			goto st572
 		case 95:
 			goto tr56
-		case 117:
+		case 116:
 			goto st572
 		}
 		switch {
@@ -19942,11 +19954,11 @@ tr32:
 		case 36:
 			goto tr56
 		case 69:
-			goto tr782
+			goto st573
 		case 95:
 			goto tr56
 		case 101:
-			goto tr782
+			goto st573
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19970,11 +19982,11 @@ tr32:
 		case 36:
 			goto tr56
 		case 68:
-			goto st574
+			goto tr783
 		case 95:
 			goto tr56
 		case 100:
-			goto st574
+			goto tr783
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -19997,20 +20009,24 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 65:
+		case 79:
 			goto st575
+		case 81:
+			goto st576
 		case 95:
 			goto tr56
-		case 97:
+		case 111:
 			goto st575
+		case 113:
+			goto st576
 		}
 		switch {
-		case  lex.data[( lex.p)] < 66:
+		case  lex.data[( lex.p)] < 65:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -20025,12 +20041,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
-			goto st576
+		case 78:
+			goto tr786
 		case 95:
 			goto tr56
-		case 116:
-			goto st576
+		case 110:
+			goto tr786
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20053,12 +20069,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
-			goto tr786
+		case 85:
+			goto st577
 		case 95:
 			goto tr56
-		case 101:
-			goto tr786
+		case 117:
+			goto st577
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20081,12 +20097,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 73:
-			goto st578
+		case 69:
+			goto tr788
 		case 95:
 			goto tr56
-		case 105:
-			goto st578
+		case 101:
+			goto tr788
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20109,11 +20125,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 78:
+		case 68:
 			goto st579
 		case 95:
 			goto tr56
-		case 110:
+		case 100:
 			goto st579
 		}
 		switch {
@@ -20137,40 +20153,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 71:
-			goto tr789
-		case 95:
-			goto tr56
-		case 103:
-			goto tr789
-		}
-		switch {
-		case  lex.data[( lex.p)] < 65:
-			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
-				goto tr56
-			}
-		case  lex.data[( lex.p)] > 90:
-			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
-				goto tr56
-			}
-		default:
-			goto tr56
-		}
-		goto tr81
-	st580:
-		if ( lex.p)++; ( lex.p) == ( lex.pe) {
-			goto _test_eof580
-		}
-	st_case_580:
-		switch  lex.data[( lex.p)] {
-		case 36:
-			goto tr56
 		case 65:
-			goto st581
+			goto st580
 		case 95:
 			goto tr56
 		case 97:
-			goto st581
+			goto st580
 		}
 		switch {
 		case  lex.data[( lex.p)] < 66:
@@ -20185,6 +20173,34 @@ tr32:
 			goto tr56
 		}
 		goto tr81
+	st580:
+		if ( lex.p)++; ( lex.p) == ( lex.pe) {
+			goto _test_eof580
+		}
+	st_case_580:
+		switch  lex.data[( lex.p)] {
+		case 36:
+			goto tr56
+		case 84:
+			goto st581
+		case 95:
+			goto tr56
+		case 116:
+			goto st581
+		}
+		switch {
+		case  lex.data[( lex.p)] < 65:
+			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
+				goto tr56
+			}
+		case  lex.data[( lex.p)] > 90:
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+				goto tr56
+			}
+		default:
+			goto tr56
+		}
+		goto tr81
 	st581:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof581
@@ -20193,20 +20209,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 67:
-			goto st582
-		case 76:
-			goto st585
-		case 82:
-			goto st588
+		case 69:
+			goto tr792
 		case 95:
 			goto tr56
-		case 99:
-			goto st582
-		case 108:
-			goto st585
-		case 114:
-			goto st588
+		case 101:
+			goto tr792
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20229,11 +20237,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 85:
+		case 73:
 			goto st583
 		case 95:
 			goto tr56
-		case 117:
+		case 105:
 			goto st583
 		}
 		switch {
@@ -20257,11 +20265,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 85:
+		case 78:
 			goto st584
 		case 95:
 			goto tr56
-		case 117:
+		case 110:
 			goto st584
 		}
 		switch {
@@ -20285,12 +20293,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 77:
-			goto tr796
+		case 71:
+			goto tr795
 		case 95:
 			goto tr56
-		case 109:
-			goto tr796
+		case 103:
+			goto tr795
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20313,20 +20321,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 85:
+		case 65:
 			goto st586
 		case 95:
 			goto tr56
-		case 117:
+		case 97:
 			goto st586
 		}
 		switch {
-		case  lex.data[( lex.p)] < 65:
+		case  lex.data[( lex.p)] < 66:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -20341,12 +20349,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
+		case 67:
 			goto st587
+		case 76:
+			goto st590
+		case 82:
+			goto st593
 		case 95:
 			goto tr56
-		case 101:
+		case 99:
 			goto st587
+		case 108:
+			goto st590
+		case 114:
+			goto st593
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20369,12 +20385,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 83:
-			goto tr799
+		case 85:
+			goto st588
 		case 95:
 			goto tr56
-		case 115:
-			goto tr799
+		case 117:
+			goto st588
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20397,11 +20413,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 67:
+		case 85:
 			goto st589
 		case 95:
 			goto tr56
-		case 99:
+		case 117:
 			goto st589
 		}
 		switch {
@@ -20425,12 +20441,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 72:
-			goto st590
+		case 77:
+			goto tr802
 		case 95:
 			goto tr56
-		case 104:
-			goto st590
+		case 109:
+			goto tr802
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20453,20 +20469,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 65:
+		case 85:
 			goto st591
 		case 95:
 			goto tr56
-		case 97:
+		case 117:
 			goto st591
 		}
 		switch {
-		case  lex.data[( lex.p)] < 66:
+		case  lex.data[( lex.p)] < 65:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -20481,12 +20497,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 82:
-			goto tr803
+		case 69:
+			goto st592
 		case 95:
 			goto tr56
-		case 114:
-			goto tr803
+		case 101:
+			goto st592
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20509,20 +20525,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 72:
-			goto st593
-		case 73:
-			goto st596
-		case 82:
-			goto st601
+		case 83:
+			goto tr805
 		case 95:
 			goto tr56
-		case 104:
-			goto st593
-		case 105:
-			goto st596
-		case 114:
-			goto st601
+		case 115:
+			goto tr805
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20545,11 +20553,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
+		case 67:
 			goto st594
 		case 95:
 			goto tr56
-		case 101:
+		case 99:
 			goto st594
 		}
 		switch {
@@ -20573,15 +20581,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 78:
-			goto tr808
-		case 82:
+		case 72:
 			goto st595
 		case 95:
 			goto tr56
-		case 110:
-			goto tr808
-		case 114:
+		case 104:
 			goto st595
 		}
 		switch {
@@ -20605,20 +20609,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
-			goto tr810
+		case 65:
+			goto st596
 		case 95:
 			goto tr56
-		case 101:
-			goto tr810
+		case 97:
+			goto st596
 		}
 		switch {
-		case  lex.data[( lex.p)] < 65:
+		case  lex.data[( lex.p)] < 66:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -20633,12 +20637,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
-			goto st597
+		case 82:
+			goto tr809
 		case 95:
 			goto tr56
-		case 116:
-			goto st597
+		case 114:
+			goto tr809
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20663,10 +20667,18 @@ tr32:
 			goto tr56
 		case 72:
 			goto st598
+		case 73:
+			goto st601
+		case 82:
+			goto st606
 		case 95:
 			goto tr56
 		case 104:
 			goto st598
+		case 105:
+			goto st601
+		case 114:
+			goto st606
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20689,11 +20701,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 79:
+		case 69:
 			goto st599
 		case 95:
 			goto tr56
-		case 111:
+		case 101:
 			goto st599
 		}
 		switch {
@@ -20708,7 +20720,7 @@ tr32:
 		default:
 			goto tr56
 		}
-		goto tr813
+		goto tr81
 	st599:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof599
@@ -20717,11 +20729,15 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 85:
+		case 78:
+			goto tr814
+		case 82:
 			goto st600
 		case 95:
 			goto tr56
-		case 117:
+		case 110:
+			goto tr814
+		case 114:
 			goto st600
 		}
 		switch {
@@ -20745,11 +20761,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
+		case 69:
 			goto tr816
 		case 95:
 			goto tr56
-		case 116:
+		case 101:
 			goto tr816
 		}
 		switch {
@@ -20773,11 +20789,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 73:
+		case 84:
 			goto st602
 		case 95:
 			goto tr56
-		case 105:
+		case 116:
 			goto st602
 		}
 		switch {
@@ -20801,11 +20817,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 84:
+		case 72:
 			goto st603
 		case 95:
 			goto tr56
-		case 116:
+		case 104:
 			goto st603
 		}
 		switch {
@@ -20829,12 +20845,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
-			goto tr819
+		case 79:
+			goto st604
 		case 95:
 			goto tr56
-		case 101:
-			goto tr819
+		case 111:
+			goto st604
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20848,7 +20864,7 @@ tr32:
 		default:
 			goto tr56
 		}
-		goto tr81
+		goto tr819
 	st604:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
 			goto _test_eof604
@@ -20857,11 +20873,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 69:
+		case 85:
 			goto st605
 		case 95:
 			goto tr56
-		case 101:
+		case 117:
 			goto st605
 		}
 		switch {
@@ -20885,20 +20901,20 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 65:
-			goto st606
+		case 84:
+			goto tr822
 		case 95:
 			goto tr56
-		case 97:
-			goto st606
+		case 116:
+			goto tr822
 		}
 		switch {
-		case  lex.data[( lex.p)] < 66:
+		case  lex.data[( lex.p)] < 65:
 			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 				goto tr56
 			}
 		case  lex.data[( lex.p)] > 90:
-			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
 				goto tr56
 			}
 		default:
@@ -20913,12 +20929,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 82:
-			goto tr822
+		case 73:
+			goto st607
 		case 95:
 			goto tr56
-		case 114:
-			goto tr822
+		case 105:
+			goto st607
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20941,11 +20957,11 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 79:
+		case 84:
 			goto st608
 		case 95:
 			goto tr56
-		case 111:
+		case 116:
 			goto st608
 		}
 		switch {
@@ -20969,12 +20985,12 @@ tr32:
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
-		case 78:
-			goto st609
+		case 69:
+			goto tr825
 		case 95:
 			goto tr56
-		case 110:
-			goto st609
+		case 101:
+			goto tr825
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -20998,11 +21014,11 @@ tr32:
 		case 36:
 			goto tr56
 		case 69:
-			goto tr825
+			goto st610
 		case 95:
 			goto tr56
 		case 101:
-			goto tr825
+			goto st610
 		}
 		switch {
 		case  lex.data[( lex.p)] < 65:
@@ -21017,7 +21033,147 @@ tr32:
 			goto tr56
 		}
 		goto tr81
-tr826:
+	st610:
+		if ( lex.p)++; ( lex.p) == ( lex.pe) {
+			goto _test_eof610
+		}
+	st_case_610:
+		switch  lex.data[( lex.p)] {
+		case 36:
+			goto tr56
+		case 65:
+			goto st611
+		case 95:
+			goto tr56
+		case 97:
+			goto st611
+		}
+		switch {
+		case  lex.data[( lex.p)] < 66:
+			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
+				goto tr56
+			}
+		case  lex.data[( lex.p)] > 90:
+			if 98 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+				goto tr56
+			}
+		default:
+			goto tr56
+		}
+		goto tr81
+	st611:
+		if ( lex.p)++; ( lex.p) == ( lex.pe) {
+			goto _test_eof611
+		}
+	st_case_611:
+		switch  lex.data[( lex.p)] {
+		case 36:
+			goto tr56
+		case 82:
+			goto tr828
+		case 95:
+			goto tr56
+		case 114:
+			goto tr828
+		}
+		switch {
+		case  lex.data[( lex.p)] < 65:
+			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
+				goto tr56
+			}
+		case  lex.data[( lex.p)] > 90:
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+				goto tr56
+			}
+		default:
+			goto tr56
+		}
+		goto tr81
+	st612:
+		if ( lex.p)++; ( lex.p) == ( lex.pe) {
+			goto _test_eof612
+		}
+	st_case_612:
+		switch  lex.data[( lex.p)] {
+		case 36:
+			goto tr56
+		case 79:
+			goto st613
+		case 95:
+			goto tr56
+		case 111:
+			goto st613
+		}
+		switch {
+		case  lex.data[( lex.p)] < 65:
+			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
+				goto tr56
+			}
+		case  lex.data[( lex.p)] > 90:
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+				goto tr56
+			}
+		default:
+			goto tr56
+		}
+		goto tr81
+	st613:
+		if ( lex.p)++; ( lex.p) == ( lex.pe) {
+			goto _test_eof613
+		}
+	st_case_613:
+		switch  lex.data[( lex.p)] {
+		case 36:
+			goto tr56
+		case 78:
+			goto st614
+		case 95:
+			goto tr56
+		case 110:
+			goto st614
+		}
+		switch {
+		case  lex.data[( lex.p)] < 65:
+			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
+				goto tr56
+			}
+		case  lex.data[( lex.p)] > 90:
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+				goto tr56
+			}
+		default:
+			goto tr56
+		}
+		goto tr81
+	st614:
+		if ( lex.p)++; ( lex.p) == ( lex.pe) {
+			goto _test_eof614
+		}
+	st_case_614:
+		switch  lex.data[( lex.p)] {
+		case 36:
+			goto tr56
+		case 69:
+			goto tr831
+		case 95:
+			goto tr56
+		case 101:
+			goto tr831
+		}
+		switch {
+		case  lex.data[( lex.p)] < 65:
+			if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
+				goto tr56
+			}
+		case  lex.data[( lex.p)] > 90:
+			if 97 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 122 {
+				goto tr56
+			}
+		default:
+			goto tr56
+		}
+		goto tr81
+tr832:
 //line lyx/lexer.rl:107
  lex.te = ( lex.p)+1
 {
@@ -21038,20 +21194,20 @@ tr826:
 
                 lval.str += string(lex.data[( lex.p)])
             }
-	goto st610
-	st610:
+	goto st615
+	st615:
 //line NONE:1
  lex.ts = 0
 
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
-			goto _test_eof610
+			goto _test_eof615
 		}
-	st_case_610:
+	st_case_615:
 //line NONE:1
  lex.ts = ( lex.p)
 
-//line lyx/lexer.go:21054
-		goto tr826
+//line lyx/lexer.go:21210
+		goto tr832
 	st_out:
 	_test_eof8: ( lex.cs) = 8; goto _test_eof
 	_test_eof9: ( lex.cs) = 9; goto _test_eof
@@ -21663,6 +21819,11 @@ tr826:
 	_test_eof608: ( lex.cs) = 608; goto _test_eof
 	_test_eof609: ( lex.cs) = 609; goto _test_eof
 	_test_eof610: ( lex.cs) = 610; goto _test_eof
+	_test_eof611: ( lex.cs) = 611; goto _test_eof
+	_test_eof612: ( lex.cs) = 612; goto _test_eof
+	_test_eof613: ( lex.cs) = 613; goto _test_eof
+	_test_eof614: ( lex.cs) = 614; goto _test_eof
+	_test_eof615: ( lex.cs) = 615; goto _test_eof
 
 	_test_eof: {}
 	if ( lex.p) == eof {
@@ -22740,7 +22901,7 @@ tr826:
 		case 542:
 			goto tr81
 		case 543:
-			goto tr81
+			goto tr747
 		case 544:
 			goto tr81
 		case 545:
@@ -22850,7 +23011,7 @@ tr826:
 		case 597:
 			goto tr81
 		case 598:
-			goto tr813
+			goto tr81
 		case 599:
 			goto tr81
 		case 600:
@@ -22860,7 +23021,7 @@ tr826:
 		case 602:
 			goto tr81
 		case 603:
-			goto tr81
+			goto tr819
 		case 604:
 			goto tr81
 		case 605:
@@ -22873,13 +23034,23 @@ tr826:
 			goto tr81
 		case 609:
 			goto tr81
+		case 610:
+			goto tr81
+		case 611:
+			goto tr81
+		case 612:
+			goto tr81
+		case 613:
+			goto tr81
+		case 614:
+			goto tr81
 		}
 	}
 
 	_out: {}
 	}
 
-//line lyx/lexer.rl:439
+//line lyx/lexer.rl:440
 
 
     return int(tok);
