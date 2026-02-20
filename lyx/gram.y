@@ -1753,10 +1753,10 @@ SimpleTypename:
 					$$ = $1 }
 			| Bit									{
 					$$ = $1 }
-			| Character								{ 
-					$$ = $1}
-			| ConstDatetime							{ 
-					$$ = $1}
+			| Character	
+				{ $$ = $1}
+			| ConstDatetime	
+				{ $$ = $1}
 			| ConstInterval opt_interval
 				{
 

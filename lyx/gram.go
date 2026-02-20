@@ -13809,13 +13809,13 @@ yydefault:
 		}
 	case 1039:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1756
+//line lyx/gram.y:1757
 		{
 			yyVAL.str = yyDollar[1].str
 		}
 	case 1040:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line lyx/gram.y:1758
+//line lyx/gram.y:1759
 		{
 			yyVAL.str = yyDollar[1].str
 		}
