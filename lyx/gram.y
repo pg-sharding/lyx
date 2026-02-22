@@ -4750,6 +4750,571 @@ CreateSchemaStmt:
 				}
 		;
 
+/*****************************************************************************
+ *
+ *		QUERY:
+ *				create [or replace] function <fname>
+ *						[(<type-1> { , <type-n>})]
+ *						returns <type-r>
+ *						as <filename or code in language as appropriate>
+ *						language <lang> [with parameters]
+ *
+ *****************************************************************************/
+
+CreateFunctionStmt:
+			CREATE opt_or_replace FUNCTION func_name func_args_with_defaults
+			RETURNS func_return opt_createfunc_opt_list opt_routine_body
+				{
+					CreateFunctionStmt *n = makeNode(CreateFunctionStmt);
+
+					n->is_procedure = false;
+					n->replace = $2;
+					n->funcname = $4;
+					n->parameters = $5;
+					n->returnType = $7;
+					n->options = $8;
+					n->sql_body = $9;
+					$$ = (Node *) n;
+				}
+			| CREATE opt_or_replace FUNCTION func_name func_args_with_defaults
+			  RETURNS TABLE '(' table_func_column_list ')' opt_createfunc_opt_list opt_routine_body
+				{
+					CreateFunctionStmt *n = makeNode(CreateFunctionStmt);
+
+					n->is_procedure = false;
+					n->replace = $2;
+					n->funcname = $4;
+					n->parameters = mergeTableFuncParameters($5, $9, yyscanner);
+					n->returnType = TableFuncTypeName($9);
+					n->returnType->location = @7;
+					n->options = $11;
+					n->sql_body = $12;
+					$$ = (Node *) n;
+				}
+			| CREATE opt_or_replace FUNCTION func_name func_args_with_defaults
+			  opt_createfunc_opt_list opt_routine_body
+				{
+					CreateFunctionStmt *n = makeNode(CreateFunctionStmt);
+
+					n->is_procedure = false;
+					n->replace = $2;
+					n->funcname = $4;
+					n->parameters = $5;
+					n->returnType = NULL;
+					n->options = $6;
+					n->sql_body = $7;
+					$$ = (Node *) n;
+				}
+			| CREATE opt_or_replace PROCEDURE func_name func_args_with_defaults
+			  opt_createfunc_opt_list opt_routine_body
+				{
+					CreateFunctionStmt *n = makeNode(CreateFunctionStmt);
+
+					n->is_procedure = true;
+					n->replace = $2;
+					n->funcname = $4;
+					n->parameters = $5;
+					n->returnType = NULL;
+					n->options = $6;
+					n->sql_body = $7;
+					$$ = (Node *) n;
+				}
+		;
+
+opt_or_replace:
+			OR REPLACE								{ $$ = true; }
+			| /*EMPTY*/								{ $$ = false; }
+		;
+
+func_args:	'(' func_args_list ')'					{ $$ = $2; }
+			| '(' ')'								{ $$ = NIL; }
+		;
+
+func_args_list:
+			func_arg								{ $$ = list_make1($1); }
+			| func_args_list ',' func_arg			{ $$ = lappend($1, $3); }
+		;
+
+function_with_argtypes_list:
+			function_with_argtypes					{ $$ = list_make1($1); }
+			| function_with_argtypes_list ',' function_with_argtypes
+													{ $$ = lappend($1, $3); }
+		;
+
+function_with_argtypes:
+			func_name func_args
+				{
+					ObjectWithArgs *n = makeNode(ObjectWithArgs);
+
+					n->objname = $1;
+					n->objargs = extractArgTypes($2);
+					n->objfuncargs = $2;
+					$$ = n;
+				}
+			/*
+			 * Because of reduce/reduce conflicts, we can't use func_name
+			 * below, but we can write it out the long way, which actually
+			 * allows more cases.
+			 */
+			| type_func_name_keyword
+				{
+					ObjectWithArgs *n = makeNode(ObjectWithArgs);
+
+					n->objname = list_make1(makeString(pstrdup($1)));
+					n->args_unspecified = true;
+					$$ = n;
+				}
+			| ColId
+				{
+					ObjectWithArgs *n = makeNode(ObjectWithArgs);
+
+					n->objname = list_make1(makeString($1));
+					n->args_unspecified = true;
+					$$ = n;
+				}
+			| ColId indirection
+				{
+					ObjectWithArgs *n = makeNode(ObjectWithArgs);
+
+					n->objname = check_func_name(lcons(makeString($1), $2),
+												  yyscanner);
+					n->args_unspecified = true;
+					$$ = n;
+				}
+		;
+
+/*
+ * func_args_with_defaults is separate because we only want to accept
+ * defaults in CREATE FUNCTION, not in ALTER etc.
+ */
+func_args_with_defaults:
+		'(' func_args_with_defaults_list ')'		{ $$ = $2; }
+		| '(' ')'									{ $$ = NIL; }
+		;
+
+func_args_with_defaults_list:
+		func_arg_with_default						{ $$ = list_make1($1); }
+		| func_args_with_defaults_list ',' func_arg_with_default
+													{ $$ = lappend($1, $3); }
+		;
+
+/*
+ * The style with arg_class first is SQL99 standard, but Oracle puts
+ * param_name first; accept both since it's likely people will try both
+ * anyway.  Don't bother trying to save productions by letting arg_class
+ * have an empty alternative ... you'll get shift/reduce conflicts.
+ *
+ * We can catch over-specified arguments here if we want to,
+ * but for now better to silently swallow typmod, etc.
+ * - thomas 2000-03-22
+ */
+func_arg:
+			arg_class param_name func_type
+				{
+					FunctionParameter *n = makeNode(FunctionParameter);
+
+					n->name = $2;
+					n->argType = $3;
+					n->mode = $1;
+					n->defexpr = NULL;
+					n->location = @1;
+					$$ = n;
+				}
+			| param_name arg_class func_type
+				{
+					FunctionParameter *n = makeNode(FunctionParameter);
+
+					n->name = $1;
+					n->argType = $3;
+					n->mode = $2;
+					n->defexpr = NULL;
+					n->location = @1;
+					$$ = n;
+				}
+			| param_name func_type
+				{
+					FunctionParameter *n = makeNode(FunctionParameter);
+
+					n->name = $1;
+					n->argType = $2;
+					n->mode = FUNC_PARAM_DEFAULT;
+					n->defexpr = NULL;
+					n->location = @1;
+					$$ = n;
+				}
+			| arg_class func_type
+				{
+					FunctionParameter *n = makeNode(FunctionParameter);
+
+					n->name = NULL;
+					n->argType = $2;
+					n->mode = $1;
+					n->defexpr = NULL;
+					n->location = @1;
+					$$ = n;
+				}
+			| func_type
+				{
+					FunctionParameter *n = makeNode(FunctionParameter);
+
+					n->name = NULL;
+					n->argType = $1;
+					n->mode = FUNC_PARAM_DEFAULT;
+					n->defexpr = NULL;
+					n->location = @1;
+					$$ = n;
+				}
+		;
+
+/* INOUT is SQL99 standard, IN OUT is for Oracle compatibility */
+arg_class:	IN_P								{ $$ = FUNC_PARAM_IN; }
+			| OUT_P								{ $$ = FUNC_PARAM_OUT; }
+			| INOUT								{ $$ = FUNC_PARAM_INOUT; }
+			| IN_P OUT_P						{ $$ = FUNC_PARAM_INOUT; }
+			| VARIADIC							{ $$ = FUNC_PARAM_VARIADIC; }
+		;
+
+/*
+ * Ideally param_name should be ColId, but that causes too many conflicts.
+ */
+param_name:	type_function_name
+		;
+
+func_return:
+			func_type
+				{
+					/* We can catch over-specified results here if we want to,
+					 * but for now better to silently swallow typmod, etc.
+					 * - thomas 2000-03-22
+					 */
+					$$ = $1;
+				}
+		;
+
+/*
+ * We would like to make the %TYPE productions here be ColId attrs etc,
+ * but that causes reduce/reduce conflicts.  type_function_name
+ * is next best choice.
+ */
+func_type:	Typename								{ $$ = $1; }
+			| type_function_name attrs '%' TYPE_P
+				{
+					$$ = makeTypeNameFromNameList(lcons(makeString($1), $2));
+					$$->pct_type = true;
+					$$->location = @1;
+				}
+			| SETOF type_function_name attrs '%' TYPE_P
+				{
+					$$ = makeTypeNameFromNameList(lcons(makeString($2), $3));
+					$$->pct_type = true;
+					$$->setof = true;
+					$$->location = @2;
+				}
+		;
+
+func_arg_with_default:
+		func_arg
+				{
+					$$ = $1;
+				}
+		| func_arg DEFAULT a_expr
+				{
+					$$ = $1;
+					$$->defexpr = $3;
+				}
+		| func_arg '=' a_expr
+				{
+					$$ = $1;
+					$$->defexpr = $3;
+				}
+		;
+
+/* Aggregate args can be most things that function args can be */
+aggr_arg:	func_arg
+				{
+					if (!($1->mode == FUNC_PARAM_DEFAULT ||
+						  $1->mode == FUNC_PARAM_IN ||
+						  $1->mode == FUNC_PARAM_VARIADIC))
+						ereport(ERROR,
+								(errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+								 errmsg("aggregates cannot have output arguments"),
+								 parser_errposition(@1)));
+					$$ = $1;
+				}
+		;
+
+/*
+ * The SQL standard offers no guidance on how to declare aggregate argument
+ * lists, since it doesn't have CREATE AGGREGATE etc.  We accept these cases:
+ *
+ * (*)									- normal agg with no args
+ * (aggr_arg,...)						- normal agg with args
+ * (ORDER BY aggr_arg,...)				- ordered-set agg with no direct args
+ * (aggr_arg,... ORDER BY aggr_arg,...)	- ordered-set agg with direct args
+ *
+ * The zero-argument case is spelled with '*' for consistency with COUNT(*).
+ *
+ * An additional restriction is that if the direct-args list ends in a
+ * VARIADIC item, the ordered-args list must contain exactly one item that
+ * is also VARIADIC with the same type.  This allows us to collapse the two
+ * VARIADIC items into one, which is necessary to represent the aggregate in
+ * pg_proc.  We check this at the grammar stage so that we can return a list
+ * in which the second VARIADIC item is already discarded, avoiding extra work
+ * in cases such as DROP AGGREGATE.
+ *
+ * The return value of this production is a two-element list, in which the
+ * first item is a sublist of FunctionParameter nodes (with any duplicate
+ * VARIADIC item already dropped, as per above) and the second is an Integer
+ * node, containing -1 if there was no ORDER BY and otherwise the number
+ * of argument declarations before the ORDER BY.  (If this number is equal
+ * to the first sublist's length, then we dropped a duplicate VARIADIC item.)
+ * This representation is passed as-is to CREATE AGGREGATE; for operations
+ * on existing aggregates, we can just apply extractArgTypes to the first
+ * sublist.
+ */
+aggr_args:	'(' '*' ')'
+				{
+					$$ = list_make2(NIL, makeInteger(-1));
+				}
+			| '(' aggr_args_list ')'
+				{
+					$$ = list_make2($2, makeInteger(-1));
+				}
+			| '(' ORDER BY aggr_args_list ')'
+				{
+					$$ = list_make2($4, makeInteger(0));
+				}
+			| '(' aggr_args_list ORDER BY aggr_args_list ')'
+				{
+					/* this is the only case requiring consistency checking */
+					$$ = makeOrderedSetArgs($2, $5, yyscanner);
+				}
+		;
+
+aggr_args_list:
+			aggr_arg								{ $$ = list_make1($1); }
+			| aggr_args_list ',' aggr_arg			{ $$ = lappend($1, $3); }
+		;
+
+aggregate_with_argtypes:
+			func_name aggr_args
+				{
+					ObjectWithArgs *n = makeNode(ObjectWithArgs);
+
+					n->objname = $1;
+					n->objargs = extractAggrArgTypes($2);
+					n->objfuncargs = (List *) linitial($2);
+					$$ = n;
+				}
+		;
+
+aggregate_with_argtypes_list:
+			aggregate_with_argtypes					{ $$ = list_make1($1); }
+			| aggregate_with_argtypes_list ',' aggregate_with_argtypes
+													{ $$ = lappend($1, $3); }
+		;
+
+opt_createfunc_opt_list:
+			createfunc_opt_list
+			| /*EMPTY*/ { $$ = NIL; }
+	;
+
+createfunc_opt_list:
+			/* Must be at least one to prevent conflict */
+			createfunc_opt_item						{ $$ = list_make1($1); }
+			| createfunc_opt_list createfunc_opt_item { $$ = lappend($1, $2); }
+	;
+
+/*
+ * Options common to both CREATE FUNCTION and ALTER FUNCTION
+ */
+common_func_opt_item:
+			CALLED ON NULL_P INPUT_P
+				{
+					$$ = makeDefElem("strict", (Node *) makeBoolean(false), @1);
+				}
+			| RETURNS NULL_P ON NULL_P INPUT_P
+				{
+					$$ = makeDefElem("strict", (Node *) makeBoolean(true), @1);
+				}
+			| STRICT_P
+				{
+					$$ = makeDefElem("strict", (Node *) makeBoolean(true), @1);
+				}
+			| IMMUTABLE
+				{
+					$$ = makeDefElem("volatility", (Node *) makeString("immutable"), @1);
+				}
+			| STABLE
+				{
+					$$ = makeDefElem("volatility", (Node *) makeString("stable"), @1);
+				}
+			| VOLATILE
+				{
+					$$ = makeDefElem("volatility", (Node *) makeString("volatile"), @1);
+				}
+			| EXTERNAL SECURITY DEFINER
+				{
+					$$ = makeDefElem("security", (Node *) makeBoolean(true), @1);
+				}
+			| EXTERNAL SECURITY INVOKER
+				{
+					$$ = makeDefElem("security", (Node *) makeBoolean(false), @1);
+				}
+			| SECURITY DEFINER
+				{
+					$$ = makeDefElem("security", (Node *) makeBoolean(true), @1);
+				}
+			| SECURITY INVOKER
+				{
+					$$ = makeDefElem("security", (Node *) makeBoolean(false), @1);
+				}
+			| LEAKPROOF
+				{
+					$$ = makeDefElem("leakproof", (Node *) makeBoolean(true), @1);
+				}
+			| NOT LEAKPROOF
+				{
+					$$ = makeDefElem("leakproof", (Node *) makeBoolean(false), @1);
+				}
+			| COST NumericOnly
+				{
+					$$ = makeDefElem("cost", (Node *) $2, @1);
+				}
+			| ROWS NumericOnly
+				{
+					$$ = makeDefElem("rows", (Node *) $2, @1);
+				}
+			| SUPPORT any_name
+				{
+					$$ = makeDefElem("support", (Node *) $2, @1);
+				}
+			| FunctionSetResetClause
+				{
+					/* we abuse the normal content of a DefElem here */
+					$$ = makeDefElem("set", (Node *) $1, @1);
+				}
+			| PARALLEL ColId
+				{
+					$$ = makeDefElem("parallel", (Node *) makeString($2), @1);
+				}
+		;
+
+createfunc_opt_item:
+			AS func_as
+				{
+					$$ = makeDefElem("as", (Node *) $2, @1);
+				}
+			| LANGUAGE NonReservedWord_or_Sconst
+				{
+					$$ = makeDefElem("language", (Node *) makeString($2), @1);
+				}
+			| TRANSFORM transform_type_list
+				{
+					$$ = makeDefElem("transform", (Node *) $2, @1);
+				}
+			| WINDOW
+				{
+					$$ = makeDefElem("window", (Node *) makeBoolean(true), @1);
+				}
+			| common_func_opt_item
+				{
+					$$ = $1;
+				}
+		;
+
+func_as:	Sconst						{ $$ = list_make1(makeString($1)); }
+			| Sconst ',' Sconst
+				{
+					$$ = list_make2(makeString($1), makeString($3));
+				}
+		;
+
+ReturnStmt:	RETURN a_expr
+				{
+					ReturnStmt *r = makeNode(ReturnStmt);
+
+					r->returnval = (Node *) $2;
+					$$ = (Node *) r;
+				}
+		;
+
+opt_routine_body:
+			ReturnStmt
+				{
+					$$ = $1;
+				}
+			| BEGIN_P ATOMIC routine_body_stmt_list END_P
+				{
+					/*
+					 * A compound statement is stored as a single-item list
+					 * containing the list of statements as its member.  That
+					 * way, the parse analysis code can tell apart an empty
+					 * body from no body at all.
+					 */
+					$$ = (Node *) list_make1($3);
+				}
+			| /*EMPTY*/
+				{
+					$$ = NULL;
+				}
+		;
+
+routine_body_stmt_list:
+			routine_body_stmt_list routine_body_stmt ';'
+				{
+					/* As in stmtmulti, discard empty statements */
+					if ($2 != NULL)
+						$$ = lappend($1, $2);
+					else
+						$$ = $1;
+				}
+			| /*EMPTY*/
+				{
+					$$ = NIL;
+				}
+		;
+
+routine_body_stmt:
+			stmt
+			| ReturnStmt
+		;
+
+transform_type_list:
+			FOR TYPE_P Typename { $$ = list_make1($3); }
+			| transform_type_list ',' FOR TYPE_P Typename { $$ = lappend($1, $5); }
+		;
+
+opt_definition:
+			WITH definition							{ $$ = $2; }
+			| /*EMPTY*/								{ $$ = NIL; }
+		;
+
+table_func_column:	param_name func_type
+				{
+					FunctionParameter *n = makeNode(FunctionParameter);
+
+					n->name = $1;
+					n->argType = $2;
+					n->mode = FUNC_PARAM_TABLE;
+					n->defexpr = NULL;
+					n->location = @1;
+					$$ = n;
+				}
+		;
+
+table_func_column_list:
+			table_func_column
+				{
+					$$ = list_make1($1);
+				}
+			| table_func_column_list ',' table_func_column
+				{
+					$$ = lappend($1, $3);
+				}
+		;
+
+
 
 
 /*****************************************************************************
