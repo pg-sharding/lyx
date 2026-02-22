@@ -58,6 +58,25 @@ func TestSimpleInsert(t *testing.T) {
 				lyx.TSEMICOLON,
 			},
 		},
+		{
+			query: `INSERT INTO test_table (id, test_field) values (560, 15622159703929188019)`,
+			exp: []int{
+				lyx.INSERT,
+				lyx.INTO,
+				lyx.IDENT,
+				lyx.TOPENBR,
+				lyx.IDENT,
+				lyx.TCOMMA,
+				lyx.IDENT,
+				lyx.TCLOSEBR,
+				lyx.VALUES,
+				lyx.TOPENBR,
+				lyx.ICONST,
+				lyx.TCOMMA,
+				lyx.UICONST,
+				lyx.TCLOSEBR,
+			},
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
