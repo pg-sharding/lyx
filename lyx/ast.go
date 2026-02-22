@@ -136,6 +136,10 @@ type AExprIConst struct {
 	Value int
 }
 
+type AExprUIConst struct {
+	Value uint64
+}
+
 type AExprBConst struct {
 	Value bool
 }
@@ -146,6 +150,8 @@ type AExprNConst struct {
 }
 
 func (*AExprIConst) iNode() {
+}
+func (*AExprUIConst) iNode() {
 }
 func (*AExprSConst) iNode() {
 }

@@ -145,7 +145,11 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
             integer =>  { 
                 if v, err := strconv.Atoi(string(lex.data[lex.ts:lex.te]));  err != nil {
-                   lval.int = 0; tok = INVALID_ICONST; fbreak;
+                    if vUint, err := strconv.ParseUint(string(lex.data[lex.ts:lex.te]), 10, 64); err!=nil {
+                        lval.uint = 0; tok = INVALID_ICONST; fbreak;
+                    } else {
+                        lval.uint = vUint; tok = UICONST; fbreak;
+                    }
                 } else {
                    lval.int = v; tok = ICONST; fbreak;
                 }

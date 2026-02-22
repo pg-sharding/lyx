@@ -33,6 +33,7 @@ func NewLyxParser() LyxParser {
 	byte			byte
 	bytes			[]byte
 	int				int
+	uint			uint64
 	bool			bool
 	empty			struct{}
 
@@ -64,6 +65,7 @@ func NewLyxParser() LyxParser {
 // same for terminals
 %token <str> SCONST IDENT
 %token <int> ICONST
+%token <uint> UICONST
 %token <int> INVALID_ICONST
 
 // %token<str> NumericOnly
@@ -2316,6 +2318,11 @@ AexprConst:
 	} |
 	ICONST {
 		$$ = &AExprIConst{
+			Value: $1,
+		}
+	} |
+	UICONST {
+		$$ = &AExprUIConst{
 			Value: $1,
 		}
 	}

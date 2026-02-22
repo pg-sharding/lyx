@@ -1766,6 +1766,26 @@ func TestInsert(t *testing.T) {
 			err: nil,
 		},
 		{
+			query: `INSERT INTO test_table (id, test_field) values (560, 15622159703929188019)`,
+			exp: &lyx.Insert{
+				TableRef: &lyx.RangeVar{
+					RelationName: "test_table",
+					SchemaName:   "",
+					Alias:        "",
+				},
+				Columns: []string{"id", "test_field"},
+				SubSelect: &lyx.ValueClause{
+					Values: [][]lyx.Node{
+						{
+							&lyx.AExprIConst{Value: 560},
+							&lyx.AExprUIConst{Value: 15622159703929188019},
+						},
+					},
+				},
+			},
+			err: nil,
+		},
+		{
 			query: "insert into xx (id) values(1)",
 			exp: &lyx.Insert{
 				TableRef: &lyx.RangeVar{
