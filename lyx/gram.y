@@ -5278,14 +5278,6 @@ qualified_name_list:
  * which may contain subscripts, and reject that case in the C code.
  */
 qualified_name:
-			ColId TDOT ColId {
-					$$ = &RangeVar {
-						SchemaName: $1,
-						RelationName: $3,
-						Alias: "",
-					}
-			}
-			|
 			ColId {
 				$$ = &RangeVar {
 						SchemaName: "",
@@ -5293,13 +5285,14 @@ qualified_name:
 						Alias: "",
 					}
 				}
-			| ColId TDOT attr_name
+			| ColId indirection
 				{
+					$$ = &RangeVar {
+						SchemaName: $1,
+						RelationName: $2[0],
+						Alias: "",
+					}
 				}
-			// | ColId indirection
-			// 	{
-			// 		$$ = makeRangeVarFromQualifiedName($1, $2, @1, yyscanner);
-			// 	}
 		;
 
 
@@ -7680,7 +7673,7 @@ opt_single_name:
 		;
 
 opt_qualified_name:
-			any_name						{ $$ = $1; }
+			any_name	     	      		{ $$ = $1; }
 			| /*EMPTY*/						{ $$ = ""; }
 		;
 
