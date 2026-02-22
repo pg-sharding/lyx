@@ -7,7 +7,7 @@ import (
 )
 
 
-//line lyx/lexer.go:9
+//line lyx/lexer.go:11
 const lexer_start int = 8
 const lexer_first_final int = 8
 const lexer_error int = 0
@@ -37,7 +37,7 @@ func NewLexer(data []byte) *Lexer {
         stack: make([]int, 128),
     }
     
-//line lyx/lexer.go:37
+//line lyx/lexer.go:41
 	{
 	( lex.cs) = lexer_start
 	( lex.top) = 0
@@ -56,7 +56,7 @@ func ResetLexer(lex *Lexer, data []byte) {
     lex.stack = make([]int, 128)
 
     
-//line lyx/lexer.go:54
+//line lyx/lexer.go:60
 	{
 	( lex.cs) = lexer_start
 	( lex.top) = 0
@@ -78,7 +78,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
     var tok int
 
     
-//line lyx/lexer.go:74
+//line lyx/lexer.go:82
 	{
 	if ( lex.p) == ( lex.pe) {
 		goto _test_eof
@@ -1983,7 +1983,7 @@ tr73:
 ( lex.p)--
 { 
                 if v, err := strconv.Atoi(string(lex.data[lex.ts:lex.te]));  err != nil {
-                    if vUint, err := strconv.ParseUint(string(lex.data[lex.ts:lex.te]), 10, 64); err!=nil {
+                    if vUint, err := strconv.ParseUint(string(lex.data[lex.ts:lex.te]), 10, 64); err != nil {
                         lval.uint = 0; tok = INVALID_ICONST; {( lex.p)++; ( lex.cs) = 8; goto _out }
                     } else {
                         lval.uint = vUint; tok = UICONST; {( lex.p)++; ( lex.cs) = 8; goto _out }
@@ -2153,7 +2153,7 @@ tr819:
 //line NONE:1
  lex.ts = ( lex.p)
 
-//line lyx/lexer.go:2149
+//line lyx/lexer.go:2157
 		switch  lex.data[( lex.p)] {
 		case 32:
 			goto st9
@@ -2363,7 +2363,7 @@ tr13:
 			goto _test_eof10
 		}
 	st_case_10:
-//line lyx/lexer.go:2359
+//line lyx/lexer.go:2367
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2479,7 +2479,7 @@ tr80:
 			goto _test_eof11
 		}
 	st_case_11:
-//line lyx/lexer.go:2475
+//line lyx/lexer.go:2483
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2591,7 +2591,7 @@ tr23:
 			goto _test_eof13
 		}
 	st_case_13:
-//line lyx/lexer.go:2587
+//line lyx/lexer.go:2595
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -2709,7 +2709,7 @@ tr24:
 			goto _test_eof16
 		}
 	st_case_16:
-//line lyx/lexer.go:2705
+//line lyx/lexer.go:2713
 		if 48 <=  lex.data[( lex.p)] &&  lex.data[( lex.p)] <= 57 {
 			goto tr8
 		}
@@ -3942,7 +3942,7 @@ tr831:
 			goto _test_eof19
 		}
 	st_case_19:
-//line lyx/lexer.go:3938
+//line lyx/lexer.go:3946
 		switch  lex.data[( lex.p)] {
 		case 36:
 			goto tr56
@@ -3995,7 +3995,7 @@ tr30:
 			goto _test_eof22
 		}
 	st_case_22:
-//line lyx/lexer.go:3991
+//line lyx/lexer.go:3999
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -4043,7 +4043,7 @@ tr32:
 			goto _test_eof23
 		}
 	st_case_23:
-//line lyx/lexer.go:4039
+//line lyx/lexer.go:4047
 		switch  lex.data[( lex.p)] {
 		case 33:
 			goto tr1
@@ -21210,7 +21210,7 @@ tr832:
 //line NONE:1
  lex.ts = ( lex.p)
 
-//line lyx/lexer.go:21206
+//line lyx/lexer.go:21214
 		goto tr832
 	st_out:
 	_test_eof8: ( lex.cs) = 8; goto _test_eof

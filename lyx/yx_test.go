@@ -2802,6 +2802,40 @@ func TestFuncApplication(t *testing.T) {
 	}
 	for _, tt := range []tcase{
 		{
+			query: `
+				 select 1 from sh.f()`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.SubSelect{
+						Arg: &lyx.FuncApplication{
+							Name: "f",
+						},
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+		},
+
+		{
+			query: `
+				 select sh.f()`,
+			exp: &lyx.Select{
+
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "f",
+					},
+				},
+				Where: &lyx.AExprEmpty{},
+			},
+		},
+
+		{
 			query: `SELECT f(12)`,
 			exp: &lyx.Select{
 				FromClause: nil,
@@ -3915,6 +3949,25 @@ func TestParams(t *testing.T) {
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{RelationName: "x"},
+				},
+				Where: &lyx.AExprOp{
+					Op:    "=",
+					Left:  &lyx.ColumnRef{ColName: "i"},
+					Right: &lyx.ParamRef{Number: 1},
+				},
+			},
+			err: nil,
+		},
+
+		{
+			query: "SELECT * FROM sh.x WHERE i = $1",
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						SchemaName:   "sh",
+						RelationName: "x",
+					},
 				},
 				Where: &lyx.AExprOp{
 					Op:    "=",
