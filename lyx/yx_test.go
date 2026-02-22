@@ -4073,6 +4073,36 @@ func TestCreateTableWithPrimaryKey(t *testing.T) {
 				},
 			},
 		},
+		{
+			query: `
+			CREATE TABLE tt (
+				 id bigserial PRIMARY KEY,
+				 page_id integer NOT NULL,
+				 royalty_type_id smallint NOT NULL,
+				 CONSTRAINT unique_bonds_page_rt_id UNIQUE (page_id, royalty_type_id)
+				);
+			`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "tt",
+				},
+				TableElts: []lyx.Node{
+					&lyx.TableElt{
+						ColName: "id",
+						ColType: "bigserial",
+					},
+					&lyx.TableElt{
+						ColName: "page_id",
+						ColType: "integer",
+					},
+					&lyx.TableElt{
+						ColName: "royalty_type_id",
+						ColType: "smallint",
+					},
+					nil,
+				},
+			},
+		},
 	} {
 		stmt, _, err := lyx.Parse(tt.query)
 

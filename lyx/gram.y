@@ -4291,12 +4291,6 @@ opt_column_storage:
 			| /*EMPTY*/								{}
 		;
 
-ColQualList:
-			ColQualList ColConstraint				{  }
-			| /*EMPTY*/								{ }
-		;
-
-
 /* ConstraintElem specifies constraint syntax which is not embedded into
  *	a column definition. ColConstraintElem specifies the embedded form.
  * - thomas 1997-12-03
