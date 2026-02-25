@@ -5522,6 +5522,25 @@ func TestSetStmt(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `SET NAMES 'utf8';`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Name:    "client_encoding",
+				Kind:    lyx.VarTypeSet,
+				Value:   []string{"utf8"},
+			},
+			err: nil,
+		},
+		{
+			query: `SET NAMES DEFAULT;`,
+			exp: &lyx.VariableSetStmt{
+				Session: false,
+				Name:    "client_encoding",
+				Kind:    lyx.VarTypeSet,
+			},
+			err: nil,
+		},
 	} {
 		tmp, _, err := lyx.Parse(tt.query)
 
