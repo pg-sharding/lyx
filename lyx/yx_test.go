@@ -4027,6 +4027,7 @@ func TestCreateTableWithPrimaryKey(t *testing.T) {
 				i_price decimal(5,2),
 				i_data varchar(50), PRIMARY KEY(i_id) )`,
 			exp: &lyx.CreateTable{
+				IfNotExists: true,
 				TableRv: &lyx.RangeVar{
 					RelationName: "item",
 				},
@@ -4160,6 +4161,7 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 				c_payment_cnt int,
 				c_delivery_cnt int,c_data text, PRIMARY KEY(c_w_id, c_d_id, c_id) )`,
 			exp: &lyx.CreateTable{
+				IfNotExists: true,
 				TableRv: &lyx.RangeVar{
 					RelationName: "customer",
 				},

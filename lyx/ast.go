@@ -259,6 +259,7 @@ type TableElt struct {
 }
 
 type CreateTable struct {
+	IfNotExists bool
 	TableRv     FromClauseNode
 	TableElts   []Node
 	PartitionOf FromClauseNode
