@@ -2040,7 +2040,7 @@ opt_varying:
  */
 
 ConstDatetime:
-			TIMESTAMP TOPENBR SCONST /* ICONST */ TCLOSEBR opt_timezone
+			TIMESTAMP TOPENBR ICONST /* ICONST */ TCLOSEBR opt_timezone
 				{
 
 				}

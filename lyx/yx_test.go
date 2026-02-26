@@ -4125,7 +4125,9 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 		{
 			query: `
 			CREATE TABLE b 
-				(d TIMESTAMP WITHOUT TIME ZONE)`,
+				(d TIMESTAMP WITHOUT TIME ZONE,
+				e TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL		
+				)`,
 			exp: &lyx.CreateTable{
 				TableRv: &lyx.RangeVar{
 					RelationName: "b",
@@ -4133,6 +4135,10 @@ func TestCreateTableWithCompositePrimaryKey(t *testing.T) {
 				TableElts: []lyx.Node{
 					&lyx.TableElt{
 						ColName: "d",
+						ColType: "TIMESTAMP",
+					},
+					&lyx.TableElt{
+						ColName: "e",
 						ColType: "TIMESTAMP",
 					},
 				},
