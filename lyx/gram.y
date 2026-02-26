@@ -362,7 +362,7 @@ Operator:
 
 %type<node> zone_value iso_level generic_set set_rest set_rest_more 
 %type<node> reset_rest generic_reset SetResetClause VariableResetStmt VariableSetStmt VariableShowStmt FunctionSetResetClause
-%type<node> opt_encoding 
+%type<str> opt_encoding 
 
 %type<str> NonReservedWord_or_SCONST opt_boolean_or_string
 
@@ -3329,9 +3329,9 @@ target_el:	a_expr AS ColLabel
 		;
 
 opt_encoding:
-			SCONST									{ }
-			| DEFAULT								{  }
-			| /*EMPTY*/								{  }
+			SCONST									{ $$ = $1 }
+			| DEFAULT								{ $$ = "" }
+			| /*EMPTY*/								{ $$ = "" }
 		;
 
 NonReservedWord_or_SCONST:
@@ -3837,6 +3837,15 @@ set_rest_more:	/* Generic SET syntaxes: */
 				}
 			| NAMES opt_encoding
 				{
+					$$ = &VariableSetStmt{
+						Name: "client_encoding",
+						Value: func() []string {
+							if $2 != "" {
+								return []string{$2}
+							}
+							return nil
+						}(),
+					}
 				}
 			| ROLE NonReservedWord_or_SCONST
 				{
