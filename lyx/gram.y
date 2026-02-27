@@ -2219,11 +2219,7 @@ TableFuncElementList:
 				}
 		;
 
-TableFuncElement:	ColId any_val opt_collate_clause
-				{
-					$$ = $1
-				}
-		|  ColId IDENT opt_collate_clause
+TableFuncElement:	ColId Typename opt_collate_clause
 				{
 					$$ = $1
 				}
@@ -2703,27 +2699,53 @@ case_arg:	a_expr									{ $$ = $1; }
  * inside parentheses, such as function arguments; that cannot introduce
  * ambiguity to the b_expr syntax.
  */
-c_expr:	
-			AexprConst
-				{ $$ = $1; }
-			| columnref {
-					$$ = $1
-			}
+
+
+c_expr:		columnref								{ $$ = $1; }
+			| AexprConst							{ $$ = $1; }
 			| PARAM opt_indirection
 				{
 					$$ = &ParamRef {
 						Number: $1,
 					}
 				}
-            | TOPENBR a_expr TCLOSEBR {
-                $$ = $2
-            } 
-			| case_expr {
-				$$ = $1
-			}
-            | func_expr {
-				$$ = $1
-			}
+			| TOPENBR a_expr TCLOSEBR opt_indirection
+				{
+                	$$ = $2
+				}
+			| case_expr
+				{ $$ = $1; }
+			| func_expr
+				{ $$ = $1; }
+			| select_with_parens			%prec UMINUS
+				{
+				    $$ = &SubLink{
+						SubSelect: $1,
+					}
+				}
+			| select_with_parens indirection
+				{
+					/*
+					 * Because the select_with_parens nonterminal is designed
+					 * to "eat" as many levels of parens as possible, the
+					 * '(' a_expr ')' opt_indirection production above will
+					 * fail to match a sub-SELECT with indirection decoration;
+					 * the sub-SELECT won't be regarded as an a_expr as long
+					 * as there are parens around it.  To support applying
+					 * subscripting or field selection to a sub-SELECT result,
+					 * we need this redundant-looking production.
+					 */
+				    $$ = &SubLink{
+						SubSelect: $1,
+					}
+				
+				}
+			| EXISTS select_with_parens
+				{
+				    $$ = &SubLink{
+						SubSelect: $2,
+					}
+				}
 			| ARRAY select_with_parens
 				{
 				    $$ = &SubLink{
@@ -2733,12 +2755,15 @@ c_expr:
 			| ARRAY array_expr
 				{
 				}
-			| implicit_row {} 
-			| explicit_row {}
-			| EXISTS select_with_parens
+			| explicit_row
 				{
-
 				}
+			| implicit_row
+				{
+				}
+			| GROUPING TOPENBR expr_list TCLOSEBR
+			  {
+			  }
 
 a_expr:		
             c_expr									{ $$ = $1; }
