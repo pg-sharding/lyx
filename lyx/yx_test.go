@@ -369,16 +369,18 @@ func TestSelectComplex(t *testing.T) {
 					&lyx.AExprEmpty{},
 				},
 				Where: &lyx.AExprOp{
-					Left: &lyx.Select{
-						FromClause: []lyx.FromClauseNode{
-							&lyx.RangeVar{RelationName: "b"},
-						},
-						TargetList: []lyx.Node{
-							&lyx.FuncApplication{
-								Name: "COUNT",
+					Left: &lyx.SubLink{
+						SubSelect: &lyx.Select{
+							FromClause: []lyx.FromClauseNode{
+								&lyx.RangeVar{RelationName: "b"},
 							},
+							TargetList: []lyx.Node{
+								&lyx.FuncApplication{
+									Name: "COUNT",
+								},
+							},
+							Where: &lyx.AExprEmpty{},
 						},
-						Where: &lyx.AExprEmpty{},
 					},
 					Right: &lyx.AExprIConst{Value: 1},
 					Op:    "=",
@@ -3108,8 +3110,21 @@ func TestSelectTargetLists(t *testing.T) {
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{
 					&lyx.ResTarget{
-						Name:  "invalid",
-						Value: &lyx.AExprNot{},
+						Name: "invalid",
+						Value: &lyx.AExprNot{
+							Arg: &lyx.SubLink{
+
+								SubSelect: &lyx.Select{
+
+									TargetList: []lyx.Node{
+										&lyx.AExprIConst{
+											Value: 1,
+										},
+									},
+									Where: &lyx.AExprEmpty{},
+								},
+							},
+						},
 					},
 				},
 				Where: &lyx.AExprEmpty{},
@@ -5723,6 +5738,35 @@ func TestTypeCast(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `
+			select 1 from generate_series(1,1) as s(r);`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.SubSelect{
+						Arg: &lyx.FuncApplication{
+							Name: "generate_series",
+							Args: []lyx.Node{
+								&lyx.AExprIConst{
+									Value: 1,
+								},
+								&lyx.AExprIConst{
+									Value: 1},
+							},
+						},
+						Alias: "s",
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+				},
+			},
+
+			err: nil,
+		},
+		{
 			query: `SELECT NULL::pg_cataloh.text;`,
 			exp: &lyx.Select{
 				Where: &lyx.AExprEmpty{},
@@ -5898,7 +5942,7 @@ func TestMiscCatalog(t *testing.T) {
 								TableAlias: "c",
 								ColName:    "relnamespace",
 							},
-							Right: &lyx.Select{
+							Right: &lyx.SubLink{&lyx.Select{
 								FromClause: []lyx.FromClauseNode{
 									&lyx.RangeVar{
 										SchemaName:   "pg_catalog",
@@ -5914,11 +5958,13 @@ func TestMiscCatalog(t *testing.T) {
 									},
 									Op: "=",
 								},
+
 								TargetList: []lyx.Node{
 									&lyx.ColumnRef{
 										ColName: "oid",
 									},
 								},
+							},
 							},
 							Op: "<>",
 						},
