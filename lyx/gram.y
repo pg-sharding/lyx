@@ -513,9 +513,7 @@ Operator:
 %left		JOIN CROSS LEFT FULL RIGHT INNER_P NATURAL
 
 
-
-/* unroutable query parts */
-%type<str> opt_window_clause opt_limit_clause opt_offset_clause opt_fetch_clause opt_for_clause 
+%type<node> opt_select_limit
 
 %start root
 
@@ -5227,12 +5225,6 @@ sortby:
 		;
 
 
-opt_window_clause:  /*empty*/ {} | window_clause {}
-opt_limit_clause: /*empty*/ {} | LIMIT anything {}
-opt_offset_clause: /*empty*/ {} | OFFSET anything {}
-opt_fetch_clause: /*empty*/ {} | FETCH anything {}
-opt_for_clause:  /*empty*/ {} |FOR anything {}
-
 /*
  * Name classification hierarchy.
  *
@@ -6248,33 +6240,42 @@ opt_distinct_clause:
 select_limit:
 			limit_clause offset_clause
 				{
+					$$ = $1;
+					($$).(*SelectLimit).LimitOffset = $2;
 				}
 			| offset_clause limit_clause
 				{
+					$$ = $2;
+					($$).(*SelectLimit).LimitOffset = $1;
 				}
 			| limit_clause
 				{
+					$$ = $1;
 				}
 			| offset_clause
 				{
+					$$ = &SelectLimit {
+						LimitOffset: $1,
+					}
 				}
 		;
 
-
 opt_select_limit:
 			select_limit						{ $$ = $1; }
-			| /* EMPTY */						{  }
+			| /* EMPTY */						{ $$ = nil; }
 		;
 
 limit_clause:
 			LIMIT select_limit_value
 				{
-
+					$$ = &SelectLimit{
+						LimitCount: $2,
+					}
 				}
-			| LIMIT select_limit_value ',' select_offset_value
+			| LIMIT select_limit_value TCOMMA select_offset_value
 				{
-					// XXXX: todo forbid
-
+					/* Disabled because it was too confusing, bjm 2002-02-18 */
+					
 				}
 			/* SQL:2008 syntax */
 			/* to avoid shift/reduce conflicts, handle the optional value with
@@ -6285,15 +6286,19 @@ limit_clause:
 			 */
 			| FETCH first_or_next select_fetch_first_value row_or_rows ONLY
 				{
+				
 				}
 			| FETCH first_or_next select_fetch_first_value row_or_rows WITH TIES
 				{
+					
 				}
 			| FETCH first_or_next row_or_rows ONLY
 				{
+				
 				}
 			| FETCH first_or_next row_or_rows WITH TIES
 				{
+				
 				}
 		;
 
@@ -6309,12 +6314,15 @@ select_limit_value:
 			a_expr									{ $$ = $1; }
 			| ALL
 				{
+					/* LIMIT ALL is represented as a NULL constant */
+					
 				}
 		;
 
 select_offset_value:
 			a_expr									{ $$ = $1; }
 		;
+
 
 /*
  * Allowing full expressions without parentheses causes various parsing
@@ -6605,11 +6613,13 @@ select_no_parens:
 			| select_clause opt_sort_clause for_locking_clause opt_select_limit
 				{
 					$1.(*Select).SortClause = $2
+					$1.(*Select).Limit = $4
 					$$ = $1;
 				}
 			| select_clause opt_sort_clause select_limit opt_for_locking_clause
 				{
 					$1.(*Select).SortClause = $2
+					$1.(*Select).Limit = $3
 					$$ = $1;
 				}
 			| with_clause select_clause
@@ -6619,19 +6629,21 @@ select_no_parens:
 				}
 			| with_clause select_clause sort_clause
 				{
-					$2.(*Select).SortClause = $3;
-					$2.(*Select).WithClause = $1;
+					$2.(*Select).SortClause = $3
+					$2.(*Select).WithClause = $1
 					$$ = $2;
 				}
 			| with_clause select_clause opt_sort_clause for_locking_clause opt_select_limit
 				{
-					$2.(*Select).SortClause = $3;
-					$2.(*Select).WithClause = $1;
+					$2.(*Select).SortClause = $3
+					$2.(*Select).Limit = $5
+					$2.(*Select).WithClause = $1
 					$$ = $2;
 				}
 			| with_clause select_clause opt_sort_clause select_limit opt_for_locking_clause
 				{
 					$2.(*Select).SortClause = $3;
+					$2.(*Select).Limit = $4
 					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}
