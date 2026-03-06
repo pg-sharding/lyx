@@ -716,6 +716,14 @@ func TestSelect(t *testing.T) {
 		   ORDER BY c.a.id DESC 
 		   LIMIT 5 OFFSET 0`,
 			exp: &lyx.Select{
+				Limit: &lyx.SelectLimit{
+					LimitOffset: &lyx.AExprIConst{
+						Value: 0,
+					},
+					LimitCount: &lyx.AExprIConst{
+						Value: 5,
+					},
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						SchemaName:   "c",
@@ -864,6 +872,11 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 limit 7 ",
 			exp: &lyx.Select{
+				Limit: &lyx.SelectLimit{
+					LimitCount: &lyx.AExprIConst{
+						Value: 7,
+					},
+				},
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
 					RelationName: "xx",
@@ -944,6 +957,11 @@ func TestSelect(t *testing.T) {
 		{
 			query: "select * from xx where i = 1 order by i limit 7 ",
 			exp: &lyx.Select{
+				Limit: &lyx.SelectLimit{
+					LimitCount: &lyx.AExprIConst{
+						Value: 7,
+					},
+				},
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
@@ -1007,6 +1025,11 @@ func TestSelect(t *testing.T) {
 			select id from tbl where i = 12 for update skip locked limit 1
 			`,
 			exp: &lyx.Select{
+				Limit: &lyx.SelectLimit{
+					LimitCount: &lyx.AExprIConst{
+						Value: 1,
+					},
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "tbl",
@@ -1026,6 +1049,14 @@ func TestSelect(t *testing.T) {
 			select id from tbl where i = 12 for update skip locked limit 1 offset 0
 			`,
 			exp: &lyx.Select{
+				Limit: &lyx.SelectLimit{
+					LimitOffset: &lyx.AExprIConst{
+						Value: 0,
+					},
+					LimitCount: &lyx.AExprIConst{
+						Value: 1,
+					},
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "tbl",
@@ -5120,6 +5151,11 @@ func TestMiscQ(t *testing.T) {
 							ColName: "id",
 						},
 						SubLink: &lyx.Select{
+							Limit: &lyx.SelectLimit{
+								LimitCount: &lyx.AExprIConst{
+									Value: 1,
+								},
+							},
 							FromClause: []lyx.FromClauseNode{
 								&lyx.RangeVar{
 									RelationName: "tbl",
@@ -5903,6 +5939,11 @@ func TestMiscCatalog(t *testing.T) {
 				AND n.nspname NOT LIKE E'pg\\_%'
 				LIMIT 1000`,
 			exp: &lyx.Select{
+				Limit: &lyx.SelectLimit{
+					LimitCount: &lyx.AExprIConst{
+						Value: 1000,
+					},
+				},
 				Op: "UNION",
 				LArg: &lyx.Select{
 					FromClause: []lyx.FromClauseNode{

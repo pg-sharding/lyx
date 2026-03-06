@@ -193,6 +193,13 @@ type CommonTableExpr struct {
 	SubQuery Node
 }
 
+/* Private struct for the result of opt_select_limit production */
+type SelectLimit struct {
+	LimitOffset Node
+	LimitCount  Node
+	// limitOption LimitOption ;
+}
+
 type Select struct {
 	FromClause []FromClauseNode
 	WithClause []*CommonTableExpr
@@ -201,6 +208,8 @@ type Select struct {
 	TargetList []Node
 
 	SortClause []Node
+
+	Limit Node
 
 	// Used in set operations
 	Op   SetOperation
@@ -393,6 +402,7 @@ func (*CreateFunctionStmt) iNode() {}
 func (*CreateType) iNode()         {}
 func (*ExplainStmt) iNode()        {}
 func (*GroupBy) iNode()            {}
+func (*SelectLimit) iNode()        {}
 
 type TransactionStmtType int
 
