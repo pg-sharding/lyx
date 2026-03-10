@@ -200,6 +200,19 @@ type SelectLimit struct {
 	// limitOption LimitOption ;
 }
 
+const (
+	SORTBY_ASC = iota
+	SORTBY_DESC
+	SORTBY_DEFAULT
+	SORTBY_USING
+)
+
+type SortBy struct {
+	Node Node
+
+	SortbyDir int
+}
+
 type Select struct {
 	FromClause []FromClauseNode
 	WithClause []*CommonTableExpr
@@ -403,6 +416,7 @@ func (*CreateType) iNode()         {}
 func (*ExplainStmt) iNode()        {}
 func (*GroupBy) iNode()            {}
 func (*SelectLimit) iNode()        {}
+func (*SortBy) iNode()             {}
 
 type TransactionStmtType int
 
