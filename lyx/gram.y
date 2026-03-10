@@ -132,6 +132,8 @@ func NewLyxParser() LyxParser {
 %type<node> OptWhereClause
 %type<node> GrantStmt RevokeStmt RevokeRoleStmt GrantRoleStmt
 
+%type<int> opt_asc_desc
+
 %type<node> opt_granted_by DefACLAction
 %type<nodeList> role_list
 
@@ -4677,11 +4679,10 @@ opt_collate: COLLATE any_val						{  }
 		;
 
 
-opt_asc_desc: ASC							{  }
-			| DESC							{  }
-			| /*EMPTY*/						{ }
-		;
-
+opt_asc_desc: ASC							{ $$ = SORTBY_ASC; }
+			| DESC							{ $$ = SORTBY_DESC; }
+			| /*EMPTY*/						{ $$ = SORTBY_DEFAULT; }
+		;				
 
 opt_nulls_order: NULLS_LA FIRST_P			{}
 			| NULLS_LA LAST_P				{ }
@@ -5212,15 +5213,20 @@ sortby_list:
 			| sortby_list TCOMMA sortby				{ $$ = append($1, $3) }
 		;
 
-sortby:
-// sortby:		a_expr USING qual_all_Op opt_nulls_order
-// 				{
-// 				}
-//          |
-			 a_expr opt_asc_desc opt_nulls_order
+sortby: a_expr USING qual_all_Op opt_nulls_order
 				{
-				/* no operator */
-					$$ = $1
+					$$ = &SortBy{
+						Node: $1,
+
+					};
+				}
+		| a_expr opt_asc_desc opt_nulls_order
+				{
+					/* no operator */
+					$$ = &SortBy{
+						Node: $1,
+						SortbyDir: $2,
+					};
 				}
 		;
 

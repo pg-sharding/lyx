@@ -126,8 +126,10 @@ func TestSelectComplex(t *testing.T) {
 					Op: "AND",
 				},
 				SortClause: []lyx.Node{
-					&lyx.ColumnRef{
-						ColName: "entity_id",
+					&lyx.SortBy{
+						Node: &lyx.ColumnRef{
+							ColName: "entity_id",
+						},
 					},
 				},
 			},
@@ -252,8 +254,10 @@ func TestSelectComplex(t *testing.T) {
 				},
 
 				SortClause: []lyx.Node{
-					&lyx.ColumnRef{
-						ColName: "entity_id",
+					&lyx.SortBy{
+						Node: &lyx.ColumnRef{
+							ColName: "entity_id",
+						},
 					},
 				},
 			},
@@ -751,9 +755,12 @@ func TestSelect(t *testing.T) {
 					},
 				},
 				SortClause: []lyx.Node{
-					&lyx.ColumnRef{
-						TableAlias: "a",
-						ColName:    "id",
+					&lyx.SortBy{
+						Node: &lyx.ColumnRef{
+							TableAlias: "a",
+							ColName:    "id",
+						},
+						SortbyDir: lyx.SORTBY_DESC,
 					},
 				},
 			},
@@ -846,9 +853,10 @@ func TestSelect(t *testing.T) {
 			query: "select * from xx where i = 1 order by i ",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
-				FromClause: []lyx.FromClauseNode{&lyx.RangeVar{
-					RelationName: "xx",
-				},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "xx",
+					},
 				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.ColumnRef{
@@ -861,8 +869,11 @@ func TestSelect(t *testing.T) {
 					Op: "=",
 				},
 				SortClause: []lyx.Node{
-					&lyx.ColumnRef{
-						ColName: "i",
+					&lyx.SortBy{
+						Node: &lyx.ColumnRef{
+							ColName: "i",
+						},
+						SortbyDir: lyx.SORTBY_DEFAULT,
 					},
 				},
 			},
@@ -979,8 +990,11 @@ func TestSelect(t *testing.T) {
 					Op: "=",
 				},
 				SortClause: []lyx.Node{
-					&lyx.ColumnRef{
-						ColName: "i",
+					&lyx.SortBy{
+						Node: &lyx.ColumnRef{
+							ColName: "i",
+						},
+						SortbyDir: lyx.SORTBY_DEFAULT,
 					},
 				},
 			},
@@ -1356,8 +1370,11 @@ func TestSelectBetween(t *testing.T) {
 				},
 
 				SortClause: []lyx.Node{
-					&lyx.ColumnRef{
-						ColName: "id",
+					&lyx.SortBy{
+						Node: &lyx.ColumnRef{
+							ColName: "id",
+						},
+						SortbyDir: lyx.SORTBY_DEFAULT,
 					},
 				},
 			},
@@ -6230,9 +6247,11 @@ func TestFetchFirst(t *testing.T) {
 					Op: "=",
 				},
 				SortClause: []lyx.Node{
-					&lyx.ColumnRef{
-						TableAlias: "tab",
-						ColName:    "id",
+					&lyx.SortBy{
+						Node: &lyx.ColumnRef{
+							TableAlias: "tab",
+							ColName:    "id",
+						},
 					},
 				},
 			},
