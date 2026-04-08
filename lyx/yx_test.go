@@ -5936,6 +5936,94 @@ func TestMiscCatalog(t *testing.T) {
 	for _, tt := range []tcase{
 		{
 			query: `
+			SELECT c.oid,
+  n.nspname,
+  c.relname
+FROM pg_catalog.pg_class c
+     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+WHERE c.relname OPERATOR(pg_catalog.~) '^(z2)$' COLLATE pg_catalog.default
+  AND pg_catalog.pg_table_is_visible(c.oid)
+ORDER BY 2, 3;`,
+
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.JoinExpr{
+						Larg: &lyx.RangeVar{
+							SchemaName:   "pg_catalog",
+							RelationName: "pg_class",
+							Alias:        "c",
+						},
+						Rarg: &lyx.RangeVar{
+							SchemaName:   "pg_catalog",
+							RelationName: "pg_namespace",
+							Alias:        "n",
+						},
+						JoinQual: &lyx.AExprOp{
+							Left: &lyx.ColumnRef{
+
+								TableAlias: "n",
+								ColName:    "oid",
+							},
+							Right: &lyx.ColumnRef{
+
+								TableAlias: "c",
+								ColName:    "relnamespace",
+							},
+							Op: "=",
+						},
+					},
+				},
+				TargetList: []lyx.Node{
+					&lyx.ColumnRef{
+						TableAlias: "c",
+						ColName:    "oid",
+					},
+
+					&lyx.ColumnRef{
+
+						TableAlias: "n",
+						ColName:    "nspname",
+					},
+
+					&lyx.ColumnRef{
+						TableAlias: "c",
+						ColName:    "relname",
+					},
+				},
+				Where: &lyx.AExprOp{
+					Left: &lyx.ColumnRef{
+						TableAlias: "c",
+						ColName:    "relname",
+					},
+					Right: &lyx.FuncApplication{
+						Name: "pg_table_is_visible",
+						Args: []lyx.Node{
+							&lyx.ColumnRef{
+								TableAlias: "c",
+								ColName:    "oid",
+							},
+						},
+					},
+					Op: "AND",
+				},
+				SortClause: []lyx.Node{
+					&lyx.SortBy{
+						Node: &lyx.AExprIConst{
+							Value: 2,
+						},
+						SortbyDir: 2,
+					},
+					&lyx.SortBy{
+						Node: &lyx.AExprIConst{
+							Value: 3,
+						},
+						SortbyDir: 2,
+					},
+				},
+			},
+		},
+		{
+			query: `
 			SELECT 
 				c.relname, NULL::pg_catalog.text 
 			FROM 

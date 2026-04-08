@@ -2894,10 +2894,10 @@ a_expr:
                         Op: $2,
                     } 
                 }
-			// | a_expr qual_Op a_expr				%prec Op
-			// 	{ $$ = (Node *) makeA_Expr(AEXPR_OP, $2, $1, $3, @2); }
-			// | qual_Op a_expr					%prec Op
-			// 	{ $$ = (Node *) makeA_Expr(AEXPR_OP, $1, NULL, $2, @1); }
+			| a_expr qual_Op a_expr				%prec Op
+				{ }
+			| qual_Op a_expr					%prec Op
+				{  }
 
 			| a_expr AND a_expr
 				{
