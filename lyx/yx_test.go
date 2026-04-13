@@ -3544,6 +3544,30 @@ func TestMisc(t *testing.T) {
 			err:   nil,
 		},
 		{
+			query: "DEALLOCATE ALL;",
+			exp:   &lyx.DeallocateStmt{},
+			err:   nil,
+		},
+		{
+			query: "DEALLOCATE PREPARE ALL;",
+			exp:   &lyx.DeallocateStmt{},
+			err:   nil,
+		},
+		{
+			query: "DEALLOCATE x;",
+			exp: &lyx.DeallocateStmt{
+				Name: "x",
+			},
+			err: nil,
+		},
+		{
+			query: "DEALLOCATE PREPARE x;",
+			exp: &lyx.DeallocateStmt{
+				Name: "x",
+			},
+			err: nil,
+		},
+		{
 			query: ";",
 			exp:   nil,
 			err:   nil,
