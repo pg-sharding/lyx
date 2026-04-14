@@ -4049,6 +4049,26 @@ func TestParams(t *testing.T) {
 			err: nil,
 		},
 		{
+			query: "EXECUTE P(1, 2, 'a') ",
+			exp: &lyx.ExecuteStmt{
+				Name: "P",
+				Params: []lyx.Node{
+
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+					&lyx.AExprIConst{
+						Value: 2,
+					},
+
+					&lyx.AExprSConst{
+						Value : "a",
+					},
+				},
+			},
+			err: nil,
+		},
+		{
 			query: "SELECT * FROM x WHERE i = $1",
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{&lyx.AExprEmpty{}},

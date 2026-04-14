@@ -108,11 +108,11 @@ func NewLyxParser() LyxParser {
 
 %type<node> extract_arg
 %type<nodeList> extract_list func_args func_args_with_defaults func_args_with_defaults_list func_args_list
-%type<nodeList> opt_createfunc_opt_list
+%type<nodeList> opt_createfunc_opt_list execute_param_clause
 
 %type<node> func_arg_with_default func_arg aggr_arg 
 
-%type<node> DeallocateStmt execute_param_clause ExecuteStmt PreparableStmt
+%type<node> DeallocateStmt ExecuteStmt PreparableStmt
 
 %type<from> table_ref 
 %type<tableref> relation_expr joined_table relation_expr_opt_alias vacuum_relation
@@ -6868,6 +6868,7 @@ ExecuteStmt: EXECUTE name execute_param_clause
 				{
 					$$ = &ExecuteStmt{
 						Name: $2,
+						Params: $3,
 					};
 				}
 			| CREATE OptTemp TABLE create_as_target AS
@@ -6881,7 +6882,7 @@ ExecuteStmt: EXECUTE name execute_param_clause
 				}
 		;
 
-execute_param_clause: TOPENBR expr_list TCLOSEBR		{  }
+execute_param_clause: TOPENBR expr_list TCLOSEBR		{  $$ = $2 }
 					| /* EMPTY */					{ }
 					;
 
