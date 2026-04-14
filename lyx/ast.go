@@ -490,7 +490,8 @@ type PrepareStmt struct {
 func (*PrepareStmt) iNode() {}
 
 type ExecuteStmt struct {
-	Name string
+	Name   string
+	Params []Node
 }
 
 func (*ExecuteStmt) iNode() {}
