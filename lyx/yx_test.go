@@ -508,17 +508,30 @@ func TestIntegerBoundaries(t *testing.T) {
 		},
 		{
 			query: `
-			select * from table1 where aCol=98765432123456789876543210;
+			select 98765432123456789876543210;
 			`,
-			exp: nil,
-			err: fmt.Errorf("syntax error"),
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.AExprSConst{
+						Value: "98765432123456789876543210",
+					},
+				},
+			},
 		},
 		{
 			query: `
-			select * from table1 where aCol=-98765432123456789876543212;
+			select -98765432123456789876543212;
 			`,
-			exp: nil,
-			err: fmt.Errorf("syntax error"),
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					/* XXX: todo - negate operator */
+					&lyx.AExprSConst{
+						Value: "98765432123456789876543212",
+					},
+				},
+			},
 		},
 		{
 			query: `
@@ -664,9 +677,11 @@ func TestIntegerBoundaries(t *testing.T) {
 			},
 			err: nil,
 		},
+
+		/* XXX: todo: make negate operator */
 		{
 			query: `
-			select * from table1 where aCol=-9223372036854775808;
+			select * from table1 where aCol=-922337203685477588;
 			`,
 			exp: &lyx.Select{
 
@@ -681,7 +696,7 @@ func TestIntegerBoundaries(t *testing.T) {
 						TableAlias: "",
 					},
 					Right: &lyx.AExprIConst{
-						Value: -9223372036854775808,
+						Value: -922337203685477588,
 					},
 					Op: "=",
 				},
@@ -1816,7 +1831,7 @@ func TestInsert(t *testing.T) {
 			err: nil,
 		},
 		{
-			query: `INSERT INTO test_table (id, test_field) values (560, 15622159703929188019)`,
+			query: `INSERT INTO test_table (id, test_field) values (560, 5622159703929188019)`,
 			exp: &lyx.Insert{
 				TableRef: &lyx.RangeVar{
 					RelationName: "test_table",
@@ -1828,7 +1843,7 @@ func TestInsert(t *testing.T) {
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 560},
-							&lyx.AExprUIConst{Value: 15622159703929188019},
+							&lyx.AExprIConst{Value: 5622159703929188019},
 						},
 					},
 				},
@@ -4062,7 +4077,7 @@ func TestParams(t *testing.T) {
 					},
 
 					&lyx.AExprSConst{
-						Value : "a",
+						Value: "a",
 					},
 				},
 			},

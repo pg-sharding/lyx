@@ -16,6 +16,13 @@ func randomHex(n int) (string, error) {
 	return hex.EncodeToString(bytes), nil
 }
 
+func doNegate(n Node) Node {
+	switch q := n.(type) {
+	case *AExprIConst:
+		q.Value = -q.Value
+	}
+	return n
+}
 
 type LyxParser yyParser
 
@@ -32,7 +39,7 @@ func NewLyxParser() LyxParser {
 	strlist			[]string
 	byte			byte
 	bytes			[]byte
-	int				int
+	int				int64
 	uint			uint64
 	bool			bool
 	empty			struct{}
@@ -65,7 +72,6 @@ func NewLyxParser() LyxParser {
 // same for terminals
 %token <str> SCONST IDENT
 %token <int> ICONST
-%token <uint> UICONST
 %token <int> INVALID_ICONST
 
 // %token<str> NumericOnly
@@ -2307,21 +2313,16 @@ func_arg_list:  func_arg_expr
  * Constants
  */
 AexprConst: 
-	SCONST {
-		$$ = &AExprSConst{
-			Value: $1,
-		}
-	} |
-	ICONST {
-		$$ = &AExprIConst{
-			Value: $1,
-		}
-	} |
-	UICONST {
-		$$ = &AExprUIConst{
-			Value: $1,
-		}
-	}
+			SCONST {
+				$$ = &AExprSConst{
+					Value: $1,
+				}
+			} |
+			ICONST {
+				$$ = &AExprIConst{
+					Value: $1,
+				}
+			} 
 			| func_name SCONST
 				{
 					/* generic type 'literal' syntax */
@@ -2788,7 +2789,7 @@ a_expr:
 			 TPLUS a_expr					%prec TMINUS
 				{ $$ = $2 }
 			| TMINUS a_expr					%prec TMINUS
-					{ $$ = $2 }
+					{ $$ = doNegate($2) }
 			| a_expr TPLUS a_expr
 				{
                      $$ = &AExprOp{

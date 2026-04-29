@@ -133,11 +133,7 @@ type AExprSConst struct {
 }
 
 type AExprIConst struct {
-	Value int
-}
-
-type AExprUIConst struct {
-	Value uint64
+	Value int64
 }
 
 type AExprBConst struct {
@@ -150,8 +146,6 @@ type AExprNConst struct {
 }
 
 func (*AExprIConst) iNode() {
-}
-func (*AExprUIConst) iNode() {
 }
 func (*AExprSConst) iNode() {
 }
@@ -210,7 +204,7 @@ const (
 type SortBy struct {
 	Node Node
 
-	SortbyDir int
+	SortbyDir int64
 }
 
 type Select struct {
@@ -265,14 +259,6 @@ type Update struct {
 	WithClause []*CommonTableExpr
 
 	Returning []Node
-}
-
-type Execute struct {
-	Id string
-}
-
-type Prepare struct {
-	Id string
 }
 
 type TableElt struct {
@@ -384,8 +370,6 @@ const (
 
 func (*Select) iNode()             {}
 func (*ValueClause) iNode()        {}
-func (*Execute) iNode()            {}
-func (*Prepare) iNode()            {}
 func (*CreateTable) iNode()        {}
 func (*Alter) iNode()              {}
 func (*Cluster) iNode()            {}
@@ -477,7 +461,7 @@ type Copy struct {
 func (*Copy) iNode() {}
 
 type ParamRef struct {
-	Number int
+	Number int64
 }
 
 func (*ParamRef) iNode() {}

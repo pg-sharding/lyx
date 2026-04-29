@@ -73,7 +73,7 @@ func TestSimpleInsert(t *testing.T) {
 				lyx.TOPENBR,
 				lyx.ICONST,
 				lyx.TCOMMA,
-				lyx.UICONST,
+				lyx.SCONST,
 				lyx.TCLOSEBR,
 			},
 		},
@@ -107,6 +107,20 @@ func TestSimple(t *testing.T) {
 			select 'ziziz' 
 			`,
 			exp: []int{lyx.SELECT, lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `
+			select 1- 1
+			`,
+			exp: []int{lyx.SELECT, lyx.ICONST, lyx.TMINUS, lyx.ICONST},
+			err: nil,
+		},
+		{
+			query: `
+			select 1-1
+			`,
+			exp: []int{lyx.SELECT, lyx.ICONST, lyx.TMINUS, lyx.ICONST},
 			err: nil,
 		},
 		{

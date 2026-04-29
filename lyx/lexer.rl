@@ -63,7 +63,6 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 #        xcinside	=	[^*/]+;
 
         integer = digit+;
-        ninteger = '-' integer;
         param = '$' integer;
         
 
@@ -136,31 +135,24 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             
             # skip dollar, get only param number
             param =>  {
-                if i, err := strconv.Atoi(string(lex.data[lex.ts+1:lex.te]));  err != nil {
+                inp := string(lex.data[lex.ts+1:lex.te])
+                if v, err := strconv.ParseInt(inp, 10, 64); err != nil {
                     lval.int = 0; tok = INVALID_ICONST; fbreak;
                 } else {
-                    lval.int = int(i); tok = PARAM; fbreak;
+                    lval.int = v; tok = PARAM; fbreak;
                 }
             };
 
             integer =>  { 
-                if v, err := strconv.Atoi(string(lex.data[lex.ts:lex.te]));  err != nil {
-                    if vUint, err := strconv.ParseUint(string(lex.data[lex.ts:lex.te]), 10, 64); err != nil {
-                        lval.uint = 0; tok = INVALID_ICONST; fbreak;
-                    } else {
-                        lval.uint = vUint; tok = UICONST; fbreak;
-                    }
+                inp := string(lex.data[lex.ts:lex.te])
+                if v, err := strconv.ParseInt(inp, 10, 64);  err != nil {
+                    /* tooo big */
+                    lval.str = inp; tok = SCONST; fbreak;
                 } else {
-                   lval.int = v; tok = ICONST; fbreak;
+                    lval.int = v; tok = ICONST; fbreak;
                 }
             };
-            ninteger => { 
-                if v, err := strconv.Atoi(string(lex.data[lex.ts:lex.te]));  err != nil {
-                   lval.int = 0; tok = INVALID_ICONST; fbreak;
-                } else {
-                   lval.int = v; tok = ICONST; fbreak;
-                }
-            };
+
 
             real =>  { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCONST; fbreak;};
 
