@@ -238,6 +238,8 @@ type Insert struct {
 	WithClause []*CommonTableExpr
 	SubSelect  Node
 
+	OnConflict Node
+
 	Returning []Node
 }
 
@@ -499,3 +501,14 @@ type SVFOP_CURRENT_ROLE struct{}
 
 func (*SVFOP_CURRENT_USER) iNode() {}
 func (*SVFOP_CURRENT_ROLE) iNode() {}
+
+type OnConflictClause struct {
+	Action uint32
+}
+
+func (*OnConflictClause) iNode() {}
+
+const (
+	ONCONFLICT_UPDATE = iota + 1
+	ONCONFLICT_NOTHING
+)

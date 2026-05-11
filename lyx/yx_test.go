@@ -2217,6 +2217,10 @@ func TestInsertComplex(t *testing.T) {
 						},
 					},
 				},
+
+				OnConflict: &lyx.OnConflictClause{
+					Action: lyx.ONCONFLICT_UPDATE,
+				},
 			},
 			err: nil,
 		},
@@ -5175,6 +5179,10 @@ func TestMiscQ(t *testing.T) {
 						},
 					},
 					Where: &lyx.AExprEmpty{},
+				},
+
+				OnConflict: &lyx.OnConflictClause{
+					Action: lyx.ONCONFLICT_NOTHING,
 				},
 			},
 		},

@@ -6803,14 +6803,20 @@ opt_on_conflict:
 			ON CONFLICT opt_conf_expr DO UPDATE SET set_clause_list	where_clause
 				{
 
+					$$ = &OnConflictClause{
+						Action: ONCONFLICT_UPDATE,
+					}
 				}
 			|
 			ON CONFLICT opt_conf_expr DO NOTHING
 				{
-
+					$$ = &OnConflictClause{
+						Action: ONCONFLICT_NOTHING,
+					}
 				}
 			| /*EMPTY*/
 				{
+					$$ = nil
 				}
 		;
 
@@ -6936,6 +6942,7 @@ InsertStmt:
             TableRef: $4,
             Columns: $5,
             SubSelect: $6,
+			OnConflict: $7,
 			Returning: $8,
         }
     } | opt_with_clause INSERT INTO relation_expr DEFAULT VALUES {
