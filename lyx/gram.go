@@ -3,15 +3,14 @@
 //line lyx/gram.y:3
 package lyx
 
-import __yyfmt__ "fmt"
-
-//line lyx/gram.y:3
-
 import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	__yyfmt__ "fmt"
 )
+
+//line lyx/gram.y:3
 
 func randomHex(n int) (string, error) {
 	bytes := make([]byte, n)
@@ -8770,8 +8769,8 @@ var yyErrorMessages = [...]struct {
 /*	parser for yacc output	*/
 
 var (
-	yyDebug        = 0
-	yyErrorVerbose = false
+	yyDebug        = 5
+	yyErrorVerbose = true
 )
 
 type yyLexer interface {

@@ -6421,4 +6421,346 @@ func TestFetchFirst(t *testing.T) {
 			assert.Equal(tt.exp, tmp[0], tt.query)
 		}
 	}
+
+}
+
+func Test1c(t *testing.T) {
+
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `SELECT T1._LineNo, T1._Correspond, T1._KindRRef, T1._Value_TYPE, T1._Value_RTRef, T1._Value_RRRef FROM _AccRgED38493 T1 WHERE ((T1._Fld2331 = CAST(0 AS NUMERIC))) AND (T1._RecorderTRef = '\\000\\000\\003\\361'::bytea AND T1._RecorderRRef = '\\243\\035\\024\\332\\351\\261\\232H\\021\\346\\036\\227,\\307\\257\\343'::bytea AND (T1._Correspond IN (CAST(0 AS NUMERIC), CAST(1 AS NUMERIC)))) ORDER BY T1._LineNo, T1._Correspond`,
+			err:   nil,
+		},
+		{
+			query: `
+			INSERT INTO pg_temp.tt14 (_Q_000_F_000RRef, _Q_000_F_001RRef,
+				_Q_000_F_002_TYPE, _Q_000_F_002_RTRef, _Q_000_F_002_RRRef, _Q_000_F_003_TYPE,
+				_Q_000_F_003_RTRef, _Q_000_F_003_RRRef, _Q_000_F_004_TYPE, _Q_000_F_004_RTRef,
+				_Q_000_F_004_RRRef, _Q_000_F_005RRef, _Q_000_F_006RRef, _Q_000_F_007,
+				_Q_000_F_008, _Q_000_F_009, _Q_000_F_010, _Q_000_F_011, _Q_000_F_012) SELECT
+				T1.AccountRRef, T1.Fld38459RRef, T1.Value1_TYPE, T1.Value1_RTRef,
+				T1.Value1_RRRef, T1.Value2_TYPE, T1.Value2_RTRef, T1.Value2_RRRef,
+				T1.Value3_TYPE, T1.Value3_RTRef, T1.Value3_RRRef,
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea, T1.Fld38457RRef,
+				T1.Fld38462BalanceDt_, T1.Fld38462BalanceDt_, T1.Fld38460BalanceDt_,
+				T1.Fld38463BalanceDt_, T1.Fld38464BalanceDt_, T1.Fld38465BalanceDt_ FROM
+				(SELECT T2.AccountRRef AS AccountRRef, T2.Fld38459RRef AS Fld38459RRef,
+				T2.Value1_TYPE AS Value1_TYPE, T2.Value1_RTRef AS Value1_RTRef, T2.Value1_RRRef
+				AS Value1_RRRef, T2.Value2_TYPE AS Value2_TYPE, T2.Value2_RTRef AS
+				Value2_RTRef, T2.Value2_RRRef AS Value2_RRRef, T2.Value3_TYPE AS Value3_TYPE,
+				T2.Value3_RTRef AS Value3_RTRef, T2.Value3_RRRef AS Value3_RRRef,
+				T2.Fld38457RRef AS Fld38457RRef, CASE WHEN SUM(T2.Fld38460Balance_) IS NULL
+				THEN CAST(0 AS NUMERIC) WHEN MAX(T11._Kind) = CAST(0 AS NUMERIC) OR
+				MAX(T11._Kind) = CAST(2 AS NUMERIC) AND SUM(T2.Fld38460Balance_) > CAST(0 AS
+				NUMERIC) THEN SUM(T2.Fld38460Balance_) ELSE CAST(0 AS NUMERIC) END AS
+				Fld38460BalanceDt_, CASE WHEN SUM(T2.Fld38462Balance_) IS NULL THEN CAST(0 AS
+				NUMERIC) WHEN MAX(T11._Kind) = CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS
+				NUMERIC) AND SUM(T2.Fld38462Balance_) > CAST(0 AS NUMERIC) THEN
+				SUM(T2.Fld38462Balance_) ELSE CAST(0 AS NUMERIC) END AS Fld38462BalanceDt_,
+				CASE WHEN SUM(T2.Fld38463Balance_) IS NULL THEN CAST(0 AS NUMERIC) WHEN
+				MAX(T11._Kind) = CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS NUMERIC) AND
+				SUM(T2.Fld38463Balance_) > CAST(0 AS NUMERIC) THEN SUM(T2.Fld38463Balance_)
+				ELSE CAST(0 AS NUMERIC) END AS Fld38463BalanceDt_, CASE WHEN
+				SUM(T2.Fld38465Balance_) IS NULL THEN CAST(0 AS NUMERIC) WHEN MAX(T11._Kind) =
+				CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS NUMERIC) AND
+				SUM(T2.Fld38465Balance_) > CAST(0 AS NUMERIC) THEN SUM(T2.Fld38465Balance_)
+				ELSE CAST(0 AS NUMERIC) END AS Fld38465BalanceDt_, CASE WHEN
+				SUM(T2.Fld38464Balance_) IS NULL THEN CAST(0 AS NUMERIC) WHEN MAX(T11._Kind) =
+				CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS NUMERIC) AND
+				SUM(T2.Fld38464Balance_) > CAST(0 AS NUMERIC) THEN SUM(T2.Fld38464Balance_)
+				ELSE CAST(0 AS NUMERIC) END AS Fld38464BalanceDt_, MAX(T11._Kind) AS AccKind_
+				FROM (SELECT T3._AccountRRef AS AccountRRef, T3._Fld38459RRef AS Fld38459RRef,
+				T3._Value1_TYPE AS Value1_TYPE, T3._Value1_RTRef AS Value1_RTRef,
+				T3._Value1_RRRef AS Value1_RRRef, T3._Value2_TYPE AS Value2_TYPE,
+				T3._Value2_RTRef AS Value2_RTRef, T3._Value2_RRRef AS Value2_RRRef,
+				T3._Value3_TYPE AS Value3_TYPE, T3._Value3_RTRef AS Value3_RTRef,
+				T3._Value3_RRRef AS Value3_RRRef, T3._Fld38457RRef AS Fld38457RRef,
+				T3._Fld38460 AS Fld38460Balance_, T3._Fld38462 AS Fld38462Balance_,
+				T3._Fld38463 AS Fld38463Balance_, T3._Fld38465 AS Fld38465Balance_,
+				T3._Fld38464 AS Fld38464Balance_ FROM _AccRgAT338491 T3 INNER JOIN pg_temp.tt13
+				T4 ON T4._IDRRef = T3._AccountRRef AND T4._LineNo1 = CAST(1 AS NUMERIC) AND
+				T4._LineNo2 = CAST(2 AS NUMERIC) AND T4._LineNo3 = CAST(3 AS NUMERIC) AND
+				T4._Cnt = CAST(3 AS NUMERIC) WHERE ((T3._Fld2331 = CAST(0 AS NUMERIC))) AND
+				(((COALESCE(T3._Fld38459RRef,'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\
+				\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000'::bytea) =
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea) AND (T3._Value1_TYPE =
+				'\\\\010'::bytea AND T3._Value1_RTRef = '\\\\000\\\\000\\\\001['::bytea AND
+				T3._Value1_RRRef IN
+				('\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\035\\\\317
+				+^^\\\\251'::bytea)) AND (T3._Value3_TYPE = '\\\\010'::bytea AND
+				T3._Value3_RTRef = '\\\\000\\\\000\\\\0025'::bytea AND T3._Value3_RRRef IN
+				('\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\302=\\\\
+				343\\\\334'::bytea)) AND (T3._Fld38457RRef =
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\034\\\\332\
+				\\\251\\\\350\\\\264\\\\011'::bytea)) AND T3._Period = '2025-02-01
+				00:00:00'::timestamp AND (T3._Fld38460 <> CAST(0 AS NUMERIC) OR T3._Fld38462 <>
+				CAST(0 AS NUMERIC) OR T3._Fld38463 <> CAST(0 AS NUMERIC) OR T3._Fld38465 <>
+				CAST(0 AS NUMERIC) OR T3._Fld38464 <> CAST(0 AS NUMERIC))) UNION ALL SELECT
+				T5._AccountDtRRef AS AccountRRef, T5._Fld38459DtRRef AS Fld38459RRef,
+				T6._Value_TYPE AS Value1_TYPE, T6._Value_RTRef AS Value1_RTRef, T6._Value_RRRef
+				AS Value1_RRRef, CASE WHEN T5._KindDt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt1_TYPE WHEN T5._KindDt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt2_TYPE WHEN T5._KindDt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt3_TYPE ELSE CAST(NULL AS BYTEA) END AS
+				Value2_TYPE, CASE WHEN T5._KindDt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt1_RTRef WHEN T5._KindDt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt2_RTRef WHEN T5._KindDt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt3_RTRef ELSE CASE WHEN CAST(NULL AS BYTEA) IS
+				NOT NULL THEN '\\\\000\\\\000\\\\000\\\\000'::bytea END END AS Value2_RTRef,
+				CASE WHEN T5._KindDt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt1_RRRef WHEN T5._KindDt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt2_RRRef WHEN T5._KindDt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt3_RRRef ELSE CASE WHEN CAST(NULL AS BYTEA) IS
+				NOT NULL THEN
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea END END AS Value2_RRRef,
+				T7._Value_TYPE AS Value3_TYPE, T7._Value_RTRef AS Value3_RTRef, T7._Value_RRRef
+				AS Value3_RRRef, T5._Fld38457RRef AS Fld38457RRef, CAST(-T5._Fld38460 AS
+				NUMERIC(21, 2)) AS Fld38460Balance_, CAST(-T5._Fld38462Dt AS NUMERIC(21, 3)) AS
+				Fld38462Balance_, CAST(-T5._Fld38463Dt AS NUMERIC(21, 2)) AS Fld38463Balance_,
+				CAST(-T5._Fld38465Dt AS NUMERIC(21, 2)) AS Fld38465Balance_,
+				CAST(-T5._Fld38464Dt AS NUMERIC(21, 2)) AS Fld38464Balance_ FROM _AccRg38456 T5
+				INNER JOIN _AccRgED38493 T6 ON T6._RecorderTRef = T5._RecorderTRef AND
+				T6._RecorderRRef = T5._RecorderRRef AND T6._LineNo = T5._LineNo AND T6._Period
+				= T5._Period AND T6._PeriodAdjustment = T5._PeriodAdjustment AND T6._Correspond
+				= CAST(0 AS NUMERIC) AND T6._KindRRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\220'::bytea AND (T6._Period >= '2025-01-13 12:00:00'::timestamp AND NOT
+				((T6._Period = '2025-01-13 12:00:00'::timestamp AND T6._PeriodAdjustment <
+				CAST(0 AS NUMERIC))) AND NOT ((T6._Period = '2025-01-13 12:00:00'::timestamp
+				AND T6._PeriodAdjustment = CAST(0 AS NUMERIC) AND (T6._RecorderTRef <
+				'\\\\000\\\\000\\\\003\\\\361'::bytea OR T6._RecorderTRef =
+				'\\\\000\\\\000\\\\003\\\\361'::bytea AND T6._RecorderRRef <
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\036\\\\227,
+				\\\\307\\\\257\\\\372'::bytea)))) AND (T6._Period <= '2025-02-01
+				00:00:00'::timestamp AND NOT ((T6._Period = '2025-02-01 00:00:00'::timestamp
+				AND T6._PeriodAdjustment >= CAST(0 AS NUMERIC)))) INNER JOIN _AccRgED38493 T7
+				ON T7._RecorderTRef = T5._RecorderTRef AND T7._RecorderRRef = T5._RecorderRRef
+				AND T7._LineNo = T5._LineNo AND T7._Period = T5._Period AND
+				T7._PeriodAdjustment = T5._PeriodAdjustment AND T7._Correspond = CAST(0 AS
+				NUMERIC) AND T7._KindRRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\241'::bytea AND (T7._Period >= '2025-01-13 12:00:00'::timestamp AND NOT
+				((T7._Period = '2025-01-13 12:00:00'::timestamp AND T7._PeriodAdjustment <
+				CAST(0 AS NUMERIC))) AND NOT ((T7._Period = '2025-01-13 12:00:00'::timestamp
+				AND T7._PeriodAdjustment = CAST(0 AS NUMERIC) AND (T7._RecorderTRef <
+				'\\\\000\\\\000\\\\003\\\\361'::bytea OR T7._RecorderTRef =
+				'\\\\000\\\\000\\\\003\\\\361'::bytea AND T7._RecorderRRef <
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\036\\\\227,
+				\\\\307\\\\257\\\\372'::bytea)))) AND (T7._Period <= '2025-02-01
+				00:00:00'::timestamp AND NOT ((T7._Period = '2025-02-01 00:00:00'::timestamp
+				AND T7._PeriodAdjustment >= CAST(0 AS NUMERIC)))) WHERE ((((T5._Fld2331 =
+				CAST(0 AS NUMERIC))) AND (T6._Fld2331 = CAST(0 AS NUMERIC))) AND (T7._Fld2331 =
+				CAST(0 AS NUMERIC))) AND (T5._Active = TRUE AND T5._AccountDtRRef <>
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea AND ((T5._AccountDtRRef IN
+				('\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\227\\\\2
+				01\\\\263\\\\300'::bytea))) AND
+				((COALESCE(T5._Fld38459DtRRef,'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000
+				\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000'::bytea) =
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea) AND (T6._Value_TYPE =
+				'\\\\010'::bytea AND T6._Value_RTRef = '\\\\000\\\\000\\\\001['::bytea AND
+				T6._Value_RRRef IN
+				('\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\035\\\\317
+				+^^\\\\251'::bytea)) AND (T7._Value_TYPE = '\\\\010'::bytea AND T7._Value_RTRef
+				= '\\\\000\\\\000\\\\0025'::bytea AND T7._Value_RRRef IN
+				('\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\302=\\\\
+				343\\\\334'::bytea)) AND (T5._Fld38457RRef =
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\034\\\\332\
+				\\\251\\\\350\\\\264\\\\011'::bytea)) AND (T5._Period >= '2025-01-13
+				12:00:00'::timestamp AND NOT ((T5._Period = '2025-01-13 12:00:00'::timestamp
+				AND T5._PeriodAdjustment < CAST(0 AS NUMERIC))) AND NOT ((T5._Period =
+				'2025-01-13 12:00:00'::timestamp AND T5._PeriodAdjustment = CAST(0 AS NUMERIC)
+				AND (T5._RecorderTRef < '\\\\000\\\\000\\\\003\\\\361'::bytea OR
+				T5._RecorderTRef = '\\\\000\\\\000\\\\003\\\\361'::bytea AND T5._RecorderRRef <
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\036\\\\227,
+				\\\\307\\\\257\\\\372'::bytea)))) AND (T5._Period <= '2025-02-01
+				00:00:00'::timestamp AND NOT ((T5._Period = '2025-02-01 00:00:00'::timestamp
+				AND T5._PeriodAdjustment >= CAST(0 AS NUMERIC)))) AND CASE WHEN T5._KindDt1RRef
+				=
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt1_TYPE WHEN T5._KindDt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt2_TYPE WHEN T5._KindDt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt3_TYPE ELSE CAST(NULL AS BYTEA) END IS NOT
+				NULL AND CASE WHEN T5._KindDt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt1_RTRef WHEN T5._KindDt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt2_RTRef WHEN T5._KindDt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt3_RTRef ELSE CAST(NULL AS BYTEA) END IS NOT
+				NULL AND CASE WHEN T5._KindDt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt1_RRRef WHEN T5._KindDt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt2_RRRef WHEN T5._KindDt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T5._ValueDt3_RRRef ELSE CAST(NULL AS BYTEA) END IS NOT
+				NULL) UNION ALL SELECT T8._AccountCtRRef AS AccountRRef, T8._Fld38459CtRRef AS
+				Fld38459RRef, T9._Value_TYPE AS Value1_TYPE, T9._Value_RTRef AS Value1_RTRef,
+				T9._Value_RRRef AS Value1_RRRef, CASE WHEN T8._KindCt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt1_TYPE WHEN T8._KindCt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt2_TYPE WHEN T8._KindCt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt3_TYPE ELSE CAST(NULL AS BYTEA) END AS
+				Value2_TYPE, CASE WHEN T8._KindCt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt1_RTRef WHEN T8._KindCt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt2_RTRef WHEN T8._KindCt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt3_RTRef ELSE CASE WHEN CAST(NULL AS BYTEA) IS
+				NOT NULL THEN '\\\\000\\\\000\\\\000\\\\000'::bytea END END AS Value2_RTRef,
+				CASE WHEN T8._KindCt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt1_RRRef WHEN T8._KindCt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt2_RRRef WHEN T8._KindCt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt3_RRRef ELSE CASE WHEN CAST(NULL AS BYTEA) IS
+				NOT NULL THEN
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea END END AS Value2_RRRef,
+				T10._Value_TYPE AS Value3_TYPE, T10._Value_RTRef AS Value3_RTRef,
+				T10._Value_RRRef AS Value3_RRRef, T8._Fld38457RRef AS Fld38457RRef,
+				CAST(T8._Fld38460 AS NUMERIC(21, 2)) AS Fld38460Balance_, CAST(T8._Fld38462Ct
+				AS NUMERIC(21, 3)) AS Fld38462Balance_, CAST(T8._Fld38463Ct AS NUMERIC(21, 2))
+				AS Fld38463Balance_, CAST(T8._Fld38465Ct AS NUMERIC(21, 2)) AS
+				Fld38465Balance_, CAST(T8._Fld38464Ct AS NUMERIC(21, 2)) AS Fld38464Balance_
+				FROM _AccRg38456 T8 INNER JOIN _AccRgED38493 T9 ON T9._RecorderTRef =
+				T8._RecorderTRef AND T9._RecorderRRef = T8._RecorderRRef AND T9._LineNo =
+				T8._LineNo AND T9._Period = T8._Period AND T9._PeriodAdjustment =
+				T8._PeriodAdjustment AND T9._Correspond = CAST(1 AS NUMERIC) AND T9._KindRRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\220'::bytea AND (T9._Period >= '2025-01-13 12:00:00'::timestamp AND NOT
+				((T9._Period = '2025-01-13 12:00:00'::timestamp AND T9._PeriodAdjustment <
+				CAST(0 AS NUMERIC))) AND NOT ((T9._Period = '2025-01-13 12:00:00'::timestamp
+				AND T9._PeriodAdjustment = CAST(0 AS NUMERIC) AND (T9._RecorderTRef <
+				'\\\\000\\\\000\\\\003\\\\361'::bytea OR T9._RecorderTRef =
+				'\\\\000\\\\000\\\\003\\\\361'::bytea AND T9._RecorderRRef <
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\036\\\\227,
+				\\\\307\\\\257\\\\372'::bytea)))) AND (T9._Period <= '2025-02-01
+				00:00:00'::timestamp AND NOT ((T9._Period = '2025-02-01 00:00:00'::timestamp
+				AND T9._PeriodAdjustment >= CAST(0 AS NUMERIC)))) INNER JOIN _AccRgED38493 T10
+				ON T10._RecorderTRef = T8._RecorderTRef AND T10._RecorderRRef =
+				T8._RecorderRRef AND T10._LineNo = T8._LineNo AND T10._Period = T8._Period AND
+				T10._PeriodAdjustment = T8._PeriodAdjustment AND T10._Correspond = CAST(1 AS
+				NUMERIC) AND T10._KindRRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\241'::bytea AND (T10._Period >= '2025-01-13 12:00:00'::timestamp AND NOT
+				((T10._Period = '2025-01-13 12:00:00'::timestamp AND T10._PeriodAdjustment <
+				CAST(0 AS NUMERIC))) AND NOT ((T10._Period = '2025-01-13 12:00:00'::timestamp
+				AND T10._PeriodAdjustment = CAST(0 AS NUMERIC) AND (T10._RecorderTRef <
+				'\\\\000\\\\000\\\\003\\\\361'::bytea OR T10._RecorderTRef =
+				'\\\\000\\\\000\\\\003\\\\361'::bytea AND T10._RecorderRRef <
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\036\\\\227,
+				\\\\307\\\\257\\\\372'::bytea)))) AND (T10._Period <= '2025-02-01
+				00:00:00'::timestamp AND NOT ((T10._Period = '2025-02-01 00:00:00'::timestamp
+				AND T10._PeriodAdjustment >= CAST(0 AS NUMERIC)))) WHERE ((((T8._Fld2331 =
+				CAST(0 AS NUMERIC))) AND (T9._Fld2331 = CAST(0 AS NUMERIC))) AND (T10._Fld2331
+				= CAST(0 AS NUMERIC))) AND (T8._Active = TRUE AND T8._AccountCtRRef <>
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea AND ((T8._AccountCtRRef IN
+				('\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\227\\\\2
+				01\\\\263\\\\300'::bytea))) AND
+				((COALESCE(T8._Fld38459CtRRef,'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000
+				\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000'::bytea) =
+				'\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\\\000\\
+				\\000\\\\000\\\\000\\\\000\\\\000'::bytea) AND (T9._Value_TYPE =
+				'\\\\010'::bytea AND T9._Value_RTRef = '\\\\000\\\\000\\\\001['::bytea AND
+				T9._Value_RRRef IN
+				('\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\035\\\\317
+				+^^\\\\251'::bytea)) AND (T10._Value_TYPE = '\\\\010'::bytea AND
+				T10._Value_RTRef = '\\\\000\\\\000\\\\0025'::bytea AND T10._Value_RRRef IN
+				('\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\302=\\\\
+				343\\\\334'::bytea)) AND (T8._Fld38457RRef =
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\034\\\\332\
+				\\\251\\\\350\\\\264\\\\011'::bytea)) AND (T8._Period >= '2025-01-13
+				12:00:00'::timestamp AND NOT ((T8._Period = '2025-01-13 12:00:00'::timestamp
+				AND T8._PeriodAdjustment < CAST(0 AS NUMERIC))) AND NOT ((T8._Period =
+				'2025-01-13 12:00:00'::timestamp AND T8._PeriodAdjustment = CAST(0 AS NUMERIC)
+				AND (T8._RecorderTRef < '\\\\000\\\\000\\\\003\\\\361'::bytea OR
+				T8._RecorderTRef = '\\\\000\\\\000\\\\003\\\\361'::bytea AND T8._RecorderRRef <
+				'\\\\243\\\\035\\\\024\\\\332\\\\351\\\\261\\\\232H\\\\021\\\\346\\\\036\\\\227,
+				\\\\307\\\\257\\\\372'::bytea)))) AND (T8._Period <= '2025-02-01
+				00:00:00'::timestamp AND NOT ((T8._Period = '2025-02-01 00:00:00'::timestamp
+				AND T8._PeriodAdjustment >= CAST(0 AS NUMERIC)))) AND CASE WHEN T8._KindCt1RRef
+				=
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt1_TYPE WHEN T8._KindCt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt2_TYPE WHEN T8._KindCt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt3_TYPE ELSE CAST(NULL AS BYTEA) END IS NOT
+				NULL AND CASE WHEN T8._KindCt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt1_RTRef WHEN T8._KindCt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt2_RTRef WHEN T8._KindCt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt3_RTRef ELSE CAST(NULL AS BYTEA) END IS NOT
+				NULL AND CASE WHEN T8._KindCt1RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt1_RRRef WHEN T8._KindCt2RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt2_RRRef WHEN T8._KindCt3RRef =
+				'\\\\226S0\\\\205\\\\251=\\\\334\\\\242\\\\021\\\\345\\\\314\\\\015\\\\214\\\\37
+				3(\\\\227'::bytea THEN T8._ValueCt3_RRRef ELSE CAST(NULL AS BYTEA) END IS NOT
+				NULL)) T2 INNER JOIN _Acc69 T11 ON T11._IDRRef = T2.AccountRRef WHERE
+				(T11._Fld2331 = CAST(0 AS NUMERIC)) GROUP BY T2.AccountRRef, T2.Fld38459RRef,
+				T2.Value1_TYPE, T2.Value1_RTRef, T2.Value1_RRRef, T2.Value2_TYPE,
+				T2.Value2_RTRef, T2.Value2_RRRef, T2.Value3_TYPE, T2.Value3_RTRef,
+				T2.Value3_RRRef, T2.Fld38457RRef HAVING (CASE WHEN SUM(T2.Fld38460Balance_) IS
+				NULL THEN CAST(0 AS NUMERIC) WHEN MAX(T11._Kind) = CAST(0 AS NUMERIC) OR
+				MAX(T11._Kind) = CAST(2 AS NUMERIC) AND SUM(T2.Fld38460Balance_) > CAST(0 AS
+				NUMERIC) THEN SUM(T2.Fld38460Balance_) ELSE CAST(0 AS NUMERIC) END) <> CAST(0
+				AS NUMERIC) OR (CASE WHEN SUM(T2.Fld38462Balance_) IS NULL THEN CAST(0 AS
+				NUMERIC) WHEN MAX(T11._Kind) = CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS
+				NUMERIC) AND SUM(T2.Fld38462Balance_) > CAST(0 AS NUMERIC) THEN
+				SUM(T2.Fld38462Balance_) ELSE CAST(0 AS NUMERIC) END) <> CAST(0 AS NUMERIC) OR
+				(CASE WHEN SUM(T2.Fld38463Balance_) IS NULL THEN CAST(0 AS NUMERIC) WHEN
+				MAX(T11._Kind) = CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS NUMERIC) AND
+				SUM(T2.Fld38463Balance_) > CAST(0 AS NUMERIC) THEN SUM(T2.Fld38463Balance_)
+				ELSE CAST(0 AS NUMERIC) END) <> CAST(0 AS NUMERIC) OR (CASE WHEN
+				SUM(T2.Fld38465Balance_) IS NULL THEN CAST(0 AS NUMERIC) WHEN MAX(T11._Kind) =
+				CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS NUMERIC) AND
+				SUM(T2.Fld38465Balance_) > CAST(0 AS NUMERIC) THEN SUM(T2.Fld38465Balance_)
+				ELSE CAST(0 AS NUMERIC) END) <> CAST(0 AS NUMERIC) OR (CASE WHEN
+				SUM(T2.Fld38464Balance_) IS NULL THEN CAST(0 AS NUMERIC) WHEN MAX(T11._Kind) =
+				CAST(0 AS NUMERIC) OR MAX(T11._Kind) = CAST(2 AS NUMERIC) AND
+				SUM(T2.Fld38464Balance_) > CAST(0 AS NUMERIC) THEN SUM(T2.Fld38464Balance_)
+				ELSE CAST(0 AS NUMERIC) END) <> CAST(0 AS NUMERIC)) T1;
+				`,
+		},
+	} {
+		tmp, _, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+		assert.NotNil(tmp, tt.query)
+	}
+
 }
