@@ -305,6 +305,11 @@ type Drop struct {
 	Objects    []string
 }
 
+type DropTable struct {
+	TableRv   []FromClauseNode
+	MissingOk bool
+}
+
 type CreateIndex struct {
 }
 
@@ -377,6 +382,7 @@ func (*Alter) iNode()              {}
 func (*Cluster) iNode()            {}
 func (*VacuumStmt) iNode()         {}
 func (*Drop) iNode()               {}
+func (*DropTable) iNode()          {}
 func (*Truncate) iNode()           {}
 func (*CreateIndex) iNode()        {}
 func (*CreateRole) iNode()         {}

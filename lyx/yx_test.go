@@ -3530,24 +3530,6 @@ func TestMisc(t *testing.T) {
 			err:   nil,
 		},
 		{
-			query: "drop table xx;",
-			exp: &lyx.Drop{
-				RemoveType: "table",
-				MissingOk:  false,
-				Objects:    []string{"xx"},
-			},
-			err: nil,
-		},
-		{
-			query: "drop table sh.'xx';",
-			exp: &lyx.Drop{
-				RemoveType: "table",
-				MissingOk:  false,
-				Objects:    []string{"sh"},
-			},
-			err: nil,
-		},
-		{
 			query: "analyze xx;",
 			exp:   &lyx.VacuumStmt{},
 			err:   nil,
@@ -4466,15 +4448,32 @@ func TestDrop(t *testing.T) {
 		{
 			query: `
 			drop table if exists pgbench_accounts, pgbench_branches, pgbench_history, pgbench_tellers`,
-			exp: &lyx.Drop{
-				RemoveType: "table",
-				MissingOk:  true,
-				Objects: []string{
-					"pgbench_accounts",
-					"pgbench_branches",
-					"pgbench_history",
-					"pgbench_tellers",
+			exp: &lyx.DropTable{
+				MissingOk: true,
+				TableRv: []lyx.FromClauseNode{
+					&lyx.RangeVar{RelationName: "pgbench_accounts"},
+					&lyx.RangeVar{RelationName: "pgbench_branches"},
+					&lyx.RangeVar{RelationName: "pgbench_history"},
+					&lyx.RangeVar{RelationName: "pgbench_tellers"},
 				},
+			},
+		},
+		{
+			query: "DROP table t;",
+			exp: &lyx.DropTable{
+				TableRv: []lyx.FromClauseNode{&lyx.RangeVar{SchemaName: "", RelationName: "t"}},
+			},
+		},
+		{
+			query: "DROP table public.t, custom.t;",
+			exp: &lyx.DropTable{
+				TableRv: []lyx.FromClauseNode{&lyx.RangeVar{SchemaName: "public", RelationName: "t"}, &lyx.RangeVar{SchemaName: "custom", RelationName: "t"}},
+			},
+		},
+		{
+			query: "DROP table public.t;",
+			exp: &lyx.DropTable{
+				TableRv: []lyx.FromClauseNode{&lyx.RangeVar{SchemaName: "public", RelationName: "t"}},
 			},
 		},
 	} {
