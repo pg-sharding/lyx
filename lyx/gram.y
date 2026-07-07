@@ -318,7 +318,7 @@ Operator:
 %type<node> VariableSetStmt
 %type<node> CreateStmt  IndexStmt alter_stmt CreateSchemaStmt CreateExtensionStmt
 %type<node> VacuumStmt cluster_stmt AnalyzeStmt ExplainStmt
-%type<node> TruncateStmt DropStmt
+%type<node> TruncateStmt DropStmt DropTable
 %type<node> DiscardStmt
 %type<node> DefineStmt
 %type<node> CreateFunctionStmt
@@ -423,6 +423,7 @@ Operator:
 
 %type<str> attr_name ColLabel file_name BareColLabel
 %type<from> qualified_name table_name
+%type<from_list> table_name_list
 
 %type<nodeList> qualified_name_list opt_enum_val_list enum_val_list
 
@@ -1622,7 +1623,9 @@ command:
 		$$ = $1
     } | DropStmt {
 		$$ = $1
-    } | CreateStmt {
+    } | DropTable {
+		$$ = $1
+	} | CreateStmt {
 		$$ = $1
     } | IndexStmt {
 		$$ = $1
@@ -1680,6 +1683,14 @@ table_name:
 			SchemaName: $1,
 			RelationName: $3,
 		}
+	}
+
+table_name_list:
+	table_name
+	{
+		$$ = []FromClauseNode{$1}
+	} | table_name_list TCOMMA table_name {
+		$$ = append($1, $3)
 	}
 
 operator:
@@ -4922,6 +4933,20 @@ alter_stmt:
 
         }
     }
+
+DropTable:
+	DROP TABLE table_name_list opt_drop_behavior {
+		$$ = &DropTable {
+			TableRv: $3,
+			MissingOk: false,
+		}
+	} 
+	| DROP TABLE IF_P EXISTS table_name_list opt_drop_behavior {
+		$$ = &DropTable {
+			TableRv: $5,
+			MissingOk: true,
+		}
+	}
 
 DropStmt:
             DROP object_type_any_name IF_P EXISTS any_name_list opt_drop_behavior
