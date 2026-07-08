@@ -315,6 +315,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /outer/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = OUTER_P; fbreak;};
             /inner/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INNER_P; fbreak;};
             /on/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ON; fbreak;};
+            /no/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NO; fbreak;};
             /in/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IN_P; fbreak;};
             /for/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = FOR; fbreak;};
 

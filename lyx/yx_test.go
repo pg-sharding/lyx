@@ -6367,6 +6367,40 @@ func TestError(t *testing.T) {
 	}
 }
 
+func TestForKeyShare(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query string
+		exp   lyx.Node
+		err   error
+	}
+
+	for _, tt := range []tcase{
+		{
+			query: `
+			select * from x for no key update`,
+			exp: &lyx.Select{
+				TargetList: []lyx.Node{
+					&lyx.AExprEmpty{},
+				},
+				Where: &lyx.AExprEmpty{},
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "x",
+					},
+				},
+			},
+		},
+	} {
+		tmp, _, err := lyx.Parse(tt.query)
+
+		assert.NoError(err, tt.query)
+
+		assert.Equal(tt.exp, tmp[0], tt.query)
+	}
+}
+
 func TestFetchFirst(t *testing.T) {
 	assert := assert.New(t)
 
@@ -6783,6 +6817,18 @@ func Test1c(t *testing.T) {
 
 		{
 			query: `SELECT T3._C_1RRef AS IDRRef, T3._C_2 AS OffBalance_, T3._C_3 AS Fld36_, T3._C_4 AS Fld37_, T3.SDBL_IDENTITY AS SDBL_IDENTITY FROM pg_temp.tt8 T3`,
+		},
+
+		{
+			query: `SELECT T1._IDRRef FROM _Node10 T1 WHERE NOT ((T1._IDRRef IN ('\\256\\322\\014$\\230\\031e\\365M\\361B(\\356\\026q\\340'::bytea)))`,
+		},
+
+		{
+			query: `UPDATE _AccRgOpt79 SET _MinPeriod = '2026-07-01 00:00:00'::timestamp WHERE _AccRgOpt79._RegID = '\\001Vax\\326\\3324I\\265k\\235S:\\344\\211\\007'::bytea AND _AccRgOpt79._MinPeriod > '2026-07-01 00:00:00'::timestamp`,
+		},
+
+		{
+			query: `SELECT T4._LineNo, T4._DimKindRRef, T5._Type, T6.SDBL_IDENTITY AS SDBL_IDENTITY FROM _Acc11_ExtDim38 T4 INNER JOIN pg_temp.tt8 T6 ON T6._TTC_1 = T4._Acc11_IDRRef LEFT OUTER JOIN _Chrc34 T5 ON T4._DimKindRRef = T5._IDRRef ORDER BY 4 ASC`,
 		},
 	} {
 		tmp, _, err := lyx.Parse(tt.query)
