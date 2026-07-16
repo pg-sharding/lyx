@@ -215,6 +215,9 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /update/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = UPDATE; fbreak;};
             /delete/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = DELETE; fbreak;};
             /create/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = CREATE; fbreak;};
+            /TEMPORARY/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEMPORARY; fbreak;};
+            /TEMP/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEMP; fbreak;};
+            /OIDS/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = OIDS; fbreak;};
             /truncate/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUNCATE; fbreak;};
             /table/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLE; fbreak;};
             /extension/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = EXTENSION; fbreak;};
