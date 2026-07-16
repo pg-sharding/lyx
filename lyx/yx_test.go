@@ -4446,6 +4446,14 @@ func TestDrop(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `create temporary table tt2 () without oids`,
+			exp: &lyx.CreateTable{
+				TableRv: &lyx.RangeVar{
+					RelationName: "tt2",
+				},
+			},
+		},
+		{
 			query: `
 			drop table if exists pgbench_accounts, pgbench_branches, pgbench_history, pgbench_tellers`,
 			exp: &lyx.DropTable{
