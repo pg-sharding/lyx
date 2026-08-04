@@ -3,6 +3,7 @@
 package lyx
 
 import (
+	"strings"
 	"crypto/rand"
 	"fmt"
 	"encoding/hex"
@@ -36,6 +37,7 @@ func NewLyxParser() LyxParser {
 // as ${PREFIX}SymType, of which a reference is passed to the lexer.
 %union {
 	str				string
+	strB            strings.Builder
 	strlist			[]string
 	byte			byte
 	bytes			[]byte

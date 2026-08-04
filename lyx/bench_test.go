@@ -95,6 +95,7 @@ func BenchmarkInsertLongStrings(b *testing.B) {
 func BenchmarkInsertNestedQuotes(b *testing.B) {
 	query := buildInsertWithNestedQuotes(benchTuples)
 
+	b.SetBytes(int64(len(query)))
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -151,7 +152,21 @@ func TestInsertManyTuplesPerf(t *testing.T) {
 		for _, gen := range []testGen{
 			{name: "plain", build: buildInsertWithManyTuples},
 			{name: "nested-quotes", build: buildInsertWithNestedQuotes},
-			// XXX:FIX	{name: "long-strings", build: func(n int) string { return buildInsertWithLongStrings(n, 1024) }},
+		} {
+			t.Run(tt.name+"/"+gen.name, func(t *testing.T) {
+				runner(t, gen, tt)
+			})
+		}
+	}
+}
+
+func TestInsertManyTuplesLongStringsPerf(t *testing.T) {
+	for _, tt := range []testCase{
+		{name: "10k", tuples: 10000, deadline: 200 * time.Millisecond},
+		{name: "250k", tuples: 250000, deadline: 5 * time.Second},
+	} {
+		for _, gen := range []testGen{
+			{name: "long-strings", build: func(n int) string { return buildInsertWithLongStrings(n, 1024) }},
 		} {
 			t.Run(tt.name+"/"+gen.name, func(t *testing.T) {
 				runner(t, gen, tt)
