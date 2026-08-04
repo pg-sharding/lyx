@@ -60,7 +60,8 @@ func BenchmarkInsertNestedQuotes(b *testing.B) {
 	}
 }
 
-// CI guard: parsing large INSERTs must stay under the given deadlines
+const perfRuns = 5
+
 func TestInsertManyTuplesPerf(t *testing.T) {
 	for _, tt := range []struct {
 		name     string
@@ -85,16 +86,22 @@ func TestInsertManyTuplesPerf(t *testing.T) {
 					t.Fatalf("parse failed: %v", err)
 				}
 
-				start := time.Now()
-				if _, _, err := lyx.Parse(query); err != nil {
-					t.Fatalf("parse failed: %v", err)
+				var total time.Duration
+				for i := 0; i < perfRuns; i++ {
+					start := time.Now()
+					if _, _, err := lyx.Parse(query); err != nil {
+						t.Fatalf("parse failed: %v", err)
+					}
+					total += time.Since(start)
 				}
-				elapsed := time.Since(start)
+				avg := total / perfRuns
 
-				if elapsed >= tt.deadline {
-					t.Fatalf("parsing %d tuples took %s, want < %s", tt.tuples, elapsed, tt.deadline)
+				if avg >= tt.deadline {
+					t.Fatalf("parsing %d tuples: avg over %d runs = %s, want < %s",
+						tt.tuples, perfRuns, avg, tt.deadline)
 				}
-				t.Logf("parsed %d tuples in %s (limit %s)", tt.tuples, elapsed, tt.deadline)
+				t.Logf("parsed %d tuples: avg %s over %d runs (limit %s)",
+					tt.tuples, avg, perfRuns, tt.deadline)
 			})
 		}
 	}
