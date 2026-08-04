@@ -105,6 +105,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
         singleQuoteString := |*
             any => {
                 tok = SCONST;
+
                 if  lex.data[( lex.p)] == '\'' {
 
                     if lex.p + 1 < lex.pe  && lex.data[( lex.p + 1)] == '\'' {
@@ -114,12 +115,14 @@ func (lex *Lexer) Lex(lval *yySymType) int {
                         {
                             ( lex.top)--; 
                             ( lex.cs) = ( lex.stack)[( lex.top)];
-                            ( lex.p)++; goto _out
+                            ( lex.p)++; 
+                            lval.str = lval.strB.String();
+                            goto _out
                         }
                     }
                 }
 
-                lval.str += string(lex.data[( lex.p)])
+                lval.strB.WriteByte(lex.data[lex.p])
             };
         *|;
         
@@ -129,7 +132,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             comment => {/* nothing */};
 
             [']  => { 
-                lval.str = ""
+                lval.strB.Reset();
                 fcall singleQuoteString;
             };
             
