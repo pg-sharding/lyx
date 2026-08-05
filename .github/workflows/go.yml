@@ -55,6 +55,5 @@ jobs:
     - name: Parse performance guard
       run: go test -v -run TestInsertManyTuplesPerf ./lyx/...
 
-    # Reports throughput numbers for the same workload for visibility.
     - name: Benchmarks
       run: go test -run '^$' -bench 'BenchmarkInsert' -benchmem ./lyx/...
