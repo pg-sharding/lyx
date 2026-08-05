@@ -11,6 +11,63 @@ import (
 
 const benchTuples = 250000
 
+// lexAll drives only the Ragel lexer (no yacc) until EOF and returns the
+// number of tokens produced. It is the correct way to benchmark the lexer in
+// isolation.
+func lexAll(query string) int {
+	tok := lyx.NewStringTokenizer(query)
+	n := 0
+	for tok.LexT() != 0 {
+		n++
+	}
+	return n
+}
+
+// buildSelectNoLiterals builds a long SELECT with only integer comparisons:
+//
+//	SELECT col0, col1, ... FROM t WHERE col0 = 0 AND col1 = 1 AND ...
+func buildSelectNoLiterals(cols int) string {
+	var b strings.Builder
+	b.WriteString("SELECT ")
+	for i := 0; i < cols; i++ {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		fmt.Fprintf(&b, "col%d", i)
+	}
+	b.WriteString(" FROM t WHERE ")
+	for i := 0; i < cols; i++ {
+		if i > 0 {
+			b.WriteString(" AND ")
+		}
+		fmt.Fprintf(&b, "col%d = %d", i, i)
+	}
+	return b.String()
+}
+
+// buildInsertNoLiterals builds a long INSERT with only integer values:
+//
+//	INSERT INTO t (col0, col1, ...) VALUES (0, 1, ...)
+func buildInsertNoLiterals(cols int) string {
+	var b strings.Builder
+	b.WriteString("INSERT INTO t (")
+	for i := 0; i < cols; i++ {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		fmt.Fprintf(&b, "col%d", i)
+	}
+	b.WriteString(") VALUES (")
+	for i := 0; i < cols; i++ {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		fmt.Fprintf(&b, "%d", i)
+	}
+	b.WriteByte(')')
+	return b.String()
+}
+
 func buildInsertWithLongStrings(n, strLen int) string {
 	val := strings.Repeat("x", strLen)
 	var b strings.Builder
@@ -102,6 +159,38 @@ func BenchmarkInsertNestedQuotes(b *testing.B) {
 		if _, _, err := lyx.Parse(query); err != nil {
 			b.Fatalf("parse failed: %v", err)
 		}
+	}
+}
+
+// BenchmarkLexerSelectNoLiterals measures the Ragel lexer throughput on a
+// wide SELECT with only identifier and integer tokens — no string literals.
+func BenchmarkLexerSelectNoLiterals(b *testing.B) {
+	for _, cols := range []int{100, 1000, 10000} {
+		query := buildSelectNoLiterals(cols)
+		b.Run(fmt.Sprintf("%d-cols", cols), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lexAll(query)
+			}
+		})
+	}
+}
+
+// BenchmarkLexerInsertNoLiterals measures the Ragel lexer throughput on a
+// wide INSERT with only integer values — no string literals.
+func BenchmarkLexerInsertNoLiterals(b *testing.B) {
+	for _, cols := range []int{100, 1000, 10000} {
+		query := buildInsertNoLiterals(cols)
+		b.Run(fmt.Sprintf("%d-cols", cols), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lexAll(query)
+			}
+		})
 	}
 }
 
