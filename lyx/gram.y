@@ -40,6 +40,7 @@ func NewLyxParser() LyxParser {
 	strB            strings.Builder
 	strlist			[]string
 	byte			byte
+	tmpP 		int
 	bytes			[]byte
 	int				int64
 	uint			uint64

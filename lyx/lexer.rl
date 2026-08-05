@@ -2,6 +2,7 @@ package lyx
 
 import (
     "strconv"
+    "unsafe"
 )
 
 %%{ 
@@ -104,6 +105,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
         singleQuoteString := |*
             any => {
+
                 tok = SCONST;
 
                 if  lex.data[( lex.p)] == '\'' {
@@ -113,16 +115,19 @@ func (lex *Lexer) Lex(lval *yySymType) int {
                     } else {
                         /* XXX: fix this mess */
                         {
+
+                            lval.str = unsafe.String(unsafe.SliceData( lex.data[lval.tmpP + 1: lex.p]), lex.p - lval.tmpP +1)
+
+
                             ( lex.top)--; 
                             ( lex.cs) = ( lex.stack)[( lex.top)];
                             ( lex.p)++; 
-                            lval.str = lval.strB.String();
+
                             goto _out
                         }
                     }
                 }
 
-                lval.strB.WriteByte(lex.data[lex.p])
             };
         *|;
         
@@ -132,7 +137,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             comment => {/* nothing */};
 
             [']  => { 
-                lval.strB.Reset();
+                lval.tmpP = lex.p
                 fcall singleQuoteString;
             };
             
