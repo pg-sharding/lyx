@@ -49,6 +49,46 @@ func buildSelectLiterals(ln int, lit_len int) string {
 	return b.String()
 }
 
+/*
+
+    ',' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOMMA; fbreak;};
+    '(' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TOPENBR; fbreak;};
+    ')' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCLOSEBR; fbreak;};
+    '[' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQOPENBR; fbreak;};
+    ']' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQCLOSEBR; fbreak;};
+    '.' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TDOT; fbreak;};
+    ';' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSEMICOLON; fbreak;};
+    ':' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOLON; fbreak;};
+    '+' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TPLUS; fbreak;};
+    '-' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; fbreak;};
+    '*' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMUL; fbreak;};
+   # TODO: support '\\' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMUL); fbreak;};
+    '%' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMOD; fbreak;};
+    '^' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TPOW; fbreak;};
+    '<' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; fbreak;};
+    '>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; fbreak;};
+    '=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEQ; fbreak;};
+
+    '<>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; fbreak;};
+    '<=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS_EQUALS; fbreak;};
+    '>=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER_EQUALS; fbreak;};
+    '!=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; fbreak;};
+*/
+
+func buildOperators(ln int) string {
+
+	var ops = []string{",", ")", "(", "[", "]", ".", "::", ";", ":", "+", "-", "*", "$", "%", "^", "<", ">", "=", "<>", "<=", ">=", "!="}
+	var b strings.Builder
+
+	for i := 0; i < ln; i++ {
+		b.WriteByte('\'')
+		b.WriteString(ops[i%len(ops)])
+		b.WriteByte('\'')
+		b.WriteByte(' ')
+	}
+	return b.String()
+}
+
 func buildInsertWithLongStrings(n, strLen int) string {
 	val := strings.Repeat("x", strLen)
 	var b strings.Builder
@@ -195,6 +235,20 @@ func BenchmarkLexerSelectLiterals(b *testing.B) {
 				}
 			})
 		}
+	}
+}
+
+func BenchmarkLexerOperators(b *testing.B) {
+	for _, ln := range []int{1e4, 1e5, 1e6} {
+		query := buildOperators(ln)
+		b.Run(fmt.Sprintf("ops-%d-len", ln), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lexAll(query)
+			}
+		})
 	}
 }
 
