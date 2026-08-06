@@ -417,7 +417,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /also/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ALSO; fbreak;};
             /always/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ALWAYS; fbreak;};
             /analyse/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYSE; fbreak;};
-            /any/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ANY; fbreak;};
+            /any/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT /* FIXME  */; fbreak;};
             /asensitive/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ASENSITIVE; fbreak;};
             /assertion/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ASSERTION; fbreak;};
             /assignment/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ASSIGNMENT; fbreak;};
