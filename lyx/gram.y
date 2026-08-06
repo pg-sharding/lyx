@@ -31,6 +31,14 @@ func NewLyxParser() LyxParser {
 	return yyNewParser()
 }
 
+func TokNames() []string {
+	var ret []string
+	for _, s := range yyToknames{
+		ret = append(ret, s)
+	}
+	return ret
+}
+
 %}
 
 // fields inside this union end up as the fields in a structure known

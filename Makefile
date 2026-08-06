@@ -6,7 +6,7 @@ lextest:
 	go test ./lyx/lx_test.go
 
 bench:
-	go test -run '^$$' -bench 'BenchmarkInsert' -benchmem ./lyx/...
+	go test -run '^$$' -bench 'Benchmark' -benchmem ./lyx/...
 
 yaccgen:
 	goyacc -o lyx/gram.go -p yy lyx/gram.y

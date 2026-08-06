@@ -11,6 +11,84 @@ import (
 
 const benchTuples = 250000
 
+// lexAll drives only the Ragel lexer (no yacc) until EOF and returns the
+// number of tokens produced. It is the correct way to benchmark the lexer in
+// isolation.
+func lexAll(query string) int {
+	tok := lyx.NewStringTokenizer(query)
+	n := 0
+	for tok.LexT() != 0 {
+		n++
+	}
+	return n
+}
+
+func buildSelectTokNames(ln int) string {
+	var b strings.Builder
+	b.WriteString("SELECT ")
+	toknames := lyx.TokNames()
+	for i := 0; i < ln; i++ {
+		b.WriteString(toknames[i%len(toknames)])
+	}
+	return b.String()
+}
+
+func buildSelectLiterals(ln int, lit_len int) string {
+
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	var b strings.Builder
+	b.Grow(ln*lit_len + 2*lit_len + ln /* spaces */)
+	for i := 0; i < ln; i++ {
+		b.WriteByte('\'')
+		for j := 0; j < lit_len; j++ {
+			b.WriteByte(charset[j%len(charset)])
+		}
+		b.WriteByte('\'')
+		b.WriteByte(' ')
+	}
+	return b.String()
+}
+
+/*
+
+    ',' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOMMA; fbreak;};
+    '(' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TOPENBR; fbreak;};
+    ')' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCLOSEBR; fbreak;};
+    '[' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQOPENBR; fbreak;};
+    ']' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQCLOSEBR; fbreak;};
+    '.' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TDOT; fbreak;};
+    ';' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSEMICOLON; fbreak;};
+    ':' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOLON; fbreak;};
+    '+' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TPLUS; fbreak;};
+    '-' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; fbreak;};
+    '*' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMUL; fbreak;};
+   # TODO: support '\\' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = int(TMUL); fbreak;};
+    '%' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMOD; fbreak;};
+    '^' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TPOW; fbreak;};
+    '<' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; fbreak;};
+    '>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; fbreak;};
+    '=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEQ; fbreak;};
+
+    '<>' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; fbreak;};
+    '<=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS_EQUALS; fbreak;};
+    '>=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER_EQUALS; fbreak;};
+    '!=' => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; fbreak;};
+*/
+
+func buildOperators(ln int) string {
+
+	var ops = []string{",", ")", "(", "[", "]", ".", "::", ";", ":", "+", "-", "*", "$", "%", "^", "<", ">", "=", "<>", "<=", ">=", "!="}
+	var b strings.Builder
+
+	for i := 0; i < ln; i++ {
+		b.WriteByte('\'')
+		b.WriteString(ops[i%len(ops)])
+		b.WriteByte('\'')
+		b.WriteByte(' ')
+	}
+	return b.String()
+}
+
 func buildInsertWithLongStrings(n, strLen int) string {
 	val := strings.Repeat("x", strLen)
 	var b strings.Builder
@@ -92,6 +170,31 @@ func BenchmarkInsertLongStrings(b *testing.B) {
 	}
 }
 
+func BenchmarkLexInsertLongStrings(b *testing.B) {
+	for _, tt := range []struct {
+		name   string
+		tuples int
+		strLen int
+	}{
+		{name: "1k-str/1k-tuples", tuples: 1000, strLen: 1024},
+		{name: "64k-str/100-tuples", tuples: 100, strLen: 64 * 1024},
+		{name: "640k-str/2-tuples", tuples: 2, strLen: 640 * 1024},
+	} {
+		b.Run(tt.name, func(b *testing.B) {
+			query := buildInsertWithLongStrings(tt.tuples, tt.strLen)
+
+			b.Run(fmt.Sprintf("%d-tups-%d-len", tt.tuples, tt.strLen), func(b *testing.B) {
+				b.SetBytes(int64(len(query)))
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					lexAll(query)
+				}
+			})
+		})
+	}
+}
+
 func BenchmarkInsertNestedQuotes(b *testing.B) {
 	query := buildInsertWithNestedQuotes(benchTuples)
 
@@ -101,6 +204,66 @@ func BenchmarkInsertNestedQuotes(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		if _, _, err := lyx.Parse(query); err != nil {
 			b.Fatalf("parse failed: %v", err)
+		}
+	}
+}
+
+func BenchmarkLexerSelectNoLiterals(b *testing.B) {
+	for _, ln := range []int{1e5, 1e6, 1e7} {
+		query := buildSelectTokNames(ln)
+		b.Run(fmt.Sprintf("%d-len", ln), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lexAll(query)
+			}
+		})
+	}
+}
+
+func BenchmarkLexerSelectLiterals(b *testing.B) {
+	for _, ln := range []int{1e4, 1e5, 1e6} {
+		for _, lit_len := range []int{2, 10, 1e2} {
+			query := buildSelectLiterals(ln, lit_len)
+			b.Run(fmt.Sprintf("%d-len-%d-lit-len", ln, lit_len), func(b *testing.B) {
+				b.SetBytes(int64(len(query)))
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					lexAll(query)
+				}
+			})
+		}
+	}
+}
+
+func BenchmarkLexerOperators(b *testing.B) {
+	for _, ln := range []int{1e4, 1e5, 1e6} {
+		query := buildOperators(ln)
+		b.Run(fmt.Sprintf("ops-%d-len", ln), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lexAll(query)
+			}
+		})
+	}
+}
+
+func BenchmarkLexerSelectLongLiterals(b *testing.B) {
+	for _, ln := range []int{1e1, 1e2, 1e3} {
+		for _, lit_len := range []int{1e3, 1e4, 1e5} {
+			query := buildSelectLiterals(ln, lit_len)
+			b.Run(fmt.Sprintf("long-%d-len-%d-lit-len", ln, lit_len), func(b *testing.B) {
+				b.SetBytes(int64(len(query)))
+				b.ReportAllocs()
+				b.ResetTimer()
+				for i := 0; i < b.N; i++ {
+					lexAll(query)
+				}
+			})
 		}
 	}
 }
