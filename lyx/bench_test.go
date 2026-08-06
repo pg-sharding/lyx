@@ -9,8 +9,6 @@ import (
 	"github.com/pg-sharding/lyx/lyx"
 )
 
-const benchTuples = 250000
-
 // lexAll drives only the Ragel lexer (no yacc) until EOF and returns the
 // number of tokens produced. It is the correct way to benchmark the lexer in
 // isolation.
@@ -81,9 +79,7 @@ func buildOperators(ln int) string {
 	var b strings.Builder
 
 	for i := 0; i < ln; i++ {
-		b.WriteByte('\'')
 		b.WriteString(ops[i%len(ops)])
-		b.WriteByte('\'')
 		b.WriteByte(' ')
 	}
 	return b.String()
@@ -133,15 +129,56 @@ func buildInsertWithNestedQuotes(n int) string {
 }
 
 func BenchmarkInsertManyTuples(b *testing.B) {
-	query := buildInsertWithManyTuples(benchTuples)
+	for _, benchTuples := range []int{1e4, 1e5, 3e5} {
+		query := buildInsertWithManyTuples(benchTuples)
 
-	b.SetBytes(int64(len(query)))
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if _, _, err := lyx.Parse(query); err != nil {
-			b.Fatalf("parse failed: %v", err)
-		}
+		b.Run(fmt.Sprintf("%d-len", benchTuples), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+
+				if _, _, err := lyx.Parse(query); err != nil {
+					b.Fatalf("parse failed: %v", err)
+				}
+
+			}
+		})
+	}
+}
+
+func BenchmarkLexInsertManyTuples(b *testing.B) {
+
+	for _, benchTuples := range []int{1e4, 1e5, 3e5} {
+		query := buildInsertWithManyTuples(benchTuples)
+
+		b.Run(fmt.Sprintf("%d-len", benchTuples), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lexAll(query)
+			}
+		})
+	}
+}
+
+func BenchmarkInsertNestedQuotes(b *testing.B) {
+	for _, benchTuples := range []int{1e4, 1e5, 3e5} {
+		query := buildInsertWithNestedQuotes(benchTuples)
+
+		b.Run(fmt.Sprintf("%d-len", benchTuples), func(b *testing.B) {
+			b.SetBytes(int64(len(query)))
+			b.ReportAllocs()
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+
+				if _, _, err := lyx.Parse(query); err != nil {
+					b.Fatalf("parse failed: %v", err)
+				}
+
+			}
+		})
 	}
 }
 
@@ -192,19 +229,6 @@ func BenchmarkLexInsertLongStrings(b *testing.B) {
 				}
 			})
 		})
-	}
-}
-
-func BenchmarkInsertNestedQuotes(b *testing.B) {
-	query := buildInsertWithNestedQuotes(benchTuples)
-
-	b.SetBytes(int64(len(query)))
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if _, _, err := lyx.Parse(query); err != nil {
-			b.Fatalf("parse failed: %v", err)
-		}
 	}
 }
 
