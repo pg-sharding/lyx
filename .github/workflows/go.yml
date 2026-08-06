@@ -11,6 +11,17 @@ on:
 
 jobs:
 
+  generate-check:
+    name: check generated code
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 1
+
+    - name: check generated code
+      run: make generate && git diff --exit-code
+
   lint:
     runs-on: ubuntu-latest
     steps:
