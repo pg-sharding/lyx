@@ -262,7 +262,7 @@ func TestSimple(t *testing.T) {
 			`,
 			exp: []int{
 				lyx.PREPARE, lyx.IDENT,
-				lyx.TOPENBR, lyx.IDENT,
+				lyx.TOPENBR, lyx.TEXT_P,
 				lyx.TCLOSEBR, lyx.AS, lyx.SELECT, lyx.PARAM,
 			},
 			err: nil,

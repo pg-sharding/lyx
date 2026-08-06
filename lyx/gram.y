@@ -4714,18 +4714,18 @@ opt_nulls_order: NULLS_LA FIRST_P			{}
 
 
 CreateStmt:
-    CREATE OptTemp TABLE table_name TOPENBR OptTableElementList TCLOSEBR OptPartitionSpec OptWith anything {
+    CREATE OptTemp TABLE qualified_name TOPENBR OptTableElementList TCLOSEBR OptPartitionSpec OptWith anything {
         $$ = &CreateTable {
             TableRv: $4,
             TableElts: $6,
         }
-    } | CREATE OptTemp TABLE IF_P NOT EXISTS table_name TOPENBR OptTableElementList TCLOSEBR OptPartitionSpec OptWith anything {
+    } | CREATE OptTemp TABLE IF_P NOT EXISTS qualified_name TOPENBR OptTableElementList TCLOSEBR OptPartitionSpec OptWith anything {
         $$ = &CreateTable {
 			IfNotExists: true,
             TableRv: $7,
             TableElts: $9,
         }
-    } | CREATE OptTemp TABLE table_name PARTITION OF table_name PartitionBoundSpec OptPartitionSpec 
+    } | CREATE OptTemp TABLE qualified_name PARTITION OF table_name PartitionBoundSpec OptPartitionSpec 
 		table_access_method_clause OptWith {
         $$ = &CreateTable {
             TableRv: $4,

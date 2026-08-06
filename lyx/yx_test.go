@@ -4508,7 +4508,7 @@ func TestCreateFail(t *testing.T) {
 			query: "create table ASYMMETRIC ( i int )",
 		},
 		{
-			query: "create table INTEGER ( i int )",
+			query: "create table TABLESAMPLE ( i int )",
 		},
 		{
 			query: "create table xx ( i SELECT )",
