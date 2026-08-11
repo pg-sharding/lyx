@@ -5121,6 +5121,18 @@ func TestMiscQ(t *testing.T) {
 				},
 			},
 		},
+
+		{
+			query: `select  coalesce(1, 0);`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.AExprIConst{
+						Value: 1,
+					},
+				},
+			},
+		},
 		{
 			query: `select right('wejoiodiw', 1);`,
 			exp: &lyx.Select{
