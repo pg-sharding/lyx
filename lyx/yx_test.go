@@ -5100,6 +5100,28 @@ func TestMiscQ(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `select f(1/2);`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "f",
+						Args: []lyx.Node{
+							&lyx.AExprOp{
+								Left: &lyx.AExprIConst{
+									Value: 1,
+								},
+								Right: &lyx.AExprIConst{
+									Value: 2,
+								},
+								Op: "/",
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			query: `select right('wejoiodiw', 1);`,
 			exp: &lyx.Select{
 				Where: &lyx.AExprEmpty{},
