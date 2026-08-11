@@ -5100,6 +5100,25 @@ func TestMiscQ(t *testing.T) {
 
 	for _, tt := range []tcase{
 		{
+			query: `select right('wejoiodiw', 1);`,
+			exp: &lyx.Select{
+				Where: &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{
+					&lyx.FuncApplication{
+						Name: "right",
+						Args: []lyx.Node{
+							&lyx.AExprSConst{
+								Value: "wejoiodiw",
+							},
+							&lyx.AExprIConst{
+								Value: 1,
+							},
+						},
+					},
+				},
+			},
+		},
+		{
 			query: `SELECT CURRENT_USER`,
 			exp: &lyx.Select{
 				Where: &lyx.AExprEmpty{},
