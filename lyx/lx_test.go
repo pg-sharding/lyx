@@ -440,3 +440,14 @@ func TestSimple(t *testing.T) {
 		assert.Equal(tt.exp, res, "test %d: %+v,", i, tt.query)
 	}
 }
+
+func TestDivisionOperator(t *testing.T) {
+	tokenizer := lyx.NewStringTokenizer(`SELECT 12 / 3`)
+
+	var tokens []int
+	for token := tokenizer.LexT(); token != 0; token = tokenizer.LexT() {
+		tokens = append(tokens, token)
+	}
+
+	assert.Equal(t, []int{lyx.SELECT, lyx.ICONST, lyx.TDIV, lyx.ICONST}, tokens)
+}
