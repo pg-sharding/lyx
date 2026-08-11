@@ -1814,16 +1814,6 @@ ConstTypename:
 		;
 
 
-type_function_name:	IDENT
-					{ 
-						$$ = $1
-					} |
-					SCONST
-					{ 
-						$$ = $1
-					}
-
-
 /*
  * GenericType covers all type names that don't have special syntax mandated
  * by the standard, including qualified names.  We also allow type modifiers.
@@ -2227,7 +2217,21 @@ opt_collate_clause:
 		;
 
 
-func_name: ColId { $$ = $1 } |  ColId indirection { $$ = $2[0] }
+/*
+ * The production for a qualified func_name has to exactly match the
+ * production for a qualified columnref, because we cannot tell which we
+ * are parsing until we see what comes after it ('(' or Sconst for a func_name,
+ * anything else for a columnref).  Therefore we allow 'indirection' which
+ * may contain subscripts, and reject that case in the C code.  (If we
+ * ever implement SQL99-like methods, such syntax may actually become legal!)
+ */
+func_name: 	type_function_name
+					{$$ = $1 } 
+			| ColId indirection
+					{ $$ = $2[0] }
+			| ColId { $$ = $1 }
+		;
+
 
 
 OptTableFuncElementList:
@@ -2957,7 +2961,7 @@ a_expr:
 					$$ = &AExprOp{
 						Left: $1,
 						Right: $3,
-						Op: "ILIKE",
+						Op: "LIKE",
 					}
 				}
 			| a_expr NOT LIKE a_expr							%prec NOT_LA
@@ -5289,6 +5293,7 @@ ColId:		IDENT									{ $$ = $1; }
 /* Type/function identifier --- names that can be type or function names.
  */
 type_function_name:	IDENT							{ $$ = $1; }
+			| SCONST							{ $$ = $1; }
 			| unreserved_keyword					{ $$ = $1; }
 			| type_func_name_keyword				{ $$ = $1; }
 		;
