@@ -196,6 +196,20 @@ func TestSimple(t *testing.T) {
 			exp: []int{lyx.PARAM},
 			err: nil,
 		},
+		// https://github.com/postgres/postgres/blob/2f094e7/src/backend/parser/scan.l#L364
+		{
+			query: `
+			',()[].;:|+-*/%^<>='
+			`,
+			exp: []int{lyx.SCONST},
+			err: nil,
+		},
+		{
+			query: `SELECT coalesce(1, 2)
+			`,
+			exp: []int{lyx.SELECT, lyx.COALESCE, lyx.TOPENBR, lyx.ICONST, lyx.TCOMMA, lyx.ICONST, lyx.TCLOSEBR},
+			err: nil,
+		},
 		{
 			query: `
 			'$14'
@@ -209,6 +223,11 @@ func TestSimple(t *testing.T) {
 			`,
 			exp: []int{lyx.SELECT, lyx.ICONST},
 			err: nil,
+		},
+		{
+			query: `select pg_is_in_recovery() from tt /* __spqr__target_session_attrs: smart-read-write */`,
+			exp:   []int{lyx.SELECT, lyx.IDENT, lyx.TOPENBR, lyx.TCLOSEBR, lyx.FROM, lyx.IDENT},
+			err:   nil,
 		},
 		{
 			query: `

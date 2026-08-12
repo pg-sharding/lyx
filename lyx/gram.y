@@ -5625,6 +5625,9 @@ func_expr_common_subexpr:
 				}
 			| COALESCE TOPENBR expr_list TCLOSEBR
 				{
+					if len($3) != 0 {
+						$$ = $3[0];
+					}
 				}
 			| GREATEST TOPENBR expr_list TCLOSEBR
 				{
