@@ -6428,6 +6428,11 @@ func TestError(t *testing.T) {
 	}
 }
 
+func TestJSONTypeCast(t *testing.T) {
+	_, _, err := lyx.Parse(`SELECT CAST(payload AS JSON) FROM events`)
+	assert.NoError(t, err)
+}
+
 func TestForKeyShare(t *testing.T) {
 	assert := assert.New(t)
 

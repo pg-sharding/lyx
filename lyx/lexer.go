@@ -3758,7 +3758,7 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = INVOKER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 311:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = JSON; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 312:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = KEYS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
