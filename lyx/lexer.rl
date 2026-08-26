@@ -508,7 +508,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /insensitive/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INSENSITIVE; fbreak;};
             /instead/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INSTEAD; fbreak;};
             /invoker/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = INVOKER; fbreak;};
-            /json/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = JSON; fbreak;};
+            /json/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /keys/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = KEYS; fbreak;};
             /label/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LABEL; fbreak;};
             /language/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LANGUAGE; fbreak;};
