@@ -437,7 +437,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /checkpoint/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /class/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /close/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
-            /coalesce/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
+            /coalesce/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = COALESCE; fbreak;};
             /collation/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /columns/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /column/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};

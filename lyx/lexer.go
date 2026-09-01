@@ -3560,7 +3560,7 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 240:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = COALESCE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 241:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
