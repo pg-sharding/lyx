@@ -1123,6 +1123,32 @@ func TestSelect(t *testing.T) {
 			},
 			err: nil,
 		},
+		{
+			query: `SELECT * FROM t TABLESAMPLE SYSTEM (1.0)`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "t",
+					},
+				},
+				Where:      &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+			},
+			err: nil,
+		},
+		{
+			query: `SELECT * FROM t TABLESAMPLE SYSTEM (1.0) REPEATABLE (1)`,
+			exp: &lyx.Select{
+				FromClause: []lyx.FromClauseNode{
+					&lyx.RangeVar{
+						RelationName: "t",
+					},
+				},
+				Where:      &lyx.AExprEmpty{},
+				TargetList: []lyx.Node{&lyx.AExprEmpty{}},
+			},
+			err: nil,
+		},
 	} {
 		tmp, _, err := lyx.Parse(tt.query)
 
