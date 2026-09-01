@@ -619,11 +619,11 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /symmetric/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /sysid/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /system/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
-            /tablesample/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
+            /tablesample/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLESAMPLE; fbreak;};
             /tablespace/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /tables/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /template/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
-            /text/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
+            /text/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT; fbreak;};
             /ties/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /trailing/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /transform/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
