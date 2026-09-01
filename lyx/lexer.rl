@@ -623,7 +623,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /tablespace/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /tables/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /template/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
-            /text/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT; fbreak;};
+            /text/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT_P; fbreak;};
             /ties/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /trailing/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /transform/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
