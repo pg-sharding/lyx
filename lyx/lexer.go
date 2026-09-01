@@ -3470,727 +3470,727 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = STATISTICS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 209:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ABSENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 210:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ABSOLUTE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 211:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ACCESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 212:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ACTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 213:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ADD_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 214:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ADMIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 215:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = AFTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 216:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = AGGREGATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 217:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ALSO; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 218:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ALWAYS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 219:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 220:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT /* FIXME  */; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 221:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ASENSITIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 222:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ASSERTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 223:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ASSIGNMENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 224:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ATOMIC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 225:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ATTACH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 226:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ATTRIBUTE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 227:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = AUTHORIZATION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 228:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BACKWARD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 229:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BEFORE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 230:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BOTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 231:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CACHE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 232:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CALLED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 234:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CASCADED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 235:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CATALOG_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 236:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CHAIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 237:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CHECKPOINT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 238:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CLASS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 239:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CLOSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 240:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COALESCE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 241:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COLLATION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 242:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COLUMNS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 244:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMENTS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 246:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COMPRESSION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 247:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONFIGURATION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 248:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONNECTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 249:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONSTRAINTS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 250:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONTENT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 251:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONTINUE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 252:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COST; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 253:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CUBE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 254:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CURSOR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 256:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DECLARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 257:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFAULTS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 258:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFERRED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 259:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFINER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 260:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEPENDS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 261:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DETACH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 262:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DICTIONARY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 263:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DISABLE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 264:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DOCUMENT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 265:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DOMAIN_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 266:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EACH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 267:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ENABLE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 268:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ENCRYPTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 269:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EVENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 270:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCLUDING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 271:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCLUSIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 272:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCLUDE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 273:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXPRESSION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 274:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXTERNAL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 275:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FAMILY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 276:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FINALIZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 277:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FOLLOWING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 278:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FORCE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 279:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FORMAT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 280:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FORWARD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 281:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FREEZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 282:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = FUNCTIONS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 284:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GENERATED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 285:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GLOBAL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 286:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GRANTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 287:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GREATEST; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 288:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GROUPING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 289:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = GROUPS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 290:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = HANDLER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 291:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = HOLD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 292:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENTITY_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 293:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IMMEDIATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 294:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IMMUTABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 295:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IMPLICIT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 296:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IMPORT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 297:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INCLUDING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 298:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INCLUDE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 299:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INCREMENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 300:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 301:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INDEXES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 302:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INHERITS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 304:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INITIALLY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 305:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INLINE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 306:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INOUT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 307:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INPUT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 308:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INSENSITIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 309:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INSTEAD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 310:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INVOKER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 311:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 312:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = KEYS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 313:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LABEL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 314:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LANGUAGE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 315:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LARGE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 316:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LEADING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 317:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LEAKPROOF; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 318:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LEAST; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 319:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LISTEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 320:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LOAD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 321:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCATION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 323:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = LOGGED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 324:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MAPPING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 325:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MATCHED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 327:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MATERIALIZED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 328:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MAXVALUE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 329:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MERGE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 330:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = METHOD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 331:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MINVALUE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 332:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MODE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 333:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = MOVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 335:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NATURAL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 336:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NEW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 337:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NEXT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 338:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NFKC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 339:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NFKD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 340:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NFC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 341:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NFD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 342:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NONE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 343:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NORMALIZED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 344:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTIFY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 345:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NOWAIT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 346:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NULLIF; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 347:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OBJECT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 349:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OLD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 350:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OPTIONS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 352:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OTHERS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 354:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OVERLAPS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 355:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OVERLAY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 356:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OVERRIDING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 357:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OWNED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 358:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = OWNER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 359:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PARALLEL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 360:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PARAMETER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 361:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PARSER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 362:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PARTIAL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 363:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PASSING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 364:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PASSWORD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 365:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PLACING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 366:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = POLICY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 367:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = POSITION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 368:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PRECEDING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 369:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PRECISION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 370:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PREPARED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 371:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PRESERVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 372:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PRIOR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 373:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PRIVILEGES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 374:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PROCEDURAL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 375:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PROCEDURES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 377:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PUBLICATION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 378:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RANGE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 379:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REASSIGN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 380:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RECHECK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 381:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REFERENCING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 382:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REFRESH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 384:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REINDEX; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 385:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RELATIVE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 386:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RELEASE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 387:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RENAME; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 388:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REPLACE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 389:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REPLICA; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 390:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RESTART; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 391:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RETURNS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 393:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLLUP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 394:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ROUTINES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 396:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RULE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 397:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SCALAR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 398:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SCHEMAS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 399:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SCROLL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 400:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SECURITY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 402:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SERVER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 403:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SETS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 404:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SIMILAR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 405:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SIMPLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 406:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SNAPSHOT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 407:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SOME; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 408:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SQL_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 409:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 410:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STANDALONE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 411:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STATEMENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 412:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STORAGE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 413:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STORED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 414:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STRICT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 415:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STRIP_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 416:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SUBSCRIPTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 417:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SUBSTRING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 418:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SUPPORT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 419:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SYMMETRIC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 420:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SYSID; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 421:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SYSTEM_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 422:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLESAMPLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 423:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLESPACE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 425:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TEMPLATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 426:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 427:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TIES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 428:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRAILING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 429:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRANSFORM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 430:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TREAT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 431:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRIGGER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 432:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRIM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 433:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRUSTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 434:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPES_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 435:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UESCAPE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 436:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNBOUNDED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 437:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNENCRYPTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 438:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNKNOWN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 439:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNLISTEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 440:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNLOGGED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 441:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNTIL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 442:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = USER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 443:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VALIDATE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 444:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VALIDATOR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 447:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VARIADIC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 448:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VARYING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 449:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VERBOSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 450:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VERSION_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 451:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VIEWS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 453:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VOLATILE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 454:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WHITESPACE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 455:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WINDOW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 456:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WITHIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 457:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WORK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 458:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WRAPPER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 459:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLATTRIBUTES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 460:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLCONCAT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 461:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLELEMENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 462:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLEXISTS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 463:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLFOREST; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 464:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLNAMESPACES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 465:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLPARSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 466:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLPI; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 467:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLROOT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 468:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLSERIALIZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 469:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = XMLTABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 471:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = YES_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 473:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4411,7 +4411,7 @@ tr269:
 //line lyx/lexer.rl:433
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = CALL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr278:
 //line lyx/lexer.rl:301
@@ -4441,13 +4441,13 @@ tr342:
 //line lyx/lexer.rl:443
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = COLUMN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr350:
 //line lyx/lexer.rl:445
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr353:
 //line lyx/lexer.rl:386
@@ -4465,7 +4465,7 @@ tr454:
 //line lyx/lexer.rl:455
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = DATA_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr473:
 //line lyx/lexer.rl:176
@@ -4501,7 +4501,7 @@ tr717:
 //line lyx/lexer.rl:483
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = FUNCTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr738:
 //line lyx/lexer.rl:251
@@ -4531,7 +4531,7 @@ tr846:
 //line lyx/lexer.rl:503
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = INHERIT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr877:
 //line lyx/lexer.rl:168
@@ -4555,19 +4555,19 @@ tr978:
 //line lyx/lexer.rl:522
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCK_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr998:
 //line lyx/lexer.rl:526
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = MATCH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1046:
 //line lyx/lexer.rl:534
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = NAME_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1068:
 //line lyx/lexer.rl:324
@@ -4603,7 +4603,7 @@ tr1125:
 //line lyx/lexer.rl:548
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = OFF; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1132:
 //line lyx/lexer.rl:323
@@ -4615,7 +4615,7 @@ tr1145:
 //line lyx/lexer.rl:551
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = OPTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1147:
 //line lyx/lexer.rl:249
@@ -4627,7 +4627,7 @@ tr1163:
 //line lyx/lexer.rl:553
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = OUT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1168:
 //line lyx/lexer.rl:404
@@ -4645,25 +4645,25 @@ tr1284:
 //line lyx/lexer.rl:576
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = PROCEDURE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1337:
 //line lyx/lexer.rl:583
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = REF_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1395:
 //line lyx/lexer.rl:592
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = RETURN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1421:
 //line lyx/lexer.rl:595
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = ROUTINE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1423:
 //line lyx/lexer.rl:306
@@ -4681,7 +4681,7 @@ tr1487:
 //line lyx/lexer.rl:601
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = SEQUENCE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1505:
 //line lyx/lexer.rl:238
@@ -4699,7 +4699,7 @@ tr1627:
 //line lyx/lexer.rl:624
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1640:
 //line lyx/lexer.rl:222
@@ -4723,19 +4723,19 @@ tr1786:
 //line lyx/lexer.rl:645
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = VALID; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1793:
 //line lyx/lexer.rl:646
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = VALUE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1819:
 //line lyx/lexer.rl:652
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = VIEW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1849:
 //line lyx/lexer.rl:279
@@ -4747,7 +4747,7 @@ tr1867:
 //line lyx/lexer.rl:670
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = XML_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 	st8:
 //line NONE:1
