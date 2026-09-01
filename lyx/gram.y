@@ -5414,6 +5414,9 @@ relation_expr:
 			// 	}
 		;
 
+// /*
+//  * TABLESAMPLE decoration in a FROM item
+//  */
 tablesample_clause:
 	TABLESAMPLE func_name TOPENBR expr_list TCLOSEBR opt_repeatable_clause
 	{
@@ -5435,16 +5438,6 @@ relation_expr_list:
 		;
 
 
-
-// /*
-//  * TABLESAMPLE decoration in a FROM item
-//  */
-// tablesample_clause:
-// 			TABLESAMPLE func_name '(' expr_list ')' opt_repeatable_clause
-// 				{
-
-// 				}
-// 		;
 alias_clause:
 			AS ColId TOPENBR name_list TCLOSEBR
 				{
