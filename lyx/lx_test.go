@@ -445,6 +445,20 @@ func TestSimple(t *testing.T) {
 				lyx.TCLOSEBR,
 			},
 		},
+		{
+			query: `SELECT * FROM t TABLESAMPLE SYSTEM (1.0)`,
+			exp: []int{
+				lyx.SELECT,
+				lyx.TMUL,
+				lyx.FROM,
+				lyx.IDENT,
+				lyx.TABLESAMPLE,
+				lyx.IDENT,
+				lyx.TOPENBR,
+				lyx.SCONST,
+				lyx.TCLOSEBR,
+			},
+		},
 	} {
 		t := lyx.NewStringTokenizer(tt.query)
 		var res []int
