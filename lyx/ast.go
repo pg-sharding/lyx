@@ -475,8 +475,9 @@ type ParamRef struct {
 func (*ParamRef) iNode() {}
 
 type PrepareStmt struct {
-	Name      string
-	Statement Node
+	Name        string
+	Statement   Node
+	QueryOffset int // byte offset of the inner query (right after AS keyword)
 }
 
 func (*PrepareStmt) iNode() {}

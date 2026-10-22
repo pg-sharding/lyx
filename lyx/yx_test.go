@@ -2,6 +2,7 @@ package lyx_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/pg-sharding/lyx/lyx"
@@ -4063,7 +4064,8 @@ func TestParams(t *testing.T) {
 		{
 			query: "PREPARE P(TEXT) AS SELECT $1",
 			exp: &lyx.PrepareStmt{
-				Name: "P",
+				Name:        "P",
+				QueryOffset: 18,
 				Statement: &lyx.Select{
 					TargetList: []lyx.Node{
 						&lyx.ParamRef{
@@ -4071,6 +4073,28 @@ func TestParams(t *testing.T) {
 						},
 					},
 					Where: &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+		// PREPARE name equals table name used in the query body (issue #3082)
+		{
+			query: "PREPARE items (INTEGER) AS SELECT v FROM items WHERE id = $1",
+			exp: &lyx.PrepareStmt{
+				Name:        "items",
+				QueryOffset: 26,
+				Statement: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.ColumnRef{ColName: "v"},
+					},
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{RelationName: "items"},
+					},
+					Where: &lyx.AExprOp{
+						Op:    "=",
+						Left:  &lyx.ColumnRef{ColName: "id"},
+						Right: &lyx.ParamRef{Number: 1},
+					},
 				},
 			},
 			err: nil,
@@ -4135,6 +4159,39 @@ func TestParams(t *testing.T) {
 		assert.NoError(err, "query %s", tt.query)
 
 		assert.Equal(tt.exp, tmp[0], tt.query)
+	}
+}
+
+func TestPrepareQueryOffset(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query       string
+		innerQuery  string
+	}
+
+	for _, tt := range []tcase{
+		{
+			query:      "PREPARE items (INTEGER) AS SELECT v FROM items WHERE id = $1",
+			innerQuery: "SELECT v FROM items WHERE id = $1",
+		},
+		{
+			query:      "PREPARE pair (INTEGER) AS SELECT * FROM pair($1) AS (a INTEGER, b INTEGER)",
+			innerQuery: "SELECT * FROM pair($1) AS (a INTEGER, b INTEGER)",
+		},
+		{
+			query:      "PREPARE x AS SELECT 1",
+			innerQuery: "SELECT 1",
+		},
+	} {
+		tmp, _, err := lyx.Parse(tt.query)
+		assert.NoError(err, "query %s", tt.query)
+
+		ps, ok := tmp[0].(*lyx.PrepareStmt)
+		assert.True(ok, "expected PrepareStmt for %s", tt.query)
+
+		got := strings.TrimLeft(tt.query[ps.QueryOffset:], " \t\n\r")
+		assert.Equal(tt.innerQuery, got, tt.query)
 	}
 }
 

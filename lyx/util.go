@@ -27,7 +27,9 @@ func NewStringTokenizer(sql string) *Tokenizer {
 }
 
 func (t *Tokenizer) Lex(lval *yySymType) int {
-	return t.l.Lex(lval)
+	ret := t.l.Lex(lval)
+	lval.pos = t.l.te
+	return ret
 }
 
 func (t *Tokenizer) LexT() int {
