@@ -1,5 +1,14 @@
 package lyx
 
+// ParseLoc represents the location of a token within the original query
+// text, measured as a byte offset from the start of the query, like the
+// ParseLoc typedef in PostgreSQL. ParseLocUnknown means the location is
+// unknown.
+type ParseLoc = int
+
+// ParseLocUnknown is used for unknown locations, as in PostgreSQL.
+const ParseLocUnknown ParseLoc = -1
+
 // Node represents any query.
 type Node interface {
 	iNode()
@@ -191,6 +200,14 @@ type CommonTableExpr struct {
 type SelectLimit struct {
 	LimitOffset Node
 	LimitCount  Node
+	// OffsetLoc is the location of the OFFSET token, if present,
+	// or ParseLocUnknown, like the offsetLoc field of SelectLimit in
+	// PostgreSQL.
+	OffsetLoc ParseLoc
+	// CountLoc is the location of the LIMIT/FETCH token, if present,
+	// or ParseLocUnknown, like the countLoc field of SelectLimit in
+	// PostgreSQL.
+	CountLoc ParseLoc
 	// limitOption LimitOption ;
 }
 
@@ -229,6 +246,8 @@ type Grant struct {
 
 type ValueClause struct {
 	Values [][]Node
+	// ValuesLoc is the location of the VALUES token, or ParseLocUnknown.
+	ValuesLoc ParseLoc
 }
 
 type Insert struct {
@@ -477,6 +496,10 @@ func (*ParamRef) iNode() {}
 type PrepareStmt struct {
 	Name      string
 	Statement Node
+	// QueryLoc is the location of the first token of the prepared
+	// statement, i.e. of the query right after the AS keyword, or
+	// ParseLocUnknown.
+	QueryLoc ParseLoc
 }
 
 func (*PrepareStmt) iNode() {}

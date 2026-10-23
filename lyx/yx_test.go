@@ -2,6 +2,7 @@ package lyx_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/pg-sharding/lyx/lyx"
@@ -736,6 +737,8 @@ func TestSelect(t *testing.T) {
 		   LIMIT 5 OFFSET 0`,
 			exp: &lyx.Select{
 				Limit: &lyx.SelectLimit{
+					CountLoc:  115,
+					OffsetLoc: 123,
 					LimitOffset: &lyx.AExprIConst{
 						Value: 0,
 					},
@@ -899,6 +902,8 @@ func TestSelect(t *testing.T) {
 			query: "select * from xx where i = 1 limit 7 ",
 			exp: &lyx.Select{
 				Limit: &lyx.SelectLimit{
+					OffsetLoc: lyx.ParseLocUnknown,
+					CountLoc:  29,
 					LimitCount: &lyx.AExprIConst{
 						Value: 7,
 					},
@@ -984,6 +989,8 @@ func TestSelect(t *testing.T) {
 			query: "select * from xx where i = 1 order by i limit 7 ",
 			exp: &lyx.Select{
 				Limit: &lyx.SelectLimit{
+					OffsetLoc: lyx.ParseLocUnknown,
+					CountLoc:  40,
 					LimitCount: &lyx.AExprIConst{
 						Value: 7,
 					},
@@ -1055,6 +1062,8 @@ func TestSelect(t *testing.T) {
 			`,
 			exp: &lyx.Select{
 				Limit: &lyx.SelectLimit{
+					OffsetLoc: lyx.ParseLocUnknown,
+					CountLoc:  59,
 					LimitCount: &lyx.AExprIConst{
 						Value: 1,
 					},
@@ -1079,6 +1088,8 @@ func TestSelect(t *testing.T) {
 			`,
 			exp: &lyx.Select{
 				Limit: &lyx.SelectLimit{
+					CountLoc:  59,
+					OffsetLoc: 67,
 					LimitOffset: &lyx.AExprIConst{
 						Value: 0,
 					},
@@ -1866,6 +1877,7 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"id", "test_field"},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 40,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 560},
@@ -1886,6 +1898,7 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"id"},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 20,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 1},
@@ -1952,6 +1965,7 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"code", "title", "did", "date_prod", "kind"},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 57,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{Value: "T_601"},
@@ -2010,6 +2024,7 @@ func TestInsert(t *testing.T) {
 					"id2",
 				},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 24,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 1},
@@ -2030,6 +2045,7 @@ func TestInsert(t *testing.T) {
 				},
 				Columns: []string{"j", "i", "w_id"},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 31,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 2121221},
@@ -2056,6 +2072,7 @@ func TestInsert(t *testing.T) {
 					"id2",
 				},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 24,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 1},
@@ -2124,6 +2141,7 @@ VALUES(2822, ROW('none', '0'));
 
 				Columns: []string{"id", "info"},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 40,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{
@@ -2154,6 +2172,7 @@ VALUES(2822, ROW('none', '0'), ''::bytea);
 				},
 				Columns: []string{"id", "info", "bytes"},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 48,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{
@@ -2214,6 +2233,7 @@ func TestInsertComplex(t *testing.T) {
 					"record_expiry",
 				},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 147,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{
@@ -2269,6 +2289,7 @@ func TestInsertComplex(t *testing.T) {
 					"id",
 				},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 61,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{
@@ -2303,6 +2324,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 					Alias:        "",
 				},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 177,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{Value: "1970-01-01 12:00:00.5"},
@@ -4063,7 +4085,8 @@ func TestParams(t *testing.T) {
 		{
 			query: "PREPARE P(TEXT) AS SELECT $1",
 			exp: &lyx.PrepareStmt{
-				Name: "P",
+				Name:     "P",
+				QueryLoc: 19,
 				Statement: &lyx.Select{
 					TargetList: []lyx.Node{
 						&lyx.ParamRef{
@@ -4071,6 +4094,28 @@ func TestParams(t *testing.T) {
 						},
 					},
 					Where: &lyx.AExprEmpty{},
+				},
+			},
+			err: nil,
+		},
+		// PREPARE name equals table name used in the query body (issue #3082)
+		{
+			query: "PREPARE items (INTEGER) AS SELECT v FROM items WHERE id = $1",
+			exp: &lyx.PrepareStmt{
+				Name:     "items",
+				QueryLoc: 27,
+				Statement: &lyx.Select{
+					TargetList: []lyx.Node{
+						&lyx.ColumnRef{ColName: "v"},
+					},
+					FromClause: []lyx.FromClauseNode{
+						&lyx.RangeVar{RelationName: "items"},
+					},
+					Where: &lyx.AExprOp{
+						Op:    "=",
+						Left:  &lyx.ColumnRef{ColName: "id"},
+						Right: &lyx.ParamRef{Number: 1},
+					},
 				},
 			},
 			err: nil,
@@ -4135,6 +4180,96 @@ func TestParams(t *testing.T) {
 		assert.NoError(err, "query %s", tt.query)
 
 		assert.Equal(tt.exp, tmp[0], tt.query)
+	}
+}
+
+func TestPrepareQueryLoc(t *testing.T) {
+	assert := assert.New(t)
+
+	type tcase struct {
+		query      string
+		innerQuery string
+	}
+
+	for _, tt := range []tcase{
+		{
+			query:      "PREPARE items (INTEGER) AS SELECT v FROM items WHERE id = $1",
+			innerQuery: "SELECT v FROM items WHERE id = $1",
+		},
+		{
+			query:      "PREPARE pair (INTEGER) AS SELECT * FROM pair($1) AS (a INTEGER, b INTEGER)",
+			innerQuery: "SELECT * FROM pair($1) AS (a INTEGER, b INTEGER)",
+		},
+		{
+			query:      "PREPARE x AS SELECT 1",
+			innerQuery: "SELECT 1",
+		},
+	} {
+		tmp, _, err := lyx.Parse(tt.query)
+		assert.NoError(err, "query %s", tt.query)
+
+		ps, ok := tmp[0].(*lyx.PrepareStmt)
+		assert.True(ok, "expected PrepareStmt for %s", tt.query)
+
+		// QueryLoc points right at the first token of the inner query.
+		got := tt.query[ps.QueryLoc:]
+		assert.Equal(tt.innerQuery, got, tt.query)
+		assert.NotEqual(lyx.ParseLocUnknown, ps.QueryLoc, tt.query)
+	}
+}
+
+func TestSelectLimitLocs(t *testing.T) {
+	assert := assert.New(t)
+
+	for q, exp := range map[string][2]lyx.ParseLoc{
+		"SELECT * FROM t LIMIT 2 OFFSET 4":     {16, 24},
+		"select * from t where i = 1 limit 7 ": {28, lyx.ParseLocUnknown},
+		"SELECT * FROM t OFFSET 10":            {lyx.ParseLocUnknown, 16},
+		"SELECT * FROM t WHERE x = 1 LIMIT 3":  {28, lyx.ParseLocUnknown},
+	} {
+		tmp, _, err := lyx.Parse(q)
+		assert.NoError(err, "query %s", q)
+
+		sel, ok := tmp[0].(*lyx.Select)
+		assert.True(ok, "expected Select for %s", q)
+
+		sl, ok := sel.Limit.(*lyx.SelectLimit)
+		assert.True(ok, "expected SelectLimit for %s", q)
+
+		// CountLoc and OffsetLoc point at the LIMIT and OFFSET tokens.
+		assert.Equal(exp[0], sl.CountLoc, "CountLoc for %s", q)
+		assert.Equal(exp[1], sl.OffsetLoc, "OffsetLoc for %s", q)
+		if sl.CountLoc != lyx.ParseLocUnknown {
+			assert.Equal("limit", strings.ToLower(q[sl.CountLoc:sl.CountLoc+5]), q)
+		}
+		if sl.OffsetLoc != lyx.ParseLocUnknown {
+			assert.Equal("offset", strings.ToLower(q[sl.OffsetLoc:sl.OffsetLoc+6]), q)
+		}
+	}
+}
+
+func TestInsertValuesLoc(t *testing.T) {
+	assert := assert.New(t)
+
+	for q, exp := range map[string]lyx.ParseLoc{
+		`INSERT INTO t (i) VALUES (1)`:              18,
+		"insert into t (i, j) values(1, 2)":         21,
+		`INSERT INTO t VALUES (1), (2) RETURNING i`: 14,
+	} {
+		tmp, _, err := lyx.Parse(q)
+		assert.NoError(err, "query %s", q)
+
+		ins, ok := tmp[0].(*lyx.Insert)
+		assert.True(ok, "expected Insert for %s", q)
+
+		vc, ok := ins.SubSelect.(*lyx.ValueClause)
+		if !ok {
+			assert.FailNowf("expected ValueClause", "query %s", q)
+		}
+
+		// ValuesLoc points right at the VALUES token.
+		assert.Equal(exp, vc.ValuesLoc, "ValuesLoc for %s", q)
+		assert.Equal("values", strings.ToLower(q[vc.ValuesLoc:vc.ValuesLoc+6]), q)
 	}
 }
 
@@ -4775,6 +4910,7 @@ func TestCte(t *testing.T) {
 						Name:     "vals",
 						NameList: []string{"a", "b", "c"},
 						SubQuery: &lyx.ValueClause{
+							ValuesLoc: 33,
 							Values: [][]lyx.Node{
 								{
 									&lyx.AExprSConst{
@@ -4814,6 +4950,7 @@ with c1 as (values(1,2,3), (2,3,4), (3,4,5)) select * from c1;
 						{
 							Name: "c1",
 							SubQuery: &lyx.ValueClause{
+								ValuesLoc: 31,
 								Values: [][]lyx.Node{
 									{
 										&lyx.AExprIConst{
@@ -4869,6 +5006,7 @@ select * from tbl inner join cte on tbl.i = cte.i;
 				WithClause: []*lyx.CommonTableExpr{
 					{
 						SubQuery: &lyx.ValueClause{
+							ValuesLoc: 18,
 							Values: [][]lyx.Node{
 								{
 									&lyx.AExprIConst{
@@ -5322,6 +5460,8 @@ func TestMiscQ(t *testing.T) {
 						},
 						SubLink: &lyx.Select{
 							Limit: &lyx.SelectLimit{
+								OffsetLoc: lyx.ParseLocUnknown,
+								CountLoc:  88,
 								LimitCount: &lyx.AExprIConst{
 									Value: 1,
 								},
@@ -5459,6 +5599,7 @@ func TestMiscQ(t *testing.T) {
 					"w_ytd",
 				},
 				SubSelect: &lyx.ValueClause{
+					ValuesLoc: 109,
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{
@@ -6198,6 +6339,8 @@ ORDER BY 2, 3;`,
 				LIMIT 1000`,
 			exp: &lyx.Select{
 				Limit: &lyx.SelectLimit{
+					OffsetLoc: lyx.ParseLocUnknown,
+					CountLoc:  489,
 					LimitCount: &lyx.AExprIConst{
 						Value: 1000,
 					},
