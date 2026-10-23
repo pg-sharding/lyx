@@ -2,7 +2,6 @@ package lyx_test
 
 import (
 	"fmt"
-	"strings"
 	"testing"
 
 	"github.com/pg-sharding/lyx/lyx"
@@ -4064,8 +4063,8 @@ func TestParams(t *testing.T) {
 		{
 			query: "PREPARE P(TEXT) AS SELECT $1",
 			exp: &lyx.PrepareStmt{
-				Name:        "P",
-				QueryOffset: 18,
+				Name:     "P",
+				QueryLoc: 19,
 				Statement: &lyx.Select{
 					TargetList: []lyx.Node{
 						&lyx.ParamRef{
@@ -4081,8 +4080,8 @@ func TestParams(t *testing.T) {
 		{
 			query: "PREPARE items (INTEGER) AS SELECT v FROM items WHERE id = $1",
 			exp: &lyx.PrepareStmt{
-				Name:        "items",
-				QueryOffset: 26,
+				Name:     "items",
+				QueryLoc: 27,
 				Statement: &lyx.Select{
 					TargetList: []lyx.Node{
 						&lyx.ColumnRef{ColName: "v"},
@@ -4162,12 +4161,12 @@ func TestParams(t *testing.T) {
 	}
 }
 
-func TestPrepareQueryOffset(t *testing.T) {
+func TestPrepareQueryLoc(t *testing.T) {
 	assert := assert.New(t)
 
 	type tcase struct {
-		query       string
-		innerQuery  string
+		query      string
+		innerQuery string
 	}
 
 	for _, tt := range []tcase{
@@ -4190,8 +4189,10 @@ func TestPrepareQueryOffset(t *testing.T) {
 		ps, ok := tmp[0].(*lyx.PrepareStmt)
 		assert.True(ok, "expected PrepareStmt for %s", tt.query)
 
-		got := strings.TrimLeft(tt.query[ps.QueryOffset:], " \t\n\r")
+		// QueryLoc points right at the first token of the inner query.
+		got := tt.query[ps.QueryLoc:]
 		assert.Equal(tt.innerQuery, got, tt.query)
+		assert.NotEqual(lyx.ParseLocUnknown, ps.QueryLoc, tt.query)
 	}
 }
 

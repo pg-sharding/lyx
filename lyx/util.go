@@ -28,7 +28,14 @@ func NewStringTokenizer(sql string) *Tokenizer {
 
 func (t *Tokenizer) Lex(lval *yySymType) int {
 	ret := t.l.Lex(lval)
-	lval.pos = t.l.te
+	if ret == 0 {
+		// EOF has no location, mark it as unknown.
+		lval.loc = ParseLocUnknown
+	} else {
+		// Like YYLLOC_DEFAULT in PostgreSQL, the location of a
+		// nonterminal is the start position of its first token.
+		lval.loc = t.l.ts
+	}
 	return ret
 }
 

@@ -53,7 +53,7 @@ func TokNames() []string {
 	uint			uint64
 	bool			bool
 	empty			struct{}
-	pos				int
+	loc				ParseLoc
 
 	node			Node
 	from_list		[]FromClauseNode
@@ -6896,14 +6896,15 @@ opt_conf_expr:
 
 PrepareStmt: PREPARE name prep_type_clause AS PreparableStmt
 				{
-
 					$$ = &PrepareStmt{
 						Name: $2,
 						Statement: $5,
-						QueryOffset: yyDollar[4].pos,
+						// Location of the prepared statement, i.e. of
+						// the query right after the AS keyword.
+						QueryLoc: yyDollar[5].loc,
 					};
 				}
-		;
+	;
 
 prep_type_clause: TOPENBR type_list TCLOSEBR	{  }
 				| /* EMPTY */				{  }
