@@ -200,6 +200,14 @@ type CommonTableExpr struct {
 type SelectLimit struct {
 	LimitOffset Node
 	LimitCount  Node
+	// OffsetLoc is the location of the OFFSET token, if present,
+	// or ParseLocUnknown, like the offsetLoc field of SelectLimit in
+	// PostgreSQL.
+	OffsetLoc ParseLoc
+	// CountLoc is the location of the LIMIT/FETCH token, if present,
+	// or ParseLocUnknown, like the countLoc field of SelectLimit in
+	// PostgreSQL.
+	CountLoc ParseLoc
 	// limitOption LimitOption ;
 }
 
@@ -238,6 +246,8 @@ type Grant struct {
 
 type ValueClause struct {
 	Values [][]Node
+	// ValuesLoc is the location of the VALUES token, or ParseLocUnknown.
+	ValuesLoc ParseLoc
 }
 
 type Insert struct {

@@ -6299,12 +6299,14 @@ select_limit:
 			limit_clause offset_clause
 				{
 					$$ = $1;
-					($$).(*SelectLimit).LimitOffset = $2;
+					($$).(*SelectLimit).LimitOffset = ($2).(*SelectLimit).LimitOffset;
+					($$).(*SelectLimit).OffsetLoc = ($2).(*SelectLimit).OffsetLoc;
 				}
 			| offset_clause limit_clause
 				{
 					$$ = $2;
-					($$).(*SelectLimit).LimitOffset = $1;
+					($$).(*SelectLimit).LimitOffset = ($1).(*SelectLimit).LimitOffset;
+					($$).(*SelectLimit).OffsetLoc = ($1).(*SelectLimit).OffsetLoc;
 				}
 			| limit_clause
 				{
@@ -6312,9 +6314,7 @@ select_limit:
 				}
 			| offset_clause
 				{
-					$$ = &SelectLimit {
-						LimitOffset: $1,
-					}
+					$$ = $1;
 				}
 		;
 
@@ -6328,6 +6328,8 @@ limit_clause:
 				{
 					$$ = &SelectLimit{
 						LimitCount: $2,
+						OffsetLoc:  ParseLocUnknown,
+						CountLoc:   yyDollar[1].loc,
 					}
 				}
 			| LIMIT select_limit_value TCOMMA select_offset_value
@@ -6362,10 +6364,22 @@ limit_clause:
 
 offset_clause:
 			OFFSET select_offset_value
-				{ $$ = $2; }
+				{
+					$$ = &SelectLimit{
+						LimitOffset: $2,
+						OffsetLoc:  yyDollar[1].loc,
+						CountLoc:   ParseLocUnknown,
+					}
+				}
 			/* SQL:2008 syntax */
 			| OFFSET select_fetch_first_value row_or_rows
-				{ $$ = $2; }
+				{
+					$$ = &SelectLimit{
+						LimitOffset: $2,
+						OffsetLoc:  yyDollar[1].loc,
+						CountLoc:   ParseLocUnknown,
+					}
+				}
 		;
 
 select_limit_value:
@@ -6545,7 +6559,8 @@ values_clause:
 			VALUES TOPENBR expr_list TCLOSEBR
 				{
 					$$ = &ValueClause{
-						Values: [][]Node{$3},
+						Values:    [][]Node{$3},
+						ValuesLoc: yyDollar[1].loc,
 					}
 				}
 			| values_clause TCOMMA TOPENBR expr_list TCLOSEBR
