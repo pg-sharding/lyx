@@ -4218,6 +4218,38 @@ func TestPrepareQueryLoc(t *testing.T) {
 	}
 }
 
+func TestPrepareDMLQueryLoc(t *testing.T) {
+	for _, inner := range []string{
+		"INSERT INTO items VALUES ($1)",
+		"INSERT INTO items DEFAULT VALUES",
+		"UPDATE items SET v = $1",
+		"DELETE FROM items WHERE id = $1",
+		"WITH w AS (SELECT 1) INSERT INTO items SELECT * FROM w",
+		"WITH w AS (SELECT 1) INSERT INTO items DEFAULT VALUES",
+		"WITH w AS (SELECT 1) UPDATE items SET v = $1",
+		"WITH w AS (SELECT 1) DELETE FROM items WHERE id = $1",
+	} {
+		for _, prefix := range []string{
+			"PREPARE items AS ",
+			"PREPARE items(int) AS ",
+			"PREPARE items(int) AS /* comment */ ",
+			"PREPARE items(int) AS -- comment\n",
+			"/* начало */ PREPARE \"запрос\"(int) AS ",
+		} {
+			query := prefix + inner
+			t.Run(query, func(t *testing.T) {
+				stmts, _, err := lyx.Parse(query)
+				if !assert.NoError(t, err) {
+					return
+				}
+				ps := stmts[0].(*lyx.PrepareStmt)
+				assert.Equal(t, lyx.ParseLoc(len(prefix)), ps.QueryLoc)
+				assert.Equal(t, inner, query[ps.QueryLoc:])
+			})
+		}
+	}
+}
+
 func TestSelectLimitLocs(t *testing.T) {
 	assert := assert.New(t)
 

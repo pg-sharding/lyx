@@ -7013,12 +7013,18 @@ InsertStmt:
 			OnConflict: $7,
 			Returning: $8,
         }
+        if $1 == nil {
+            yyVAL.loc = yyDollar[2].loc
+        }
     } | opt_with_clause INSERT INTO relation_expr DEFAULT VALUES {
         $$ = &Insert{
 			WithClause: $1,
             TableRef: $4,
             Columns: nil,
             SubSelect: nil,
+        }
+        if $1 == nil {
+            yyVAL.loc = yyDollar[2].loc
         }
     }
 
@@ -7069,6 +7075,9 @@ UpdateStmt:
             Where: $8,
 			Returning: $9,
         }
+        if $1 == nil {
+            yyVAL.loc = yyDollar[2].loc
+        }
     }
 
 
@@ -7094,6 +7103,9 @@ DeleteStmt: opt_with_clause DELETE FROM relation_expr_opt_alias
 						TableRef: $4,
 						Where: $6,
 						Returning: $7,
+					}
+					if $1 == nil {
+						yyVAL.loc = yyDollar[2].loc
 					}
 				}
 		;
