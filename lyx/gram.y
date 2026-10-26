@@ -4947,6 +4947,10 @@ cluster_stmt:
 
 alter_stmt:
     ALTER anything {
+        if !isPostgresAlterTarget(yylex.(*Tokenizer).l.data[$<loc>1:]) {
+            yylex.Error("syntax error")
+            return 1
+        }
         $$ = &Alter{
 
         }
