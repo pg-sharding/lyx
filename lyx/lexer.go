@@ -3315,181 +3315,175 @@ tr0:
 	case 146:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCKED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 147:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SKIP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 148:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = RECURSIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ACCESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 149:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SEARCH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCLUSIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 150:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CYCLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = MODE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 151:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BREADTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = NOWAIT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 152:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEPTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SKIP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 153:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SHARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = RECURSIVE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 154:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = USING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SEARCH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 155:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = VACUUM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CYCLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 156:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CLUSTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BREADTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 157:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DEPTH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 158:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ALTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SHARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 159:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = USING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 160:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BINARY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = VACUUM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 161:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITERS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CLUSTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 162:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ANALYZE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 163:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CSV; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 164:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = HEADER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ALTER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 165:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = QUOTE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BINARY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 166:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ESCAPE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 167:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ENCODING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITERS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 168:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PROGRAM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CSV; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 169:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STDIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = HEADER_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 170:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ASYMMETRIC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = QUOTE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 171:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BETWEEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ESCAPE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 172:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DROP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ENCODING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 173:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = BEGIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = PROGRAM; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 174:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SAVEPOINT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = STDIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 175:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ELSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ASYMMETRIC; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 176:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = END_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BETWEEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 177:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TRANSACTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DROP; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 178:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = READ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = BEGIN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 179:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ONLY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SAVEPOINT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 180:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WRITE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ELSE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 181:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFERRABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = END_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 182:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TRANSACTION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 183:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = READ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 184:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNCOMMITTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ONLY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 185:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = WRITE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 186:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = REPEATABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 187:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = SERIALIZABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 188:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = START; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFERRABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 189:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ABORT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = UNCOMMITTED; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 191:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLLBACK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = REPEATABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 192:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = SERIALIZABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 193:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CASE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = START; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 194:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = WHEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 195:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ABORT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 196:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = THEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 197:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ROLLBACK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 198:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONFLICT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CASE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 199:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTHING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 201:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = WHEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 200:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = UNION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = THEN; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 202:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCEPT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 203:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = INTERSECT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CONFLICT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 204:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = ALL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 205:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = NOTHING; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 206:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = PARTITION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = UNION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 207:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = CONVERSION_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCEPT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 208:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = STATISTICS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = INTERSECT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 209:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = ALL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 210:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 211:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = PARTITION; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 212:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = CONVERSION_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 213:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = STATISTICS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 214:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 215:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 216:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 217:
@@ -3540,6 +3534,9 @@ tr0:
 	case 232:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 233:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 234:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3552,37 +3549,34 @@ tr0:
 	case 237:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 238:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 239:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 240:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = COALESCE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 241:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 242:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 243:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 244:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 245:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = COALESCE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 246:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 247:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 248:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 249:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 250:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 251:
@@ -3597,6 +3591,9 @@ tr0:
 	case 254:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 255:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 256:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3607,9 +3604,6 @@ tr0:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 259:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 260:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 261:
@@ -3657,9 +3651,6 @@ tr0:
 	case 275:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 276:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 277:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3678,6 +3669,9 @@ tr0:
 	case 282:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 283:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 284:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3688,9 +3682,6 @@ tr0:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 287:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 288:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 289:
@@ -3735,6 +3726,9 @@ tr0:
 	case 302:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 303:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 304:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3745,9 +3739,6 @@ tr0:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 307:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 308:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 309:
@@ -3789,6 +3780,9 @@ tr0:
 	case 321:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 322:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 323:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3798,7 +3792,7 @@ tr0:
 	case 325:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 327:
+	case 326:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 328:
@@ -3810,13 +3804,13 @@ tr0:
 	case 330:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 331:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 332:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 333:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 334:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 335:
@@ -3825,13 +3819,7 @@ tr0:
 	case 336:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 337:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 338:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 339:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 340:
@@ -3858,10 +3846,13 @@ tr0:
 	case 347:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 348:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 349:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 350:
+	case 351:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 352:
@@ -3873,13 +3864,7 @@ tr0:
 	case 355:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 356:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 357:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 358:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 359:
@@ -3933,6 +3918,9 @@ tr0:
 	case 375:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 376:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 377:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3945,10 +3933,10 @@ tr0:
 	case 380:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 381:
+	case 382:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 382:
+	case 383:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 384:
@@ -3963,9 +3951,6 @@ tr0:
 	case 387:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 388:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 389:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -3975,16 +3960,19 @@ tr0:
 	case 391:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 392:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 393:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 394:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 396:
+	case 395:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 397:
+	case 396:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 398:
@@ -3993,7 +3981,7 @@ tr0:
 	case 399:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 400:
+	case 401:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 402:
@@ -4006,9 +3994,6 @@ tr0:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 405:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 406:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 407:
@@ -4058,8 +4043,11 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 422:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLESAMPLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 423:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 424:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 425:
@@ -4067,14 +4055,11 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 426:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 427:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLESAMPLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 428:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 429:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 430:
@@ -4082,7 +4067,7 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 431:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 432:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4122,6 +4107,12 @@ tr0:
 	case 444:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 445:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 446:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 447:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4131,10 +4122,7 @@ tr0:
 	case 449:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 450:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 451:
+	case 452:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 453:
@@ -4147,9 +4135,6 @@ tr0:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 456:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 457:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 458:
@@ -4188,58 +4173,73 @@ tr0:
 	case 469:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 470:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 471:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 472:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 473:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 479:
+	case 474:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TDOT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 482:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 476:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TPLUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 483:
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 478:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 484:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TMUL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 486:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TMOD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TDOT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 487:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TPOW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TPLUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 488:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 489:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
-	case 490:
-	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TEQ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TMUL; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 491:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TMOD; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 492:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TPOW; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 493:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 494:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 495:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TEQ; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 496:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 497:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 498:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 499:
+	{( lex.p) = ( lex.te) - 1
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TNOT_EQUALS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+	case 500:
 	{( lex.p) = ( lex.te) - 1
 
                 lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
                 {( lex.p)++; ( lex.cs) = 8; goto _out }
             }
-	case 496:
+	case 501:
 	{( lex.p) = ( lex.te) - 1
 
                 lval.str = string(lex.data[lex.ts:lex.te]); tok = int(OP);    
@@ -4249,17 +4249,17 @@ tr0:
 	
 	goto st8
 tr5:
-//line lyx/lexer.rl:673
+//line lyx/lexer.rl:678
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts + 1:lex.te - 1]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr7:
-//line lyx/lexer.rl:685
+//line lyx/lexer.rl:690
 ( lex.p) = ( lex.te) - 1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr10:
-//line lyx/lexer.rl:687
+//line lyx/lexer.rl:692
 ( lex.p) = ( lex.te) - 1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TDIV; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
@@ -4277,32 +4277,32 @@ tr19:
             }
 	goto st8
 tr20:
-//line lyx/lexer.rl:677
+//line lyx/lexer.rl:682
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TOPENBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr21:
-//line lyx/lexer.rl:678
+//line lyx/lexer.rl:683
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCLOSEBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr24:
-//line lyx/lexer.rl:676
+//line lyx/lexer.rl:681
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOMMA; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr31:
-//line lyx/lexer.rl:682
+//line lyx/lexer.rl:687
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSEMICOLON; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr61:
-//line lyx/lexer.rl:679
+//line lyx/lexer.rl:684
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQOPENBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr62:
-//line lyx/lexer.rl:680
+//line lyx/lexer.rl:685
  lex.te = ( lex.p)+1
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TSQCLOSEBR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
@@ -4313,7 +4313,7 @@ tr65:
 { /* do nothing */ }
 	goto st8
 tr66:
-//line lyx/lexer.rl:701
+//line lyx/lexer.rl:706
  lex.te = ( lex.p)
 ( lex.p)--
 {
@@ -4335,7 +4335,7 @@ tr68:
             }
 	goto st8
 tr69:
-//line lyx/lexer.rl:685
+//line lyx/lexer.rl:690
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TMINUS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4347,7 +4347,7 @@ tr72:
 {/* nothing */}
 	goto st8
 tr74:
-//line lyx/lexer.rl:687
+//line lyx/lexer.rl:692
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TDIV; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4367,7 +4367,7 @@ tr75:
             }
 	goto st8
 tr76:
-//line lyx/lexer.rl:683
+//line lyx/lexer.rl:688
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TCOLON; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4378,19 +4378,19 @@ tr77:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPECAST; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr78:
-//line lyx/lexer.rl:691
+//line lyx/lexer.rl:696
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TLESS; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr81:
-//line lyx/lexer.rl:692
+//line lyx/lexer.rl:697
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TGREATER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr83:
-//line lyx/lexer.rl:674
+//line lyx/lexer.rl:679
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4408,7 +4408,7 @@ tr183:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = AT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr269:
-//line lyx/lexer.rl:433
+//line lyx/lexer.rl:438
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4438,19 +4438,19 @@ tr304:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = CHECK; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr342:
-//line lyx/lexer.rl:443
+//line lyx/lexer.rl:448
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr350:
-//line lyx/lexer.rl:445
+//line lyx/lexer.rl:450
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr353:
-//line lyx/lexer.rl:386
+//line lyx/lexer.rl:391
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = COMMIT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4462,7 +4462,7 @@ tr403:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = CONSTRAINT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr454:
-//line lyx/lexer.rl:455
+//line lyx/lexer.rl:460
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4480,13 +4480,13 @@ tr488:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = DEFAULT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr510:
-//line lyx/lexer.rl:352
+//line lyx/lexer.rl:357
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = DELIMITER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr544:
-//line lyx/lexer.rl:396
+//line lyx/lexer.rl:401
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = DO; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4498,7 +4498,7 @@ tr689:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = FOR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr717:
-//line lyx/lexer.rl:483
+//line lyx/lexer.rl:488
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4522,13 +4522,13 @@ tr810:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IN_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr839:
-//line lyx/lexer.rl:348
+//line lyx/lexer.rl:353
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = INDEX; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr846:
-//line lyx/lexer.rl:503
+//line lyx/lexer.rl:508
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4552,19 +4552,19 @@ tr915:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = KEY; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr978:
-//line lyx/lexer.rl:522
+//line lyx/lexer.rl:330
  lex.te = ( lex.p)
 ( lex.p)--
-{ lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+{ lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCK_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr998:
-//line lyx/lexer.rl:526
+//line lyx/lexer.rl:531
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1046:
-//line lyx/lexer.rl:534
+//line lyx/lexer.rl:539
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4600,7 +4600,7 @@ tr1123:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = OF; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1125:
-//line lyx/lexer.rl:548
+//line lyx/lexer.rl:553
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4612,7 +4612,7 @@ tr1132:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = ON; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1145:
-//line lyx/lexer.rl:551
+//line lyx/lexer.rl:556
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4624,13 +4624,13 @@ tr1147:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = OR; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1163:
-//line lyx/lexer.rl:553
+//line lyx/lexer.rl:558
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1168:
-//line lyx/lexer.rl:404
+//line lyx/lexer.rl:409
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = OVER; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4642,25 +4642,25 @@ tr1256:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = PREPARE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1284:
-//line lyx/lexer.rl:576
+//line lyx/lexer.rl:581
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1337:
-//line lyx/lexer.rl:583
+//line lyx/lexer.rl:588
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1395:
-//line lyx/lexer.rl:592
+//line lyx/lexer.rl:597
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1421:
-//line lyx/lexer.rl:595
+//line lyx/lexer.rl:600
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4678,7 +4678,7 @@ tr1456:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = SCHEMA; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1487:
-//line lyx/lexer.rl:601
+//line lyx/lexer.rl:606
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4696,7 +4696,7 @@ tr1625:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TABLE; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1627:
-//line lyx/lexer.rl:624
+//line lyx/lexer.rl:629
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4720,19 +4720,19 @@ tr1703:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = TYPE_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1786:
-//line lyx/lexer.rl:645
+//line lyx/lexer.rl:650
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1793:
-//line lyx/lexer.rl:646
+//line lyx/lexer.rl:651
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1819:
-//line lyx/lexer.rl:652
+//line lyx/lexer.rl:657
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4744,7 +4744,7 @@ tr1849:
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = WITH; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	goto st8
 tr1867:
-//line lyx/lexer.rl:670
+//line lyx/lexer.rl:675
  lex.te = ( lex.p)
 ( lex.p)--
 { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4962,8 +4962,8 @@ tr15:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:701
- lex.act = 495;
+//line lyx/lexer.rl:706
+ lex.act = 500;
 	goto st10
 	st10:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
@@ -5008,78 +5008,78 @@ tr1:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:705
- lex.act = 496;
+//line lyx/lexer.rl:710
+ lex.act = 501;
 	goto st11
 tr16:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:701
- lex.act = 495;
+//line lyx/lexer.rl:706
+ lex.act = 500;
 	goto st11
 tr18:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:689
- lex.act = 486;
+//line lyx/lexer.rl:694
+ lex.act = 491;
 	goto st11
 tr22:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:686
- lex.act = 484;
+//line lyx/lexer.rl:691
+ lex.act = 489;
 	goto st11
 tr23:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:684
- lex.act = 482;
+//line lyx/lexer.rl:689
+ lex.act = 487;
 	goto st11
 tr33:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:693
- lex.act = 490;
+//line lyx/lexer.rl:698
+ lex.act = 495;
 	goto st11
 tr63:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:690
- lex.act = 487;
+//line lyx/lexer.rl:695
+ lex.act = 492;
 	goto st11
 tr67:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:698
- lex.act = 494;
+//line lyx/lexer.rl:703
+ lex.act = 499;
 	goto st11
 tr79:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:696
- lex.act = 492;
+//line lyx/lexer.rl:701
+ lex.act = 497;
 	goto st11
 tr80:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:695
- lex.act = 491;
+//line lyx/lexer.rl:700
+ lex.act = 496;
 	goto st11
 tr82:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:697
- lex.act = 493;
+//line lyx/lexer.rl:702
+ lex.act = 498;
 	goto st11
 	st11:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
@@ -5190,8 +5190,8 @@ tr25:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:685
- lex.act = 483;
+//line lyx/lexer.rl:690
+ lex.act = 488;
 	goto st13
 	st13:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
@@ -5308,8 +5308,8 @@ tr26:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:681
- lex.act = 479;
+//line lyx/lexer.rl:686
+ lex.act = 484;
 	goto st16
 	st16:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
@@ -5399,99 +5399,99 @@ tr64:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:674
- lex.act = 473;
+//line lyx/lexer.rl:679
+ lex.act = 478;
 	goto st19
 tr98:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:383
- lex.act = 189;
+//line lyx/lexer.rl:388
+ lex.act = 194;
 	goto st19
 tr102:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:409
- lex.act = 209;
-	goto st19
-tr106:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:410
- lex.act = 210;
-	goto st19
-tr111:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:411
- lex.act = 211;
-	goto st19
-tr114:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:412
- lex.act = 212;
-	goto st19
-tr115:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:413
- lex.act = 213;
-	goto st19
-tr118:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:414
  lex.act = 214;
 	goto st19
-tr121:
+tr106:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:415
  lex.act = 215;
 	goto st19
-tr128:
+tr111:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:416
- lex.act = 216;
+//line lyx/lexer.rl:331
+ lex.act = 148;
 	goto st19
-tr129:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:401
- lex.act = 204;
-	goto st19
-tr133:
+tr114:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:417
  lex.act = 217;
 	goto st19
-tr135:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:346
- lex.act = 158;
-	goto st19
-tr138:
+tr115:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:418
  lex.act = 218;
+	goto st19
+tr118:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:419
+ lex.act = 219;
+	goto st19
+tr121:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:420
+ lex.act = 220;
+	goto st19
+tr128:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:421
+ lex.act = 221;
+	goto st19
+tr129:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:406
+ lex.act = 209;
+	goto st19
+tr133:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:422
+ lex.act = 222;
+	goto st19
+tr135:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:351
+ lex.act = 163;
+	goto st19
+tr138:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:423
+ lex.act = 223;
 	goto st19
 tr140:
 //line NONE:1
@@ -5504,22 +5504,22 @@ tr141:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:420
- lex.act = 220;
+//line lyx/lexer.rl:425
+ lex.act = 225;
 	goto st19
 tr146:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:419
- lex.act = 219;
+//line lyx/lexer.rl:424
+ lex.act = 224;
 	goto st19
 tr147:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:344
- lex.act = 157;
+//line lyx/lexer.rl:349
+ lex.act = 162;
 	goto st19
 tr150:
 //line NONE:1
@@ -5539,57 +5539,57 @@ tr162:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:421
- lex.act = 221;
+//line lyx/lexer.rl:426
+ lex.act = 226;
 	goto st19
 tr169:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:422
- lex.act = 222;
+//line lyx/lexer.rl:427
+ lex.act = 227;
 	goto st19
 tr175:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:423
- lex.act = 223;
+//line lyx/lexer.rl:428
+ lex.act = 228;
 	goto st19
 tr182:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:361
- lex.act = 170;
+//line lyx/lexer.rl:366
+ lex.act = 175;
 	goto st19
 tr188:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:424
- lex.act = 224;
+//line lyx/lexer.rl:429
+ lex.act = 229;
 	goto st19
 tr192:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:425
- lex.act = 225;
+//line lyx/lexer.rl:430
+ lex.act = 230;
 	goto st19
 tr197:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:426
- lex.act = 226;
+//line lyx/lexer.rl:431
+ lex.act = 231;
 	goto st19
 tr208:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:427
- lex.act = 227;
+//line lyx/lexer.rl:432
+ lex.act = 232;
 	goto st19
 tr214:
 //line NONE:1
@@ -5602,29 +5602,29 @@ tr220:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:428
- lex.act = 228;
+//line lyx/lexer.rl:433
+ lex.act = 233;
 	goto st19
 tr226:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:429
- lex.act = 229;
+//line lyx/lexer.rl:434
+ lex.act = 234;
 	goto st19
 tr228:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:366
- lex.act = 173;
+//line lyx/lexer.rl:371
+ lex.act = 178;
 	goto st19
 tr232:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:362
- lex.act = 171;
+//line lyx/lexer.rl:367
+ lex.act = 176;
 	goto st19
 tr235:
 //line NONE:1
@@ -5644,8 +5644,8 @@ tr241:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:350
- lex.act = 160;
+//line lyx/lexer.rl:355
+ lex.act = 165;
 	goto st19
 tr247:
 //line NONE:1
@@ -5658,36 +5658,36 @@ tr248:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:430
- lex.act = 230;
+//line lyx/lexer.rl:435
+ lex.act = 235;
 	goto st19
 tr253:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:335
- lex.act = 151;
+//line lyx/lexer.rl:340
+ lex.act = 156;
 	goto st19
 tr267:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:431
- lex.act = 231;
+//line lyx/lexer.rl:436
+ lex.act = 236;
 	goto st19
 tr271:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:432
- lex.act = 232;
+//line lyx/lexer.rl:437
+ lex.act = 237;
 	goto st19
 tr273:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:388
- lex.act = 193;
+//line lyx/lexer.rl:393
+ lex.act = 198;
 	goto st19
 tr274:
 //line NONE:1
@@ -5700,22 +5700,22 @@ tr279:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:434
- lex.act = 234;
+//line lyx/lexer.rl:439
+ lex.act = 239;
 	goto st19
 tr283:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:435
- lex.act = 235;
+//line lyx/lexer.rl:440
+ lex.act = 240;
 	goto st19
 tr288:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:436
- lex.act = 236;
+//line lyx/lexer.rl:441
+ lex.act = 241;
 	goto st19
 tr301:
 //line NONE:1
@@ -5728,36 +5728,36 @@ tr309:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:437
- lex.act = 237;
+//line lyx/lexer.rl:442
+ lex.act = 242;
 	goto st19
 tr314:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:438
- lex.act = 238;
+//line lyx/lexer.rl:443
+ lex.act = 243;
 	goto st19
 tr316:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:439
- lex.act = 239;
+//line lyx/lexer.rl:444
+ lex.act = 244;
 	goto st19
 tr320:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:343
- lex.act = 156;
+//line lyx/lexer.rl:348
+ lex.act = 161;
 	goto st19
 tr331:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:440
- lex.act = 240;
+//line lyx/lexer.rl:445
+ lex.act = 245;
 	goto st19
 tr336:
 //line NONE:1
@@ -5770,22 +5770,22 @@ tr339:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:441
- lex.act = 241;
+//line lyx/lexer.rl:446
+ lex.act = 246;
 	goto st19
 tr343:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:442
- lex.act = 242;
+//line lyx/lexer.rl:447
+ lex.act = 247;
 	goto st19
 tr351:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:444
- lex.act = 244;
+//line lyx/lexer.rl:449
+ lex.act = 249;
 	goto st19
 tr356:
 //line NONE:1
@@ -5798,8 +5798,8 @@ tr363:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:446
- lex.act = 246;
+//line lyx/lexer.rl:451
+ lex.act = 251;
 	goto st19
 tr377:
 //line NONE:1
@@ -5812,50 +5812,50 @@ tr387:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:447
- lex.act = 247;
+//line lyx/lexer.rl:452
+ lex.act = 252;
 	goto st19
 tr390:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:393
- lex.act = 197;
+//line lyx/lexer.rl:398
+ lex.act = 202;
 	goto st19
 tr396:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:448
- lex.act = 248;
+//line lyx/lexer.rl:453
+ lex.act = 253;
 	goto st19
 tr404:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:449
- lex.act = 249;
+//line lyx/lexer.rl:454
+ lex.act = 254;
 	goto st19
 tr408:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:450
- lex.act = 250;
+//line lyx/lexer.rl:455
+ lex.act = 255;
 	goto st19
 tr411:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:451
- lex.act = 251;
+//line lyx/lexer.rl:456
+ lex.act = 256;
 	goto st19
 tr417:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:406
- lex.act = 207;
+//line lyx/lexer.rl:411
+ lex.act = 212;
 	goto st19
 tr418:
 //line NONE:1
@@ -5868,8 +5868,8 @@ tr419:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:452
- lex.act = 252;
+//line lyx/lexer.rl:457
+ lex.act = 257;
 	goto st19
 tr424:
 //line NONE:1
@@ -5889,15 +5889,15 @@ tr427:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:353
- lex.act = 163;
+//line lyx/lexer.rl:358
+ lex.act = 168;
 	goto st19
 tr430:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:453
- lex.act = 253;
+//line lyx/lexer.rl:458
+ lex.act = 258;
 	goto st19
 tr440:
 //line NONE:1
@@ -5910,15 +5910,15 @@ tr442:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:454
- lex.act = 254;
+//line lyx/lexer.rl:459
+ lex.act = 259;
 	goto st19
 tr445:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:334
- lex.act = 150;
+//line lyx/lexer.rl:339
+ lex.act = 155;
 	goto st19
 tr452:
 //line NONE:1
@@ -5952,36 +5952,36 @@ tr481:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:456
- lex.act = 256;
+//line lyx/lexer.rl:461
+ lex.act = 261;
 	goto st19
 tr489:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:457
- lex.act = 257;
+//line lyx/lexer.rl:462
+ lex.act = 262;
 	goto st19
 tr496:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:374
- lex.act = 181;
+//line lyx/lexer.rl:379
+ lex.act = 186;
 	goto st19
 tr497:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:458
- lex.act = 258;
+//line lyx/lexer.rl:463
+ lex.act = 263;
 	goto st19
 tr500:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:459
- lex.act = 259;
+//line lyx/lexer.rl:464
+ lex.act = 264;
 	goto st19
 tr504:
 //line NONE:1
@@ -5994,22 +5994,22 @@ tr511:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:351
- lex.act = 161;
+//line lyx/lexer.rl:356
+ lex.act = 166;
 	goto st19
 tr516:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:460
- lex.act = 260;
+//line lyx/lexer.rl:465
+ lex.act = 265;
 	goto st19
 tr517:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:336
- lex.act = 152;
+//line lyx/lexer.rl:341
+ lex.act = 157;
 	goto st19
 tr518:
 //line NONE:1
@@ -6022,22 +6022,22 @@ tr521:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:461
- lex.act = 261;
+//line lyx/lexer.rl:466
+ lex.act = 266;
 	goto st19
 tr530:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:462
- lex.act = 262;
+//line lyx/lexer.rl:467
+ lex.act = 267;
 	goto st19
 tr536:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:463
- lex.act = 263;
+//line lyx/lexer.rl:468
+ lex.act = 268;
 	goto st19
 tr539:
 //line NONE:1
@@ -6057,15 +6057,15 @@ tr552:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:464
- lex.act = 264;
+//line lyx/lexer.rl:469
+ lex.act = 269;
 	goto st19
 tr555:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:465
- lex.act = 265;
+//line lyx/lexer.rl:470
+ lex.act = 270;
 	goto st19
 tr558:
 //line NONE:1
@@ -6078,50 +6078,50 @@ tr560:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:363
- lex.act = 172;
+//line lyx/lexer.rl:368
+ lex.act = 177;
 	goto st19
 tr568:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:466
- lex.act = 266;
+//line lyx/lexer.rl:471
+ lex.act = 271;
 	goto st19
 tr570:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:368
- lex.act = 175;
+//line lyx/lexer.rl:373
+ lex.act = 180;
 	goto st19
 tr573:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:369
- lex.act = 176;
+//line lyx/lexer.rl:374
+ lex.act = 181;
 	goto st19
 tr577:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:467
- lex.act = 267;
+//line lyx/lexer.rl:472
+ lex.act = 272;
 	goto st19
 tr583:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:357
- lex.act = 167;
+//line lyx/lexer.rl:362
+ lex.act = 172;
 	goto st19
 tr588:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:468
- lex.act = 268;
+//line lyx/lexer.rl:473
+ lex.act = 273;
 	goto st19
 tr589:
 //line NONE:1
@@ -6134,43 +6134,43 @@ tr593:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:356
- lex.act = 166;
+//line lyx/lexer.rl:361
+ lex.act = 171;
 	goto st19
 tr596:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:469
- lex.act = 269;
+//line lyx/lexer.rl:474
+ lex.act = 274;
 	goto st19
 tr605:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:399
- lex.act = 202;
+//line lyx/lexer.rl:404
+ lex.act = 207;
 	goto st19
 tr609:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:472
- lex.act = 272;
+//line lyx/lexer.rl:477
+ lex.act = 277;
 	goto st19
 tr612:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:470
- lex.act = 270;
+//line lyx/lexer.rl:475
+ lex.act = 275;
 	goto st19
 tr615:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:471
- lex.act = 271;
+//line lyx/lexer.rl:332
+ lex.act = 149;
 	goto st19
 tr619:
 //line NONE:1
@@ -6197,8 +6197,8 @@ tr633:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:473
- lex.act = 273;
+//line lyx/lexer.rl:478
+ lex.act = 278;
 	goto st19
 tr641:
 //line NONE:1
@@ -6211,8 +6211,8 @@ tr644:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:474
- lex.act = 274;
+//line lyx/lexer.rl:479
+ lex.act = 279;
 	goto st19
 tr647:
 //line NONE:1
@@ -6232,8 +6232,8 @@ tr661:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:475
- lex.act = 275;
+//line lyx/lexer.rl:480
+ lex.act = 280;
 	goto st19
 tr664:
 //line NONE:1
@@ -6253,8 +6253,8 @@ tr675:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:476
- lex.act = 276;
+//line lyx/lexer.rl:481
+ lex.act = 281;
 	goto st19
 tr677:
 //line NONE:1
@@ -6274,15 +6274,15 @@ tr688:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:477
- lex.act = 277;
+//line lyx/lexer.rl:482
+ lex.act = 282;
 	goto st19
 tr694:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:478
- lex.act = 278;
+//line lyx/lexer.rl:483
+ lex.act = 283;
 	goto st19
 tr697:
 //line NONE:1
@@ -6295,22 +6295,22 @@ tr699:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:479
- lex.act = 279;
+//line lyx/lexer.rl:484
+ lex.act = 284;
 	goto st19
 tr702:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:480
- lex.act = 280;
+//line lyx/lexer.rl:485
+ lex.act = 285;
 	goto st19
 tr707:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:481
- lex.act = 281;
+//line lyx/lexer.rl:486
+ lex.act = 286;
 	goto st19
 tr708:
 //line NONE:1
@@ -6330,57 +6330,57 @@ tr718:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:482
- lex.act = 282;
-	goto st19
-tr728:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:484
- lex.act = 284;
-	goto st19
-tr732:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:485
- lex.act = 285;
-	goto st19
-tr740:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:486
- lex.act = 286;
-	goto st19
-tr745:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:487
  lex.act = 287;
 	goto st19
-tr750:
+tr728:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:489
  lex.act = 289;
 	goto st19
-tr752:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:488
- lex.act = 288;
-	goto st19
-tr761:
+tr732:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:490
  lex.act = 290;
+	goto st19
+tr740:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:491
+ lex.act = 291;
+	goto st19
+tr745:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:492
+ lex.act = 292;
+	goto st19
+tr750:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:494
+ lex.act = 294;
+	goto st19
+tr752:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:493
+ lex.act = 293;
+	goto st19
+tr761:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:495
+ lex.act = 295;
 	goto st19
 tr764:
 //line NONE:1
@@ -6393,15 +6393,15 @@ tr768:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:354
- lex.act = 164;
+//line lyx/lexer.rl:359
+ lex.act = 169;
 	goto st19
 tr771:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:491
- lex.act = 291;
+//line lyx/lexer.rl:496
+ lex.act = 296;
 	goto st19
 tr772:
 //line NONE:1
@@ -6421,8 +6421,8 @@ tr784:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:492
- lex.act = 292;
+//line lyx/lexer.rl:497
+ lex.act = 297;
 	goto st19
 tr787:
 //line NONE:1
@@ -6435,85 +6435,85 @@ tr796:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:493
- lex.act = 293;
-	goto st19
-tr801:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:494
- lex.act = 294;
-	goto st19
-tr807:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:495
- lex.act = 295;
-	goto st19
-tr809:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:496
- lex.act = 296;
-	goto st19
-tr826:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:498
  lex.act = 298;
 	goto st19
-tr829:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:497
- lex.act = 297;
-	goto st19
-tr834:
+tr801:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:499
  lex.act = 299;
 	goto st19
-tr838:
+tr807:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:500
  lex.act = 300;
 	goto st19
-tr841:
+tr809:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:501
  lex.act = 301;
 	goto st19
-tr847:
+tr826:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:503
+ lex.act = 303;
+	goto st19
+tr829:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:502
  lex.act = 302;
 	goto st19
-tr853:
+tr834:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:504
  lex.act = 304;
 	goto st19
-tr856:
+tr838:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:505
  lex.act = 305;
+	goto st19
+tr841:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:506
+ lex.act = 306;
+	goto st19
+tr847:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:507
+ lex.act = 307;
+	goto st19
+tr853:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:509
+ lex.act = 309;
+	goto st19
+tr856:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:510
+ lex.act = 310;
 	goto st19
 tr858:
 //line NONE:1
@@ -6526,22 +6526,22 @@ tr860:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:506
- lex.act = 306;
+//line lyx/lexer.rl:511
+ lex.act = 311;
 	goto st19
 tr862:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:507
- lex.act = 307;
+//line lyx/lexer.rl:512
+ lex.act = 312;
 	goto st19
 tr872:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:508
- lex.act = 308;
+//line lyx/lexer.rl:513
+ lex.act = 313;
 	goto st19
 tr873:
 //line NONE:1
@@ -6554,8 +6554,8 @@ tr876:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:509
- lex.act = 309;
+//line lyx/lexer.rl:514
+ lex.act = 314;
 	goto st19
 tr879:
 //line NONE:1
@@ -6575,8 +6575,8 @@ tr888:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:400
- lex.act = 203;
+//line lyx/lexer.rl:405
+ lex.act = 208;
 	goto st19
 tr890:
 //line NONE:1
@@ -6589,8 +6589,8 @@ tr894:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:510
- lex.act = 310;
+//line lyx/lexer.rl:515
+ lex.act = 315;
 	goto st19
 tr900:
 //line NONE:1
@@ -6617,36 +6617,36 @@ tr912:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:511
- lex.act = 311;
+//line lyx/lexer.rl:516
+ lex.act = 316;
 	goto st19
 tr916:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:512
- lex.act = 312;
+//line lyx/lexer.rl:517
+ lex.act = 317;
 	goto st19
 tr927:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:513
- lex.act = 313;
+//line lyx/lexer.rl:518
+ lex.act = 318;
 	goto st19
 tr932:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:514
- lex.act = 314;
+//line lyx/lexer.rl:519
+ lex.act = 319;
 	goto st19
 tr934:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:515
- lex.act = 315;
+//line lyx/lexer.rl:520
+ lex.act = 320;
 	goto st19
 tr935:
 //line NONE:1
@@ -6666,22 +6666,22 @@ tr948:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:516
- lex.act = 316;
+//line lyx/lexer.rl:521
+ lex.act = 321;
 	goto st19
 tr953:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:517
- lex.act = 317;
+//line lyx/lexer.rl:522
+ lex.act = 322;
 	goto st19
 tr954:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:518
- lex.act = 318;
+//line lyx/lexer.rl:523
+ lex.act = 323;
 	goto st19
 tr955:
 //line NONE:1
@@ -6715,15 +6715,15 @@ tr966:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:519
- lex.act = 319;
+//line lyx/lexer.rl:524
+ lex.act = 324;
 	goto st19
 tr970:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:520
- lex.act = 320;
+//line lyx/lexer.rl:525
+ lex.act = 325;
 	goto st19
 tr973:
 //line NONE:1
@@ -6736,8 +6736,8 @@ tr977:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:521
- lex.act = 321;
+//line lyx/lexer.rl:526
+ lex.act = 326;
 	goto st19
 tr980:
 //line NONE:1
@@ -6750,50 +6750,50 @@ tr983:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:523
- lex.act = 323;
-	goto st19
-tr994:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:524
- lex.act = 324;
-	goto st19
-tr1000:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:525
- lex.act = 325;
-	goto st19
-tr1008:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:527
- lex.act = 327;
-	goto st19
-tr1013:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:528
  lex.act = 328;
 	goto st19
-tr1017:
+tr994:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:529
  lex.act = 329;
 	goto st19
-tr1020:
+tr1000:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:530
  lex.act = 330;
+	goto st19
+tr1008:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:532
+ lex.act = 332;
+	goto st19
+tr1013:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:533
+ lex.act = 333;
+	goto st19
+tr1017:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:534
+ lex.act = 334;
+	goto st19
+tr1020:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:535
+ lex.act = 335;
 	goto st19
 tr1025:
 //line NONE:1
@@ -6806,15 +6806,15 @@ tr1029:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:531
- lex.act = 331;
+//line lyx/lexer.rl:536
+ lex.act = 336;
 	goto st19
 tr1033:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:532
- lex.act = 332;
+//line lyx/lexer.rl:333
+ lex.act = 150;
 	goto st19
 tr1035:
 //line NONE:1
@@ -6827,8 +6827,8 @@ tr1036:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:533
- lex.act = 333;
+//line lyx/lexer.rl:538
+ lex.act = 338;
 	goto st19
 tr1047:
 //line NONE:1
@@ -6848,8 +6848,8 @@ tr1056:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:535
- lex.act = 335;
+//line lyx/lexer.rl:540
+ lex.act = 340;
 	goto st19
 tr1059:
 //line NONE:1
@@ -6862,71 +6862,71 @@ tr1060:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:536
- lex.act = 336;
-	goto st19
-tr1062:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:537
- lex.act = 337;
-	goto st19
-tr1063:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:540
- lex.act = 340;
-	goto st19
-tr1064:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:541
  lex.act = 341;
 	goto st19
-tr1066:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:538
- lex.act = 338;
-	goto st19
-tr1067:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:539
- lex.act = 339;
-	goto st19
-tr1073:
+tr1062:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:542
  lex.act = 342;
 	goto st19
-tr1081:
+tr1063:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:545
+ lex.act = 345;
+	goto st19
+tr1064:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:546
+ lex.act = 346;
+	goto st19
+tr1066:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:543
  lex.act = 343;
 	goto st19
-tr1088:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:395
- lex.act = 199;
-	goto st19
-tr1090:
+tr1067:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:544
  lex.act = 344;
+	goto st19
+tr1073:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:547
+ lex.act = 347;
+	goto st19
+tr1081:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:548
+ lex.act = 348;
+	goto st19
+tr1088:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:400
+ lex.act = 204;
+	goto st19
+tr1090:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:549
+ lex.act = 349;
 	goto st19
 tr1093:
 //line NONE:1
@@ -6939,8 +6939,8 @@ tr1096:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:545
- lex.act = 345;
+//line lyx/lexer.rl:334
+ lex.act = 151;
 	goto st19
 tr1102:
 //line NONE:1
@@ -6953,8 +6953,8 @@ tr1103:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:546
- lex.act = 346;
+//line lyx/lexer.rl:551
+ lex.act = 351;
 	goto st19
 tr1107:
 //line NONE:1
@@ -6967,8 +6967,8 @@ tr1122:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:547
- lex.act = 347;
+//line lyx/lexer.rl:552
+ lex.act = 352;
 	goto st19
 tr1128:
 //line NONE:1
@@ -6988,15 +6988,15 @@ tr1131:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:549
- lex.act = 349;
+//line lyx/lexer.rl:554
+ lex.act = 354;
 	goto st19
 tr1134:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:372
- lex.act = 179;
+//line lyx/lexer.rl:377
+ lex.act = 184;
 	goto st19
 tr1141:
 //line NONE:1
@@ -7009,8 +7009,8 @@ tr1146:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:550
- lex.act = 350;
+//line lyx/lexer.rl:555
+ lex.act = 355;
 	goto st19
 tr1151:
 //line NONE:1
@@ -7030,8 +7030,8 @@ tr1161:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:552
- lex.act = 352;
+//line lyx/lexer.rl:557
+ lex.act = 357;
 	goto st19
 tr1165:
 //line NONE:1
@@ -7044,92 +7044,92 @@ tr1173:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:555
- lex.act = 355;
+//line lyx/lexer.rl:560
+ lex.act = 360;
 	goto st19
 tr1174:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:554
- lex.act = 354;
-	goto st19
-tr1179:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:556
- lex.act = 356;
-	goto st19
-tr1182:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:557
- lex.act = 357;
-	goto st19
-tr1183:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:558
- lex.act = 358;
-	goto st19
-tr1198:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:559
  lex.act = 359;
 	goto st19
-tr1202:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:560
- lex.act = 360;
-	goto st19
-tr1204:
+tr1179:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:561
  lex.act = 361;
 	goto st19
-tr1208:
+tr1182:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:562
  lex.act = 362;
 	goto st19
-tr1211:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:403
- lex.act = 205;
-	goto st19
-tr1216:
+tr1183:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:563
  lex.act = 363;
 	goto st19
-tr1219:
+tr1198:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:564
  lex.act = 364;
 	goto st19
-tr1225:
+tr1202:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:565
  lex.act = 365;
+	goto st19
+tr1204:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:566
+ lex.act = 366;
+	goto st19
+tr1208:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:567
+ lex.act = 367;
+	goto st19
+tr1211:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:408
+ lex.act = 210;
+	goto st19
+tr1216:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:568
+ lex.act = 368;
+	goto st19
+tr1219:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:569
+ lex.act = 369;
+	goto st19
+tr1225:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:570
+ lex.act = 370;
 	goto st19
 tr1226:
 //line NONE:1
@@ -7142,43 +7142,43 @@ tr1231:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:566
- lex.act = 366;
+//line lyx/lexer.rl:571
+ lex.act = 371;
 	goto st19
 tr1236:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:567
- lex.act = 367;
+//line lyx/lexer.rl:572
+ lex.act = 372;
 	goto st19
 tr1248:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:568
- lex.act = 368;
+//line lyx/lexer.rl:573
+ lex.act = 373;
 	goto st19
 tr1252:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:569
- lex.act = 369;
+//line lyx/lexer.rl:574
+ lex.act = 374;
 	goto st19
 tr1257:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:570
- lex.act = 370;
+//line lyx/lexer.rl:575
+ lex.act = 375;
 	goto st19
 tr1261:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:571
- lex.act = 371;
+//line lyx/lexer.rl:576
+ lex.act = 376;
 	goto st19
 tr1267:
 //line NONE:1
@@ -7191,64 +7191,64 @@ tr1268:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:572
- lex.act = 372;
-	goto st19
-tr1274:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:573
- lex.act = 373;
-	goto st19
-tr1283:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:574
- lex.act = 374;
-	goto st19
-tr1285:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:575
- lex.act = 375;
-	goto st19
-tr1288:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:358
- lex.act = 168;
-	goto st19
-tr1297:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:577
  lex.act = 377;
 	goto st19
-tr1301:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:355
- lex.act = 165;
-	goto st19
-tr1309:
+tr1274:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:578
  lex.act = 378;
 	goto st19
+tr1283:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:579
+ lex.act = 379;
+	goto st19
+tr1285:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:580
+ lex.act = 380;
+	goto st19
+tr1288:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:363
+ lex.act = 173;
+	goto st19
+tr1297:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:582
+ lex.act = 382;
+	goto st19
+tr1301:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:360
+ lex.act = 170;
+	goto st19
+tr1309:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:583
+ lex.act = 383;
+	goto st19
 tr1320:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:371
- lex.act = 178;
+//line lyx/lexer.rl:376
+ lex.act = 183;
 	goto st19
 tr1321:
 //line NONE:1
@@ -7261,22 +7261,22 @@ tr1326:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:579
- lex.act = 379;
+//line lyx/lexer.rl:584
+ lex.act = 384;
 	goto st19
 tr1331:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:580
- lex.act = 380;
+//line lyx/lexer.rl:585
+ lex.act = 385;
 	goto st19
 tr1336:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:332
- lex.act = 148;
+//line lyx/lexer.rl:337
+ lex.act = 153;
 	goto st19
 tr1346:
 //line NONE:1
@@ -7289,64 +7289,64 @@ tr1348:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:581
- lex.act = 381;
-	goto st19
-tr1351:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:582
- lex.act = 382;
-	goto st19
-tr1355:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:584
- lex.act = 384;
-	goto st19
-tr1361:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:585
- lex.act = 385;
-	goto st19
-tr1364:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:586
  lex.act = 386;
 	goto st19
-tr1367:
+tr1351:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:587
  lex.act = 387;
 	goto st19
-tr1375:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:379
- lex.act = 186;
-	goto st19
-tr1379:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:588
- lex.act = 388;
-	goto st19
-tr1381:
+tr1355:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:589
  lex.act = 389;
+	goto st19
+tr1361:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:590
+ lex.act = 390;
+	goto st19
+tr1364:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:591
+ lex.act = 391;
+	goto st19
+tr1367:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:592
+ lex.act = 392;
+	goto st19
+tr1375:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:384
+ lex.act = 191;
+	goto st19
+tr1379:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:593
+ lex.act = 393;
+	goto st19
+tr1381:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:594
+ lex.act = 394;
 	goto st19
 tr1384:
 //line NONE:1
@@ -7359,8 +7359,8 @@ tr1388:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:590
- lex.act = 390;
+//line lyx/lexer.rl:595
+ lex.act = 395;
 	goto st19
 tr1391:
 //line NONE:1
@@ -7373,8 +7373,8 @@ tr1397:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:591
- lex.act = 391;
+//line lyx/lexer.rl:596
+ lex.act = 396;
 	goto st19
 tr1399:
 //line NONE:1
@@ -7408,22 +7408,22 @@ tr1415:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:385
- lex.act = 191;
+//line lyx/lexer.rl:390
+ lex.act = 196;
 	goto st19
 tr1416:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:593
- lex.act = 393;
+//line lyx/lexer.rl:598
+ lex.act = 398;
 	goto st19
 tr1422:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:594
- lex.act = 394;
+//line lyx/lexer.rl:599
+ lex.act = 399;
 	goto st19
 tr1424:
 //line NONE:1
@@ -7436,43 +7436,43 @@ tr1426:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:596
- lex.act = 396;
+//line lyx/lexer.rl:601
+ lex.act = 401;
 	goto st19
 tr1446:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:367
- lex.act = 174;
+//line lyx/lexer.rl:372
+ lex.act = 179;
 	goto st19
 tr1452:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:597
- lex.act = 397;
+//line lyx/lexer.rl:602
+ lex.act = 402;
 	goto st19
 tr1457:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:598
- lex.act = 398;
+//line lyx/lexer.rl:603
+ lex.act = 403;
 	goto st19
 tr1460:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:599
- lex.act = 399;
+//line lyx/lexer.rl:604
+ lex.act = 404;
 	goto st19
 tr1470:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:333
- lex.act = 149;
+//line lyx/lexer.rl:338
+ lex.act = 154;
 	goto st19
 tr1474:
 //line NONE:1
@@ -7485,8 +7485,8 @@ tr1478:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:600
- lex.act = 400;
+//line lyx/lexer.rl:605
+ lex.act = 405;
 	goto st19
 tr1481:
 //line NONE:1
@@ -7506,15 +7506,15 @@ tr1498:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:380
- lex.act = 187;
+//line lyx/lexer.rl:385
+ lex.act = 192;
 	goto st19
 tr1500:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:602
- lex.act = 402;
+//line lyx/lexer.rl:607
+ lex.act = 407;
 	goto st19
 tr1504:
 //line NONE:1
@@ -7527,8 +7527,8 @@ tr1507:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:603
- lex.act = 403;
+//line lyx/lexer.rl:608
+ lex.act = 408;
 	goto st19
 tr1508:
 //line NONE:1
@@ -7541,8 +7541,8 @@ tr1512:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:338
- lex.act = 153;
+//line lyx/lexer.rl:343
+ lex.act = 158;
 	goto st19
 tr1513:
 //line NONE:1
@@ -7555,22 +7555,22 @@ tr1519:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:604
- lex.act = 404;
+//line lyx/lexer.rl:609
+ lex.act = 409;
 	goto st19
 tr1521:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:605
- lex.act = 405;
+//line lyx/lexer.rl:610
+ lex.act = 410;
 	goto st19
 tr1523:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:330
- lex.act = 147;
+//line lyx/lexer.rl:335
+ lex.act = 152;
 	goto st19
 tr1529:
 //line NONE:1
@@ -7583,64 +7583,64 @@ tr1535:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:606
- lex.act = 406;
+//line lyx/lexer.rl:611
+ lex.act = 411;
 	goto st19
 tr1537:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:607
- lex.act = 407;
+//line lyx/lexer.rl:612
+ lex.act = 412;
 	goto st19
 tr1538:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:608
- lex.act = 408;
+//line lyx/lexer.rl:613
+ lex.act = 413;
 	goto st19
 tr1548:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:609
- lex.act = 409;
+//line lyx/lexer.rl:614
+ lex.act = 414;
 	goto st19
 tr1554:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:610
- lex.act = 410;
+//line lyx/lexer.rl:615
+ lex.act = 415;
 	goto st19
 tr1555:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:382
- lex.act = 188;
+//line lyx/lexer.rl:387
+ lex.act = 193;
 	goto st19
 tr1561:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:611
- lex.act = 411;
+//line lyx/lexer.rl:616
+ lex.act = 416;
 	goto st19
 tr1566:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:407
- lex.act = 208;
+//line lyx/lexer.rl:412
+ lex.act = 213;
 	goto st19
 tr1569:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:359
- lex.act = 169;
+//line lyx/lexer.rl:364
+ lex.act = 174;
 	goto st19
 tr1571:
 //line NONE:1
@@ -7653,71 +7653,71 @@ tr1576:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:612
- lex.act = 412;
-	goto st19
-tr1577:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:613
- lex.act = 413;
-	goto st19
-tr1580:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:615
- lex.act = 415;
-	goto st19
-tr1581:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:614
- lex.act = 414;
-	goto st19
-tr1593:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:616
- lex.act = 416;
-	goto st19
-tr1597:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:617
  lex.act = 417;
 	goto st19
-tr1601:
+tr1577:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:618
  lex.act = 418;
 	goto st19
-tr1609:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:619
- lex.act = 419;
-	goto st19
-tr1612:
+tr1580:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:620
  lex.act = 420;
 	goto st19
-tr1614:
+tr1581:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:619
+ lex.act = 419;
+	goto st19
+tr1593:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:621
  lex.act = 421;
+	goto st19
+tr1597:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:622
+ lex.act = 422;
+	goto st19
+tr1601:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:623
+ lex.act = 423;
+	goto st19
+tr1609:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:624
+ lex.act = 424;
+	goto st19
+tr1612:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:625
+ lex.act = 425;
+	goto st19
+tr1614:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:626
+ lex.act = 426;
 	goto st19
 tr1619:
 //line NONE:1
@@ -7730,22 +7730,22 @@ tr1633:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:622
- lex.act = 422;
+//line lyx/lexer.rl:627
+ lex.act = 427;
 	goto st19
 tr1636:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:623
- lex.act = 423;
+//line lyx/lexer.rl:628
+ lex.act = 428;
 	goto st19
 tr1645:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:625
- lex.act = 425;
+//line lyx/lexer.rl:630
+ lex.act = 430;
 	goto st19
 tr1649:
 //line NONE:1
@@ -7758,22 +7758,22 @@ tr1650:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:626
- lex.act = 426;
+//line lyx/lexer.rl:631
+ lex.act = 431;
 	goto st19
 tr1652:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:390
- lex.act = 195;
+//line lyx/lexer.rl:395
+ lex.act = 200;
 	goto st19
 tr1655:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:627
- lex.act = 427;
+//line lyx/lexer.rl:632
+ lex.act = 432;
 	goto st19
 tr1662:
 //line NONE:1
@@ -7786,43 +7786,43 @@ tr1672:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:628
- lex.act = 428;
+//line lyx/lexer.rl:633
+ lex.act = 433;
 	goto st19
 tr1680:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:370
- lex.act = 177;
+//line lyx/lexer.rl:375
+ lex.act = 182;
 	goto st19
 tr1683:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:629
- lex.act = 429;
+//line lyx/lexer.rl:634
+ lex.act = 434;
 	goto st19
 tr1685:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:630
- lex.act = 430;
+//line lyx/lexer.rl:635
+ lex.act = 435;
 	goto st19
 tr1687:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:632
- lex.act = 432;
+//line lyx/lexer.rl:637
+ lex.act = 437;
 	goto st19
 tr1690:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:631
- lex.act = 431;
+//line lyx/lexer.rl:636
+ lex.act = 436;
 	goto st19
 tr1691:
 //line NONE:1
@@ -7842,50 +7842,50 @@ tr1700:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:633
- lex.act = 433;
+//line lyx/lexer.rl:638
+ lex.act = 438;
 	goto st19
 tr1704:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:634
- lex.act = 434;
+//line lyx/lexer.rl:639
+ lex.act = 439;
 	goto st19
 tr1713:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:635
- lex.act = 435;
+//line lyx/lexer.rl:640
+ lex.act = 440;
 	goto st19
 tr1726:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:636
- lex.act = 436;
+//line lyx/lexer.rl:641
+ lex.act = 441;
 	goto st19
 tr1734:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:377
- lex.act = 184;
+//line lyx/lexer.rl:382
+ lex.act = 189;
 	goto st19
 tr1742:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:637
- lex.act = 437;
+//line lyx/lexer.rl:642
+ lex.act = 442;
 	goto st19
 tr1745:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:398
- lex.act = 201;
+//line lyx/lexer.rl:403
+ lex.act = 206;
 	goto st19
 tr1747:
 //line NONE:1
@@ -7898,29 +7898,29 @@ tr1751:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:638
- lex.act = 438;
+//line lyx/lexer.rl:643
+ lex.act = 443;
 	goto st19
 tr1757:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:639
- lex.act = 439;
+//line lyx/lexer.rl:644
+ lex.act = 444;
 	goto st19
 tr1761:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:640
- lex.act = 440;
+//line lyx/lexer.rl:645
+ lex.act = 445;
 	goto st19
 tr1763:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:641
- lex.act = 441;
+//line lyx/lexer.rl:646
+ lex.act = 446;
 	goto st19
 tr1767:
 //line NONE:1
@@ -7933,36 +7933,36 @@ tr1770:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:642
- lex.act = 442;
+//line lyx/lexer.rl:647
+ lex.act = 447;
 	goto st19
 tr1772:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:340
- lex.act = 154;
+//line lyx/lexer.rl:345
+ lex.act = 159;
 	goto st19
 tr1782:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:342
- lex.act = 155;
+//line lyx/lexer.rl:347
+ lex.act = 160;
 	goto st19
 tr1789:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:643
- lex.act = 443;
+//line lyx/lexer.rl:648
+ lex.act = 448;
 	goto st19
 tr1791:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:644
- lex.act = 444;
+//line lyx/lexer.rl:649
+ lex.act = 449;
 	goto st19
 tr1794:
 //line NONE:1
@@ -7982,50 +7982,50 @@ tr1804:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:647
- lex.act = 447;
+//line lyx/lexer.rl:652
+ lex.act = 452;
 	goto st19
 tr1807:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:648
- lex.act = 448;
-	goto st19
-tr1813:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:649
- lex.act = 449;
-	goto st19
-tr1816:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:650
- lex.act = 450;
-	goto st19
-tr1820:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:651
- lex.act = 451;
-	goto st19
-tr1826:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:653
  lex.act = 453;
 	goto st19
+tr1813:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:654
+ lex.act = 454;
+	goto st19
+tr1816:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:655
+ lex.act = 455;
+	goto st19
+tr1820:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:656
+ lex.act = 456;
+	goto st19
+tr1826:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:658
+ lex.act = 458;
+	goto st19
 tr1833:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:389
- lex.act = 194;
+//line lyx/lexer.rl:394
+ lex.act = 199;
 	goto st19
 tr1835:
 //line NONE:1
@@ -8038,22 +8038,22 @@ tr1842:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:654
- lex.act = 454;
+//line lyx/lexer.rl:659
+ lex.act = 459;
 	goto st19
 tr1847:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:655
- lex.act = 455;
+//line lyx/lexer.rl:660
+ lex.act = 460;
 	goto st19
 tr1852:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:656
- lex.act = 456;
+//line lyx/lexer.rl:661
+ lex.act = 461;
 	goto st19
 tr1854:
 //line NONE:1
@@ -8066,106 +8066,106 @@ tr1856:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:657
- lex.act = 457;
-	goto st19
-tr1862:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:658
- lex.act = 458;
-	goto st19
-tr1864:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:373
- lex.act = 180;
-	goto st19
-tr1885:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:659
- lex.act = 459;
-	goto st19
-tr1890:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:660
- lex.act = 460;
-	goto st19
-tr1897:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:661
- lex.act = 461;
-	goto st19
-tr1901:
-//line NONE:1
- lex.te = ( lex.p)+1
-
 //line lyx/lexer.rl:662
  lex.act = 462;
 	goto st19
-tr1906:
+tr1862:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:663
  lex.act = 463;
 	goto st19
-tr1915:
+tr1864:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:378
+ lex.act = 185;
+	goto st19
+tr1885:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:664
  lex.act = 464;
 	goto st19
-tr1917:
-//line NONE:1
- lex.te = ( lex.p)+1
-
-//line lyx/lexer.rl:666
- lex.act = 466;
-	goto st19
-tr1920:
+tr1890:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:665
  lex.act = 465;
 	goto st19
-tr1923:
+tr1897:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:666
+ lex.act = 466;
+	goto st19
+tr1901:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:667
  lex.act = 467;
 	goto st19
-tr1931:
+tr1906:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:668
  lex.act = 468;
 	goto st19
-tr1935:
+tr1915:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:669
  lex.act = 469;
 	goto st19
-tr1938:
+tr1917:
 //line NONE:1
  lex.te = ( lex.p)+1
 
 //line lyx/lexer.rl:671
  lex.act = 471;
+	goto st19
+tr1920:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:670
+ lex.act = 470;
+	goto st19
+tr1923:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:672
+ lex.act = 472;
+	goto st19
+tr1931:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:673
+ lex.act = 473;
+	goto st19
+tr1935:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:674
+ lex.act = 474;
+	goto st19
+tr1938:
+//line NONE:1
+ lex.te = ( lex.p)+1
+
+//line lyx/lexer.rl:676
+ lex.act = 476;
 	goto st19
 tr1939:
 //line NONE:1
@@ -8231,8 +8231,8 @@ tr32:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:691
- lex.act = 488;
+//line lyx/lexer.rl:696
+ lex.act = 493;
 	goto st22
 	st22:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
@@ -8279,8 +8279,8 @@ tr34:
 //line NONE:1
  lex.te = ( lex.p)+1
 
-//line lyx/lexer.rl:692
- lex.act = 489;
+//line lyx/lexer.rl:697
+ lex.act = 494;
 	goto st23
 	st23:
 		if ( lex.p)++; ( lex.p) == ( lex.pe) {
@@ -54213,7 +54213,7 @@ tr1943:
 	_out: {}
 	}
 
-//line lyx/lexer.rl:713
+//line lyx/lexer.rl:718
 
 
     return int(tok);

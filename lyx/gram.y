@@ -132,7 +132,7 @@ func TokNames() []string {
 %type<node> DeallocateStmt ExecuteStmt PreparableStmt
 
 %type<from> table_ref 
-%type<tableref> relation_expr joined_table relation_expr_opt_alias vacuum_relation
+%type<tableref> relation_expr extended_relation_expr joined_table relation_expr_opt_alias vacuum_relation
 
 %type<node> index_params index_including_params
 
@@ -392,7 +392,10 @@ Operator:
 
 %type<node> TransactionStmt TransactionStmtLegacy opt_transaction
 
-%type<node> LockStmt opt_lock lock_type opt_nowait opt_nowait_or_skip relation_expr_list
+%type<node> LockStmt opt_nowait_or_skip
+%type<int> opt_lock lock_type
+%type<bool> opt_nowait
+%type<from_list> relation_expr_list
 
 %type<node> copy_stmt
 
@@ -1634,6 +1637,8 @@ command:
     } | AnalyzeStmt {
 		$$ = $1
     } | TruncateStmt {
+		$$ = $1
+    } | LockStmt {
 		$$ = $1
     } | DropStmt {
 		$$ = $1
@@ -5409,10 +5414,27 @@ relation_expr:
 					/* inheritance query, implicitly */
 					$$ = $1;
 				}
-			// | extended_relation_expr
-			// 	{
-			// 		$$ = $1;
-			// 	}
+			| extended_relation_expr
+				{
+					$$ = $1;
+				}
+		;
+
+extended_relation_expr:
+			qualified_name TMUL
+				{
+					$$ = $1;
+				}
+			| ONLY qualified_name
+				{
+					$$ = $2;
+					$$.(*RangeVar).Only = true;
+				}
+			| ONLY TOPENBR qualified_name TCLOSEBR
+				{
+					$$ = $3;
+					$$.(*RangeVar).Only = true;
+				}
 		;
 
 // /*
@@ -5434,8 +5456,8 @@ opt_repeatable_clause:
 
 
 relation_expr_list:
-			relation_expr							{ }
-			| relation_expr_list TCOMMA relation_expr	{  }
+			relation_expr							{ $$ = []FromClauseNode{$1} }
+			| relation_expr_list TCOMMA relation_expr	{ $$ = append($1, $3) }
 		;
 
 
@@ -6582,26 +6604,30 @@ values_clause:
 
 LockStmt:	LOCK_P opt_table relation_expr_list opt_lock opt_nowait
 				{
-
+					$$ = &LockStmt{
+						Relations: $3,
+						Mode: int($4),
+						Nowait: $5,
+					}
 				}
 		;
 
-opt_lock:	IN_P lock_type MODE				{  }
-			| /*EMPTY*/						{ }
+opt_lock:	IN_P lock_type MODE				{ $$ = $2 }
+			| /*EMPTY*/						{ $$ = AccessExclusiveLock }
 		;
 
-lock_type:	ACCESS SHARE					{  }
-			| ROW SHARE						{ }
-			| ROW EXCLUSIVE					{  }
-			| SHARE UPDATE EXCLUSIVE		{ }
-			| SHARE							{ }
-			| SHARE ROW EXCLUSIVE			{ }
-			| EXCLUSIVE						{  }
-			| ACCESS EXCLUSIVE				{ }
+lock_type:	ACCESS SHARE					{ $$ = AccessShareLock }
+			| ROW SHARE						{ $$ = RowShareLock }
+			| ROW EXCLUSIVE					{ $$ = RowExclusiveLock }
+			| SHARE UPDATE EXCLUSIVE		{ $$ = ShareUpdateExclusiveLock }
+			| SHARE							{ $$ = ShareLock }
+			| SHARE ROW EXCLUSIVE			{ $$ = ShareRowExclusiveLock }
+			| EXCLUSIVE						{ $$ = ExclusiveLock }
+			| ACCESS EXCLUSIVE				{ $$ = AccessExclusiveLock }
 		;
 
-opt_nowait:	NOWAIT							{  }
-			| /*EMPTY*/						{ }
+opt_nowait:	NOWAIT							{ $$ = true }
+			| /*EMPTY*/						{ $$ = false }
 		;
 
 opt_nowait_or_skip:

@@ -4750,6 +4750,93 @@ func TestTruncateTable(t *testing.T) {
 	}
 }
 
+func TestLockTable(t *testing.T) {
+	for _, tt := range []struct {
+		mode string
+		exp  int
+	}{
+		{"", lyx.AccessExclusiveLock},
+		{"ACCESS SHARE", lyx.AccessShareLock},
+		{"ROW SHARE", lyx.RowShareLock},
+		{"ROW EXCLUSIVE", lyx.RowExclusiveLock},
+		{"SHARE UPDATE EXCLUSIVE", lyx.ShareUpdateExclusiveLock},
+		{"SHARE", lyx.ShareLock},
+		{"SHARE ROW EXCLUSIVE", lyx.ShareRowExclusiveLock},
+		{"EXCLUSIVE", lyx.ExclusiveLock},
+		{"ACCESS EXCLUSIVE", lyx.AccessExclusiveLock},
+	} {
+		query := "LOCK TABLE t"
+		if tt.mode != "" {
+			query += " IN " + tt.mode + " MODE"
+		}
+		res, _, err := lyx.Parse(query)
+		assert.NoError(t, err, query)
+		assert.Equal(t, []lyx.Node{&lyx.LockStmt{
+			Relations: []lyx.FromClauseNode{&lyx.RangeVar{RelationName: "t"}},
+			Mode:      tt.exp,
+		}}, res, query)
+	}
+
+	for _, tt := range []struct {
+		query string
+		exp   *lyx.LockStmt
+	}{
+		{
+			query: "LOCK t NOWAIT;",
+			exp: &lyx.LockStmt{
+				Relations: []lyx.FromClauseNode{&lyx.RangeVar{RelationName: "t"}},
+				Mode:      lyx.AccessExclusiveLock,
+				Nowait:    true,
+			},
+		},
+		{
+			query: `lock table only public.t, only (other), "Schema"."Table" * in share mode nowait;`,
+			exp: &lyx.LockStmt{
+				Relations: []lyx.FromClauseNode{
+					&lyx.RangeVar{SchemaName: "public", RelationName: "t", Only: true},
+					&lyx.RangeVar{RelationName: "other", Only: true},
+					&lyx.RangeVar{SchemaName: "Schema", RelationName: "Table"},
+				},
+				Mode:   lyx.ShareLock,
+				Nowait: true,
+			},
+		},
+		{
+			query: "LOCK lock, access, exclusive, mode, nowait;",
+			exp: &lyx.LockStmt{
+				Relations: []lyx.FromClauseNode{
+					&lyx.RangeVar{RelationName: "lock"},
+					&lyx.RangeVar{RelationName: "access"},
+					&lyx.RangeVar{RelationName: "exclusive"},
+					&lyx.RangeVar{RelationName: "mode"},
+					&lyx.RangeVar{RelationName: "nowait"},
+				},
+				Mode: lyx.AccessExclusiveLock,
+			},
+		},
+	} {
+		res, _, err := lyx.Parse(tt.query)
+		assert.NoError(t, err, tt.query)
+		assert.Equal(t, []lyx.Node{tt.exp}, res, tt.query)
+	}
+}
+
+func TestLockTableInvalid(t *testing.T) {
+	for _, query := range []string{
+		"LOCK TABLE",
+		"LOCK t IN MODE",
+		"LOCK t IN ROW MODE",
+		"LOCK t IN SHARE",
+		"LOCK t NOWAIT IN SHARE MODE",
+		"LOCK t SKIP LOCKED",
+		"LOCK t AS alias",
+		"LOCK ONLY t *",
+	} {
+		_, _, err := lyx.Parse(query)
+		assert.Error(t, err, query)
+	}
+}
+
 func TestCreateTableWith(t *testing.T) {
 	assert := assert.New(t)
 
