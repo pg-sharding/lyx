@@ -50,6 +50,7 @@ type RangeVar struct {
 	SchemaName   string
 	RelationName string
 	Alias        string
+	Only         bool
 }
 
 func (r *RangeVar) SetAlias(s string) {
@@ -318,6 +319,24 @@ type ExplainStmt struct {
 type Truncate struct {
 }
 
+const (
+	NoLock = iota
+	AccessShareLock
+	RowShareLock
+	RowExclusiveLock
+	ShareUpdateExclusiveLock
+	ShareLock
+	ShareRowExclusiveLock
+	ExclusiveLock
+	AccessExclusiveLock
+)
+
+type LockStmt struct {
+	Relations []FromClauseNode
+	Mode      int
+	Nowait    bool
+}
+
 type Drop struct {
 	RemoveType string
 	MissingOk  bool
@@ -403,6 +422,7 @@ func (*VacuumStmt) iNode()         {}
 func (*Drop) iNode()               {}
 func (*DropTable) iNode()          {}
 func (*Truncate) iNode()           {}
+func (*LockStmt) iNode()           {}
 func (*CreateIndex) iNode()        {}
 func (*CreateRole) iNode()         {}
 func (*CreateDatabase) iNode()     {}

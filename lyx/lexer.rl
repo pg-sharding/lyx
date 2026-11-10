@@ -327,6 +327,11 @@ func (lex *Lexer) Lex(lval *yySymType) int {
 
 
             /locked/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCKED; fbreak;};
+            /lock/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = LOCK_P; fbreak;};
+            /access/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = ACCESS; fbreak;};
+            /exclusive/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = EXCLUSIVE; fbreak;};
+            /mode/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = MODE; fbreak;};
+            /nowait/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NOWAIT; fbreak;};
             /skip/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = SKIP; fbreak;};
 
             /RECURSIVE/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = RECURSIVE; fbreak;};
