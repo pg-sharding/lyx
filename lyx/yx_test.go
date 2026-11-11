@@ -6211,6 +6211,41 @@ func TestMultiStmt(t *testing.T) {
 	}
 }
 
+func TestStatementLocations(t *testing.T) {
+	for _, parts := range [][]string{
+		{""},
+		{"-- empty ;"},
+		{"SELECT 1"},
+		{"SELECT 1;", " SELECT 2"},
+		{"SELECT 1;", " SELECT 2; -- tail"},
+		{";", " /* empty ; */;", " SELECT 1;", ";"},
+		{"SELECT 'a;''b';", ` SELECT "a;b";`},
+		{"/* начало ; */ SELECT 'ёж;';", " /* __spqr__execute_on: sh2 */ SELECT 2"},
+		{"SELECT 1 -- comment ;\n;", " SELECT 2 /* tail ; */"},
+		{"BEGIN;", " SET application_name = 'a;b';", " SELECT 1;", " ROLLBACK;"},
+	} {
+		query := strings.Join(parts, "")
+		t.Run(query, func(t *testing.T) {
+			stmts, locations, _, err := lyx.ParseWithLocations(query)
+			if !assert.NoError(t, err) || !assert.Len(t, locations, len(parts)+1) {
+				return
+			}
+			assert.Len(t, stmts, len(parts))
+			assert.Equal(t, 0, locations[0])
+			assert.Equal(t, len(query), locations[len(parts)])
+			for i, part := range parts {
+				assert.Equal(t, part, query[locations[i]:locations[i+1]])
+			}
+		})
+	}
+
+	stmts, locations, pos, err := lyx.ParseWithLocations("SELECT 1; SELECT FROM")
+	assert.Error(t, err)
+	assert.Nil(t, stmts)
+	assert.Nil(t, locations)
+	assert.Positive(t, pos)
+}
+
 func TestTypeCast(t *testing.T) {
 	assert := assert.New(t)
 

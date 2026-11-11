@@ -551,9 +551,12 @@ root: multiStmt semicolon_opt {
 multiStmt: 
 			command {
 				$$ = []Node{$1}
+				yylex.(*Tokenizer).Locations = make([]ParseLoc, 1, 2)
 			} | 
 			multiStmt TSEMICOLON command {
 				$$ = append($1, $3)
+				t := yylex.(*Tokenizer)
+				t.Locations = append(t.Locations, $<loc>2 + 1)
 			}
 	;
 
