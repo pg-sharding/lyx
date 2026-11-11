@@ -11,6 +11,9 @@ type Tokenizer struct {
 	s string
 
 	ParseTree []Node
+	// Locations contains len(ParseTree)+1 byte offsets: statement i is
+	// s[Locations[i]:Locations[i+1]], including its comments and semicolon.
+	Locations []ParseLoc
 	LastError string
 	l         *Lexer
 }
@@ -49,17 +52,26 @@ func (t *Tokenizer) Reset(sql string) {
 }
 
 func setParseTree(yylex interface{}, stmt []Node) {
-	yylex.(*Tokenizer).ParseTree = stmt
+	t := yylex.(*Tokenizer)
+	t.ParseTree = stmt
+	t.Locations = append(t.Locations, len(t.s))
 }
 
 func Parse(sql string) ([]Node, int, error) {
+	ast, _, pos, err := ParseWithLocations(sql)
+	return ast, pos, err
+}
+
+// ParseWithLocations also returns byte boundaries for slicing sql into statements.
+// Locations includes 0 and len(sql); comments and empty statements are preserved.
+func ParseWithLocations(sql string) ([]Node, []ParseLoc, int, error) {
 	tokenizer := NewStringTokenizer(sql)
 	p := yyNewParser()
 	if p.Parse(tokenizer) != 0 {
-		return nil, tokenizer.l.ts, errors.New(tokenizer.LastError)
+		return nil, nil, tokenizer.l.ts, errors.New(tokenizer.LastError)
 	}
 	ast := tokenizer.ParseTree
-	return ast, 0, nil
+	return ast, tokenizer.Locations, 0, nil
 }
 
 func ParseWithLexerParser(l LyxParser, t *Tokenizer, sql string) ([]Node, int, error) {
