@@ -249,6 +249,8 @@ type ValueClause struct {
 	Values [][]Node
 	// ValuesLoc is the location of the VALUES token, or ParseLocUnknown.
 	ValuesLoc ParseLoc
+	// RowLocs contains [start, end) byte offsets for each VALUES row, including its parentheses.
+	RowLocs [][2]ParseLoc
 }
 
 type Insert struct {

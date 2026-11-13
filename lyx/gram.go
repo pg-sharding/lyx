@@ -20092,14 +20092,16 @@ yydefault:
 			yyVAL.node = &ValueClause{
 				Values:    [][]Node{yyDollar[3].nodeList},
 				ValuesLoc: yyDollar[1].loc,
+				RowLocs:   [][2]ParseLoc{{yyDollar[2].loc, yyDollar[4].loc + 1}},
 			}
 		}
 	case 2033:
 		yyDollar = yyS[yypt-5 : yypt+1]
-//line lyx/gram.y:6592
+//line lyx/gram.y:6593
 		{
 			yyVAL.node = yyDollar[1].node
 			yyVAL.node.(*ValueClause).Values = append(yyVAL.node.(*ValueClause).Values, yyDollar[4].nodeList)
+			yyVAL.node.(*ValueClause).RowLocs = append(yyVAL.node.(*ValueClause).RowLocs, [2]ParseLoc{yyDollar[3].loc, yyDollar[5].loc + 1})
 		}
 	case 2034:
 		yyDollar = yyS[yypt-5 : yypt+1]

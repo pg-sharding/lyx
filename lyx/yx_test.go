@@ -1878,6 +1878,7 @@ func TestInsert(t *testing.T) {
 				Columns: []string{"id", "test_field"},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 40,
+					RowLocs:   [][2]lyx.ParseLoc{{47, 73}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 560},
@@ -1899,6 +1900,7 @@ func TestInsert(t *testing.T) {
 				Columns: []string{"id"},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 20,
+					RowLocs:   [][2]lyx.ParseLoc{{26, 29}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 1},
@@ -1966,6 +1968,7 @@ func TestInsert(t *testing.T) {
 				Columns: []string{"code", "title", "did", "date_prod", "kind"},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 57,
+					RowLocs:   [][2]lyx.ParseLoc{{64, 112}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{Value: "T_601"},
@@ -2025,6 +2028,7 @@ func TestInsert(t *testing.T) {
 				},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 24,
+					RowLocs:   [][2]lyx.ParseLoc{{30, 35}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 1},
@@ -2046,6 +2050,7 @@ func TestInsert(t *testing.T) {
 				Columns: []string{"j", "i", "w_id"},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 31,
+					RowLocs:   [][2]lyx.ParseLoc{{37, 59}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 2121221},
@@ -2073,6 +2078,7 @@ func TestInsert(t *testing.T) {
 				},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 24,
+					RowLocs:   [][2]lyx.ParseLoc{{30, 35}, {37, 42}, {44, 51}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{Value: 1},
@@ -2142,6 +2148,7 @@ VALUES(2822, ROW('none', '0'));
 				Columns: []string{"id", "info"},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 40,
+					RowLocs:   [][2]lyx.ParseLoc{{46, 70}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{
@@ -2173,6 +2180,7 @@ VALUES(2822, ROW('none', '0'), ''::bytea);
 				Columns: []string{"id", "info", "bytes"},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 48,
+					RowLocs:   [][2]lyx.ParseLoc{{54, 89}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{
@@ -2234,6 +2242,7 @@ func TestInsertComplex(t *testing.T) {
 				},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 147,
+					RowLocs:   [][2]lyx.ParseLoc{{153, 337}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{
@@ -2290,6 +2299,7 @@ func TestInsertComplex(t *testing.T) {
 				},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 61,
+					RowLocs:   [][2]lyx.ParseLoc{{68, 91}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{
@@ -2325,6 +2335,7 @@ VALUES ('1970-01-01 12:00:00.5',111111,NULL,NULL,'9223372036854775807',
 				},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 177,
+					RowLocs:   [][2]lyx.ParseLoc{{184, 442}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprSConst{Value: "1970-01-01 12:00:00.5"},
@@ -4305,6 +4316,52 @@ func TestInsertValuesLoc(t *testing.T) {
 	}
 }
 
+func TestValuesRowLocs(t *testing.T) {
+	for _, tt := range []struct {
+		query string
+		rows  []string
+	}{
+		{
+			query: `/* Привет */ INSERT INTO t (i, j) VALUES (3 /* ) */, 'y'), /* ( */ ((34 + 1), ')') RETURNING i`,
+			rows:  []string{`(3 /* ) */, 'y')`, `((34 + 1), ')')`},
+		},
+		{
+			query: `VALUES (1, ')'), (2, '(')`,
+			rows:  []string{`(1, ')')`, `(2, '(')`},
+		},
+		{
+			query: "WITH v AS (VALUES (1 -- )\n), (2)) SELECT * FROM v",
+			rows:  []string{"(1 -- )\n)", "(2)"},
+		},
+	} {
+		t.Run(tt.query, func(t *testing.T) {
+			stmts, _, err := lyx.Parse(tt.query)
+			if !assert.NoError(t, err) {
+				return
+			}
+
+			var values *lyx.ValueClause
+			switch stmt := stmts[0].(type) {
+			case *lyx.Insert:
+				values = stmt.SubSelect.(*lyx.ValueClause)
+			case *lyx.Select:
+				values = stmt.WithClause[0].SubQuery.(*lyx.ValueClause)
+			case *lyx.ValueClause:
+				values = stmt
+			}
+			if !assert.NotNil(t, values) || !assert.Len(t, values.RowLocs, len(values.Values)) {
+				return
+			}
+
+			rows := make([]string, len(values.RowLocs))
+			for i, loc := range values.RowLocs {
+				rows[i] = tt.query[loc[0]:loc[1]]
+			}
+			assert.Equal(t, tt.rows, rows)
+		})
+	}
+}
+
 func TestParamsFail(t *testing.T) {
 	assert := assert.New(t)
 
@@ -5030,6 +5087,7 @@ func TestCte(t *testing.T) {
 						NameList: []string{"a", "b", "c"},
 						SubQuery: &lyx.ValueClause{
 							ValuesLoc: 33,
+							RowLocs:   [][2]lyx.ParseLoc{{40, 139}},
 							Values: [][]lyx.Node{
 								{
 									&lyx.AExprSConst{
@@ -5070,6 +5128,7 @@ with c1 as (values(1,2,3), (2,3,4), (3,4,5)) select * from c1;
 							Name: "c1",
 							SubQuery: &lyx.ValueClause{
 								ValuesLoc: 31,
+								RowLocs:   [][2]lyx.ParseLoc{{37, 44}, {46, 53}, {55, 62}},
 								Values: [][]lyx.Node{
 									{
 										&lyx.AExprIConst{
@@ -5126,6 +5185,7 @@ select * from tbl inner join cte on tbl.i = cte.i;
 					{
 						SubQuery: &lyx.ValueClause{
 							ValuesLoc: 18,
+							RowLocs:   [][2]lyx.ParseLoc{{25, 29}, {31, 35}},
 							Values: [][]lyx.Node{
 								{
 									&lyx.AExprIConst{
@@ -5719,6 +5779,7 @@ func TestMiscQ(t *testing.T) {
 				},
 				SubSelect: &lyx.ValueClause{
 					ValuesLoc: 109,
+					RowLocs:   [][2]lyx.ParseLoc{{116, 230}},
 					Values: [][]lyx.Node{
 						{
 							&lyx.AExprIConst{
