@@ -6586,16 +6586,16 @@ values_clause:
 					$$ = &ValueClause{
 						Values:    [][]Node{$3},
 						ValuesLoc: yyDollar[1].loc,
+						RowLocs:   [][2]ParseLoc{{yyDollar[2].loc, yyDollar[4].loc + 1}},
 					}
 				}
 			| values_clause TCOMMA TOPENBR expr_list TCLOSEBR
 				{
 					$$ = $1
 					$$.(*ValueClause).Values = append($$.(*ValueClause).Values, $4)
+					$$.(*ValueClause).RowLocs = append($$.(*ValueClause).RowLocs, [2]ParseLoc{yyDollar[3].loc, yyDollar[5].loc + 1})
 				}
 		;
-
-
 
 
 /*****************************************************************************
