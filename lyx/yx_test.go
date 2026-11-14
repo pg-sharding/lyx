@@ -6865,6 +6865,11 @@ func TestFetchFirst(t *testing.T) {
 			query: `
 			select 1 from tab  where (sst = 'ACTIVE') order by tab.id asc fetch first 20 rows only`,
 			exp: &lyx.Select{
+				Limit: &lyx.SelectLimit{
+					LimitCount: &lyx.AExprIConst{Value: 20},
+					OffsetLoc:  lyx.ParseLocUnknown,
+					CountLoc:   66,
+				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "tab",
@@ -6905,6 +6910,58 @@ func TestFetchFirst(t *testing.T) {
 		}
 	}
 
+}
+
+func TestFetchLimit(t *testing.T) {
+	for _, tt := range []struct {
+		query  string
+		count  lyx.Node
+		offset lyx.Node
+		option lyx.LimitOption
+	}{
+		{
+			query:  "SELECT 1 OFFSET 3 ROWS FETCH NEXT ROW ONLY",
+			count:  &lyx.AExprIConst{Value: 1},
+			offset: &lyx.AExprIConst{Value: 3},
+		},
+		{
+			query:  "SELECT 1 ORDER BY 1 FETCH FIRST 2 ROWS WITH TIES OFFSET 3",
+			count:  &lyx.AExprIConst{Value: 2},
+			offset: &lyx.AExprIConst{Value: 3},
+			option: lyx.LIMIT_OPTION_WITH_TIES,
+		},
+		{
+			query:  "SELECT 1 ORDER BY 1 FETCH NEXT ROW WITH TIES",
+			count:  &lyx.AExprIConst{Value: 1},
+			option: lyx.LIMIT_OPTION_WITH_TIES,
+		},
+		{
+			query: "SELECT 1 FETCH FIRST $1 ROWS ONLY",
+			count: &lyx.ParamRef{Number: 1},
+		},
+		{
+			query: "SELECT 1 FETCH FIRST +2 ROWS ONLY",
+			count: &lyx.AExprIConst{Value: 2},
+		},
+		{
+			query: "SELECT 1 FETCH FIRST -2 ROWS ONLY",
+			count: &lyx.AExprIConst{Value: -2},
+		},
+	} {
+		t.Run(tt.query, func(t *testing.T) {
+			stmts, _, err := lyx.Parse(tt.query)
+			if !assert.NoError(t, err) {
+				return
+			}
+			assert.Equal(t, &lyx.SelectLimit{
+				LimitCount:  tt.count,
+				LimitOffset: tt.offset,
+				LimitOption: tt.option,
+				CountLoc:    strings.Index(tt.query, "FETCH"),
+				OffsetLoc:   strings.Index(tt.query, "OFFSET"),
+			}, stmts[0].(*lyx.Select).Limit)
+		})
+	}
 }
 
 func Test1c(t *testing.T) {

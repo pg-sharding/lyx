@@ -197,6 +197,13 @@ type CommonTableExpr struct {
 	SubQuery Node
 }
 
+type LimitOption int
+
+const (
+	LIMIT_OPTION_COUNT LimitOption = iota
+	LIMIT_OPTION_WITH_TIES
+)
+
 /* Private struct for the result of opt_select_limit production */
 type SelectLimit struct {
 	LimitOffset Node
@@ -208,8 +215,8 @@ type SelectLimit struct {
 	// CountLoc is the location of the LIMIT/FETCH token, if present,
 	// or ParseLocUnknown, like the countLoc field of SelectLimit in
 	// PostgreSQL.
-	CountLoc ParseLoc
-	// limitOption LimitOption ;
+	CountLoc    ParseLoc
+	LimitOption LimitOption
 }
 
 const (

@@ -6371,19 +6371,39 @@ limit_clause:
 			 */
 			| FETCH first_or_next select_fetch_first_value row_or_rows ONLY
 				{
-				
+					$$ = &SelectLimit{
+						LimitCount:  $3,
+						LimitOption: LIMIT_OPTION_COUNT,
+						OffsetLoc:   ParseLocUnknown,
+						CountLoc:    yyDollar[1].loc,
+					}
 				}
 			| FETCH first_or_next select_fetch_first_value row_or_rows WITH TIES
 				{
-					
+					$$ = &SelectLimit{
+						LimitCount:  $3,
+						LimitOption: LIMIT_OPTION_WITH_TIES,
+						OffsetLoc:   ParseLocUnknown,
+						CountLoc:    yyDollar[1].loc,
+					}
 				}
 			| FETCH first_or_next row_or_rows ONLY
 				{
-				
+					$$ = &SelectLimit{
+						LimitCount:  &AExprIConst{Value: 1},
+						LimitOption: LIMIT_OPTION_COUNT,
+						OffsetLoc:   ParseLocUnknown,
+						CountLoc:    yyDollar[1].loc,
+					}
 				}
 			| FETCH first_or_next row_or_rows WITH TIES
 				{
-				
+					$$ = &SelectLimit{
+						LimitCount:  &AExprIConst{Value: 1},
+						LimitOption: LIMIT_OPTION_WITH_TIES,
+						OffsetLoc:   ParseLocUnknown,
+						CountLoc:    yyDollar[1].loc,
+					}
 				}
 		;
 
@@ -6440,13 +6460,13 @@ select_offset_value:
 select_fetch_first_value:
 			c_expr									{ $$ = $1; }
 			| TPLUS I_or_F_const
-				{  }
+				{ $$ = $2; }
 			| TMINUS I_or_F_const
-				{}
+				{ $$ = doNegate($2); }
 		;
 
 I_or_F_const:
-			ICONST									{ }
+			ICONST									{ $$ = &AExprIConst{Value: $1}; }
 		// 	| FCONST								{  }
 		// ;
 

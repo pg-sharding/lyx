@@ -3830,7 +3830,7 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 342:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = NEXT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 343:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
@@ -4070,7 +4070,7 @@ tr0:
  lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT_P; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 432:
 	{( lex.p) = ( lex.te) - 1
- lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}
+ lval.str = string(lex.data[lex.ts:lex.te]); tok = TIES; {( lex.p)++; ( lex.cs) = 8; goto _out }}
 	case 433:
 	{( lex.p) = ( lex.te) - 1
  lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; {( lex.p)++; ( lex.cs) = 8; goto _out }}

@@ -539,7 +539,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /name/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /natural/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /new/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
-            /next/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
+            /next/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = NEXT; fbreak;};
             /nfkc/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /nfkd/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /nfc/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
@@ -629,7 +629,7 @@ func (lex *Lexer) Lex(lval *yySymType) int {
             /tables/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /template/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /text/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TEXT_P; fbreak;};
-            /ties/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
+            /ties/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = TIES; fbreak;};
             /trailing/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /transform/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
             /treat/i => { lval.str = string(lex.data[lex.ts:lex.te]); tok = IDENT; fbreak;};
