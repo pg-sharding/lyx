@@ -25,6 +25,36 @@ func doNegate(n Node) Node {
 	return n
 }
 
+// A bare integer literal is one token. Other expressions have no reliable
+// end location until the parser tracks expression spans.
+func integerLiteralEnd(yylex interface{}, loc ParseLoc, value Node) ParseLoc {
+	if _, ok := value.(*AExprIConst); !ok {
+		return ParseLocUnknown
+	}
+	sql := yylex.(*Tokenizer).s
+	if loc < 0 || loc >= len(sql) || sql[loc] < '0' || sql[loc] > '9' {
+		return ParseLocUnknown
+	}
+	for loc < len(sql) && sql[loc] >= '0' && sql[loc] <= '9' {
+		loc++
+	}
+	return loc
+}
+
+func rowOrRowsEnd(yylex interface{}, loc ParseLoc) ParseLoc {
+	sql := yylex.(*Tokenizer).s
+	if loc < 0 || loc > len(sql) {
+		return ParseLocUnknown
+	}
+	if strings.HasPrefix(strings.ToUpper(sql[loc:]), "ROWS") {
+		return loc + len("ROWS")
+	}
+	if strings.HasPrefix(strings.ToUpper(sql[loc:]), "ROW") {
+		return loc + len("ROW")
+	}
+	return ParseLocUnknown
+}
+
 type LyxParser yyParser
 
 func NewLyxParser() LyxParser {
@@ -353,7 +383,7 @@ Operator:
 %type<node> frame_bound
 
 %type<node> select_clause select_no_parens select_with_parens SelectStmt values_clause locked_rels_list 
-%type<node> for_locking_strength for_locking_item for_locking_items opt_for_locking_clause having_clause
+%type<node> for_locking_strength for_locking_item for_locking_items for_locking_clause opt_for_locking_clause having_clause
 %type<node> grouping_sets_clause
 %type<node> cube_clause rollup_clause empty_grouping_set group_by_item group_clause
 %type<node> first_or_next row_or_rows I_or_F_const select_fetch_first_value
@@ -6326,6 +6356,7 @@ select_limit:
 					$$ = $1;
 					($$).(*SelectLimit).LimitOffset = ($2).(*SelectLimit).LimitOffset;
 					($$).(*SelectLimit).OffsetLoc = ($2).(*SelectLimit).OffsetLoc;
+					($$).(*SelectLimit).EndLoc = ($2).(*SelectLimit).EndLoc;
 				}
 			| offset_clause limit_clause
 				{
@@ -6355,6 +6386,7 @@ limit_clause:
 						LimitCount: $2,
 						OffsetLoc:  ParseLocUnknown,
 						CountLoc:   yyDollar[1].loc,
+						EndLoc:    integerLiteralEnd(yylex, yyDollar[2].loc, $2),
 					}
 				}
 			| LIMIT select_limit_value TCOMMA select_offset_value
@@ -6376,6 +6408,7 @@ limit_clause:
 						LimitOption: LIMIT_OPTION_COUNT,
 						OffsetLoc:   ParseLocUnknown,
 						CountLoc:    yyDollar[1].loc,
+						EndLoc:      yyDollar[5].loc + len("ONLY"),
 					}
 				}
 			| FETCH first_or_next select_fetch_first_value row_or_rows WITH TIES
@@ -6385,6 +6418,7 @@ limit_clause:
 						LimitOption: LIMIT_OPTION_WITH_TIES,
 						OffsetLoc:   ParseLocUnknown,
 						CountLoc:    yyDollar[1].loc,
+						EndLoc:      yyDollar[6].loc + len("TIES"),
 					}
 				}
 			| FETCH first_or_next row_or_rows ONLY
@@ -6394,6 +6428,7 @@ limit_clause:
 						LimitOption: LIMIT_OPTION_COUNT,
 						OffsetLoc:   ParseLocUnknown,
 						CountLoc:    yyDollar[1].loc,
+						EndLoc:      yyDollar[4].loc + len("ONLY"),
 					}
 				}
 			| FETCH first_or_next row_or_rows WITH TIES
@@ -6403,6 +6438,7 @@ limit_clause:
 						LimitOption: LIMIT_OPTION_WITH_TIES,
 						OffsetLoc:   ParseLocUnknown,
 						CountLoc:    yyDollar[1].loc,
+						EndLoc:      yyDollar[5].loc + len("TIES"),
 					}
 				}
 		;
@@ -6414,6 +6450,7 @@ offset_clause:
 						LimitOffset: $2,
 						OffsetLoc:  yyDollar[1].loc,
 						CountLoc:   ParseLocUnknown,
+						EndLoc:    integerLiteralEnd(yylex, yyDollar[2].loc, $2),
 					}
 				}
 			/* SQL:2008 syntax */
@@ -6423,6 +6460,7 @@ offset_clause:
 						LimitOffset: $2,
 						OffsetLoc:  yyDollar[1].loc,
 						CountLoc:   ParseLocUnknown,
+						EndLoc:    rowOrRowsEnd(yylex, yyDollar[3].loc),
 					}
 				}
 		;
@@ -6562,13 +6600,13 @@ having_clause:
 		;
 
 for_locking_clause:
-			for_locking_items						{ }
-			| FOR READ ONLY							{ }
+			for_locking_items						{ $$ = &AExprEmpty{}; }
+			| FOR READ ONLY							{ $$ = &AExprEmpty{}; }
 		;
 
 opt_for_locking_clause:
-			for_locking_clause						{ }
-			| /* EMPTY */							{ }
+			for_locking_clause						{ $$ = $1; }
+			| /* EMPTY */							{ $$ = nil; }
 		;
 
 for_locking_items:
@@ -6736,12 +6774,14 @@ select_no_parens:
 				{
 					$1.(*Select).SortClause = $2
 					$1.(*Select).Limit = $4
+					$1.(*Select).HasLockingClause = $3 != nil
 					$$ = $1;
 				}
 			| select_clause opt_sort_clause select_limit opt_for_locking_clause
 				{
 					$1.(*Select).SortClause = $2
 					$1.(*Select).Limit = $3
+					$1.(*Select).HasLockingClause = $4 != nil
 					$$ = $1;
 				}
 			| with_clause select_clause
@@ -6759,6 +6799,7 @@ select_no_parens:
 				{
 					$2.(*Select).SortClause = $3
 					$2.(*Select).Limit = $5
+					$2.(*Select).HasLockingClause = $4 != nil
 					$2.(*Select).WithClause = $1
 					$$ = $2;
 				}
@@ -6766,6 +6807,7 @@ select_no_parens:
 				{
 					$2.(*Select).SortClause = $3;
 					$2.(*Select).Limit = $4
+					$2.(*Select).HasLockingClause = $5 != nil
 					$2.(*Select).WithClause = $1;
 					$$ = $2;
 				}

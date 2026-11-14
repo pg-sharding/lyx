@@ -215,7 +215,10 @@ type SelectLimit struct {
 	// CountLoc is the location of the LIMIT/FETCH token, if present,
 	// or ParseLocUnknown, like the countLoc field of SelectLimit in
 	// PostgreSQL.
-	CountLoc    ParseLoc
+	CountLoc ParseLoc
+	// EndLoc is the byte offset after the complete LIMIT/OFFSET or
+	// FETCH/OFFSET clause, or ParseLocUnknown when its end is unknown.
+	EndLoc      ParseLoc
 	LimitOption LimitOption
 }
 
@@ -241,6 +244,8 @@ type Select struct {
 	Distinct   bool
 
 	SortClause []Node
+	// HasLockingClause records FOR UPDATE/SHARE or FOR READ ONLY.
+	HasLockingClause bool
 
 	Limit Node
 

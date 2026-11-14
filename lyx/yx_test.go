@@ -755,6 +755,7 @@ func TestSelect(t *testing.T) {
 				Limit: &lyx.SelectLimit{
 					CountLoc:  115,
 					OffsetLoc: 123,
+					EndLoc:    131,
 					LimitOffset: &lyx.AExprIConst{
 						Value: 0,
 					},
@@ -830,6 +831,7 @@ func TestSelect(t *testing.T) {
 		{
 			query: `SELECT rid FROM shds WHERE sds = '1122' FOR SHARE`,
 			exp: &lyx.Select{
+				HasLockingClause: true,
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "shds",
@@ -920,6 +922,7 @@ func TestSelect(t *testing.T) {
 				Limit: &lyx.SelectLimit{
 					OffsetLoc: lyx.ParseLocUnknown,
 					CountLoc:  29,
+					EndLoc:    36,
 					LimitCount: &lyx.AExprIConst{
 						Value: 7,
 					},
@@ -1007,6 +1010,7 @@ func TestSelect(t *testing.T) {
 				Limit: &lyx.SelectLimit{
 					OffsetLoc: lyx.ParseLocUnknown,
 					CountLoc:  40,
+					EndLoc:    47,
 					LimitCount: &lyx.AExprIConst{
 						Value: 7,
 					},
@@ -1077,9 +1081,11 @@ func TestSelect(t *testing.T) {
 			select id from tbl where i = 12 for update skip locked limit 1
 			`,
 			exp: &lyx.Select{
+				HasLockingClause: true,
 				Limit: &lyx.SelectLimit{
 					OffsetLoc: lyx.ParseLocUnknown,
 					CountLoc:  59,
+					EndLoc:    66,
 					LimitCount: &lyx.AExprIConst{
 						Value: 1,
 					},
@@ -1103,9 +1109,11 @@ func TestSelect(t *testing.T) {
 			select id from tbl where i = 12 for update skip locked limit 1 offset 0
 			`,
 			exp: &lyx.Select{
+				HasLockingClause: true,
 				Limit: &lyx.SelectLimit{
 					CountLoc:  59,
 					OffsetLoc: 67,
+					EndLoc:    75,
 					LimitOffset: &lyx.AExprIConst{
 						Value: 0,
 					},
@@ -5397,6 +5405,7 @@ select * from tbl inner join cte on tbl.i = cte.i;
 			FOR UPDATE;
 			`,
 			exp: &lyx.Select{
+				HasLockingClause: true,
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
 						RelationName: "xxxx",
@@ -5654,9 +5663,11 @@ func TestMiscQ(t *testing.T) {
 							ColName: "id",
 						},
 						SubLink: &lyx.Select{
+							HasLockingClause: true,
 							Limit: &lyx.SelectLimit{
 								OffsetLoc: lyx.ParseLocUnknown,
 								CountLoc:  88,
+								EndLoc:    95,
 								LimitCount: &lyx.AExprIConst{
 									Value: 1,
 								},
@@ -6572,6 +6583,7 @@ ORDER BY 2, 3;`,
 				Limit: &lyx.SelectLimit{
 					OffsetLoc: lyx.ParseLocUnknown,
 					CountLoc:  489,
+					EndLoc:    499,
 					LimitCount: &lyx.AExprIConst{
 						Value: 1000,
 					},
@@ -6847,6 +6859,7 @@ func TestForKeyShare(t *testing.T) {
 			query: `
 			select * from x for no key update`,
 			exp: &lyx.Select{
+				HasLockingClause: true,
 				TargetList: []lyx.Node{
 					&lyx.AExprEmpty{},
 				},
@@ -6885,6 +6898,7 @@ func TestFetchFirst(t *testing.T) {
 					LimitCount: &lyx.AExprIConst{Value: 20},
 					OffsetLoc:  lyx.ParseLocUnknown,
 					CountLoc:   66,
+					EndLoc:     90,
 				},
 				FromClause: []lyx.FromClauseNode{
 					&lyx.RangeVar{
@@ -6975,6 +6989,7 @@ func TestFetchLimit(t *testing.T) {
 				LimitOption: tt.option,
 				CountLoc:    strings.Index(tt.query, "FETCH"),
 				OffsetLoc:   strings.Index(tt.query, "OFFSET"),
+				EndLoc:      len(tt.query),
 			}, stmts[0].(*lyx.Select).Limit)
 		})
 	}
@@ -7360,4 +7375,53 @@ func Test1c(t *testing.T) {
 		assert.NotNil(tmp, tt.query)
 	}
 
+}
+
+func TestSelectLimitSpanAndLocking(t *testing.T) {
+	for _, tc := range []struct {
+		query, clause       string
+		locking, unknownEnd bool
+	}{
+		{
+			query:  "SELECT 1 ORDER BY 1 OFFSET 1 /* between */ FETCH FIRST 2 ROWS WITH TIES /* tail */",
+			clause: "OFFSET 1 /* between */ FETCH FIRST 2 ROWS WITH TIES",
+		},
+		{
+			query:  "SELECT 1 ORDER BY 1 FETCH NEXT ROW WITH TIES /* between */ OFFSET 1 ROWS /* tail */",
+			clause: "FETCH NEXT ROW WITH TIES /* between */ OFFSET 1 ROWS",
+		},
+		{
+			query:   "SELECT 1 ORDER BY 1 FETCH FIRST 2 ROWS WITH TIES FOR UPDATE",
+			clause:  "FETCH FIRST 2 ROWS WITH TIES",
+			locking: true,
+		},
+		{
+			query:   "SELECT 1 ORDER BY 1 FOR SHARE FETCH FIRST 2 ROWS WITH TIES",
+			clause:  "FETCH FIRST 2 ROWS WITH TIES",
+			locking: true,
+		},
+		{
+			query:      "SELECT 1 ORDER BY 1 FETCH FIRST 2 ROWS WITH TIES OFFSET 1+1",
+			unknownEnd: true,
+		},
+	} {
+		t.Run(tc.query, func(t *testing.T) {
+			stmts, _, err := lyx.Parse(tc.query)
+			if !assert.NoError(t, err) {
+				return
+			}
+			stmt := stmts[0].(*lyx.Select)
+			assert.Equal(t, tc.locking, stmt.HasLockingClause)
+			limit := stmt.Limit.(*lyx.SelectLimit)
+			if tc.unknownEnd {
+				assert.Equal(t, lyx.ParseLocUnknown, limit.EndLoc)
+				return
+			}
+			start := limit.CountLoc
+			if limit.OffsetLoc != lyx.ParseLocUnknown && limit.OffsetLoc < start {
+				start = limit.OffsetLoc
+			}
+			assert.Equal(t, tc.clause, tc.query[start:limit.EndLoc])
+		})
+	}
 }
