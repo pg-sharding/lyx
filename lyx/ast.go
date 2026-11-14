@@ -238,6 +238,7 @@ type Select struct {
 	Where      Node
 	GroupBy    Node
 	TargetList []Node
+	Distinct   bool
 
 	SortClause []Node
 

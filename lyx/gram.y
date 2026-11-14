@@ -6261,7 +6261,7 @@ simple_select:
 						TargetList: $3,
 						FromClause: $5,
 						Where: $6,
-						GroupBy: $7,
+						GroupBy: $7, Distinct: true,
 					}
 				}
 			| values_clause							{ $$ = $1; }
