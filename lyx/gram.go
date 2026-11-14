@@ -19692,7 +19692,7 @@ yydefault:
 				TargetList: yyDollar[3].nodeList,
 				FromClause: yyDollar[5].from_list,
 				Where:      yyDollar[6].node,
-				GroupBy:    yyDollar[7].node,
+				GroupBy:    yyDollar[7].node, Distinct: true,
 			}
 		}
 	case 1968:

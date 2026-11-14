@@ -402,6 +402,22 @@ func TestSelectComplex(t *testing.T) {
 	}
 }
 
+func TestSelectDistinctFlag(t *testing.T) {
+	for _, tt := range []struct {
+		query    string
+		distinct bool
+	}{
+		{"SELECT id FROM t", false},
+		{"SELECT DISTINCT id FROM t", true},
+		{"SELECT DISTINCT ON (id) id FROM t", true},
+	} {
+		nodes, _, err := lyx.Parse(tt.query)
+		if assert.NoError(t, err, tt.query) && assert.Len(t, nodes, 1, tt.query) {
+			assert.Equal(t, tt.distinct, nodes[0].(*lyx.Select).Distinct, tt.query)
+		}
+	}
+}
+
 func TestSelectDistinct(t *testing.T) {
 	assert := assert.New(t)
 
