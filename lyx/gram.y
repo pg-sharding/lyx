@@ -2758,6 +2758,7 @@ c_expr:		columnref								{ $$ = $1; }
 			| select_with_parens			%prec UMINUS
 				{
 				    $$ = &SubLink{
+						Type: ExprSubLink,
 						SubSelect: $1,
 					}
 				}
@@ -2774,6 +2775,7 @@ c_expr:		columnref								{ $$ = $1; }
 					 * we need this redundant-looking production.
 					 */
 				    $$ = &SubLink{
+						Type: ExprSubLink,
 						SubSelect: $1,
 					}
 				
@@ -2781,12 +2783,14 @@ c_expr:		columnref								{ $$ = $1; }
 			| EXISTS select_with_parens
 				{
 				    $$ = &SubLink{
+						Type: ExistsSubLink,
 						SubSelect: $2,
 					}
 				}
 			| ARRAY select_with_parens
 				{
 				    $$ = &SubLink{
+						Type: ArraySubLink,
 						SubSelect: $2,
 					}
 				}

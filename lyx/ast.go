@@ -57,7 +57,16 @@ func (r *RangeVar) SetAlias(s string) {
 	r.Alias = s
 }
 
+type SubLinkType string
+
+const (
+	ExistsSubLink = SubLinkType("EXISTS")
+	ArraySubLink  = SubLinkType("ARRAY")
+	ExprSubLink   = SubLinkType("EXPR")
+)
+
 type SubLink struct {
+	Type      SubLinkType
 	SubSelect Node
 }
 
