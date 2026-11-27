@@ -434,7 +434,9 @@ func TestSelectDistinct(t *testing.T) {
 			exp: &lyx.Select{
 				TargetList: []lyx.Node{
 					&lyx.FuncApplication{
-						Name: "count",
+						Name:     "count",
+						Args:     []lyx.Node{&lyx.ColumnRef{ColName: "id"}},
+						Distinct: true,
 					},
 				},
 				FromClause: []lyx.FromClauseNode{

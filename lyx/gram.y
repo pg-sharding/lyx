@@ -2309,7 +2309,7 @@ func_application: func_name TOPENBR TCLOSEBR
 			| func_name TOPENBR DISTINCT func_arg_list opt_sort_clause TCLOSEBR
 				{
 					$$ = &FuncApplication{
-						Name: $1,
+						Name: $1, Args: $4, Distinct: true,
 					}
 				}
 				/* select count(*) from x */

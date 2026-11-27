@@ -557,8 +557,9 @@ type DeallocateStmt struct {
 func (*DeallocateStmt) iNode() {}
 
 type FuncApplication struct {
-	Name string
-	Args []Node
+	Name     string
+	Args     []Node
+	Distinct bool
 }
 
 func (*FuncApplication) iNode() {}
