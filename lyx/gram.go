@@ -14639,7 +14639,7 @@ yydefault:
 //line lyx/gram.y:2310
 		{
 			yyVAL.node = &FuncApplication{
-				Name: yyDollar[1].str,
+				Name: yyDollar[1].str, Args: yyDollar[4].nodeList, Distinct: true,
 			}
 		}
 	case 1152:
