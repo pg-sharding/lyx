@@ -375,6 +375,7 @@ func TestSelectComplex(t *testing.T) {
 				},
 				Where: &lyx.AExprOp{
 					Left: &lyx.SubLink{
+						Type: lyx.ExprSubLink,
 						SubSelect: &lyx.Select{
 							FromClause: []lyx.FromClauseNode{
 								&lyx.RangeVar{RelationName: "b"},
@@ -3255,7 +3256,7 @@ func TestSelectTargetLists(t *testing.T) {
 						Name: "invalid",
 						Value: &lyx.AExprNot{
 							Arg: &lyx.SubLink{
-
+								Type: lyx.ExistsSubLink,
 								SubSelect: &lyx.Select{
 
 									TargetList: []lyx.Node{
@@ -5711,6 +5712,7 @@ func TestMiscQ(t *testing.T) {
 						Name: "ANY",
 						Args: []lyx.Node{
 							&lyx.SubLink{
+								Type: lyx.ArraySubLink,
 								SubSelect: &lyx.Select{
 									FromClause: []lyx.FromClauseNode{
 										&lyx.RangeVar{
@@ -6633,29 +6635,31 @@ ORDER BY 2, 3;`,
 								TableAlias: "c",
 								ColName:    "relnamespace",
 							},
-							Right: &lyx.SubLink{&lyx.Select{
-								FromClause: []lyx.FromClauseNode{
-									&lyx.RangeVar{
-										SchemaName:   "pg_catalog",
-										RelationName: "pg_namespace",
+							Right: &lyx.SubLink{
+								Type: lyx.ExprSubLink,
+								SubSelect: &lyx.Select{
+									FromClause: []lyx.FromClauseNode{
+										&lyx.RangeVar{
+											SchemaName:   "pg_catalog",
+											RelationName: "pg_namespace",
+										},
 									},
-								},
-								Where: &lyx.AExprOp{
-									Left: &lyx.ColumnRef{
-										ColName: "nspname",
+									Where: &lyx.AExprOp{
+										Left: &lyx.ColumnRef{
+											ColName: "nspname",
+										},
+										Right: &lyx.AExprSConst{
+											Value: "pg_catalog",
+										},
+										Op: "=",
 									},
-									Right: &lyx.AExprSConst{
-										Value: "pg_catalog",
-									},
-									Op: "=",
-								},
 
-								TargetList: []lyx.Node{
-									&lyx.ColumnRef{
-										ColName: "oid",
+									TargetList: []lyx.Node{
+										&lyx.ColumnRef{
+											ColName: "oid",
+										},
 									},
 								},
-							},
 							},
 							Op: "<>",
 						},
